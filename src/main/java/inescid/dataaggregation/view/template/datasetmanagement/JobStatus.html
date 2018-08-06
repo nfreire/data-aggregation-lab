@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a> &gt; <a href="${context}/harvester">Datasets</a></div>
+
+<h2>Dataset Status</h2>
+
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">${datasetTitle}</td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="field_value_odd">${message}</td></tr>
+	</#if>
+		<tr><td class="field_value" colspan="2" style="text-align:center">
+			<a href="${context}/harvester" class="button">return to list of datasets</a> &nbsp;
+			<#if datasetLocalId??>
+				<a href="${context}/harvester/dataset-detail?dataset=${datasetLocalId}" class="button">return to dataset</a>
+			</#if>
+		</td></tr>
+</table>
+
+<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
+<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
+<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+</body>
+</html>

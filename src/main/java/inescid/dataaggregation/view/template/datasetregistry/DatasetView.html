@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="${context}/lab.css" type="text/css">
+<title>Dataset details</title>
+</head>
+<body>
+<table border="0">
+	<tr><td align="center">
+		<h3>${title}<br />
+		${organization}</h3>
+	</td></tr>
+	<#if message??>
+		<tr><td>${message}</td></tr>
+	</#if>
+	<tr><td>${type}</td></tr>
+	<tr><td>${uri}</td></tr>
+	
+</table>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Registered datasets</h2>
+
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Datasets status</td></tr>
+	<#if message??>
+		<tr><td class="validation_message">${message}</td></tr>
+	</#if>
+	<tr>
+		<td class="field_value">${title}<br />${organization}<br />
+		${type}
+  <#list typeInformation as field>
+  		<br />${field.key}: ${field.value} 
+  </#list>	
+		</td>
+	</tr>
+		<td  class="field_operations">
+			<a href="${context}/harvester/harvest-start?dataset=${localId}">Initiate harvest</a>
+			<br/>
+			<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Publish</a>
+			<br/>
+			<a href="${context}/harvester/profile-dataset?dataset=${localId}">Profile</a>
+			<br/>
+			<a href="${context}/harvester/clear-dataset-data?dataset=${localId}">Clear</a>
+			<br/>
+			<a href="${context}/harvester/remove-dataset?dataset=${localId}">Remove</a>
+			<#if ds.published>
+				<br/>
+				<a href="${context}/${publicationUrl}">Download export</a>
+			</#if>
+			<#if ds.profiled>
+				<br/>
+				<a href="${contextName}/${profileUrl}">See profile</a>
+			</#if>
+		</td>
+	</tr>
+</table>
+
+<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
+<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
+<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Registration of a LOD dataset for harvesting by Europeana R&D</h2>
+<p align="left" style='font-size: 90%'>(Note: this registration of the datasets serves only for research purposes on alternative aggregation mechanisms for Europeana. The datasets are not used for ingestion in the official Europeana dataset.)</p>
+
+
+<form action="${context}/lod-dataset-register" method="post">
+<input type="hidden" name="type" value="lod" />
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Dataset information</td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="400" class="field_title">URI of RDF resource of the dataset<font color="red">*</font></td>
+	<td class="field_value">
+	<input type="text" name="uri" value="${uri!}" style="width:450px"/></td></tr>
+	<tr><td class="field_title">Organization<font color="red">*</font><br />(data provider or aggregator submitting the dataset)</td>
+	<td class="field_value"><input type="text" name="organization" value="${organization!}" style="width:450px"/></td></tr>
+	<tr><td class="field_title">Title of the dataset<font color="red">*</font></td>
+	<td class="field_value"><input type="text" name="title" value="${title!}" style="width:450px"/></tr>
+	<tr><td colspan="2"><font color="red">`*</font> - indicates a required field.</td></tr>
+	<tr><td colspan="2" align="center" class="field_value"> 	
+		<a href="${context}" class="button">Cancel</a> &nbsp;
+		<input type="submit" name="registration" value="Send registration of dataset"/>
+	</td></tr>
+</table>
+
+</form>
+
+
+<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
+<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
+<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+</body>
+</html>

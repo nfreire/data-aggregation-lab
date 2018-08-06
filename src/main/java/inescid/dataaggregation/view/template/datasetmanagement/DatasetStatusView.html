@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a> &gt; <a href="${context}/harvester">Datasets</a></div>
+
+<h2>Dataset details</h2>
+
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Dataset information</td></tr>
+	<#if message??>
+		<tr><td class="validation_message">${message}</td></tr>
+	</#if>
+	<tr>
+		<td class="field_value">
+<table style="padding-bottom:10px">
+		<tr><td colspan=2 class="field_value"><b>${title}</b></td></tr>
+		<tr><td class="field_title">Organization</td><td class="field_value">${organization}</td></tr>
+		<tr><td class="field_title">Type:</td><td class="field_value">${type}</td></tr>
+		<tr><td class="field_title">Crawling base URL:</td><td class="field_value">${uri}</td></tr>
+  <#list typeInformation as field>
+		<tr><td class="field_title">${field.key}</td><td class="field_value">${field.value}</td></tr>
+  </#list>	
+</table>		
+		</td>
+	</tr>
+	<tr><td colspan="2" class="form_title">Status</td></tr>
+	<tr>
+		<td class="field_value">
+
+<table style="padding-bottom:10px">
+		<tr><td class="field_title">Harvesting status:</td><td class="field_value"><#if harvested>Last harvest:${lastHarvest}<#else>not harvested</#if></td></tr>
+		<tr><td class="field_title">Export status:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>not exported</#if></td></tr>
+		<#if harvestedForSeeAlso>
+			<tr><td class="field_title">Export of 'seeAlso' metadata status:</td><td class="field_value"> <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>not exported</#if></td></tr>
+		</#if>
+		<#if converted>
+			<tr><td class="field_title">Convertion to EDM status:</td><td class="field_value"> <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if></td></tr>
+		</#if>
+		<tr><td class="field_title">Profiling status:</td><td class="field_value"><#if profiled>Profiled (<a href="${context}/${profileUrl}">consult</a>)<#else>not profiled</#if></td></tr>
+</table>
+		</td>
+	</tr>
+		<td  class="validation_message">
+			Execution of dataset operations
+		</td>
+	</tr>
+	<tr>
+		<td  class="field_value">
+		
+		
+<table style="padding-bottom:10px">
+		<tr><td class="field_title">Harvest:</td><td class="field_value">
+			<a href="${context}/harvester/harvest-start?dataset=${localId}">Initiate harvest</a>			
+			<br/>
+			<a href="${context}/harvester/harvest-start-sample?dataset=${localId}">Initiate harvest of a sample</a>
+			<#if profiledForIiif>
+				<br/>
+				<a href="${context}/harvester/dataset-iiif-harvest-seealso?dataset=${localId}">Harvest 'seeAlso' metadata</a>				
+			</#if>	
+		</td></tr>
+		<tr><td class="field_title">Process/Analyse:</td><td class="field_value">
+			<#if profilable>
+				<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Profile of IIIF Manifest</a>
+				<br/>
+				<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Profile of RDF data</a>
+				<br/>
+			</#if>
+			<#if harvested>
+				<a href="${context}/harvester/convert-dataset?dataset=${localId}">Convert</a>	
+			</#if>	
+		</td></tr>
+		<tr><td class="field_title">Export:</td><td class="field_value">
+				<#if harvested>
+					<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Export</a>
+				</#if>
+				<#if harvestedForSeeAlso>
+					<br/>
+					<a href="${context}/harvester/publish-dataset-seealso-data?dataset=${localId}">Export 'seeAlso'</a>
+				</#if>
+		</td></tr>
+		<tr><td class="field_title">Clean:</td><td class="field_value">
+			<#if harvested>
+				<a href="${context}/harvester/clear-dataset-data?dataset=${localId}">Remove all data</a>
+				<br/>
+			</#if>
+			<a href="${context}/harvester/remove-dataset?dataset=${localId}">Remove dataset</a>
+		</td></tr>
+</table>
+		</td>
+	</tr>
+	<tr>
+		<td  class="field_value">
+			<center><a href="${context}/harvester">return to dataset list</a></center>
+		</td>
+	</tr>
+</table>
+
+<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
+<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
+<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+</body>
+</html>

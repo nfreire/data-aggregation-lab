@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+<br /><br />
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Registered datasets</td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+  <#list datasetsViews as ds>
+		<tr>
+			<td class="field_value">${ds.title}<br />${ds.organization}<br />
+			${ds.type}
+			</td>
+			<td  class="field_operations">
+			    <a href="${context}/harvester/dataset-detail?dataset=${ds.localId}">consult status</a>
+				<#if ds.published>
+					<br/>
+					<a href="${context}/${ds.publicationUrl}">Download export</a>
+				</#if>
+				<#if ds.profiled>
+					<br/>
+					<a href="${context}/${ds.profileUrl}">See profile</a>
+				</#if>
+			</td>
+		</tr>
+  </#list>	
+	<tr><td colspan="2" class="field_value">&nbsp;</td></tr>
+	<#if running??>
+		<tr><td class="field_value_odd"  colspan="2"><b>Tasks in execution:</b><br />
+		${running}</td></tr>
+	</#if>
+</table>
+
+<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
+<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
+<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- General description of your web application -->
+
+    <display-name>Dataset Registry</display-name>
+    <description>
+	    A website to allow data providers to register their datasets for harvesting by Europeana
+    </description>
+    <context-param>
+        <description>Location of the registry repository</description>
+        <param-name>dataaggregation.dataset-registry.repository.folder</param-name>
+        <param-value>${dataaggregation.dataset-registry.repository.folder}</param-value>
+    </context-param>
+    <context-param>
+        <description>Location of the data repository</description>
+        <param-name>dataaggregation.data-repository.folder</param-name>
+        <param-value>${dataaggregation.data-repository.folder}</param-value>
+    </context-param>
+    <context-param>
+        <description>Location of the timestamp tracker</description>
+        <param-name>dataaggregation.timestamp.repository.folder</param-name>
+        <param-value>${dataaggregation.timestamp.repository.folder}</param-value>
+    </context-param>
+
+	<servlet>
+        <servlet-name>default</servlet-name>
+        <servlet-class>
+          org.apache.catalina.servlets.DefaultServlet
+        </servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>1</param-value>
+        </init-param>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+      <servlet-name>DatasetRegistryHandler</servlet-name>
+<!--       <description>
+        This servlet processes Webmention requests. 
+       
+      </description> -->
+      <servlet-class>inescid.dataaggregation.dataset.view.registry.RegistryServlet</servlet-class>
+      <!-- Load this servlet at server startup time -->
+      <load-on-startup>5</load-on-startup>
+    </servlet>
+
+    <servlet>
+      <servlet-name>DatasetManagementHandler</servlet-name>
+<!--       <description>
+        This servlet processes Webmention requests. 
+       
+      </description> -->
+      <servlet-class>inescid.dataaggregation.dataset.view.management.ManagementServlet</servlet-class>
+      <!-- Load this servlet at server startup time -->
+      <load-on-startup>5</load-on-startup>
+    </servlet>
+    
+   <servlet-mapping>
+       <servlet-name>default</servlet-name>
+       <url-pattern>/static/*</url-pattern>
+   </servlet-mapping>
+    
+    <servlet-mapping>
+      <servlet-name>DatasetManagementHandler</servlet-name>
+      <url-pattern>/harvester/*</url-pattern>
+    </servlet-mapping>
+
+   
+    <servlet-mapping>
+      <servlet-name>DatasetRegistryHandler</servlet-name>
+      <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+      <session-timeout>1</session-timeout>
+    </session-config>
+
+</web-app>

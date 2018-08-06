@@ -1,0 +1,52 @@
+package inescid.dataaggregation.dataset.job;
+
+import java.util.GregorianCalendar;
+
+import eu.europeana.research.iiif.crawl.CollectionCrawler;
+import eu.europeana.research.iiif.crawl.ManifestHarvester;
+import eu.europeana.research.iiif.crawl.ManifestSeeAlsoHarvester;
+import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
+import eu.europeana.research.iiif.discovery.demo.TimestampCrawlingHandler;
+import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
+import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
+import eu.europeana.research.iiif.profile.SeeAlsoProfile;
+import inescid.dataaggregation.dataset.Dataset;
+import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.IiifDataset;
+import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
+import inescid.dataaggregation.dataset.view.management.HarvestIiifSeeAlsoForm;
+
+public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
+	Integer sampleSize;
+	String seeAlsoType;
+
+	public JobHarvestIiifSeeAlso(String seeAlsoType) {
+		this.seeAlsoType = seeAlsoType;
+	}
+	
+	public JobHarvestIiifSeeAlso(String seeAlsoType, int sampleSize) {
+		this.sampleSize = sampleSize;
+		this.seeAlsoType = seeAlsoType;
+	}
+
+	@Override
+	public void run() {
+		running=true;
+		try {
+			TimestampTracker timestampTracker=Global.getTimestampTracker();
+			GregorianCalendar startOfCrawl=new GregorianCalendar();
+			IiifDataset iiifDataset=(IiifDataset)dataset;
+			String[] ps=SeeAlsoProfile.parseFormatProfile(seeAlsoType);
+			String format=ps[0];
+			String profile=ps[1];
+			ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), iiifDataset.getUri(), format, profile);
+			harvester.harvest();
+			timestampTracker.setDatasetTimestamp(Global.SEE_ALSO_DATASET_PREFIX+iiifDataset.getUri(), startOfCrawl);
+			timestampTracker.commit();
+			successful=true;
+		} catch (Exception e) {
+			failureCause=e;
+		}
+		running=false;
+	}
+}
