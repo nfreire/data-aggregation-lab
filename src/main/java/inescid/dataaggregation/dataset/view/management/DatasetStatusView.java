@@ -1,5 +1,7 @@
 package inescid.dataaggregation.dataset.view.management;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -9,12 +11,18 @@ import java.util.List;
 import freemarker.template.SimpleDate;
 import freemarker.template.Template;
 import inescid.dataaggregation.dataset.Dataset;
+import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
+import inescid.dataaggregation.dataset.detection.ContentTypes;
 import inescid.dataaggregation.dataset.job.JobLog;
 import inescid.dataaggregation.dataset.view.registry.DatasetView;
 
 public class DatasetStatusView extends DatasetView{
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(DatasetStatusView.class);
+
 	List<JobLog> jobHistory;
 	public DatasetStatusView(Dataset dataset, List<JobLog> jobHistory) {
 		super(dataset);
@@ -41,17 +49,28 @@ public class DatasetStatusView extends DatasetView{
 	public boolean isConverted() {
 		return Global.getPublicationRepository().isConverted(dataset);
 	}
+	public boolean isConvertedAnalysis() {
+		return Global.getPublicationRepository().isConvertedAnalysis(dataset);
+	}
 	public String getPublicationConvertedEdmUrl() {
 		return Global.getPublicationRepository().getPublicationConvertedUrl(dataset);
 	}
 	public boolean isProfiled() {
 		return Global.getPublicationRepository().isProfiled(dataset);
 	}
+	public boolean isValidatedEdm() {
+		File profileFolder = Global.getPublicationRepository().getProfileFolder(dataset);
+		return new File(profileFolder, "edm-validation.csv").exists();
+	}
 	public boolean isProfiledForIiif() {
 		return dataset.getType()==DatasetType.IIIF && isProfiled();
 	}
 	public String getProfileUrl() {
-		return Global.getPublicationRepository().getProfileUrl(dataset);
+		try {
+			return Global.getPublicationRepository().getProfileUrl(dataset);
+		} catch (IOException e) {
+			return "";
+		}
 	}
 	public boolean isHarvested() {
 		return Global.getTimestampTracker().getDatasetStatus(dataset.getUri())!=null;
@@ -60,8 +79,34 @@ public class DatasetStatusView extends DatasetView{
 		return isHarvested(); 
 //				&& dataset.getType()==DatasetType.IIIF;
 	}
+	public boolean isRunning() {
+		try {
+			return Global.getJobRunner().isDatasetWithJob(dataset);
+		} catch (IOException e) {
+			log.info(e.getMessage(), e);
+			return false;
+		}
+	}
+
+	public boolean isEdmAvailable() {
+		return (dataset.getDataProfile()!=null && dataset.getDataProfile().equals(DatasetProfile.EDM.toString()))
+				|| isConverted();
+	}
+	
+	public boolean isConvertibleToEdm() {
+		return dataset.getDataProfile()!=null && dataset.getDataProfile().equals(DatasetProfile.SCHEMA_ORG.toString());
+	}
+	
+	public boolean isProfilableForRdf() {
+		return dataset.getDataFormat()!=null && ContentTypes.isRdf(dataset.getDataFormat());
+	}
+	
+	public boolean isProfilableForIiif() {
+		return isHarvested() && getType()==DatasetType.IIIF;
+	}
+	
 	public boolean isHarvestedForSeeAlso() {
-		return Global.getTimestampTracker().getDatasetStatus(Global.SEE_ALSO_DATASET_PREFIX+dataset.getUri())!=null;
+		return Global.getTimestampTracker().getDatasetStatus(((IiifDataset)dataset).getSeeAlsoDatasetUri())!=null;
 	}
 	public String getLastHarvest() {
 		Calendar date = Global.getTimestampTracker().getDatasetStatus(dataset.getUri());
@@ -70,7 +115,7 @@ public class DatasetStatusView extends DatasetView{
 		return new SimpleDateFormat("dd-MM-yyyy HH:mm").format(date.getTime());
 	}
 	public String getSeeAlsoLastHarvest() {
-		Calendar date = Global.getTimestampTracker().getDatasetStatus(Global.SEE_ALSO_DATASET_PREFIX+dataset.getUri());
+		Calendar date = Global.getTimestampTracker().getDatasetStatus(((IiifDataset)dataset).getSeeAlsoDatasetUri());
 		if(date==null) 
 			return "never";
 		return new SimpleDateFormat("dd-MM-yyyy HH:mm").format(date.getTime());

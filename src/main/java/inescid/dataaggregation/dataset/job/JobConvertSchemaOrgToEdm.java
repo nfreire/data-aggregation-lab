@@ -15,6 +15,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.mortbay.log.Log;
 import org.w3c.dom.Document;
 
 import eu.europeana.research.iiif.crawl.CollectionCrawler;
@@ -34,13 +35,15 @@ import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
-import inescid.dataaggregation.dataset.store.PublicationRepository;
 import inescid.dataaggregation.dataset.view.management.HarvestIiifSeeAlsoForm;
+import inescid.dataaggregation.store.PublicationRepository;
 import inescid.util.LinkedDataUtil;
 import inescid.util.XmlUtil;
 
 public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
-
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+		.getLogger(JobConvertSchemaOrgToEdm.class);
+	
 	boolean transformToEdmInternal;
 	String provider;
 	String dataProvider;
@@ -56,33 +59,48 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 			converter.setDataProvider(dataset.getOrganization());
 			converter.setProvider(dataset.getOrganization());
 
-			Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());
-			StmtIterator licenseProperties = dsResource.listProperties(RdfReg.SCHEMAORG_LICENSE);
-			if (licenseProperties!=null && licenseProperties.hasNext()) {
-				while(licenseProperties.hasNext()) {
-					Statement st=licenseProperties.next();
-					if(st.getObject().isURIResource())
-						converter.setDatasetRights(st.getObject().asNode().getURI());
-				}
-			} 
+			if(dataset.getType()==DatasetType.LOD) {
+				Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());
+				StmtIterator licenseProperties = dsResource.listProperties(RdfReg.SCHEMAORG_LICENSE);
+				if (licenseProperties!=null && licenseProperties.hasNext()) {
+					while(licenseProperties.hasNext()) {
+						Statement st=licenseProperties.next();
+						if(st.getObject().isURIResource())
+							converter.setDatasetRights(st.getObject().asNode().getURI());
+					}
+				} 
+			}
 			
 			PublicationRepository repository = Global.getPublicationRepository();
 			File targetZipFile = repository.getExportEdmZipFile(dataset);
 			targetZipFile.getParentFile().mkdirs();
 			ZipArchiveExporter ziper = new ZipArchiveExporter(targetZipFile);
 			
+			String edmDatasetUri=dataset.getConvertedEdmDatasetUri();
+			
 			List<Entry<String, File>> allDatasetResourceFiles = (dataset.getType()==DatasetType.IIIF ? 					
 					Global.getDataRepository()
-					.getAllDatasetResourceFiles(Global.SEE_ALSO_DATASET_PREFIX+dataset.getUri())
+					.getAllDatasetResourceFiles(((IiifDataset)dataset).getSeeAlsoDatasetUri())
 					: Global.getDataRepository()
 					.getAllDatasetResourceFiles(dataset.getUri()));
 			for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {
-				byte[] schemaOrgBytes = FileUtils.readFileToByteArray(seeAlsoFile.getValue());
-				byte[] edmBytes = getEdmRecord(converter, seeAlsoFile.getKey(), schemaOrgBytes);
-				ziper.addFile(seeAlsoFile.getValue().getName()+".edm.xml");
-				ByteArrayInputStream fis = new ByteArrayInputStream(edmBytes);
-				IOUtils.copy(fis, ziper.outputStream());
-				fis.close();
+				try {
+					byte[] schemaOrgBytes = FileUtils.readFileToByteArray(seeAlsoFile.getValue());
+					byte[] edmBytes = getEdmRecord(converter, seeAlsoFile.getKey(), schemaOrgBytes);
+					if(edmBytes!=null) {
+						ziper.addFile(seeAlsoFile.getValue().getName()+".edm.xml");
+						ByteArrayInputStream fis = new ByteArrayInputStream(edmBytes);
+						IOUtils.copy(fis, ziper.outputStream());
+						fis.close();
+						Global.getDataRepository().save(edmDatasetUri, seeAlsoFile.getKey(), edmBytes);
+					}
+				} catch (Exception e) {
+					Log.warn("Failed to convert resource: "+seeAlsoFile.getKey() , e);
+//					failureCause = new Exception("On "+seeAlsoFile.getKey(),e);
+//					running = false;
+//					return;
+				}
+				
 			}
 			ziper.close();
 			successful = true;
@@ -101,8 +119,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 			String domString = XmlUtil.writeDomToString(edmDom);
 			return domString.getBytes(Global.UTF8);
 		} catch (Exception e) {
-			System.err.println(resUri);
-			e.printStackTrace();
+			log.warn("on "+resUri, e);
 			return null;
 		}
 	}

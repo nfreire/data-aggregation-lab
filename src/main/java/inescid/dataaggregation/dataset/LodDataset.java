@@ -16,26 +16,23 @@ public class LodDataset extends Dataset {
 		this.uri=uri;
 	}
 
-
 	public LodDataset() {
 		super(DatasetType.LOD);
 	}
 
-
 	public LodDataset(CSVRecord csvRecord) {
-		super(csvRecord.get(0), DatasetType.LOD);
-		organization=csvRecord.get(2);
-		title=csvRecord.get(3);
-		uri=csvRecord.get(4);
+		super(csvRecord, DatasetType.LOD);
+//		readMetaFromCsv(csvRecord, 5);
 	}
-
 
 	@Override
 	public String toCsv() {
 		try {
 			StringBuilder sb=new StringBuilder();
 			CSVPrinter rec=new CSVPrinter(sb, CSVFormat.DEFAULT);
-			rec.printRecord(localId, type.toString(), organization, title, uri);
+			super.toCsvPrint(rec);
+//			super.toCsvPrintMeta(rec);
+			rec.println();
 			rec.close();
 			return sb.toString();
 		} catch (IOException e) {

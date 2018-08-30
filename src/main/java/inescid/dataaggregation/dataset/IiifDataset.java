@@ -20,12 +20,11 @@ public class IiifDataset extends Dataset {
 	}
 
 	public IiifDataset(CSVRecord csvRecord) {
-		super(csvRecord.get(0), DatasetType.IIIF);
-		organization=csvRecord.get(2);
-		title=csvRecord.get(3);
-		uri=csvRecord.get(4);
-		crawlMethod=IiifCrawlMethod.valueOf(csvRecord.get(5));
+		super(csvRecord, DatasetType.IIIF);
+		crawlMethod=IiifCrawlMethod.valueOf(csvRecord.get(7));
+//		readMetaFromCsv(csvRecord, 7);
 	}
+
 
 	public IiifDataset() {
 		super(DatasetType.IIIF);
@@ -36,7 +35,10 @@ public class IiifDataset extends Dataset {
 		try {
 			StringBuilder sb=new StringBuilder();
 			CSVPrinter rec=new CSVPrinter(sb, CSVFormat.DEFAULT);
-			rec.printRecord(localId, type.toString(), organization, title, uri, crawlMethod);
+			super.toCsvPrint(rec);
+			rec.print(crawlMethod);
+//			super.toCsvPrintMeta(rec);
+			rec.println();
 			rec.close();
 			return sb.toString();
 		} catch (IOException e) {
@@ -50,5 +52,9 @@ public class IiifDataset extends Dataset {
 
 	public void setCrawlMethod(IiifCrawlMethod crawlMethod) {
 		this.crawlMethod = crawlMethod;
+	}
+
+	public String getSeeAlsoDatasetUri() {
+		return Global.SEE_ALSO_DATASET_PREFIX+uri;
 	}
 }

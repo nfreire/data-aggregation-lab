@@ -8,6 +8,8 @@ import java.util.TreeMap;
 
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.util.RdfUtil.Jena;
+
 public class RdfConversionSpecification {
 	Map<Resource, Resource> typesMapping=new HashMap<>();
 
@@ -54,6 +56,10 @@ public class RdfConversionSpecification {
 			typePropertiesMappings.put(rdfType, map);
 		}
 		return map;
+	}
+
+	public Resource[] getRootResourceTypeMapping(String rdfTypeUriRef) {
+		return rootResourcesTypeMapping.get(Jena.createResource(rdfTypeUriRef));
 	}
 
 	

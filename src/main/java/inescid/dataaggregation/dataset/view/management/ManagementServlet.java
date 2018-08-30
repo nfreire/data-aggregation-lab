@@ -2,9 +2,12 @@ package inescid.dataaggregation.dataset.view.management;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -20,16 +23,30 @@ import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.Job;
 import inescid.dataaggregation.dataset.job.Job.JobType;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.store.DatasetRegistryRepository;
-import inescid.dataaggregation.dataset.store.PublicationRepository;
 import inescid.dataaggregation.dataset.view.registry.DatasetRegistrationResultForm;
 import inescid.dataaggregation.dataset.view.registry.IiifForm;
 import inescid.dataaggregation.dataset.view.registry.LodForm;
 import inescid.dataaggregation.dataset.view.registry.StartPage;
+import inescid.dataaggregation.dataset.view.registry.View;
+import inescid.dataaggregation.store.DatasetRegistryRepository;
+import inescid.dataaggregation.store.PublicationRepository;
 
 public class ManagementServlet extends HttpServlet {
 	enum RequestOperation {
-		DISPLAY_DATASETS, DISPLAY_DATASET_STATUS, HARVEST_START, HARVEST_START_SAMPLE, PUBLISH_DATASET_DATA, CLEAR_DATASET_DATA, PROFILE_DATASET_RDF, PROFILE_DATASET_MANIFESTS, CONVERT_DATASET_DATA, REMOVE_DATASET, HARVEST_START_SEEALSO, PUBLISH_DATASET_SEEALSO_DATA;
+		DISPLAY_DATASETS,
+		DISPLAY_DATASET_STATUS, 
+		HARVEST_START,
+		HARVEST_START_SAMPLE, 
+		PUBLISH_DATASET_DATA, 
+		CLEAR_DATASET_DATA, 
+		PROFILE_DATASET_RDF, 
+		PROFILE_DATASET_MANIFESTS, 
+		CONVERT_DATASET_DATA, 
+		REMOVE_DATASET, 
+		HARVEST_START_SEEALSO, 
+		PUBLISH_DATASET_SEEALSO_DATA, 
+		VALIDATE_EDM,
+		SET_FORM_OF_DATA;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
 			if (req.getPathInfo()!=null) {
@@ -49,6 +66,8 @@ public class ManagementServlet extends HttpServlet {
 					return PROFILE_DATASET_RDF;
 				} else if (req.getPathInfo().endsWith("/convert-dataset")) {
 					return CONVERT_DATASET_DATA;
+				} else if (req.getPathInfo().endsWith("/validate-edm-dataset")) {
+					return RequestOperation.VALIDATE_EDM;
 				} else if (req.getPathInfo().endsWith("/remove-dataset")) {
 					return REMOVE_DATASET;
 				} else if (req.getPathInfo().endsWith("/dataset-detail")) {
@@ -57,6 +76,8 @@ public class ManagementServlet extends HttpServlet {
 					return RequestOperation.HARVEST_START_SEEALSO;
 				} else if (req.getPathInfo().endsWith("/publish-dataset-seealso-data")) {
 					return RequestOperation.PUBLISH_DATASET_SEEALSO_DATA;
+				} else if (req.getPathInfo().endsWith("/set-form-of-data")) {
+					return RequestOperation.SET_FORM_OF_DATA;
 				}
 			}
 			return DISPLAY_DATASETS;
@@ -69,9 +90,24 @@ public class ManagementServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		Global.init(config.getServletContext());
+		Global.init(getInitParameters(config.getServletContext()));
+		View.initContext(config.getServletContext().getContextPath());
 		datasetRepository=Global.getDatasetRegistryRepository();
 		jobRunner=Global.getJobRunner();
+	}
+	
+	private Properties getInitParameters(ServletContext servletContext) {
+		Properties props=new Properties();
+		Enumeration initParameterNames = servletContext.getInitParameterNames();
+		while (initParameterNames.hasMoreElements()) {
+			Object pName = initParameterNames.nextElement();
+			String initParameter = servletContext.getInitParameter(pName.toString());
+			props.setProperty(pName.toString(), initParameter);
+			
+		}
+		props.setProperty("dataaggregation.publication-repository.folder", servletContext.getRealPath(""));
+		props.setProperty("dataaggregation.publication-repository.url", "/static/data");
+		return props;
 	}
 
 	protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -116,6 +152,9 @@ public class ManagementServlet extends HttpServlet {
 					Global.getTimestampTracker().clear(dataset.getUri());
 					Global.getTimestampTracker().clear(Global.SEE_ALSO_DATASET_PREFIX+dataset.getUri());
 					Global.getTimestampTracker().commit();
+					dataset.setDataFormat(null);
+					dataset.setDataProfile(null);
+					datasetRepository.updateDataset(dataset);
 					sendResponse(resp, 200, new JobStatus("All data has been cleared.", dataset).output());
 				} else {
 					ConfirmDialog confirm=new ConfirmDialog();
@@ -140,6 +179,11 @@ public class ManagementServlet extends HttpServlet {
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.CONVERT, dataset));
 				sendResponse(resp, 200, new JobStatus("To EDM Conversion of the dataset will be executed. The link to the EDM export will later be available in the list of datasets.", dataset).output());
+				break;
+			}case VALIDATE_EDM:{
+				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
+				jobRunner.addJob(new Job(JobType.VALIDATE_EDM, dataset));
+				sendResponse(resp, 200, new JobStatus("To EDM Validation of the dataset will be executed. The link to the report export will later be available in the list of datasets.", dataset).output());
 				break;
 			}case REMOVE_DATASET:{
 				if(req.getParameter("confirmation")!=null && req.getParameter("confirmation").equals("yes")) {
@@ -171,6 +215,14 @@ public class ManagementServlet extends HttpServlet {
 					form.setMessage("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the list of datasets.");
 				}
 				sendResponse(resp, 200, form.output());
+				break;
+			}case SET_FORM_OF_DATA:{
+				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));				
+				String dataProfileParam = req.getParameter("dataProfile");
+				String detectParam = req.getParameter("detectFormOfData");
+				SetDataProfileForm form=new SetDataProfileForm(dataset, dataProfileParam, detectParam); 
+				form.executeJob();
+				sendResponse(resp, 200, form.output());							
 				break;
 			}default:
 				break;

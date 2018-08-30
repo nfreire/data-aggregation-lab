@@ -39,10 +39,14 @@ import com.google.api.services.sheets.v4.model.ValueRange;
 
 import eu.europeana.research.iiif.profile.UsageCount;
 import inescid.dataaggregation.dataset.Dataset;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 
 public class GoogleSheetsCsvUploader {
-
+	public static void update(String spreadsheetId, File csvFile) throws IOException {
+		update(spreadsheetId, sheetTitleFromFileName(csvFile), csvFile);
+	}
+	
 	public static void update(String spreadsheetId, String sheetTitle, File csvFile) throws IOException {
 		Sheets service = SheetsApi.getSheetsService();
 
@@ -167,5 +171,23 @@ public class GoogleSheetsCsvUploader {
 			lastCol='Z';
 		String range=(sheetTitle!=null ? sheetTitle+"!" : "")+"A1:"+((char)lastCol)+rows;
 		return range;
+	}
+	
+	public static String sheetTitleFromFileName(File csvFile) {
+		String sheetTitle=csvFile.getName().substring(0, csvFile.getName().lastIndexOf('.'));
+		return sheetTitle;
+	}
+
+	public static String getDatasetAnalysisSpreadsheet(Dataset dataset, String sheetTitle) throws IOException {
+		File profileFolder=Global.getPublicationRepository().getProfileFolder(dataset);
+		File sheetsIdFile = new File(profileFolder, "google-sheet-id.txt");
+		String spreadsheetId=null;
+		if(sheetsIdFile.exists()) {
+			 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, Global.UTF8);
+		} else {
+			spreadsheetId=GoogleSheetsCsvUploader.create("Schema.org conversion analysis - "+dataset.getTitle(), sheetTitle);
+			FileUtils.write(sheetsIdFile, spreadsheetId, Global.UTF8);
+		}
+		return spreadsheetId;
 	}
 }

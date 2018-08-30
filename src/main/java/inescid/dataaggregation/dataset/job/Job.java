@@ -18,7 +18,7 @@ public class Job {
 	public enum JobStatus {PENDING, RUNNING, COMPLETED, FAILED};
 
 	public enum JobType {
-		HARVEST, HARVEST_SAMPLE, HARVEST_SEEALSO, PUBLISH_DATA, PUBLISH_SEEALSO_DATA, PROFILE_MANIFESTS, PROFILE_RDF, CONVERT;
+		HARVEST, HARVEST_SAMPLE, HARVEST_SEEALSO, PUBLISH_DATA, PUBLISH_SEEALSO_DATA, PROFILE_MANIFESTS, PROFILE_RDF, CONVERT, VALIDATE_EDM;
 		
 		public JobWorker newWorker(DatasetType datasetType, String jobParams) {
 			switch (this) {
@@ -32,6 +32,8 @@ public class Job {
 					return new JobHarvestIiif(100);
 				else if(datasetType==DatasetType.LOD)
 					return new JobHarvestLod(100);
+				else if(datasetType==DatasetType.WWW)
+					return new JobHarvestWww(100);
 			case PROFILE_MANIFESTS:
 				if(datasetType==DatasetType.IIIF)
 					return new JobProfileIiifManifests();
@@ -40,6 +42,8 @@ public class Job {
 				return new JobProfileSchemaOrg();
 			case CONVERT:
 				return new JobConvertSchemaOrgToEdm();
+			case VALIDATE_EDM:
+				return new JobValidateEdm();
 			case PUBLISH_DATA:
 				return new JobPublish();
 			case PUBLISH_SEEALSO_DATA:

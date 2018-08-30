@@ -23,7 +23,7 @@ import com.google.gson.stream.JsonReader;
 import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.store.Repository;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
 public class ManifestMetadataProfiler {

@@ -9,7 +9,8 @@ table { empty-cells: show }
 	 color:#fff;
 	 font-weight: bold;
 	 font-size: 22px;
-	 padding-top: 25px;
+	 padding-top: 18px;
+	 line-height: 0.9;
 }
 
 .footer_left {
@@ -57,6 +58,9 @@ table { empty-cells: show }
 	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
 }
 
+.unavailableLink{
+	color : #999 ;
+}
 
 .field_operations {
 	BORDER-BOTTOM: #c0c0c0 1px solid;
@@ -75,6 +79,12 @@ table { empty-cells: show }
 	color: #fff; 
 	BACKGROUND: #777;}
 
+.form_title_2 { 
+	font-size: 16px; 	
+	font-weight: bold ;
+	white-space: nowrap;
+	color: #fff; 
+	BACKGROUND: #ac7873;}
 .validation_message {
 	BORDER-BOTTOM: #c0c0c0 1px solid;
 	BACKGROUND: #cc9893;

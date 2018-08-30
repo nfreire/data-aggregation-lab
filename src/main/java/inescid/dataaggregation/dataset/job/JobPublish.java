@@ -25,8 +25,10 @@ import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-import inescid.dataaggregation.dataset.store.PublicationRepository;
-import inescid.util.DataProfileDetector;
+import inescid.dataaggregation.dataset.detection.ContentTypes;
+import inescid.dataaggregation.dataset.detection.DataProfileDetector;
+import inescid.dataaggregation.dataset.detection.DataTypeResult;
+import inescid.dataaggregation.store.PublicationRepository;
 
 public class JobPublish extends JobWorker {
 	
@@ -41,12 +43,15 @@ public class JobPublish extends JobWorker {
 					targetZipFile.getParentFile().mkdirs();
 				ZipArchiveExporter ziper=new ZipArchiveExporter(targetZipFile);
 				List<Entry<String, File>> allDatasetManifestFiles = Global.getDataRepository().getAllDatasetResourceFiles(dataset.getUri());
-				DataProfileDetector detector=new DataProfileDetector();
-				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
-					if(detector.detect(manifEntry.getValue()))
-						break;
-				}
-				String fileExtension=detector.getContentType()!=null ? "."+detector.getFilenameExtension() : "";
+//				DataProfileDetector detector=new DataProfileDetector();
+//				DataTypeResult detected=null;
+//				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
+//					detected=detector.detect(manifEntry.getValue());
+//					if(detected!=null)
+//						break;
+//				}
+				ContentTypes format=ContentTypes.fromMime(dataset.getDataFormat());
+				String fileExtension=format!=null ? "."+format.getFilenameExtension() : "";
 				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
 					ziper.addFile(manifEntry.getValue().getName()+fileExtension);
 					FileInputStream fis = new FileInputStream(manifEntry.getValue());

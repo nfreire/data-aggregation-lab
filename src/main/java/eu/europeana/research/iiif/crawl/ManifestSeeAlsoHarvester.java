@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -19,29 +20,36 @@ import com.google.gson.GsonBuilder;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import eu.europeana.research.iiif.profile.model.SeeAlso;
+import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.dataset.IiifDataset;
+import inescid.dataaggregation.store.Repository;
+import inescid.util.HttpRequestException;
+import inescid.util.HttpUtil;
+import inescid.util.LinkedDataUtil;
 
 public class ManifestSeeAlsoHarvester {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(ManifestSeeAlsoHarvester.class);
 
 	TimestampTracker manifestSource;
-	String datasetUri;
+	IiifDataset dataset;
 	Repository repository;
 	String format;
 	String profile;
 	
-	public ManifestSeeAlsoHarvester(Repository repository, String datasetUri, String seeAlsoFormat, String seeAlsoProfile) {
+	public ManifestSeeAlsoHarvester(Repository repository, IiifDataset dataset, String seeAlsoFormat, String seeAlsoProfile) {
 		super();
-		this.datasetUri = datasetUri;
+		this.dataset = dataset;
 		this.repository = repository;
 		this.format = seeAlsoFormat;
 		this.profile = seeAlsoProfile;
 	}
 
-	public void harvest() throws IOException {
-		String repositoryDatasetUri=Global.SEE_ALSO_DATASET_PREFIX+datasetUri;
+	public void harvest() throws IOException, InterruptedException {
+		String repositoryDatasetUri=dataset.getSeeAlsoDatasetUri();
 		Set<String> allDatasetManifestSeeAlsos = repository.getAllDatasetResourceUris(repositoryDatasetUri);
-		List<Entry<String,File>> allDatasetManifests = repository.getAllDatasetResourceFiles(datasetUri);
+		List<Entry<String,File>> allDatasetManifests = repository.getAllDatasetResourceFiles(dataset.getUri());
 		
 		int cnt=0;
 		for(Entry<String,File> manifestJsonFile: allDatasetManifests) {
@@ -60,28 +68,14 @@ public class ManifestSeeAlsoHarvester {
 			}
 			if(targetSeeAlso==null)
 				continue;
-			int tries=1;
-			byte[] seeAlsoContent=null;
-			while (seeAlsoContent==null) try {
-				seeAlsoContent = httpGet(new URL(targetSeeAlso.id));
-			} catch (IOException e) {
-				tries++;
-				if(tries>3) {
-					//TODO: change to: 
-					//log error
-					//change status to update failure?
-					//keep in dataset
-					//move to next
-					throw e;
-				}
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e1) {
-					throw e;
-				}
+			
+			try {
+				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
+				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
+			} catch (HttpRequestException e) {
+				log.error(targetSeeAlso.id, e);
+				continue;
 			}
-
-			repository.save(repositoryDatasetUri, targetSeeAlso.id, seeAlsoContent);
 			
 			allDatasetManifestSeeAlsos.remove(targetSeeAlso.id);
 			if(cnt%100 == 0)

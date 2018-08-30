@@ -3,11 +3,10 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
-		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+		<title>Data Aggregation Lab: R&D Workbench for alternative aggregation mechanisms for Europeana</title>
 	</head>
 <body>
-<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
-
+<#include "../banner.include.html">
 <h2>About the workbench</h2>
 <p>This system is a work in progress. It aims to gather information from data providers and aggregators, share experimental results, apply prototypes, and provide demonstrators.</p>
 <p>Current R&D activities address:</p>
@@ -17,6 +16,7 @@
 <li>Aggregation mechanisms for IIIF based on IIIF Collections</li>
 <li>Aggregation mechanisms for IIIF based on Sitemaps</li>
 <li>Aggregation mechanisms specific for Schema.org metadata (e.g. HTML Crawlers)</li>
+<li>Aggregation mechanisms for the WWW (HTML meta, RDFa, RDFaLite, Microdata, etc)</li>
 <li>Conversion of Schema.org metadata to EDM</li>
 <li>Metadata profiling</li>
 </ul>
@@ -26,8 +26,10 @@
 Allows data providers and aggregators to send us the description of a dataset where we will experiment the LOD aggregation mechanisms.<br/>
 The guidelines for describing a LOD dataset for Europeana are available in <a href="https://github.com/nfreire/Open-Data-Acquisition-Framework/blob/master/opaf-documentation/SpecifyingLodDatasetForEuropeana.md"  target="_blank">this document</a>.
 </li>
-<li style="padding-bottom:10px"><a href="${context}/iiif-dataset-register">Register a IIIF dataset for aggregation by Europeana</a>:<br/>Allows data providers and aggregators to send us the description of a dataset where we will experiment the IIIF aggregation mechanisms. 
+<li style="padding-bottom:10px"><a href="${context}/iiif-dataset-register">Register a IIIF dataset for aggregation by Europeana</a>:<br/>Allows data providers and aggregators to send us the description of a dataset where we will experiment the WWW crawling aggregation mechanisms for extracting structured data within HTML pages. 
 <br />IIIF datasets can be used for aggregation via several harvesting methods: <a href="http://preview.iiif.io/api/discovery/api/discovery/0.1/" target="_blank">IIIF Change Discovery API v0.1</a>, IIIF Collections, and Sitemaps.</li>
+<li style="padding-bottom:10px"><a href="${context}/www-dataset-register">Register a WWW dataset for aggregation by Europeana</a>:<br/>Allows data providers and aggregators to send us the description of a dataset where we will experiment the IIIF aggregation mechanisms. 
+<br />(a sitemaps.xml file is required)</li>
 <!-- 
 <li><a href="${context}/dataset-status">Consult the status of a dataset</a>:<br/>Allows data providers and aggregators to consult the processing status of a dataset, and access processing results.</li>
  -->
@@ -39,8 +41,8 @@ The guidelines for describing a LOD dataset for Europeana are available in <a hr
 Allows the Europeana Aggregation team to manage the registered datasets, execute harvests, metadata analysis and conversion.</li>
 </ul>
 
-<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
-<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
-<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+
+<#include "../footer.include.html">
+
 </body>
 </html>

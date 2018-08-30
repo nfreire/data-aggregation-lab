@@ -3,15 +3,23 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+	<#if running>
+		<!-- meta http-equiv="refresh" content="10" > -->
+	</#if>
 		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
 	</head>
 <body>
-<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<#include "../banner.include.html">
 <div class="breadcrumbs">&gt; <a href="${context}">Home</a> &gt; <a href="${context}/harvester">Datasets</a></div>
 
 <h2>Dataset details</h2>
 
 <table style="padding-bottom:10px">
+	<#if running>
+		<tr><td class="field_value_odd"  colspan="2"><b>Notice:</b> tasks on this dataset are in progress.  (<a href="javascript:location.reload();">refresh status</a>)</td></tr>
+		<tr><td colspan=2 class="field_value">&nbsp;</td></tr>
+	</#if>
+
 	<tr><td colspan="2" class="form_title">Dataset information</td></tr>
 	<#if message??>
 		<tr><td class="validation_message">${message}</td></tr>
@@ -23,8 +31,11 @@
 		<tr><td class="field_title">Organization</td><td class="field_value">${organization}</td></tr>
 		<tr><td class="field_title">Type:</td><td class="field_value">${type}</td></tr>
 		<tr><td class="field_title">Crawling base URL:</td><td class="field_value">${uri}</td></tr>
+		<tr><td class="field_title">Format:</td>
+		<td class="field_value"><#if dataFormat??>${dataFormat}</#if></td></tr>
+		<tr><td class="field_title">Data profile:</td><td class="field_value"><#if dataProfile??>${dataProfileDisplay}</#if></td></tr>	
   <#list typeInformation as field>
-		<tr><td class="field_title">${field.key}</td><td class="field_value">${field.value}</td></tr>
+		<tr><td class="field_title">${field.key}:</td><td class="field_value">${field.value}</td></tr>
   </#list>	
 </table>		
 		</td>
@@ -34,55 +45,98 @@
 		<td class="field_value">
 
 <table style="padding-bottom:10px">
-		<tr><td class="field_title">Harvesting status:</td><td class="field_value"><#if harvested>Last harvest:${lastHarvest}<#else>not harvested</#if></td></tr>
+		<tr><td class="field_title">Harvesting status:</td><td class="field_value"><#if harvested>Last harvest:${lastHarvest}<#else>Not harvested</#if>
+			<#if type=="IIIF">
+			<br />
+<#if harvestedForSeeAlso>Last harvest of 'seeAlso' metadata: ${seeAlsoLastHarvest}<#else>Not harvested for 'seeAlso' metadata</#if>
+			</#if>
+		</td></tr>		
+		
+		
 		<tr><td class="field_title">Export status:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>not exported</#if></td></tr>
-		<#if harvestedForSeeAlso>
-			<tr><td class="field_title">Export of 'seeAlso' metadata status:</td><td class="field_value"> <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>not exported</#if></td></tr>
+		<#if type=="IIIF">
+			<tr><td class="field_title">Export of 'seeAlso' metadata status:</td><td class="field_value">
+				 <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>not exported</#if>
+			</td></tr>
 		</#if>
-		<#if converted>
-			<tr><td class="field_title">Convertion to EDM status:</td><td class="field_value"> <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if></td></tr>
+		<#if convertibleToEdm>
+			<tr><td class="field_title">Conversion to EDM status:</td><td class="field_value">
+				 <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if>
+				 <#if convertedAnalysis><br />Conversion analysis (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not converted</#if>
+			</td></tr>
 		</#if>
-		<tr><td class="field_title">Profiling status:</td><td class="field_value"><#if profiled>Profiled (<a href="${context}/${profileUrl}">consult</a>)<#else>not profiled</#if></td></tr>
+		<tr><td class="field_title">Data profiling status:</td><td class="field_value"><#if profiled>Profiled (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not profiled</#if></td></tr>
+		<tr><td class="field_title">EDM Validation status:</td><td class="field_value"><#if validatedEdm>Validated (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not validated</#if></td></tr>
 </table>
 		</td>
 	</tr>
-		<td  class="validation_message">
+		<td  class="form_title_2">
 			Execution of dataset operations
 		</td>
 	</tr>
 	<tr>
 		<td  class="field_value">
-		
-		
 <table style="padding-bottom:10px">
 		<tr><td class="field_title">Harvest:</td><td class="field_value">
 			<a href="${context}/harvester/harvest-start?dataset=${localId}">Initiate harvest</a>			
 			<br/>
 			<a href="${context}/harvester/harvest-start-sample?dataset=${localId}">Initiate harvest of a sample</a>
+		<#if type=="IIIF">
+			<br/>
 			<#if profiledForIiif>
-				<br/>
 				<a href="${context}/harvester/dataset-iiif-harvest-seealso?dataset=${localId}">Harvest 'seeAlso' metadata</a>				
+			<#else>	
+				<span class="unavailableLink">Harvest 'seeAlso' metadata</span>				
 			</#if>	
+		</#if>	
 		</td></tr>
 		<tr><td class="field_title">Process/Analyse:</td><td class="field_value">
-			<#if profilable>
-				<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Profile of IIIF Manifest</a>
-				<br/>
-				<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Profile of RDF data</a>
+			<#if harvested>
+				<a href="${context}/harvester/set-form-of-data?dataset=${localId}">Set data model profile</a>		
+			<#else>
+					<span class="unavailableLink">Set data model profile</span>
+			</#if>		
+			<br/>		
+			<#if type=="IIIF">
+				<#if profilableForIiif>
+					<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Data profile of IIIF Manifest</a>
+				<#else>
+					<span class="unavailableLink">Data profile of IIIF Manifest</span>
+				</#if>
 				<br/>
 			</#if>
-			<#if harvested>
-				<a href="${context}/harvester/convert-dataset?dataset=${localId}">Convert</a>	
+			<#if profilableForRdf>
+				<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Data profile of RDF data</a>
+			<#else>
+				<span class="unavailableLink">Data profile of RDF data</span>
+			</#if>
+			<br/>
+			<#if convertibleToEdm>
+				<a href="${context}/harvester/convert-dataset?dataset=${localId}">Convert to EDM</a>	
+			<#else>
+				<span class="unavailableLink">Convert to EDM</span>
+			</#if>	
+			<br/>
+			<#if edmAvailable>
+				<a href="${context}/harvester/validate-edm-dataset?dataset=${localId}">Validate EDM</a>	
+			<#else>
+				<span class="unavailableLink">Validate EDM</span>
 			</#if>	
 		</td></tr>
 		<tr><td class="field_title">Export:</td><td class="field_value">
 				<#if harvested>
 					<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Export</a>
+				<#else>
+					<span class="unavailableLink">Export</span>
 				</#if>
+			<#if type=="IIIF">
+				<br/>
 				<#if harvestedForSeeAlso>
-					<br/>
 					<a href="${context}/harvester/publish-dataset-seealso-data?dataset=${localId}">Export 'seeAlso'</a>
+				<#else>
+					<span class="unavailableLink">Export 'seeAlso'</span>
 				</#if>
+			</#if>
 		</td></tr>
 		<tr><td class="field_title">Clean:</td><td class="field_value">
 			<#if harvested>
@@ -101,8 +155,6 @@
 	</tr>
 </table>
 
-<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
-<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
-<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+<#include "../footer.include.html">
 </body>
 </html>

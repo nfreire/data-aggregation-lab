@@ -85,6 +85,8 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_CREATOR, RdfReg.DC_CREATOR);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_AUTHOR, RdfReg.DC_CREATOR);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_CONTRIBUTOR, RdfReg.DC_CONTRIBUTOR);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_PUBLISHER, RdfReg.DCTERMS_PUBLISHER);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_MATERIAL, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION_CREATED, RdfReg.DC_DESCRIPTION);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_EXAMPLE_OF_WORK, RdfReg.EDM_REALIZES);
@@ -104,15 +106,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_WIDTH, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
 		pchoMapping.putPropertyMapping(RdfReg.RDF_TYPE, RdfReg.EDM_HAS_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDITIONAL_TYPE, RdfReg.EDM_HAS_TYPE);
-		 
-		ResourceTypeConversionSpecification aggregationMapping = spec.getTypePropertiesMapping(RdfReg.ORE_AGGREGATION);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_PROVIDER, RdfReg.EDM_PROVIDER);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_ASSOCIATED_MEDIA, RdfReg.EDM_IS_SHOWN_BY);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_AUDIO, RdfReg.EDM_IS_SHOWN_BY);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_URL, RdfReg.EDM_IS_SHOWN_AT);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_IMAGE, RdfReg.EDM_IS_SHOWN_BY);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_THUMBNAIL_URL, RdfReg.EDM_OBJECT);
-//		ResourceTypeConversionSpecification aggregationMapping = spec.getTypeMapping(RdfReg.EDM_AGENT);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER);
 		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfReg.EDM_TYPE);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "TEXT");
@@ -123,7 +117,16 @@ public class SchemaOrgToEdmConversionSpecification {
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_AUDIO_OBJECT.getURI(), "SOUND");
 //		edmTypeSpec.putUriMapping("", "VIDEO");
 //		edmTypeSpec.putUriMapping("", "3D");
-		aggregationMapping.putDerivedProperty(RdfReg.RDF_TYPE, edmTypeSpec);
+		pchoMapping.putDerivedProperty(RdfReg.RDF_TYPE, edmTypeSpec);
+		 
+		ResourceTypeConversionSpecification aggregationMapping = spec.getTypePropertiesMapping(RdfReg.ORE_AGGREGATION);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_PROVIDER, RdfReg.EDM_PROVIDER);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_ASSOCIATED_MEDIA, RdfReg.EDM_IS_SHOWN_BY);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_AUDIO, RdfReg.EDM_IS_SHOWN_BY);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_URL, RdfReg.EDM_IS_SHOWN_AT);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_IMAGE, RdfReg.EDM_IS_SHOWN_BY);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_THUMBNAIL_URL, RdfReg.EDM_OBJECT);
+//		ResourceTypeConversionSpecification aggregationMapping = spec.getTypeMapping(RdfReg.EDM_AGENT);
 
 		ResourceTypeConversionSpecification webResourceMapping = spec.getTypePropertiesMapping(RdfReg.EDM_WEB_RESOURCE);
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_ENCODING_FORMAT, RdfReg.DC_FORMAT);

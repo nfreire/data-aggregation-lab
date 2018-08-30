@@ -2,11 +2,14 @@ package inescid.dataaggregation.crawl.ld;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map.Entry;
 
+import org.apache.http.Header;
 import org.apache.jena.iri.IRI;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -15,11 +18,12 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.convert.RdfReg;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.store.Repository;
 import inescid.util.DatasetLog;
 import inescid.util.LinkedDataUtil;
 import inescid.util.ListOnTxtFile;
-import inescid.util.RdfResourceAccessException;
+import inescid.util.HttpRequestException;
+import inescid.util.HttpUtil;
 
 public class LdDatasetHarvest {
 	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LdDatasetHarvest.class);
@@ -44,7 +48,7 @@ public class LdDatasetHarvest {
 		this.skipExistingResources = skipExistingResources;
 	}
 
-	public Calendar startProcess() throws RdfResourceAccessException {
+	public Calendar startProcess() throws HttpRequestException {
 		Calendar start=new GregorianCalendar();
 		try {
 			Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());
@@ -64,61 +68,56 @@ public class LdDatasetHarvest {
 	}
 
 	private void harvestRootResources(String datasetUri, StmtIterator voidRootResources) throws IOException {
-//		List<String> list=new ArrayList<>(LdGlobals.repository.getAllDatasetResourceUris(datasetUri));
-//		list.clear();
-//		list.openForWrite();
-		List<String> list=new ArrayList<>(1000);
+		int harvestedCnt=0;
 		while(voidRootResources.hasNext()) {
 			Statement st=voidRootResources.next();
 			RDFNode rootResource = st.getObject();
 			if(rootResource.isURIResource()) {
-				list.add(rootResource.asNode().getURI());
+				if(harvestResource(datasetUri, rootResource.asNode().getURI()))
+					harvestedCnt++;
 			} else {
 				System.out.println("unsupported RDFNode for void:rootResource: "+rootResource.getClass().getCanonicalName());
 			}
-			if(sampleSize!=null && sampleSize>0 && list.size()>=sampleSize)
+			if(sampleSize!=null && sampleSize>0 && harvestedCnt>=sampleSize)
 				break;
 		}
-//		list.close();
-		
-		//harvest resources without paralelism
-//		list.openForRead();
-		for (String uriOfRec : list) {
-//			while(list.hasNext()) {
-//				String uriOfRec=list.next();
-			File rdfResourceFile = repository.getFile(datasetUri, uriOfRec);
-			if(skipExistingResources && rdfResourceFile.exists()) {
-				datasetLog.logSkippedRdfResource();
-				continue;
-			}
-			int retries=retriesMaxAttempts;
-			while (retries>=0) {
-				try {
-					LinkedDataUtil.getAndStoreResource(uriOfRec, rdfResourceFile);
-					datasetLog.logHarvestSuccess();
-					break;
-				} catch (InterruptedException e) {
-					break;
-				} catch (Exception e) {
-					retries--;
-					if(retries<0) {
-						log.error(uriOfRec, e);
-						datasetLog.logHarvestIssue(uriOfRec, e.getMessage());
-					}else {
-						log.debug(uriOfRec, e);
-						try {
+		datasetLog.logFinish();
+	}
+	
+	
+	private boolean harvestResource(String datasetUri, String uriOfRec) throws IOException {
+		File rdfResourceFile = repository.getFile(datasetUri, uriOfRec);
+		if(skipExistingResources && rdfResourceFile.exists()) {
+			datasetLog.logSkippedRdfResource();
+			return false;
+		}
+		int retries=retriesMaxAttempts;
+		while (retries>=0) {
+			try {
+				List<Header> headers=LinkedDataUtil.getAndStoreResourceWithHeaders(uriOfRec, rdfResourceFile);
+				repository.saveMeta(datasetUri, uriOfRec, HttpUtil.convertHeaderStruct(headers));
+				datasetLog.logHarvestSuccess();
+				return true;
+			} catch (InterruptedException e) {
+				log.debug(uriOfRec, e);
+			} catch (Exception e) {
+				retries--;
+				if(retries<0) {
+					log.error(uriOfRec, e);
+					datasetLog.logHarvestIssue(uriOfRec, e.getMessage());
+				}else {
+					log.debug(uriOfRec, e);
+					try {
 //							log.debug("Harvester sleeping", e);
-							Thread.sleep((retriesMaxAttempts-retries)*retriesSleepMicrosecs);
-						} catch (InterruptedException ei) {
-							log.warn(uriOfRec, ei);
-							break;
-						}
+						Thread.sleep((retriesMaxAttempts-retries)*retriesSleepMicrosecs);
+					} catch (InterruptedException ei) {
+						log.warn(uriOfRec, ei);
+						break;
 					}
 				}
 			}
 		}
-		datasetLog.logFinish();
-//		list.close();
+		return false;
 	}
 
 	public void setSampleSize(Integer sampleSize) {

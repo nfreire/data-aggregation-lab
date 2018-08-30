@@ -32,8 +32,8 @@ import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.store.PublicationRepository;
 import inescid.dataaggregation.dataset.view.registry.DatasetView;
+import inescid.dataaggregation.store.PublicationRepository;
 
 public class HarvestIiifSeeAlsoForm extends DatasetView {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(HarvestIiifSeeAlsoForm.class);

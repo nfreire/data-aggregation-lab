@@ -2,15 +2,22 @@ package inescid.dataaggregation.dataset;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
+
+import inescid.dataaggregation.dataset.Dataset.DatasetType;
 
 public abstract class Dataset {
 	public enum DatasetType {
 		LOD,
-		IIIF;
+		IIIF, WWW;
 
 		public Dataset newInstanceFromCsv(CSVRecord rec) {
 			switch (this) {
@@ -18,6 +25,8 @@ public abstract class Dataset {
 				return new IiifDataset(rec);
 			case LOD:
 				return new LodDataset(rec);
+			case WWW:
+				return new WwwDataset(rec);
 			}
 			throw new RuntimeException("Missing implementation for: "+this);
 		}
@@ -28,9 +37,12 @@ public abstract class Dataset {
 	protected DatasetType type;
 	protected String organization;
 	protected String title;
+	protected String dataFormat;
+	protected String dataProfile;
 //	protected transient String status;
 //	protected transient boolean published;
 
+//	protected Map<String, String> meta;
 
 	public Dataset(String localId, DatasetType type) {
 		this.localId = localId;
@@ -39,6 +51,15 @@ public abstract class Dataset {
 
 	public Dataset(DatasetType type) {
 		this.type = type;
+	}
+
+	protected Dataset(CSVRecord csvRecord, DatasetType dsType) {
+		this(csvRecord.get(0), dsType);
+		organization=csvRecord.get(2);
+		title=csvRecord.get(3);
+		uri=csvRecord.get(4);
+		dataFormat=StringUtils.isEmpty(csvRecord.get(5)) ? null :csvRecord.get(5);
+		dataProfile=StringUtils.isEmpty(csvRecord.get(6)) ? null :csvRecord.get(6);
 	}
 
 	public DatasetType getType() {
@@ -92,6 +113,49 @@ public abstract class Dataset {
 		this.uri = uri;
 	}
 
+	
+//	protected void readMetaFromCsv(CSVRecord csvRecord, int startIdx) {
+//		for(int i=startIdx; i<csvRecord.size() ; i=i+2)
+//			meta.put(csvRecord.get(6), csvRecord.get(6));
+//	}
+//
+//	public void toCsvPrintMeta(CSVPrinter prt) throws IOException {
+//		for(Entry<String, String> e : meta.entrySet()) {
+//			prt.print(e.getKey());
+//			prt.print(e.getValue());
+//			prt.println();
+//		}
+//	}
+
+	public void toCsvPrint(CSVPrinter prt) throws IOException {
+		prt.print(localId);
+		prt.print(type.toString());
+		prt.print(organization);
+		prt.print(title);
+		prt.print(uri);
+		prt.print(dataFormat);
+		prt.print(dataProfile);
+	}
+
+	public String getDataFormat() {
+		return dataFormat;
+	}
+
+	public void setDataFormat(String dataFormat) {
+		this.dataFormat = dataFormat;
+	}
+
+	public String getDataProfile() {
+		return dataProfile;
+	}
+
+	public void setDataProfile(String dataProfile) {
+		this.dataProfile = dataProfile;
+	}
+
+	public String getConvertedEdmDatasetUri() {
+			return Global.CONVERTED_EDM_DATASET_PREFIX+uri;
+	}
 	
 //	public String getStatus() {
 //		return status;

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.annotation.processing.SupportedAnnotationTypes;
+
 import org.apache.commons.collections4.keyvalue.DefaultMapEntry;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,7 +14,10 @@ import freemarker.template.Template;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
+import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.LodDataset;
+import inescid.dataaggregation.dataset.WwwDataset;
+import inescid.dataaggregation.dataset.detection.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 
 public abstract class DatasetView extends View {
@@ -64,11 +69,41 @@ public abstract class DatasetView extends View {
 		return dataset;
 	}
 
+	public String getDataFormat() {
+		return dataset.getDataFormat();
+	}
+
+	public String getDataProfile() {
+		return dataset.getDataProfile();
+	}
+	
+	public String getDataProfileDisplay() {
+		DatasetProfile dataProfile = DatasetProfile.fromString(dataset.getDataProfile());
+		return dataProfile!=null ? dataProfile.getDisplay() : dataset.getDataProfile();
+	}
+
+	public void setDataProfile(String dataProfile) {
+		this.dataset.setDataProfile(dataProfile);
+	}
+	
+	
+	public boolean isConvertibleToEdm() {
+		return dataset.getDataProfile()!=null && dataset.getDataProfile().equals(DatasetProfile.EDM.toString());
+	}
+	
+	public boolean isProfilableForRdf() {
+		return dataset.getDataFormat()!=null && ContentTypes.isRdf(dataset.getDataFormat());
+	}
+	
 	public List<Entry<String, String>> getTypeInformation(){
 		List<Entry<String, String>> info=new ArrayList<>(3);
 		if(dataset instanceof IiifDataset) {
 			final IiifDataset ds=(IiifDataset)dataset;
 			info.add(new DefaultMapEntry<String, String>("Harvesting method", ds.getCrawlMethod().toString()));
+		}
+		if(dataset instanceof WwwDataset) {
+			final WwwDataset ds=(WwwDataset)dataset;
+			info.add(new DefaultMapEntry<String, String>("Harvesting method", ds.getMicroformat().toString()));
 		}
 		return info;
 	}

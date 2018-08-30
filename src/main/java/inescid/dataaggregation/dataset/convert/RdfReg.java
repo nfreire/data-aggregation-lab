@@ -49,6 +49,7 @@ public final class RdfReg {
 	public static final Property DCTERMS_MEDIUM = ResourceFactory.createProperty(NsDcterms+"medium");
 	public static final Property DC_CREATOR = ResourceFactory.createProperty(NsDc+"creator");
 	public static final Property DC_CONTRIBUTOR = ResourceFactory.createProperty(NsDc+"contributor");
+	public static final Property DCTERMS_PUBLISHER = ResourceFactory.createProperty(NsDcterms+"publisher");
 	public static final Property DC_SUBJECT = ResourceFactory.createProperty(NsDc+"subject");
 	public static final Property DC_LANGUAGE = ResourceFactory.createProperty(NsDc+"language");
 	public static final Property DC_DESCRIPTION = ResourceFactory.createProperty(NsDc+"description");
@@ -156,6 +157,8 @@ public final class RdfReg {
 	public static final Property SCHEMAORG_CREATOR = ResourceFactory.createProperty(NsSchemaOrg+"creator");
 	public static final Property SCHEMAORG_AUDIO = ResourceFactory.createProperty(NsSchemaOrg+"audio");
 	public static final Property SCHEMAORG_CONTRIBUTOR = ResourceFactory.createProperty(NsSchemaOrg+"contributor");
+	public static final Property SCHEMAORG_PUBLISHER = ResourceFactory.createProperty(NsSchemaOrg+"publisher");
+	public static final Property SCHEMAORG_MATERIAL = ResourceFactory.createProperty(NsSchemaOrg+"material");
 	public static final Property SCHEMAORG_ENCODING_FORMAT = ResourceFactory.createProperty(NsSchemaOrg+"encodingFormat");
 	public static final Property SCHEMAORG_UPLOAD_DATE = ResourceFactory.createProperty(NsSchemaOrg+"uploadDate");
 	public static final Property SCHEMAORG_CONTENT_URL = ResourceFactory.createProperty(NsSchemaOrg+"contentUrl");
@@ -182,5 +185,7 @@ public final class RdfReg {
 	public static final Property SCHEMAORG_LICENSE = ResourceFactory.createProperty(NsSchemaOrg+"license");
 //	public static final Property SCHEMAORG_ = ResourceFactory.createProperty(NsSchemaOrg+"");
 	public static final Property VOID_ROOT_RESOURCE = ResourceFactory.createProperty(NsVoid+"rootResource");
+	public static final Property SCHEMAORG_IDENTIFIER = ResourceFactory.createProperty(NsSchemaOrg+"identifier");
+	public static final Property DC_IDENTIFIER = ResourceFactory.createProperty(NsDc+"identifier");
 	
 }

@@ -12,6 +12,7 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
+import inescid.dataaggregation.dataset.DatasetProfile;
 
 public class JobHarvestIiif extends JobWorker implements Runnable {
 	Integer sampleSize;
@@ -29,7 +30,6 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 		try {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
-
 			Calendar startOfCrawl=null;
 			if(iiifDataset.getCrawlMethod()==IiifCrawlMethod.COLLECTION) {
 				CollectionCrawler harvester=new CollectionCrawler(timestampTracker, iiifDataset.getUri());

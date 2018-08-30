@@ -2,11 +2,12 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="refresh" content="10" >
 		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
 		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
 	</head>
 <body>
-<div class="banner">R&D Workbench for alternative aggregation mechanisms for Europeana</div>
+<#include "../banner.include.html">
 <div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
 <br /><br />
 <table style="padding-bottom:10px">
@@ -27,7 +28,7 @@
 				</#if>
 				<#if ds.profiled>
 					<br/>
-					<a href="${context}/${ds.profileUrl}">See profile</a>
+					<a target="_blank" href="${ds.profileUrl}">See profile</a>
 				</#if>
 			</td>
 		</tr>
@@ -39,8 +40,6 @@
 	</#if>
 </table>
 
-<div class="footer_left"><a href="http://www.inesc-id.pt" target="_blank"><img src="${context}/static/inescid.png" alt="INESC-ID" height="50" vspace="2" border="0"></a></div>
-<div class="footer_right"><a href="http://europeana.eu" target="_blank"><img src="${context}/static/europeana.png" alt="Europeana" height="50" vspace="2" border="0"></a></div>
-<center><a style="text-align:center;" href="https://www.researchgate.net/profile/Nuno_Freire" target="_blank">Main contact</a></center>
+<#include "../footer.include.html">
 </body>
 </html>

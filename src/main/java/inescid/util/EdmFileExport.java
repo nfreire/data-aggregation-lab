@@ -12,8 +12,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 
-import inescid.util.XmlUtil;
-
 public class EdmFileExport {
 
 	static final Charset UTF8=Charset.forName("UTF8");	

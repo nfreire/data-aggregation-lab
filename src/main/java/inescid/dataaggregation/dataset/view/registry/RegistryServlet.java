@@ -2,8 +2,11 @@ package inescid.dataaggregation.dataset.view.registry;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -14,11 +17,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.store.DatasetRegistryRepository;
+import inescid.dataaggregation.store.DatasetRegistryRepository;
 
 public class RegistryServlet extends HttpServlet {
 	enum RequestOperation {
-		DISPLAY_LOD_DATASET_REGISTRATION_FORM, DISPLAY_IIIF_DATASET_REGISTRATION_FORM, DISPLAY_CONTACT_FORM, REGISTER_DATASET, REGISTER_CONTACT, VIEW_DATASET_STATUS, DISPLAY_START_PAGE;
+		DISPLAY_LOD_DATASET_REGISTRATION_FORM, DISPLAY_IIIF_DATASET_REGISTRATION_FORM, DISPLAY_CONTACT_FORM, REGISTER_DATASET, REGISTER_CONTACT, VIEW_DATASET_STATUS, DISPLAY_START_PAGE, DISPLAY_WWW_DATASET_REGISTRATION_FORM;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
 //			System.out.println("req.getPathInfo() " + req.getPathInfo());
@@ -32,6 +35,10 @@ public class RegistryServlet extends HttpServlet {
 						if(StringUtils.isEmpty(req.getParameter("registration")))
 							return RequestOperation.DISPLAY_IIIF_DATASET_REGISTRATION_FORM;
 						return RequestOperation.REGISTER_DATASET;
+				} else if (req.getPathInfo().endsWith("/www-dataset-register")) {
+					if(StringUtils.isEmpty(req.getParameter("registration")))
+						return RequestOperation.DISPLAY_WWW_DATASET_REGISTRATION_FORM;
+					return RequestOperation.REGISTER_DATASET;
 				} else if (req.getPathInfo().endsWith("/dataset-register")) {
 					return RequestOperation.REGISTER_DATASET;
 				}
@@ -45,10 +52,24 @@ public class RegistryServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		Global.init(config.getServletContext());
+		Global.init(getInitParameters(config.getServletContext()));
 		repository=Global.getDatasetRegistryRepository();
 	}
 
+	private Properties getInitParameters(ServletContext servletContext) {
+		Properties props=new Properties();
+		Enumeration initParameterNames = servletContext.getInitParameterNames();
+		while (initParameterNames.hasMoreElements()) {
+			Object pName = initParameterNames.nextElement();
+			String initParameter = servletContext.getInitParameter(pName.toString());
+			props.setProperty(pName.toString(), initParameter);
+			
+		}
+		props.setProperty("dataaggregation.publication-repository.folder", servletContext.getRealPath(""));
+		props.setProperty("dataaggregation.publication-repository.url", "/static/data");
+		props.setProperty("dataaggregation.webapp.root-folder", servletContext.getRealPath(""));
+		return props;
+	}
 	protected void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			RequestOperation operation = RequestOperation.fromHttpRequest(req);
@@ -64,6 +85,10 @@ public class RegistryServlet extends HttpServlet {
 				IiifForm form = new IiifForm();
 				sendResponse(resp, 200, form.output());
 				break;
+			}case DISPLAY_WWW_DATASET_REGISTRATION_FORM:{
+				WwwForm form = new WwwForm();
+				sendResponse(resp, 200, form.output());
+				break;
 			}case REGISTER_CONTACT:
 				break;
 			case REGISTER_DATASET:{
@@ -72,6 +97,8 @@ public class RegistryServlet extends HttpServlet {
 					datasetToRegister = new LodForm(req);
 				}else if("iiif".equals(req.getParameter("type"))) {
 					datasetToRegister = new IiifForm(req);
+				}else if("www".equals(req.getParameter("type"))) {
+					datasetToRegister = new WwwForm(req);
 				}
 				if(datasetToRegister!=null && datasetToRegister.validate()) {
 					Dataset dataset = datasetToRegister.toDataset();

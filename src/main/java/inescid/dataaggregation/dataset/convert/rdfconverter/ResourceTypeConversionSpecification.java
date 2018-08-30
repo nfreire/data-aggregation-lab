@@ -90,4 +90,19 @@ public class ResourceTypeConversionSpecification {
 	public List<Property> getPropertiesMappingToUri() {
 		return propertiesMappingToUri;
 	}
+
+
+	public Map<Property, Property> getPropertiesMapping() {
+		return propertiesMapping;
+	}
+
+
+	public List<ResourceTypeConversionSpecification> searchPropertyMappingFromReferencedResource(Property prop) {
+		List<ResourceTypeConversionSpecification> hits=new ArrayList<>();
+		for (ImmutablePair<Property, Resource> k: propertiesMappingFromReferencedResources.keySet()) {
+			if(k.getKey().equals(prop))
+				hits.add(propertiesMappingFromReferencedResources.get(k));
+		}
+		return hits;
+	}
 }

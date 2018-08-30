@@ -25,7 +25,7 @@ import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-import inescid.dataaggregation.dataset.store.PublicationRepository;
+import inescid.dataaggregation.store.PublicationRepository;
 
 public class JobPublishSeeAlso extends JobWorker {
 	

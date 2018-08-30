@@ -10,6 +10,8 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
+import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
+import inescid.dataaggregation.dataset.profile.RdfDataUsageProfilerSchemaorgEdm;
 
 public class JobProfileSchemaOrg extends JobWorker {
 	
@@ -18,7 +20,11 @@ public class JobProfileSchemaOrg extends JobWorker {
 		running=true;
 		try {
 			RdfDataUsageProfilerSchemaorgEdm profiler=new RdfDataUsageProfilerSchemaorgEdm(Global.getDataRepository());
-			profiler.process(dataset, Global.getPublicationRepository().getProfileFolder(dataset), 0);			
+			profiler.process(dataset, Global.getPublicationRepository().getProfileFolder(dataset), 0);	
+			
+			ConversionSpecificationAnalyzer conv=new ConversionSpecificationAnalyzer();
+			conv.process(dataset, Global.getPublicationRepository());
+			
 			successful=true;
 		} catch (Exception e) {
 			failureCause=e;

@@ -13,10 +13,13 @@ import org.apache.commons.io.IOUtils;
 import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.store.Repository;
+import inescid.util.HttpRequestException;
+import inescid.util.HttpUtil;
 
 public class ManifestHarvester {
-
+private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+		.getLogger(ManifestHarvester.class);
 	TimestampTracker manifestSource;
 	String datasetUri;
 	Repository repository;
@@ -28,31 +31,19 @@ public class ManifestHarvester {
 		this.repository = repository;
 	}
 
-	public void harvest() throws IOException {
+	public void harvest() throws IOException, HttpRequestException, InterruptedException {
 		Set<String> allDatasetManifests = repository.getAllDatasetResourceUris(datasetUri);
 		
 		int cnt=0;
 		for(String mUrl: manifestSource.getIterableOfObjects(datasetUri, TimestampTracker.Deleted.EXCLUDE)) {
 			cnt++;
 			String manifestJson=null;
-			int tries=1;
-			while (manifestJson==null) try {
-				manifestJson = httpGet(mUrl);
-			} catch (IOException e) {
-				tries++;
-				if(tries>3) {
-					//TODO: change to: 
-					//log error
-					//change status to update failure?
-					//keep in dataset
-					//move to next
-					throw e;
-				}
-				try {
-					Thread.sleep(300);
-				} catch (InterruptedException e1) {
-					throw e;
-				}
+			try {
+				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(mUrl, repository.getFile(datasetUri, mUrl));
+				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
+			} catch (IOException | HttpRequestException e) {
+				log.error(e.getMessage(), e);
+				continue;
 			}
 			repository.save(datasetUri, mUrl, manifestJson);
 			allDatasetManifests.remove(mUrl);
@@ -69,22 +60,7 @@ public class ManifestHarvester {
 
 
 
-	public String httpGet(String url) throws IOException {
-		int tries = 0;
-		while (true) {
-			tries++;
-			try {
-				HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-				if(conn.getResponseCode()>=300 && conn.getResponseCode()<400) {
-					String location = conn.getHeaderField("Location");
-					if(location!=null)
-						return httpGet(location);
-				}
-				return IOUtils.toString(conn.getInputStream(), "UTF-8");
-			} catch (IOException ex) {
-				if (tries >= 3)
-					throw ex;
-			}
-		}
+	public String httpGet(String url) throws IOException, HttpRequestException, InterruptedException {
+		return HttpUtil.makeRequest(url).getContent().asString();
 	}
 }

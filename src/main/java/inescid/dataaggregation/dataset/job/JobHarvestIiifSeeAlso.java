@@ -14,7 +14,14 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
+import inescid.dataaggregation.dataset.DatasetProfile;
+import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.dataset.detection.ContentTypes;
+import inescid.dataaggregation.dataset.detection.DataProfileDetector;
+import inescid.dataaggregation.dataset.detection.DataProfileDetectorFromHttpHeaders;
+import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.dataaggregation.dataset.view.management.HarvestIiifSeeAlsoForm;
+import inescid.util.LinkedDataUtil;
 
 public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 	Integer sampleSize;
@@ -39,9 +46,27 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 			String[] ps=SeeAlsoProfile.parseFormatProfile(seeAlsoType);
 			String format=ps[0];
 			String profile=ps[1];
-			ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), iiifDataset.getUri(), format, profile);
+			iiifDataset.setDataFormat(format);
+			ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), iiifDataset, format, profile);
 			harvester.harvest();
-			timestampTracker.setDatasetTimestamp(Global.SEE_ALSO_DATASET_PREFIX+iiifDataset.getUri(), startOfCrawl);
+			DatasetProfile datasetProfileEnum=DatasetProfile.fromString(profile);
+			if(datasetProfileEnum==null || datasetProfileEnum==DatasetProfile.ANY_TRIPLES) {
+				DataTypeResult detected = DataProfileDetector.detect(iiifDataset.getSeeAlsoDatasetUri(), Global.getDataRepository());
+				if(detected!=null) {
+					if(detected.format!=null && dataset.getDataFormat()==null) {
+						dataset.setDataFormat(detected.format.toString());
+					}
+					if(detected.profile!=null && dataset.getDataProfile()==null) {
+						dataset.setDataProfile(detected.profile.toString());
+					}
+				} else if (datasetProfileEnum!=null){
+					dataset.setDataProfile(datasetProfileEnum.toString());
+				}
+			} else {
+				dataset.setDataProfile(datasetProfileEnum.toString());				
+			}
+			Global.getDatasetRegistryRepository().updateDataset(dataset);
+			timestampTracker.setDatasetTimestamp(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
 			timestampTracker.commit();
 			successful=true;
 		} catch (Exception e) {

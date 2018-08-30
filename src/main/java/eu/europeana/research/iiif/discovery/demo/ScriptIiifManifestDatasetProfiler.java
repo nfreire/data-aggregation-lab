@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.discovery.demo.ScriptIiifManifestHarvesterDemo.IiifManifestHarvesterDemo;
 import eu.europeana.research.iiif.profile.ManifestMetadataProfiler;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.store.Repository;
 
 public class ScriptIiifManifestDatasetProfiler {
 

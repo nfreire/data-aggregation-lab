@@ -13,7 +13,7 @@ import org.apache.commons.io.FileUtils;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.Job.JobStatus;
-import inescid.dataaggregation.dataset.store.DatasetRegistryRepository;
+import inescid.dataaggregation.store.DatasetRegistryRepository;
 
 public class JobRunner implements Runnable {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(JobRunner.class);
@@ -33,6 +33,9 @@ public class JobRunner implements Runnable {
 	public synchronized void addJob(Job job) throws IOException {
 		FileUtils.write(operationsLogFile, new JobLog(job).toCsv(), Global.UTF8, true);
 	}
+	public synchronized void addJob(JobLog job) throws IOException {
+		FileUtils.write(operationsLogFile, job.toCsv(), Global.UTF8, true);
+	}
 
 	public synchronized List<JobLog> listJobHistoric(String localId) throws IOException {
 		List<JobLog> jobHistoric=new ArrayList<>();
@@ -50,6 +53,18 @@ public class JobRunner implements Runnable {
 	@Override
 	public void run() {
 		try {
+			//resume running jobs (were interrupted)
+			try {
+				for(JobLog job: listJobProcessingStatus()) {
+					job.status=JobStatus.PENDING;
+					addJob(job);
+					log.info("Restarting job: "+job.type+" on "+job.datasetLocalId);
+				};
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+			
+			
 			while(true) {
 				try {
 					Job job=getNextPendingJob();
@@ -148,5 +163,16 @@ public class JobRunner implements Runnable {
 			return pendingCount+" jobs waiting";
 		}
 		return "";
+	}
+
+	public boolean isDatasetWithJob(Dataset dataset) throws IOException {
+		List<JobLog> jobs=listJobProcessingStatus();
+		for(JobLog j: jobs) {
+			if(j.status==JobStatus.PENDING || j.status==JobStatus.RUNNING) {
+				if(j.datasetLocalId.equals(dataset.getLocalId()))
+					return true;
+			}
+		}
+		return false;
 	}
 }

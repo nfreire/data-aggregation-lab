@@ -11,7 +11,7 @@ import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
 import eu.europeana.research.iiif.discovery.model.Activity;
 import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import inescid.dataaggregation.dataset.store.Repository;
+import inescid.dataaggregation.store.Repository;
 
 public class ScriptIiifManifestHarvesterDemo {
 

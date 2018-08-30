@@ -276,24 +276,24 @@ public class RdfConverter {
 						}
 					}
 				}
-			} else {
-				DerivedPropertyConversionSpecification specOfDerived = trgResourceMap.getDerivedPropertyMapping(st.getPredicate());
-				if(specOfDerived!=null) {
-					if(st.getObject().isURIResource()) {
-						uri = st.getObject().asNode().getURI();
-						String val = specOfDerived.getUriMapping(uri);
-						if(val!=null)
-							trgResource.addProperty(specOfDerived.getDerivedProperty(),val);
-					} else {
-						String val = specOfDerived.getLiteralMapping(st.getObject().asLiteral().getString());
-						if(val!=null)
-							trgResource.addProperty(specOfDerived.getDerivedProperty(),val);
-					}
-				} else if(!st.getPredicate().equals(RdfReg.RDF_TYPE)){
-					System.out.println("No mapping found for Property "+st.getPredicate()+ " in " + trgResourceMap.getType());
-					System.out.println("Property Value:"+st.getObject());
+			} 
+			DerivedPropertyConversionSpecification specOfDerived = trgResourceMap.getDerivedPropertyMapping(st.getPredicate());
+			if(specOfDerived!=null) {
+				if(st.getObject().isURIResource()) {
+					uri = st.getObject().asNode().getURI();
+					String val = specOfDerived.getUriMapping(uri);
+					if(val!=null)
+						trgResource.addProperty(specOfDerived.getDerivedProperty(),val);
+				} else {
+					String val = specOfDerived.getLiteralMapping(st.getObject().asLiteral().getString());
+					if(val!=null)
+						trgResource.addProperty(specOfDerived.getDerivedProperty(),val);
 				}
+			} else if(!st.getPredicate().equals(RdfReg.RDF_TYPE)){
+				System.out.println("No mapping found for Property "+st.getPredicate()+ " in " + trgResourceMap.getType());
+				System.out.println("Property Value:"+st.getObject());
 			}
+		
 		}	
 		
 		return trgResource;
