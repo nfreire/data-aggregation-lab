@@ -18,10 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
+import opennlp.tools.util.StringUtil;
 
 public class RegistryServlet extends HttpServlet {
 	enum RequestOperation {
-		DISPLAY_LOD_DATASET_REGISTRATION_FORM, DISPLAY_IIIF_DATASET_REGISTRATION_FORM, DISPLAY_CONTACT_FORM, REGISTER_DATASET, REGISTER_CONTACT, VIEW_DATASET_STATUS, DISPLAY_START_PAGE, DISPLAY_WWW_DATASET_REGISTRATION_FORM;
+		DISPLAY_LOD_DATASET_REGISTRATION_FORM, DISPLAY_IIIF_DATASET_REGISTRATION_FORM, DISPLAY_CONTACT_FORM, REGISTER_DATASET, REGISTER_CONTACT, VIEW_DATASET_STATUS, DISPLAY_START_PAGE, DISPLAY_WWW_DATASET_REGISTRATION_FORM, BROWSE_IIIF_COLLECTIONS;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
 //			System.out.println("req.getPathInfo() " + req.getPathInfo());
@@ -41,6 +42,8 @@ public class RegistryServlet extends HttpServlet {
 					return RequestOperation.REGISTER_DATASET;
 				} else if (req.getPathInfo().endsWith("/dataset-register")) {
 					return RequestOperation.REGISTER_DATASET;
+				} else if (req.getPathInfo().endsWith("/browse-iiif-service-collections")) {
+					return BROWSE_IIIF_COLLECTIONS;
 				}
 			}
 			return RequestOperation.DISPLAY_START_PAGE;
@@ -54,6 +57,12 @@ public class RegistryServlet extends HttpServlet {
 		super.init(config);
 		Global.init(getInitParameters(config.getServletContext()));
 		repository=Global.getDatasetRegistryRepository();
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		Global.shutdown();
 	}
 
 	private Properties getInitParameters(ServletContext servletContext) {
@@ -116,6 +125,12 @@ public class RegistryServlet extends HttpServlet {
 				break;
 			} case VIEW_DATASET_STATUS:
 				break;
+			case BROWSE_IIIF_COLLECTIONS:{
+				Dataset dataset = null;
+				IiifCollectionTreeForm form=new IiifCollectionTreeForm(req, dataset);
+				sendResponse(resp, 200, form.output());
+				break;
+			}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

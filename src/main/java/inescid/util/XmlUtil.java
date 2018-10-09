@@ -26,6 +26,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.DOMImplementation;
@@ -37,6 +38,7 @@ import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSOutput;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
+
 
 
 /**
@@ -95,6 +97,48 @@ public class XmlUtil {
         return elements;
     }
 
+
+
+	public static Element createResource(Element subjectElement, String propNamespace, String propName, String rdfResourceIri) {
+		Element wrElSrvcProp = subjectElement.getOwnerDocument().createElementNS(propNamespace, propName);
+		wrElSrvcProp.setAttributeNS(XmlNsUtil.RDF, "rdf:about", rdfResourceIri);
+		subjectElement.appendChild(wrElSrvcProp);
+		return wrElSrvcProp;
+	}
+	
+	public static Element createPropertyWithReference(Element subjectElement, String propNamespace, String propName, String rdfResourceIri) {
+		Element wrElSrvcProp = subjectElement.getOwnerDocument().createElementNS(propNamespace, propName);
+		wrElSrvcProp.setAttributeNS(XmlNsUtil.RDF, "rdf:resource", rdfResourceIri);
+		subjectElement.appendChild(wrElSrvcProp);
+		return wrElSrvcProp;
+	}
+	
+	public static Element createPropertyWithText(Element subjectElement, String propNamespace, String propName, String textValue) {
+		Element wrElSrvcProp = subjectElement.getOwnerDocument().createElementNS(propNamespace, propName);
+		wrElSrvcProp.setTextContent(textValue);
+		subjectElement.appendChild(wrElSrvcProp);
+		return wrElSrvcProp;
+	}
+
+	public static Element findResource(Document dom, String resourceUri) {
+		try {
+			return XPathUtil.queryDomForElement(XmlNsUtil.xpathEdmPrefixMap, "//*[@rdf:about=\""+resourceUri+"\"]", dom);
+		} catch (XPathExpressionException e) {
+			try {
+				return XPathUtil.queryDomForElement(XmlNsUtil.xpathEdmPrefixMap, "//*[@rdf:about='"+resourceUri+"']", dom);
+			} catch (XPathExpressionException e2) {
+				throw new RuntimeException(e.getMessage() + "\n" + resourceUri, e);
+			}
+		}
+	}
+
+	public static Element removeResource(Document dom, String resourceUri) {
+		Element el=findResource(dom, resourceUri);
+		if(el==null)
+			return null;
+		return (Element) dom.getDocumentElement().removeChild(el);
+	}
+	
     /**
      * An Iterable for the Element's childs, with a particular name, of a node
      * 

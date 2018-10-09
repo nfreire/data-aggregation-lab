@@ -1,27 +1,36 @@
 package eu.europeana.research.iiif.crawl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.any23.extractor.ExtractionException;
+import org.apache.any23.writer.TripleHandlerException;
+import org.apache.any23.writer.TurtleWriter;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.mchange.v1.util.SimpleMapEntry;
 
 import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
 import eu.europeana.research.iiif.profile.model.Manifest;
+import inescid.dataaggregation.crawl.http.HttpRequest;
+import inescid.util.HttpRequestException;
+import inescid.util.HttpUtil;
 
 public class CollectionCrawler {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -60,9 +69,9 @@ public class CollectionCrawler {
 		timestampTracker.commit();
 		return startOfCrawl;
 	}
-	public void crawlCollection(String collectionId) throws IOException {
-		String collectionJson = httpGet(collectionId);
+	public void crawlCollection(String collectionId) throws IOException, InterruptedException {
 		try {
+			String collectionJson = HttpUtil.makeRequestForContent(collectionId);
 			Collection m = gson.fromJson(collectionJson, Collection.class);
 			log(collectionId+":\n"+(m.collections==null ? 0 : m.collections.length)+" collections, "+(m.manifests==null ? 0 : m.manifests.length)+" manifests");
 			
@@ -81,6 +90,9 @@ public class CollectionCrawler {
 		} catch (JsonSyntaxException e) {
 			log.error("Error getting collection "+collectionId, e);
 			throw e;
+		} catch (HttpRequestException e) {
+			log.error("Error getting collection "+collectionId, e);
+			throw new IOException(e);
 		}
 	}
 
@@ -93,22 +105,5 @@ public class CollectionCrawler {
 		ex.printStackTrace(System.out);
 	}
 
-	public String httpGet(String url) throws IOException {
-		int tries = 0;
-		while (true) {
-			tries++;
-			try {
-				HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-				if(conn.getResponseCode()>=300 && conn.getResponseCode()<400) {
-					String location = conn.getHeaderField("Location");
-					if(location!=null)
-						return httpGet(location);
-				}
-				return IOUtils.toString(conn.getInputStream(), "UTF-8");
-			} catch (IOException ex) {
-				if (tries >= 3)
-					throw ex;
-			}
-		}
-	}
+
 }

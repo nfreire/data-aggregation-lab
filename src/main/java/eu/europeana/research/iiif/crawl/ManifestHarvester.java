@@ -37,7 +37,6 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 		int cnt=0;
 		for(String mUrl: manifestSource.getIterableOfObjects(datasetUri, TimestampTracker.Deleted.EXCLUDE)) {
 			cnt++;
-			String manifestJson=null;
 			try {
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(mUrl, repository.getFile(datasetUri, mUrl));
 				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
@@ -45,7 +44,6 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 				log.error(e.getMessage(), e);
 				continue;
 			}
-			repository.save(datasetUri, mUrl, manifestJson);
 			allDatasetManifests.remove(mUrl);
 			if(cnt%100 == 0)
 				System.out.println(cnt+" manifests harvested");

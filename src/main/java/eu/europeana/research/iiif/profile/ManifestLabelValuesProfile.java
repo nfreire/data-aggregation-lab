@@ -36,7 +36,7 @@ public class ManifestLabelValuesProfile {
 	}
 	
 	public void profileManifest(Manifest manifest) {
-		if(manifest.metadata==null) return;
+		if(manifest==null || manifest.metadata==null) return;
 		HashSet<String> onceOrMoreUsage=new HashSet<>();
 		for(Metadata md: manifest.metadata) {
 			String labelString = md.getLabelString();

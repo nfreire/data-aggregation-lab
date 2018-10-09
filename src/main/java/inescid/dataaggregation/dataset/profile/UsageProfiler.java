@@ -32,7 +32,7 @@ public class UsageProfiler {
 //				System.out.println(st);
 				String clsUri = st.getObject().asNode().getURI();
 				ClassUsageStats classStats = usageStats.getClassStats(clsUri);
-				classStats.incrementClassUseCount();
+				classStats.eventInstanceStart(r);
 				classesOfSubject.add(classStats);
 			
 				classesOfSubjectUris.add(clsUri);
@@ -41,16 +41,19 @@ public class UsageProfiler {
 			if(classesOfSubject.isEmpty()) {
 				classesOfSubject.add(usageStats.getClassStats(RdfReg.RDFS_RESOURCE.getURI()));
 				ClassUsageStats classStats = usageStats.getClassStats(RdfReg.RDFS_RESOURCE.getURI());
-				classStats.incrementClassUseCount();
+				classStats.eventInstanceStart(r);
 			} else if(classesOfSubjectUris.size()>1)
 				System.out.println("WARN: resource has multiple types: "+ classesOfSubjectUris);
-			r.listProperties(RdfReg.RDF_TYPE);
+//			r.listProperties(RdfReg.RDF_TYPE);
 			StmtIterator properties = model.listStatements(r, null, (RDFNode)null);
 			for(Statement st : properties.toList()) {
 				if(st.getPredicate().equals(RdfReg.RDF_TYPE)) continue;
 				for(ClassUsageStats stat : classesOfSubject)
-					stat.getPropertiesStats().incrementTo(st.getPredicate().getURI());
+					stat.eventProperty(st);
 			}
+			for(ClassUsageStats stat : classesOfSubject)
+				stat.eventInstanceEnd(r);
+			
 			
 			StmtIterator propertiesRangeOf = model.listStatements(null, null, r);
 			for(Statement st : propertiesRangeOf.toList()) {
@@ -66,6 +69,11 @@ public class UsageProfiler {
 
 	public UsageStats getUsageStats() {
 		return usageStats;
+	}
+
+
+	public void finish() {
+		usageStats.finish();
 	}
 	
 }

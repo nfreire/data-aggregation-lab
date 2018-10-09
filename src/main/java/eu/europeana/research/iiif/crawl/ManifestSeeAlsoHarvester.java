@@ -73,6 +73,9 @@ public class ManifestSeeAlsoHarvester {
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
 				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
 			} catch (HttpRequestException e) {
+				log.warn(targetSeeAlso.id, e);
+				continue;
+			} catch (Exception e) {
 				log.error(targetSeeAlso.id, e);
 				continue;
 			}

@@ -44,9 +44,12 @@ public final class RdfReg {
 	public static final Property RDF_VALUE = ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
 	public static final Property DCTERMS_HAS_FORMAT = ResourceFactory.createProperty(NsDcterms+"hasFormat");
 	public static final Property DC_FORMAT = ResourceFactory.createProperty(NsDc+"format");
+	public static final Property DC_SOURCE = ResourceFactory.createProperty(NsDc+"source");
 	public static final Property DC_TITLE = ResourceFactory.createProperty(NsDc+"title");
 	public static final Property DC_TYPE = ResourceFactory.createProperty(NsDc+"type");
 	public static final Property DCTERMS_MEDIUM = ResourceFactory.createProperty(NsDcterms+"medium");
+	public static final Property DCTERMS_PROVENANCE = ResourceFactory.createProperty(NsDcterms+"provenance");
+	public static final Property DCTERMS_ALTERNATIVE = ResourceFactory.createProperty(NsDcterms+"alternative");
 	public static final Property DC_CREATOR = ResourceFactory.createProperty(NsDc+"creator");
 	public static final Property DC_CONTRIBUTOR = ResourceFactory.createProperty(NsDc+"contributor");
 	public static final Property DCTERMS_PUBLISHER = ResourceFactory.createProperty(NsDcterms+"publisher");
@@ -62,13 +65,16 @@ public final class RdfReg {
 	public static final Property SVCS_HAS_SERVICE = ResourceFactory.createProperty("http://rdfs.org/sioc/services#has_service");
 	public static final Property DCTERMS_RIGHTS = ResourceFactory.createProperty(NsDcterms+"rights");
 	public static final Property DC_RIGHTS = ResourceFactory.createProperty(NsDc+"rights");
+	public static final Property DC_DATE = ResourceFactory.createProperty(NsDc+"date");
 	public static final Property DCTERMS_CREATED = ResourceFactory.createProperty(NsDcterms+"created");
+	public static final Property DCTERMS_ISSUED = ResourceFactory.createProperty(NsDcterms+"issued");
 	public static final Property DCTERMS_EXTENT = ResourceFactory.createProperty(NsDcterms+"extent");
 	public static final Property DCTERMS_RELATION = ResourceFactory.createProperty(NsDcterms+"relation");
 	public static final Property DCTERMS_IS_REFERENCED_BY = ResourceFactory.createProperty(NsDcterms+"isReferencedBy");
 	public static final Property DCTERMS_IS_PART_OF = ResourceFactory.createProperty(NsDcterms+"isPartOf");
 	public static final Property DCTERMS_TEMPORAL_COVERAGE = ResourceFactory.createProperty(NsDcterms+"temporalCoverage");
 	public static final Property DCTERMS_TEMPORAL = ResourceFactory.createProperty(NsDcterms+"temporal");
+	public static final Property DC_COVERAGE = ResourceFactory.createProperty(NsDc+"coverage");
 	public static final Property DCTERMS_SPATIAL = ResourceFactory.createProperty(NsDcterms+"spatial");
 	public static final Property EDM_HAS_TYPE = ResourceFactory.createProperty("http://www.europeana.eu/schemas/edm/hasType");
 	public static final Property EDM_TYPE = ResourceFactory.createProperty("http://www.europeana.eu/schemas/edm/type");
@@ -84,6 +90,7 @@ public final class RdfReg {
 	public static final Resource EDM_WEB_RESOURCE = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/WebResource");
 	public static final Resource EDM_EVENT = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/Event");
 	public static final Resource EDM_PHYSICAL_THING = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/PhysicalThing");
+	public static final Property EDM_IS_NEXT_IN_SEQUENCE = ResourceFactory.createProperty("http://www.europeana.eu/schemas/edm/isNextInSequence");
 	public static final Resource SKOS_CONCEPT = ResourceFactory.createResource("http://www.w3.org/2004/02/skos/core#Concept");
 	public static final Resource SKOS_CONCEPT_SCHEME = ResourceFactory.createResource("http://www.w3.org/2004/02/skos/core#ConceptScheme");
 	public static final Resource CC_LICENSE  = ResourceFactory.createResource("http://creativecommons.org/ns#License");

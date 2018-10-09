@@ -14,7 +14,7 @@ import inescid.dataaggregation.dataset.LodDataset;
 public class View {
 	protected static String WEBAPP_CONTEXT="/";
 
-	String message=null;
+	protected String message=null;
 	
 	public View() {
 	}

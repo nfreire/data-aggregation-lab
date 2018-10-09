@@ -30,6 +30,7 @@ import inescid.dataaggregation.dataset.view.registry.StartPage;
 import inescid.dataaggregation.dataset.view.registry.View;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 import inescid.dataaggregation.store.PublicationRepository;
+import opennlp.tools.util.StringUtil;
 
 public class ManagementServlet extends HttpServlet {
 	enum RequestOperation {
@@ -46,7 +47,8 @@ public class ManagementServlet extends HttpServlet {
 		HARVEST_START_SEEALSO, 
 		PUBLISH_DATASET_SEEALSO_DATA, 
 		VALIDATE_EDM,
-		SET_FORM_OF_DATA;
+		SET_FORM_OF_DATA, 
+		BROWSE_IIIF_COLLECTIONS;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
 			if (req.getPathInfo()!=null) {

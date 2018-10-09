@@ -13,19 +13,11 @@ import inescid.dataaggregation.dataset.LodDataset;
 
 public abstract class DatasetForm extends View {
 
-	Dataset dataset=null;
+	protected Dataset dataset=null;
 	
 	public DatasetForm(Dataset dataset) {
 		super();
 		this.dataset = dataset;
-	}
-
-	public String output() throws Exception {
-		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetregistry/"+getClass().getSimpleName()+".html");
-		temp.process(this, w);
-		w.close();
-		return w.toString();
 	}
 
 	public abstract boolean validate() ;

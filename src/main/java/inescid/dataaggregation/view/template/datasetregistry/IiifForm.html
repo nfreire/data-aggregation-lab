@@ -23,7 +23,10 @@
 	<tr><td width="400" class="field_title">URI<font color="red">*</font>
 	<br />(...of IIIF Change Discovery, IIIF Collection, or sitemaps.xml)</td>
 	<td class="field_value">
-	<input type="text" name="uri" value="${uri!}" style="width:450px"/></td></tr>
+	<input type="text" name="uri" value="${uri!}" style="width:450px"/>
+	<br />
+	<a href="browse-iiif-service-collections">Select a IIIF collection by browsing a IIIF Service</a>
+	</td></tr>
 	<tr><td class="field_title">Harvesting method<font color="red">*</font></td>
 	<td class="field_value">
   		<label><input type="radio" name="crawlMethod" value="DISCOVERY" <#if crawlMethod=="DISCOVERY">checked = "checked"</#if>/>IIIF Change Discovery v0.1</label><br>

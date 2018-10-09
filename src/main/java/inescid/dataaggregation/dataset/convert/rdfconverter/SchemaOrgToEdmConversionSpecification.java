@@ -1,11 +1,5 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
-import java.util.Set;
-
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
-
 import inescid.dataaggregation.dataset.convert.RdfReg;
 
 public class SchemaOrgToEdmConversionSpecification {
@@ -60,8 +54,6 @@ public class SchemaOrgToEdmConversionSpecification {
 //		WebPage
 //		WebPageElement
 //		WebSite
-		
-		
 		
 		spec.setTypeMapping(RdfReg.SCHEMAORG_THING, RdfReg.SKOS_CONCEPT);
 		spec.setTypeMapping(RdfReg.SCHEMAORG_ORGANIZATION, RdfReg.FOAF_ORGANIZATION);

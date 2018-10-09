@@ -72,14 +72,19 @@ public class Global {
 			initJobRunner(prop, registryRepository);
 		}
 	}
+	public static synchronized void shutdown() {
+		if(jobRunner!=null) 
+			jobRunner.shutdown();
+	}
 
 	public static synchronized void init_developement() {
 		Properties props=new Properties();
 		props.setProperty("dataaggregation.dataset-registry.repository.folder", "${dataaggregation.dataset-registry.repository.folder}");
 		props.setProperty("dataaggregation.data-repository.folder", "${dataaggregation.data-repository.folder}");
 		props.setProperty("dataaggregation.timestamp.repository.folder", "${dataaggregation.timestamp.repository.folder}");
-		props.setProperty("dataaggregation.publication-repository.folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\data-aggregation-lab");
+		props.setProperty("dataaggregation.publication-repository.folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
 		props.setProperty("dataaggregation.publication-repository.url", "/static/data");
+		props.setProperty("dataaggregation.webapp.root-folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
 		init(props);
 	}
 	

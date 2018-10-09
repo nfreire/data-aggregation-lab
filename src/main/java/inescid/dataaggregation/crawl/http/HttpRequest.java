@@ -132,4 +132,17 @@ public class HttpRequest {
 		}
 		return meta;
 	}	
+	public String getResponseHeader(String headerName) {
+		List<Header> meta=new ArrayList<>(5);
+		for(Header h : getResponse().getHeaders(headerName))
+			return h.getValue();
+		return null;
+	}
+
+	public void redirectUrl(String location) {
+		this.url=new UrlRequest(location);
+		response=null;
+		content=null;
+		error=null;
+	}	
 }

@@ -52,7 +52,8 @@ public class ManifestMetadataProfiler {
 			
 			try {
 				Manifest m = gson.fromJson(fileData, Manifest.class);
-
+				if(m==null)
+					continue;
 				manifestMdProfile.profileManifest(m);
 				seeAlsoProfile.profileManifest(m);
 				licenseProfile.profileManifest(m);

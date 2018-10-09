@@ -25,6 +25,8 @@ public class JobRunner implements Runnable {
 	File operationsLogFile;
 	DatasetRegistryRepository datasetRepository;
 	
+	Thread runnerThread;
+	
 	public JobRunner(String storeragePath, DatasetRegistryRepository datasetRepository) {
 		operationsLogFile=new File(storeragePath, "job-runner-jobs.csv");
 		this.datasetRepository=datasetRepository;
@@ -37,6 +39,10 @@ public class JobRunner implements Runnable {
 		FileUtils.write(operationsLogFile, job.toCsv(), Global.UTF8, true);
 	}
 
+	public void shutdown() {
+		runnerThread.interrupt();
+	}
+	
 	public synchronized List<JobLog> listJobHistoric(String localId) throws IOException {
 		List<JobLog> jobHistoric=new ArrayList<>();
 		if(operationsLogFile.exists()) {
@@ -53,6 +59,7 @@ public class JobRunner implements Runnable {
 	@Override
 	public void run() {
 		try {
+			runnerThread=Thread.currentThread();
 			//resume running jobs (were interrupted)
 			try {
 				for(JobLog job: listJobProcessingStatus()) {

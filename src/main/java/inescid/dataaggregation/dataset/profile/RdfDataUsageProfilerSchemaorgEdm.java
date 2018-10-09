@@ -68,8 +68,10 @@ public class RdfDataUsageProfilerSchemaorgEdm {
 			else
 				System.out.print(".");
 		}
-		
 
+		profilerSchemaorg.finish();
+		profilerEdm.finish();
+		
 		String csvEdm = profilerEdm.getUsageStats().toCsv();
 		File edmFile = new File(profileFolder, "edm-profile.csv");
 		FileUtils.write(edmFile, csvEdm, Global.UTF8);
