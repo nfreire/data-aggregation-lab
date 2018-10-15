@@ -20,7 +20,11 @@
 		<connection>https://github.com/nfreire/data-aggregation-lab.git</connection>
 		<url>https://github.com/nfreire/data-aggregation-lab</url>
 	</scm>
-
+ 	
+ 	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<finalName>data-aggregation-lab</finalName>
@@ -55,6 +59,12 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<profiles>
 		<profile>
@@ -64,12 +74,18 @@
 			</activation>
 			<properties>
 				<dataaggregation.dataset-registry.repository.folder>target</dataaggregation.dataset-registry.repository.folder>
+				<dataaggregation.log>c:/users/nfrei/Desktop/data-aggregation-lab/tomcat-log.txt</dataaggregation.log>
+				<googleapi.credentials>c:/users/nfrei/.credentials/Data Aggregation Lab-b1ec5c3705fc.json</googleapi.credentials>
 			</properties>
 		</profile>
 		<profile>
-			<id>test</id>
+			<id>europeana-rnd</id>
 			<properties>
-				<dataaggregation.dataset-registry.repository.folder>/data/...TODO</dataaggregation.dataset-registry.repository.folder>
+				<dataaggregation.dataset-registry.repository.folder>/data/nfreire/data-aggregation-lab/registry</dataaggregation.dataset-registry.repository.folder>
+				<dataaggregation.data-repository.folder>/data/nfreire/data-aggregation-lab/data-repository</dataaggregation.data-repository.folder>
+				<dataaggregation.timestamp.repository.folder>/data/nfreire/data-aggregation-lab/timestamp-db</dataaggregation.timestamp.repository.folder>				
+				<dataaggregation.log>/data/nfreire/data-aggregation-lab/tomcat-log.txt</dataaggregation.log>
+				<googleapi.credentials>/home/nfreire/.credentials/Data Aggregation Lab-b1ec5c3705fc.json</googleapi.credentials>
 			</properties>
 		</profile>
 	</profiles>
@@ -181,6 +197,13 @@
     <artifactId>google-oauth-client-jetty</artifactId>
     <version>1.23.0</version>
 </dependency>
+
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-drive</artifactId>
+      <version>v3-rev134-1.25.0</version>
+    </dependency>
+
     <dependency>
 		<groupId>com.github.crawler-commons</groupId>
 		<artifactId>crawler-commons</artifactId>

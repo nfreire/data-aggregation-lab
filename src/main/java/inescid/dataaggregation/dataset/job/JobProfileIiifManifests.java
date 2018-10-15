@@ -17,7 +17,7 @@ public class JobProfileIiifManifests extends JobWorker {
 	public void run() {
 		running=true;
 		try {
-			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset).getUri()
+			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)
 					, Global.getDataRepository(), Global.getPublicationRepository().getProfileFolder(dataset));
 			profiler.process();			
 			successful=true;

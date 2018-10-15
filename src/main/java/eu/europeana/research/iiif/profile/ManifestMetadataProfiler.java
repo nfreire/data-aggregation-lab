@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonReader;
 
 import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.profile.model.Manifest;
+import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
@@ -30,7 +31,7 @@ public class ManifestMetadataProfiler {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 		.getLogger(ManifestMetadataProfiler.class); 
 	
-	String datasetUri;
+	Dataset dataset;
 	Repository repository;
 	File outputFolder;
 	
@@ -38,16 +39,16 @@ public class ManifestMetadataProfiler {
 	private ManifestLabelValuesProfile manifestMdProfile=new ManifestLabelValuesProfile();
 	private LicenseProfile licenseProfile=new LicenseProfile();
 	
-	public ManifestMetadataProfiler(String datasetUri, Repository repository, File outputFolder) {
+	public ManifestMetadataProfiler(Dataset datasetUri, Repository repository, File outputFolder) {
 		super();
-		this.datasetUri = datasetUri;
+		this.dataset = datasetUri;
 		this.repository = repository;
 		this.outputFolder = outputFolder;
 	}
 	
 	public void process() throws IOException {
 		Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
-		for(Entry<String, File> manifestJsonFile: repository.getAllDatasetResourceFiles(datasetUri)) {
+		for(Entry<String, File> manifestJsonFile: repository.getAllDatasetResourceFiles(dataset.getUri())) {
 			String fileData = new String(Files.readAllBytes(Paths.get(manifestJsonFile.getValue().getAbsolutePath())));
 			
 			try {
@@ -77,15 +78,13 @@ public class ManifestMetadataProfiler {
 		if(sheetsIdFile.exists()) {
 			 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, Global.UTF8);
 		} else {
-			spreadsheetId=GoogleSheetsCsvUploader.create(URLDecoder.decode(outputFolder.getName(), "UTF-8"), manifestMdSheetTitle);
+			String spreadsheetTitle="Data Profiling - "+ dataset.getTitle();
+			spreadsheetId=GoogleSheetsCsvUploader.create(spreadsheetTitle, manifestMdSheetTitle);
+			FileUtils.write(sheetsIdFile, spreadsheetId, Global.UTF8);
 		}
 		GoogleSheetsCsvUploader.update(spreadsheetId, manifestMdSheetTitle, manifestMdCsvFile);			
 		GoogleSheetsCsvUploader.update(spreadsheetId, seeAlsoSheetTitle, seeAlsoCsvFile);			
 		GoogleSheetsCsvUploader.update(spreadsheetId, licenseSheetTitle, licenseCsvFile);			
-		
-//		manifestMdProfile.save(new File(outputFolder, files/"+URLEncoder.encode(datasetUri, "UTF-8")+"/manifest-metadata-profile.csv"));
-//				seeAlsoProfile.save(new File("target/iiif-manifest-profiles/"+URLEncoder.encode(datasetUri, "UTF-8")+"/seeAlso-profile.csv"));
-//		licenseProfile.save(new File("target/iiif-manifest-profiles/"+URLEncoder.encode(datasetUri, "UTF-8")+"/license-profile.csv"));
 	}
 	
 }

@@ -2,8 +2,10 @@ package inescid.util.googlesheets;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -14,22 +16,21 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
+import inescid.dataaggregation.dataset.Global;
 
-public class SheetsApi {
-//	Client ID
-//	738984540801-o2kfpf2do2iqpipdm803trarq0bd52j9.apps.googleusercontent.com
-//	Client secret
-//	xzdtHC0Aw9aeXRcJwKRDrERE
-	//
-	
+
+public class SheetsApi {	
 	private static final String APPLICATION_NAME = "data-aggregation-lab-googleapi";
    /** Directory to store user credentials for this application. */
    private static final java.io.File CREDENTIALS_FILE_PATH = new java.io.File(
-       System.getProperty("user.home"), ".credentials/credentials-google-api.json");
+       Global.GOOGLE_API_CREDENTIALS);
+//   System.getProperty("user.home"), ".credentials/credentials-google-api.json");
 
    /** Global instance of the JSON factory. */
    private static final JsonFactory JSON_FACTORY =
@@ -37,17 +38,30 @@ public class SheetsApi {
    private static NetHttpTransport HTTP_TRANSPORT;
    
    private static Credential getCredentials() throws IOException {
-       // Load client secrets.
+//       // Load client secrets.
        InputStream in = new FileInputStream(CREDENTIALS_FILE_PATH);
-       GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-
-       // Build flow and trigger user authorization request.
-       GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-    		   HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-               .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("google-api-tokens")))
-               .setAccessType("offline")
-               .build();
-       return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+//       GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+//
+//       // Build flow and trigger user authorization request.
+//       GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+//    		   HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+//               .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("google-api-tokens")))
+//               .setAccessType("offline")
+//               .build();
+//       return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+//       ...clientSecrets
+       GoogleCredential credential = GoogleCredential.fromStream(in)
+       .createScoped(SCOPES);
+       return credential;
+       
+//     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+//  		   HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+//             .setDataStoreFactory(new FileDataStoreFactory(new java.io.File("google-api-tokens")))
+//             .setAccessType("offline")
+//             .build();
+//     return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+       
+       
    }
    /** Global instance of the scopes required by this quickstart.
    *
@@ -55,7 +69,7 @@ public class SheetsApi {
    * at ~/.credentials/sheets.googleapis.com-java-quickstart
    */
   private static final List<String> SCOPES =
-      Arrays.asList(SheetsScopes.SPREADSHEETS);
+      Arrays.asList(SheetsScopes.SPREADSHEETS, DriveScopes.DRIVE);
 
 
   static {
@@ -73,6 +87,13 @@ public class SheetsApi {
       return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
               .setApplicationName(APPLICATION_NAME)
               .build();
+  }
+  
+  public static Drive getDriveService() throws IOException {
+	  Credential credential = getCredentials();
+	  return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+			  .setApplicationName(APPLICATION_NAME)
+			  .build();
   }
    
   protected SheetsApi() {

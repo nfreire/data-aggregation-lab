@@ -71,7 +71,7 @@ public class CollectionCrawler {
 	}
 	public void crawlCollection(String collectionId) throws IOException, InterruptedException {
 		try {
-			String collectionJson = HttpUtil.makeRequestForContent(collectionId);
+			String collectionJson = HttpUtil.makeRequestForContent(collectionId, "accept", "application/json");
 			Collection m = gson.fromJson(collectionJson, Collection.class);
 			log(collectionId+":\n"+(m.collections==null ? 0 : m.collections.length)+" collections, "+(m.manifests==null ? 0 : m.manifests.length)+" manifests");
 			

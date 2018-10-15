@@ -1,6 +1,7 @@
 package inescid.dataaggregation.dataset;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Properties;
 import java.util.regex.Pattern;
@@ -36,6 +37,7 @@ public class Global {
 	public static final String SEE_ALSO_DATASET_PREFIX = "seeAlso_"; 
 	public static final String CONVERTED_EDM_DATASET_PREFIX = "convertedEdm_"; 
 	public static final String DAL_URI = "https://example.org/dal"; 
+	public static String GOOGLE_API_CREDENTIALS = ""; 
 	
 	private static DatasetRegistryRepository registryRepository=null;
 	private static Repository dataRepository=null;
@@ -56,20 +58,29 @@ public class Global {
 		Global.FREE_MARKER.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);	
 	}
 	public static synchronized void init(Properties prop) {
-		if(registryRepository==null) {
-			webappRoot=new File(prop.getProperty("dataaggregation.webapp.root-folder"));
-			
-			initDatasetRegistryRepository(prop);
-			initDataRepository(prop);
-			initTimestampTracker(prop);
+		try {
+			if(registryRepository==null) {
+				webappRoot=new File(prop.getProperty("dataaggregation.webapp.root-folder"));
+				
+				initDatasetRegistryRepository(prop);
+				initDataRepository(prop);
+				initTimestampTracker(prop);
 
-			publicationRepository=new PublicationRepository();
-			File repoHomeFolder = new File(prop.getProperty("dataaggregation.publication-repository.folder"), prop.getProperty("dataaggregation.publication-repository.url"));
-			System.out.println("Init of repository at "+repoHomeFolder.getAbsolutePath());
-			publicationRepository.init(repoHomeFolder, "static/data/");
-			httpRequestService.init();
+				publicationRepository=new PublicationRepository();
+				File repoHomeFolder = new File(prop.getProperty("dataaggregation.publication-repository.folder"), prop.getProperty("dataaggregation.publication-repository.url"));
+				System.out.println("Init of repository at "+repoHomeFolder.getAbsolutePath());
+				publicationRepository.init(repoHomeFolder, "static/data/");
+				httpRequestService.init();
 
-			initJobRunner(prop, registryRepository);
+				initJobRunner(prop, registryRepository);
+				
+				GOOGLE_API_CREDENTIALS=prop.getProperty("googleapi.credentials");
+				if (GOOGLE_API_CREDENTIALS.equals("${googleapi.credentials}"))
+//					GOOGLE_API_CREDENTIALS = "c:/users/nfrei/.credentials/credentials-google-api.json";
+				GOOGLE_API_CREDENTIALS = "c:/users/nfrei/.credentials/Data Aggregation Lab-b1ec5c3705fc.json";
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 	public static synchronized void shutdown() {
@@ -85,13 +96,14 @@ public class Global {
 		props.setProperty("dataaggregation.publication-repository.folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
 		props.setProperty("dataaggregation.publication-repository.url", "/static/data");
 		props.setProperty("dataaggregation.webapp.root-folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
+		props.setProperty("googleapi.credentials", "C:\\Users\\nfrei\\.credentials\\Data Aggregation Lab-b1ec5c3705fc.json");
 		init(props);
 	}
 	
 	public static DatasetRegistryRepository getDatasetRegistryRepository() {
 		return registryRepository;
 	}
-	private static synchronized void initDatasetRegistryRepository(Properties prop) {
+	private static synchronized void initDatasetRegistryRepository(Properties prop) throws IOException {
 		if(registryRepository==null) {
 			String repositoryFolder = prop
 					.getProperty("dataaggregation.dataset-registry.repository.folder");

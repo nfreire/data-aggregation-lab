@@ -18,9 +18,15 @@ public class DatasetRegistryRepository {
 	File requestsLogFile;
 	File requestsLogArchiveFile;
 
-	public DatasetRegistryRepository(File requestsLogFile) {
+	public DatasetRegistryRepository(File requestsLogFile) throws IOException {
 		this.requestsLogFile = requestsLogFile;
+		if(!requestsLogFile.getParentFile().exists())
+			requestsLogFile.getParentFile().mkdirs();
+		if(!requestsLogFile.exists())
+			FileUtils.write(requestsLogFile, "", Global.UTF8);
 		this.requestsLogArchiveFile = new File(requestsLogFile.getParentFile(), requestsLogFile.getName()+".archive");
+		if(!requestsLogArchiveFile.exists())
+			FileUtils.write(requestsLogArchiveFile, "", Global.UTF8);
 	}
 
 	public void registerDataset(Dataset dataset) throws IOException {

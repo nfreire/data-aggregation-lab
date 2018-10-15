@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana R&D - Workbench for alternative aggregation mechanisms for Europeana</title>
+	</head>
+<body>
+<#include "../banner.include.html">
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a> &gt; <a href="${context}/harvester">Datasets</a></div>
+
+<h2>IIIF Service - IIIF Collection Selection</h2>
+
+<form action="browse-iiif-service-collections" method="post">
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">IIIF Top Collection</td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="400" class="field_title">IIIF Colection URI<font color="red">*</font> 
+	<br /></td>
+	<td class="field_value">
+	<input type="text" name="topCollectionUri" value="${topCollectionUri!}" style="width:450px"/>
+	<input type="submit" name="browse" value="Start browsing"/>
+	<br />
+	Tip: if your intention is to test, you may get a IIIF Collection identifier from a IIIF Service registry (<a target="_blank" href="http://ryanfb.github.io/iiif-universe/iiif-universe.json">IIIF Universe</a>), and copy it into the input field above.
+	<br />
+	Or use one of these examples: 	
+	<ul>
+		<li>Bodleian - http://iiif.bodleian.ox.ac.uk/iiif/collection/top (<a href="browse-iiif-service-collections?topCollectionUri=http%3A%2F%2Fiiif.bodleian.ox.ac.uk%2Fiiif%2Fcollection%2Ftop">browse</a>)</li>
+		<li>Wellcome Library - http://wellcomelibrary.org/service/collections/ (<a href="browse-iiif-service-collections?topCollectionUri=http%3A%2F%2Fwellcomelibrary.org%2Fservice%2Fcollections%2F">browse</a>) [large number of collections, response may be slow]</li>
+		<li>Biblissima - http://biblissima.fr/iiif/collection/top (<a href="browse-iiif-service-collections?topCollectionUri=http%3A%2F%2Fbiblissima.fr%2Fiiif%2Fcollection%2Ftop">browse</a>)</li>
+		<li>e-codices - http://www.e-codices.unifr.ch/metadata/iiif/collection.json (<a href="browse-iiif-service-collections?topCollectionUri=http%3A%2F%2Fwww.e-codices.unifr.ch%2Fmetadata%2Fiiif%2Fcollection.json">browse</a>)</li>
+	</ul>
+	</td></tr>
+	<#if topCollectionUri??>
+		<tr><td colspan="2" class="form_title">IIIF Collection Tree - ${topCollectionLabel!} 
+		<br /><font size="3">${topCollectionUri}</font></td></tr>
+		<tr><td class="field_value" colspan="2">
+			<#if subCollections??>
+				${collectionTree}
+			<#else>
+				<p>The top IIIF collection does not contain any subcollections.</pr>			
+			</#if>
+		</td></tr>
+	</#if>
+	<tr>
+		<td colspan="2" class="field_value">
+			<center><a href="${context}/iiif-dataset-register">return to dataset registration</a></center>
+		</td>
+	</tr>
+</table>
+
+<#include "../footer.include.html">
+</body>
+</html>

@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
+import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.HttpRequestException;
 import inescid.util.HttpUtil;
@@ -38,7 +39,8 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 		for(String mUrl: manifestSource.getIterableOfObjects(datasetUri, TimestampTracker.Deleted.EXCLUDE)) {
 			cnt++;
 			try {
-				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(mUrl, repository.getFile(datasetUri, mUrl));
+				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(
+						new UrlRequest(mUrl, "accept", "application/json"), repository.getFile(datasetUri, mUrl));
 				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
 			} catch (IOException | HttpRequestException e) {
 				log.error(e.getMessage(), e);
@@ -58,7 +60,4 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 
 
 
-	public String httpGet(String url) throws IOException, HttpRequestException, InterruptedException {
-		return HttpUtil.makeRequest(url).getContent().asString();
-	}
 }

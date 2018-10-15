@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -40,10 +42,13 @@ public class IiifCollectionTreeForm extends DatasetForm{
 		}
 		
 		try {
-			topCollection.fetchFromPresentationApi();
+			if(!StringUtils.isEmpty(topCollection.getCollectionUri())){
+				topCollection.fetchFromPresentationApi(true);
+			}
 		} catch (IOException e) {
 			message="Request to IIIF service failed. Reason: " +e.getMessage();
 			log.info(e.getMessage(), e);
+			topCollection= new IiifCollectionTree();
 		} catch (InterruptedException e) {
 			message="Request to IIIF service failed. Please retry.";
 		}
@@ -64,15 +69,30 @@ public class IiifCollectionTreeForm extends DatasetForm{
 	
 	public String getCollectionTree() {
 		StringBuilder sb=new StringBuilder();
-		return getCollectionTree(sb, topCollection);
-	}
-	public String getCollectionTree(StringBuilder sb, IiifCollectionTree collection) {
-		sb.append(" - ");
-		sb.append(collection.getLabel()).append(" <a href=\"TODO\">select</a></br>");
-		for(IiifCollectionTree sc: collection.getSubcollections()) {
-			sb.append(getCollectionTree(sb, sc));
-		}	
+		getCollectionTree(sb, topCollection, 0);
 		return sb.toString();
+	}
+	public void getCollectionTree(StringBuilder sb, IiifCollectionTree collection, int sublevel) {
+		try {
+			for(int i=0; i<=sublevel; i++) 
+				sb.append("&nbsp;&nbsp;&nbsp;");
+			sb.append(" - ");
+			sb.append(collection.getLabel()).append(" (<a href=\"iiif-dataset-register?registration=import&"
+					+ "uri="+URLEncoder.encode(collection.getCollectionUri(), "UTF-8")+
+					"&title="+(collection.getLabel()==null? "" : URLEncoder.encode(collection.getLabel(), "UTF-8"))+
+					"&organization="+
+					"&type=iiif&crawlMethod=COLLECTION\">register this collection</a>)</br>\n");
+			for(IiifCollectionTree sc: collection.getSubcollections()) {
+				getCollectionTree(sb, sc, sublevel+1);
+			}
+			if(collection.getSubcollections().isEmpty() && collection.getHasSubCollectionsButNotRetrieved()!=null && collection.getHasSubCollectionsButNotRetrieved()) {
+				for(int i=0; i<=sublevel+1; i++) 
+					sb.append("&nbsp;&nbsp;&nbsp;");
+				sb.append(" ...</br>\n");
+			}
+		} catch (UnsupportedEncodingException e) {
+			//UTF8 is always supported
+		}	
 	}
 	@Override
 	public String output() throws Exception {
@@ -81,6 +101,14 @@ public class IiifCollectionTreeForm extends DatasetForm{
 		temp.process(this, w);
 		w.close();
 		return w.toString();
+	}
+	
+	public List<IiifCollectionTree> getSubCollections() {
+		return topCollection.getSubcollections();
+	}
+	
+	public String getTopCollectionLabel() {
+		return topCollection.getLabel();
 	}
 	
 	@Override

@@ -21,6 +21,9 @@ import inescid.dataaggregation.store.DatasetRegistryRepository;
 import opennlp.tools.util.StringUtil;
 
 public class RegistryServlet extends HttpServlet {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(RegistryServlet.class);
+	
 	enum RequestOperation {
 		DISPLAY_LOD_DATASET_REGISTRATION_FORM, DISPLAY_IIIF_DATASET_REGISTRATION_FORM, DISPLAY_CONTACT_FORM, REGISTER_DATASET, REGISTER_CONTACT, VIEW_DATASET_STATUS, DISPLAY_START_PAGE, DISPLAY_WWW_DATASET_REGISTRATION_FORM, BROWSE_IIIF_COLLECTIONS;
 
@@ -109,14 +112,16 @@ public class RegistryServlet extends HttpServlet {
 				}else if("www".equals(req.getParameter("type"))) {
 					datasetToRegister = new WwwForm(req);
 				}
-				if(datasetToRegister!=null && datasetToRegister.validate()) {
-					Dataset dataset = datasetToRegister.toDataset();
-					repository.registerDataset(dataset);
-					DatasetRegistrationResultForm formRes = new DatasetRegistrationResultForm(dataset);
-					formRes.setMessage("Dataset registered");
-					sendResponse(resp, 200, formRes.output());
-					break;
-				}
+				
+				if(! "import".equals(req.getParameter("registration"))) 
+					if(datasetToRegister!=null && datasetToRegister.validate()) {
+						Dataset dataset = datasetToRegister.toDataset();
+						repository.registerDataset(dataset);
+						DatasetRegistrationResultForm formRes = new DatasetRegistrationResultForm(dataset);
+						formRes.setMessage("Dataset registered");
+						sendResponse(resp, 200, formRes.output());
+						break;
+					}
 				sendResponse(resp, 200, datasetToRegister.output());
 				break;
 			} case DISPLAY_START_PAGE:{
@@ -133,7 +138,7 @@ public class RegistryServlet extends HttpServlet {
 			}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 			sendResponse(resp, 500, "Internal error: " + e.getMessage());
 		}
 
@@ -150,8 +155,8 @@ public class RegistryServlet extends HttpServlet {
 	}
 
 
-
 	protected void sendResponse(HttpServletResponse resp, int httpStatus, String body) throws IOException {
+		log.info("Response HTTP status: "+ httpStatus);
 		resp.setStatus(httpStatus);
 		if (body != null && !body.isEmpty()) {
 			ServletOutputStream outputStream = resp.getOutputStream();

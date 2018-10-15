@@ -15,18 +15,24 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.Lang;
+import org.mortbay.log.Log;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.dataset.Global;
 
 public class HttpUtil {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(HttpUtil.class);
+	
 	public static final boolean ALWAYS_FOLLOW_REDIRECTS=true;
 	public static final int RETRIES_ON_IOEXCEPTION=3;
 	public static final int RETRIES_ON_HTTP_STATUS=1;
 	public static final int RETRY_SLEEP_MILISECONDS=1;
 
 	public static List<Header> getAndStoreWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+		return getAndStoreWithHeaders(new UrlRequest(resourceUri), storeFile);
+	}
+	public static List<Header> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
 		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent().asBytes(), false);		
 		List<Header> meta=new ArrayList<>(5);
@@ -91,12 +97,25 @@ public class HttpUtil {
 		return makeRequest(r);
 	}
 	
+	public static String makeRequestForContent(String resourceUri, String oneHheader, String headerValue) throws HttpRequestException, InterruptedException, IOException {
+		UrlRequest r=new UrlRequest(resourceUri, oneHheader, headerValue);
+		return makeRequestForContent(r);
+	}
+	
 	public static String makeRequestForContent(String url) throws IOException, HttpRequestException, InterruptedException {
+		UrlRequest r=new UrlRequest(url);
+		return makeRequestForContent(r);
+	}
+	
+	private static String makeRequestForContent(UrlRequest url) throws IOException, HttpRequestException, InterruptedException {
 		HttpRequest reqRes = makeRequest(url);
 		int statusCode = reqRes.getResponse().getStatusLine().getStatusCode();
 		if(statusCode==200) 
-			return reqRes.getContent().asString();				
-		return null;
+			return reqRes.getContent().asString();	
+		else {
+			log.info("HTTP error, content: "+url+"\n"+ reqRes.getContent().asString());			
+			throw new HttpRequestException(url.getUrl(), "HTTP response status code "+statusCode);
+		}
 	}
 	
 	public static List<Entry<String, String>> convertHeaderStruct(List<Header> headers) {

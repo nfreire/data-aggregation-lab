@@ -33,6 +33,8 @@ import inescid.dataaggregation.store.PublicationRepository;
 import opennlp.tools.util.StringUtil;
 
 public class ManagementServlet extends HttpServlet {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(ManagementServlet.class);
 	enum RequestOperation {
 		DISPLAY_DATASETS,
 		DISPLAY_DATASET_STATUS, 
@@ -230,7 +232,7 @@ public class ManagementServlet extends HttpServlet {
 				break;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 			sendResponse(resp, 500, "Internal error: " + e.getMessage());
 		}
 
@@ -247,6 +249,7 @@ public class ManagementServlet extends HttpServlet {
 	}
 
 	protected void sendResponse(HttpServletResponse resp, int httpStatus, String body) throws IOException {
+		log.info("Response HTTP status: "+ httpStatus);
 		resp.setStatus(httpStatus);
 		if (body != null && !body.isEmpty()) {
 			ServletOutputStream outputStream = resp.getOutputStream();

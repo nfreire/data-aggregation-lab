@@ -15,6 +15,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FileUtils;
 
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Permissions;
+import com.google.api.services.drive.model.Permission;
+import com.google.api.services.drive.model.PermissionList;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Get;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values;
@@ -80,30 +84,29 @@ public class GoogleSheetsCsvUploader {
 		append.execute();
 	}
 	
-	public static String create(String spreadsheetTitle, String sheetTitle, File csvFile) throws IOException {
-		Sheets sheetsService = SheetsApi.getSheetsService();
-        Spreadsheet requestBody = new Spreadsheet();
-        SpreadsheetProperties properties = new SpreadsheetProperties();
-        properties.setTitle(spreadsheetTitle);
-        requestBody.setProperties(properties);
-        Sheets.Spreadsheets.Create request = sheetsService.spreadsheets().create(requestBody);
-        Spreadsheet spreadsheet = request.execute();
-        
-        
-        Sheet sheet = spreadsheet.getSheets().get(0);    
-        sheet.getProperties().setTitle(sheetTitle);
-		
-		Entry<ValueRange, Integer> createValues = createValues(csvFile);
-		ValueRange vRange=createValues.getKey();
-		int cols=createValues.getValue();
-		int rows=vRange.getValues().size();
-		Update append = sheetsService.spreadsheets().values().update(spreadsheet.getSpreadsheetId(), makeRangeExpression(sheetTitle, rows, cols) , vRange);
-		append.setValueInputOption("RAW");
-		UpdateValuesResponse execute = append.execute();
-		System.out.println("Updated: " + execute.getUpdatedRows()/* row with blanks */ + " rows");		
-		
-		return spreadsheet.getSpreadsheetId();
-	}
+//	public static String create(String spreadsheetTitle, String sheetTitle, File csvFile) throws IOException {
+//		Sheets sheetsService = SheetsApi.getSheetsService();
+//        Spreadsheet requestBody = new Spreadsheet();
+//        SpreadsheetProperties properties = new SpreadsheetProperties();
+//        properties.setTitle(spreadsheetTitle);
+//        requestBody.setProperties(properties);
+//        Sheets.Spreadsheets.Create request = sheetsService.spreadsheets().create(requestBody);
+//        Spreadsheet spreadsheet = request.execute();
+//		
+//        Sheet sheet = spreadsheet.getSheets().get(0);    
+//        sheet.getProperties().setTitle(sheetTitle);
+//		
+//		Entry<ValueRange, Integer> createValues = createValues(csvFile);
+//		ValueRange vRange=createValues.getKey();
+//		int cols=createValues.getValue();
+//		int rows=vRange.getValues().size();
+//		Update append = sheetsService.spreadsheets().values().update(spreadsheet.getSpreadsheetId(), makeRangeExpression(sheetTitle, rows, cols) , vRange);
+//		append.setValueInputOption("RAW");
+//		UpdateValuesResponse execute = append.execute();
+//		System.out.println("Updated: " + execute.getUpdatedRows()/* row with blanks */ + " rows");		
+//		
+//		return spreadsheet.getSpreadsheetId();
+//	}
 	public static String create(String spreadsheetTitle, String sheetTitle) throws IOException {
 		Sheets sheetsService = SheetsApi.getSheetsService();
 		Spreadsheet spreadsheet = null;
@@ -114,6 +117,14 @@ public class GoogleSheetsCsvUploader {
 			requestBody.setProperties(properties);
 			Sheets.Spreadsheets.Create request = sheetsService.spreadsheets().create(requestBody);
 			spreadsheet = request.execute();
+		}
+		{
+			Drive driveService = SheetsApi.getDriveService();
+	        Permission permission = new Permission();
+	        permission.setType("anyone");
+	        permission.setRole("commenter");
+			Permissions.Create permissionsRequest=driveService.permissions().create(spreadsheet.getSpreadsheetId(), permission);
+			permissionsRequest.execute();
 		}
 		{
 			List<Request> requests = new ArrayList<>();
