@@ -30,9 +30,7 @@ import inescid.dataaggregation.store.PublicationRepository;
 public class JobPublishSeeAlso extends JobWorker {
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob()  throws Exception {
 			PublicationRepository repository=Global.getPublicationRepository();
 			if(dataset.getType()==DatasetType.IIIF) {
 				File targetZipFile = repository.getExportSeeAlsoZipFile(dataset);
@@ -47,11 +45,6 @@ public class JobPublishSeeAlso extends JobWorker {
 				ziper.close();
 			} else 
 				throw new RuntimeException("Not implemented: "+dataset.getType());
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 	
 	

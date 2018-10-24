@@ -3,6 +3,7 @@ package inescid.dataaggregation.dataset.job;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map.Entry;
@@ -52,9 +53,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		running = true;
-		try {
+	public void runJob() throws Exception {
 			SchemaOrgToEdmDataConverter converter = new SchemaOrgToEdmDataConverter();
 			converter.setDataProvider(dataset.getOrganization());
 			converter.setProvider(dataset.getOrganization());
@@ -103,11 +102,6 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 				
 			}
 			ziper.close();
-			successful = true;
-		} catch (Exception e) {
-			failureCause = e;
-		}
-		running = false;
 	}
 
 	private byte[] getEdmRecord(SchemaOrgToEdmDataConverter converter, String resUri, byte[] sourceRdfBytes) {

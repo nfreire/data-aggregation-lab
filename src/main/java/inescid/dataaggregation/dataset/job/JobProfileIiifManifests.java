@@ -14,17 +14,10 @@ import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 public class JobProfileIiifManifests extends JobWorker {
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)
 					, Global.getDataRepository(), Global.getPublicationRepository().getProfileFolder(dataset));
 			profiler.process();			
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 	
 	

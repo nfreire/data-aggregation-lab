@@ -2,6 +2,7 @@ package inescid.dataaggregation.dataset.job;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URLEncoder;
@@ -33,9 +34,7 @@ import inescid.dataaggregation.store.PublicationRepository;
 public class JobPublish extends JobWorker {
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			PublicationRepository repository=Global.getPublicationRepository();
 //			if(dataset.getType()==DatasetType.IIIF) {
 				File targetZipFile = repository.getExportZipFile(dataset);
@@ -61,11 +60,6 @@ public class JobPublish extends JobWorker {
 				ziper.close();
 //			} else 
 //				throw new RuntimeException("Not implemented: "+dataset.getType());
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 	
 	

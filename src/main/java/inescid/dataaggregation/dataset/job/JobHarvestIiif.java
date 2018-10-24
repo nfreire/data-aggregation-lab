@@ -25,9 +25,7 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
 			Calendar startOfCrawl=null;
@@ -44,11 +42,6 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 			harvester.harvest();
 			timestampTracker.setDatasetTimestamp(iiifDataset.getUri(), startOfCrawl);
 			timestampTracker.commit();
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 	
 	

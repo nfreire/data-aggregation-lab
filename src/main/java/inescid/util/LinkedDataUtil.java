@@ -26,27 +26,27 @@ public class LinkedDataUtil {
 	private static final String DEFAULT_ACCEPT;
 	
 	static {
-		SUPORTED_ENCODINGS.add("application/rdf+xml");
-		SUPORTED_ENCODINGS.add("application/ld+json");
+		SUPORTED_ENCODINGS.add(MimeType.RDF_XML.id());
+		SUPORTED_ENCODINGS.add(MimeType.JSONLD.id());
 //		SUPORTED_ENCODINGS.add("application/x-turtle");
-		SUPORTED_ENCODINGS.add("text/turtle");
+		SUPORTED_ENCODINGS.add(MimeType.TURTLE.id());
 		DEFAULT_ACCEPT=StringUtils.join(SUPORTED_ENCODINGS,", ");
 	}
 	
-	public static Resource getResource(String resourceUri) throws HttpRequestException, InterruptedException {
+	public static Resource getResource(String resourceUri) throws AccessException, InterruptedException {
 		Model dsModel = readRdf(getResourceRdfBytes(resourceUri));
 		if(!dsModel.containsResource(ResourceFactory.createResource(resourceUri)))
-			throw new HttpRequestException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
+			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
 		return dsModel.createResource(resourceUri);
 	}
-	private static Content getResourceRdfBytes(String resourceUri) throws HttpRequestException, InterruptedException {
+	private static Content getResourceRdfBytes(String resourceUri) throws AccessException, InterruptedException {
 		try {
 			return HttpUtil.makeRequest(resourceUri, DEFAULT_ACCEPT).getContent();
 		} catch (IOException e) {
-			throw new HttpRequestException(resourceUri, e);
+			throw new AccessException(resourceUri, e);
 		}
 	}
-	private static HttpRequest makeResourceRequest(String resourceUri) throws HttpRequestException, InterruptedException {
+	private static HttpRequest makeResourceRequest(String resourceUri) throws AccessException, InterruptedException {
 		return HttpUtil.makeRequest(resourceUri, DEFAULT_ACCEPT);
 	}
 	
@@ -74,17 +74,17 @@ public class LinkedDataUtil {
 		return model;
 	}
 
-	public static Resource getAndStoreResource(String resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+	public static Resource getAndStoreResource(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		Content resourceRdfBytes = getResourceRdfBytes(resourceUri);
 		Model dsModel = readRdf(resourceRdfBytes);
 		FileUtils.writeByteArrayToFile(storeFile, resourceRdfBytes.asBytes(), false);		
 		Resource resource = dsModel.getResource(resourceUri);
 		if(resource==null)
-			throw new HttpRequestException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
+			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
 		return resource;
 	}
 
-	public static List<Header> getAndStoreResourceWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+	public static List<Header> getAndStoreResourceWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeResourceRequest(resourceUri);
 		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent().asBytes(), false);		
 		List<Header> meta=new ArrayList<>(5);

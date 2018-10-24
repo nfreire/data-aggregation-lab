@@ -29,7 +29,7 @@ import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.util.HttpRequestException;
+import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 
 public class CollectionCrawler {
@@ -90,7 +90,7 @@ public class CollectionCrawler {
 		} catch (JsonSyntaxException e) {
 			log.error("Error getting collection "+collectionId, e);
 			throw e;
-		} catch (HttpRequestException e) {
+		} catch (AccessException e) {
 			log.error("Error getting collection "+collectionId, e);
 			throw new IOException(e);
 		}

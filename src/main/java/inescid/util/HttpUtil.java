@@ -29,10 +29,10 @@ public class HttpUtil {
 	public static final int RETRIES_ON_HTTP_STATUS=1;
 	public static final int RETRY_SLEEP_MILISECONDS=1;
 
-	public static List<Header> getAndStoreWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+	public static List<Header> getAndStoreWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		return getAndStoreWithHeaders(new UrlRequest(resourceUri), storeFile);
 	}
-	public static List<Header> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+	public static List<Header> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
 		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent().asBytes(), false);		
 		List<Header> meta=new ArrayList<>(5);
@@ -43,7 +43,7 @@ public class HttpUtil {
 		return meta;
 	}
 	
-	public static byte[] getAndStore(String resourceUri, File storeFile) throws IOException, InterruptedException, HttpRequestException {
+	public static byte[] getAndStore(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
 		byte[] asBytes = resourceRequest.getContent().asBytes();
 		FileUtils.writeByteArrayToFile(storeFile, asBytes, false);		
@@ -57,11 +57,11 @@ public class HttpUtil {
 //		return rdfResourceRequest;
 //	}
 	
-	public static HttpRequest makeRequest(String resourceUri) throws HttpRequestException, InterruptedException {
+	public static HttpRequest makeRequest(String resourceUri) throws AccessException, InterruptedException {
 		UrlRequest ldReq=new UrlRequest(resourceUri);
 		return makeRequest(ldReq);
 	}
-	private static HttpRequest makeRequest(UrlRequest ldReq) throws HttpRequestException, InterruptedException {
+	private static HttpRequest makeRequest(UrlRequest ldReq) throws AccessException, InterruptedException {
 		HttpRequest resourceRequest = new HttpRequest(ldReq);
 		int tries = 0;
 		while (true) {
@@ -78,43 +78,43 @@ public class HttpUtil {
 						}
 					}
 					if (tries > RETRIES_ON_HTTP_STATUS)
-						throw new HttpRequestException(ldReq.getUrl(), resStatusCode);
+						throw new AccessException(ldReq.getUrl(), resStatusCode);
 				}
 				return resourceRequest;
 			} catch (IOException ex) {
 				if (tries > RETRIES_ON_IOEXCEPTION)
-					throw new HttpRequestException(ldReq.getUrl(), ex);
+					throw new AccessException(ldReq.getUrl(), ex);
 			}
 		}
 	}
 	
-	public static HttpRequest makeRequest(String resourceUri, String acceptHeader) throws HttpRequestException, InterruptedException {
+	public static HttpRequest makeRequest(String resourceUri, String acceptHeader) throws AccessException, InterruptedException {
 		return makeRequest(resourceUri, "Accept", acceptHeader);
 	}
 	
-	public static HttpRequest makeRequest(String resourceUri, String oneHheader, String headerValue) throws HttpRequestException, InterruptedException {
+	public static HttpRequest makeRequest(String resourceUri, String oneHheader, String headerValue) throws AccessException, InterruptedException {
 		UrlRequest r=new UrlRequest(resourceUri, oneHheader, headerValue);
 		return makeRequest(r);
 	}
 	
-	public static String makeRequestForContent(String resourceUri, String oneHheader, String headerValue) throws HttpRequestException, InterruptedException, IOException {
+	public static String makeRequestForContent(String resourceUri, String oneHheader, String headerValue) throws AccessException, InterruptedException, IOException {
 		UrlRequest r=new UrlRequest(resourceUri, oneHheader, headerValue);
 		return makeRequestForContent(r);
 	}
 	
-	public static String makeRequestForContent(String url) throws IOException, HttpRequestException, InterruptedException {
+	public static String makeRequestForContent(String url) throws IOException, AccessException, InterruptedException {
 		UrlRequest r=new UrlRequest(url);
 		return makeRequestForContent(r);
 	}
 	
-	private static String makeRequestForContent(UrlRequest url) throws IOException, HttpRequestException, InterruptedException {
+	private static String makeRequestForContent(UrlRequest url) throws IOException, AccessException, InterruptedException {
 		HttpRequest reqRes = makeRequest(url);
 		int statusCode = reqRes.getResponse().getStatusLine().getStatusCode();
 		if(statusCode==200) 
 			return reqRes.getContent().asString();	
 		else {
 			log.info("HTTP error, content: "+url+"\n"+ reqRes.getContent().asString());			
-			throw new HttpRequestException(url.getUrl(), "HTTP response status code "+statusCode);
+			throw new AccessException(url.getUrl(), "HTTP response status code "+statusCode);
 		}
 	}
 	

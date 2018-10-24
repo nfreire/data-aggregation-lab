@@ -15,7 +15,7 @@ import java.util.Set;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.store.Repository;
-import inescid.util.HttpRequestException;
+import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 
 public class ManifestHarvester {
@@ -32,7 +32,7 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 		this.repository = repository;
 	}
 
-	public void harvest() throws IOException, HttpRequestException, InterruptedException {
+	public void harvest() throws IOException, AccessException, InterruptedException {
 		Set<String> allDatasetManifests = repository.getAllDatasetResourceUris(datasetUri);
 		
 		int cnt=0;
@@ -42,7 +42,7 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(
 						new UrlRequest(mUrl, "accept", "application/json"), repository.getFile(datasetUri, mUrl));
 				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
-			} catch (IOException | HttpRequestException e) {
+			} catch (IOException | AccessException e) {
 				log.error(e.getMessage(), e);
 				continue;
 			}

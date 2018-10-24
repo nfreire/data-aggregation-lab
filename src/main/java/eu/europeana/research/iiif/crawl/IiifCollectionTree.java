@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import inescid.util.HttpRequestException;
+import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 
 public class IiifCollectionTree {
@@ -43,7 +43,7 @@ public class IiifCollectionTree {
 			String collectionJson = HttpUtil.makeRequestForContent(collectionUri, "accept", "application/json");
 			Collection m = gson.fromJson(collectionJson, Collection.class);
 			hasSubCollectionsButNotRetrieved=m.collections==null || m.collections.length>0;
-		} catch (JsonSyntaxException | HttpRequestException e) {
+		} catch (JsonSyntaxException | AccessException e) {
 			throw new IOException("On collection "+collectionUri, e);
 		}
 		
@@ -74,7 +74,7 @@ public class IiifCollectionTree {
 						log.info("Sub collection failed: "+ r.id, e);
 					}
 				}
-		} catch (JsonSyntaxException | HttpRequestException e) {
+		} catch (JsonSyntaxException | AccessException e) {
 			throw new IOException("On collection "+collectionUri, e);
 		}
 	}

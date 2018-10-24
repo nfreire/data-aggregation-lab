@@ -33,7 +33,7 @@ public class WwwForm extends DatasetForm {
 		WwwDataset dataset=(WwwDataset) super.dataset;
 		dataset.setUri(req.getParameter("uri"));
 		try {
-			dataset.setMicroformat(Microformat.valueOf( req.getParameter("microdata")));
+			dataset.setMicroformat(Microformat.valueOf( req.getParameter("microformat")));
 		} catch (Exception e) {
 			System.err.println("WARNING: " + e.getMessage());
 			e.printStackTrace();

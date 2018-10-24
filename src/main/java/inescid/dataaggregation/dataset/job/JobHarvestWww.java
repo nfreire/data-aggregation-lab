@@ -11,7 +11,7 @@ import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.detection.DataProfileDetectorFromHttpHeaders;
 
-public class JobHarvestWww extends JobWorker implements Runnable {
+public class JobHarvestWww extends JobWorker {
 	Integer sampleSize;
 
 	public JobHarvestWww() {
@@ -22,12 +22,10 @@ public class JobHarvestWww extends JobWorker implements Runnable {
 	}
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			WwwDataset lodDataset=(WwwDataset)dataset;
-			WwwDatasetHarvest harvest=new WwwDatasetHarvest(lodDataset, Global.getDataRepository(), true/*skip existing*/);
+			WwwDatasetHarvest harvest=new WwwDatasetHarvest(lodDataset, Global.getDataRepository(), true/*skip existing*/, this);
 			harvest.setSampleSize(sampleSize);
 			Calendar startOfCrawl=harvest.startProcess();
 			//I'm not sure if detection should be done for WWW datasets
@@ -39,13 +37,11 @@ public class JobHarvestWww extends JobWorker implements Runnable {
 //					dataset.setDataFormat(KindOfData.ANY_TRIPLES);
 //				Global.getDatasetRegistryRepository().updateDataset(dataset);
 //			}
+			
+			if(harvest.getRunError()!=null)
+				finishedWithFailure(harvest.getRunError());
 			timestampTracker.setDatasetTimestamp(lodDataset.getUri(), startOfCrawl);
 			timestampTracker.commit();
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 
 }

@@ -19,10 +19,10 @@ import org.apache.jena.rdf.model.StmtIterator;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.store.Repository;
+import inescid.util.AccessException;
 import inescid.util.DatasetLog;
 import inescid.util.LinkedDataUtil;
 import inescid.util.ListOnTxtFile;
-import inescid.util.HttpRequestException;
 import inescid.util.HttpUtil;
 
 public class LdDatasetHarvest {
@@ -48,7 +48,7 @@ public class LdDatasetHarvest {
 		this.skipExistingResources = skipExistingResources;
 	}
 
-	public Calendar startProcess() throws HttpRequestException {
+	public Calendar startProcess() throws AccessException {
 		Calendar start=new GregorianCalendar();
 		try {
 			Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());

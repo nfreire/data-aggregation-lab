@@ -14,6 +14,7 @@ import crawlercommons.sitemaps.UnknownFormatException;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.job.JobObserver;
 import inescid.util.DevelopementSingleton;
 
 public class SitemapResourceCrawler {
@@ -22,17 +23,19 @@ public class SitemapResourceCrawler {
 	String sitemapUrl;
 	String robotsTxtUrl;
 	CrawlResourceHandler handler;
+	JobObserver observer;
 	
-	Throwable runError=null;
+	Exception runError=null;
 	
-	public SitemapResourceCrawler(String sitemapUrl, String robotsTxtUrl, CrawlResourceHandler handler) {
+	public SitemapResourceCrawler(String sitemapUrl, String robotsTxtUrl, CrawlResourceHandler handler, JobObserver observer) {
 		super();
 		this.sitemapUrl = sitemapUrl;
 		this.handler = handler;
 		this.robotsTxtUrl = robotsTxtUrl;
+		this.observer = observer;
 	}
 	
-	public Throwable getRunError() {
+	public Exception getRunError() {
 		return runError;
 	}
 	
@@ -72,14 +75,18 @@ public class SitemapResourceCrawler {
 					DevelopementSingleton.RESOURCE_HARVEST_CNT++;
 					if(DevelopementSingleton.stopHarvest()) break;
 				}
+				try {
 					handler.handleUrl(subSm);
+				} catch (Exception e) {
+					observer.signalResourceFailure(subSm.getUrl().toString(), e);
+				}
 			}
 		}
 	}
 
 	private static AbstractSiteMap parseSiteMap(Content content, String url) throws IOException, UnknownFormatException {
 		SiteMapParser parser=new SiteMapParser(false);
-		AbstractSiteMap siteMap = parser.parseSiteMap(content.getType().toString(), content.asBytes(), new URL(url));
+		AbstractSiteMap siteMap = parser.parseSiteMap(content.getType().getMimeType(), content.asBytes(), new URL(url));
 		return siteMap;
 	}
 	

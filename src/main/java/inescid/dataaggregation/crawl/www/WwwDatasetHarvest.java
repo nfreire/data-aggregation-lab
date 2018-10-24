@@ -38,12 +38,15 @@ import inescid.dataaggregation.crawl.sitemap.SitemapResourceCrawler;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.dataset.job.JobObserver;
+import inescid.dataaggregation.dataset.job.JobWorker;
 import inescid.dataaggregation.store.Repository;
+import inescid.util.AccessException;
 import inescid.util.DatasetLog;
 import inescid.util.HttpUtil;
 import inescid.util.LinkedDataUtil;
 import inescid.util.ListOnTxtFile;
-import inescid.util.HttpRequestException;
+import inescid.util.MimeType;
 
 public class WwwDatasetHarvest {
 	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(WwwDatasetHarvest.class);
@@ -55,14 +58,17 @@ public class WwwDatasetHarvest {
 	DatasetLog datasetLog;
 	Repository repository;
 	Integer sampleSize;
+	JobObserver observer; 
+	Exception runError=null;
 	
 	Any23 any23=null;
 	
-	public WwwDatasetHarvest(WwwDataset dataset, Repository repository) {
+	public WwwDatasetHarvest(WwwDataset dataset, Repository repository, JobObserver observer) {
 		super();
 		this.dataset = dataset;
 		datasetLog=new DatasetLog(dataset.getUri());
 		this.repository = repository;
+		this.observer=observer;
 		
 		switch (dataset.getMicroformat()) {
 		case META_ALL:
@@ -87,28 +93,29 @@ public class WwwDatasetHarvest {
 		}
 	}
 	
-	public WwwDatasetHarvest(WwwDataset dataset, Repository repository, boolean skipExistingResources) {
-		this(dataset, repository);
+	public WwwDatasetHarvest(WwwDataset dataset, Repository repository, boolean skipExistingResources, JobObserver observer) {
+		this(dataset, repository, observer);
 		this.skipExistingResources = skipExistingResources;
 	}
 
 	public Calendar startProcess() {
 		Calendar start=new GregorianCalendar();
-				SitemapResourceCrawler smCrawler=new SitemapResourceCrawler(dataset.getUri(), null, new CrawlResourceHandler() {
-					int harvestedCnt=0;
-					@Override
-					public void handleUrl(SiteMapURL subSm) throws Exception {
-						if(sampleSize!=null && sampleSize>0 && harvestedCnt>=sampleSize)
-							return;
-						if(harvestResource(dataset.getUri(), subSm.getUrl().toString()))
-								harvestedCnt++;
-					}
-				});
-				smCrawler.run();
+		SitemapResourceCrawler smCrawler=new SitemapResourceCrawler(dataset.getUri(), null, new CrawlResourceHandler() {
+			int harvestedCnt=0;
+			@Override
+			public void handleUrl(SiteMapURL subSm) throws Exception {
+				if(sampleSize!=null && sampleSize>0 && harvestedCnt>=sampleSize)
+					return;
+				if(harvestResource(dataset.getUri(), subSm.getUrl().toString()))
+						harvestedCnt++;
+			}
+		}, observer);
+		smCrawler.run();
+		runError=smCrawler.getRunError();
 		return start;
 	}
 
-	private boolean harvestResource(String datasetUri, String uriOfRec) throws IOException {
+	private boolean harvestResource(String datasetUri, String uriOfRec) throws Exception, InterruptedException {
 		File rdfResourceFile = repository.getFile(datasetUri, uriOfRec);
 		if(skipExistingResources && rdfResourceFile.exists()) {
 			datasetLog.logSkippedRdfResource();
@@ -121,40 +128,45 @@ public class WwwDatasetHarvest {
 				
 				int statusCode = reqRes.getResponse().getStatusLine().getStatusCode();
 				if(statusCode==200) {
-//					reqRes.getContent().asString();				
 					try {
 						String charset = "UTF8";
 						if (reqRes.getContent().getType().getCharset()!=null)
 							charset = reqRes.getContent().getType().getCharset().name();
 						
-//						Jsoup.parse(html)
-						ByteArrayOutputStream decodedInput = new ByteArrayOutputStream();
-						TurtleWriter triples=new TurtleWriter(decodedInput);
-//						NTriplesWriter triples=new NTriplesWriter(decodedInput);
-						any23.extract(reqRes.getContent().asString(), reqRes.getUrl(), reqRes.getContent().getType().getMimeType(), charset, 
-								triples);			
-//								new CountingTripleHandler() {
-//							@Override
-//							public void receiveTriple(Resource arg0, IRI arg1, Value arg2, IRI arg3, ExtractionContext arg4)
-//									throws TripleHandlerException {
-//							System.out.println("Triple: "+ arg0.toString());
-//							System.out.println("1 : "+ arg1.toString());
-//							System.out.println("2: "+ arg2.toString());
-//							System.out.println("3: "+ arg3);
-//							}});
-						triples.close();
-						decodedInput.close();
-						
-						switch (dataset.getMicroformat()) {
-						case SCHEMAORG:
-						case META_ALL:
-							repository.save(datasetUri, reqRes.getUrl(), decodedInput.toByteArray(), new ArrayList<Entry<String, String>>() {{
-								add(new SimpleMapEntry("Content-Type", " text/turtle"));}});
-							break;
-						default:
-							throw new RuntimeException("Not implemented yet "+dataset.getMicroformat());
+						if (MimeType.isData(reqRes.getContent().getType().getMimeType())){
+							repository.save(datasetUri, reqRes.getUrl(), reqRes.getContent().asBytes(), new ArrayList<Entry<String, String>>() {{
+								add(new SimpleMapEntry("Content-Type", reqRes.getContent().getType()));}});
+							return true;
+						} else {
+	//						Jsoup.parse(html)
+							ByteArrayOutputStream decodedInput = new ByteArrayOutputStream();
+							TurtleWriter triples=new TurtleWriter(decodedInput);
+	//						NTriplesWriter triples=new NTriplesWriter(decodedInput);
+							any23.extract(reqRes.getContent().asString(), reqRes.getUrl(), reqRes.getContent().getType().getMimeType(), charset, 
+									triples);			
+	//								new CountingTripleHandler() {
+	//							@Override
+	//							public void receiveTriple(Resource arg0, IRI arg1, Value arg2, IRI arg3, ExtractionContext arg4)
+	//									throws TripleHandlerException {
+	//							System.out.println("Triple: "+ arg0.toString());
+	//							System.out.println("1 : "+ arg1.toString());
+	//							System.out.println("2: "+ arg2.toString());
+	//							System.out.println("3: "+ arg3);
+	//							}});
+							triples.close();
+							decodedInput.close();
+							
+							switch (dataset.getMicroformat()) {
+							case SCHEMAORG:
+							case META_ALL:
+								repository.save(datasetUri, reqRes.getUrl(), decodedInput.toByteArray(), new ArrayList<Entry<String, String>>() {{
+									add(new SimpleMapEntry("Content-Type", MimeType.TURTLE.id()));}});
+								break;
+							default:
+								throw new RuntimeException("Not implemented yet "+dataset.getMicroformat());
+							}
+							return true;
 						}
-						return true;
 					} catch (ExtractionException e) {
 						log.error(reqRes.getUrl(), e);
 					} catch (TripleHandlerException e) {
@@ -168,23 +180,22 @@ public class WwwDatasetHarvest {
 				} else {
 					log.info("Invalid response: "+ statusCode+ " - "+reqRes.getUrl());
 				}
-			} catch (Exception e) {
+			} catch (AccessException e) {
 				if(retries<1) 
-					log.error(uriOfRec, e);
+					throw e;
 			}
 			retries--;
 			datasetLog.logHarvestIssue(uriOfRec, null);
-			try {
 //							log.debug("Harvester sleeping", e);
 				Thread.sleep((retriesMaxAttempts-retries)*retriesSleepMicrosecs);
-			} catch (InterruptedException ei) {
-				log.warn(uriOfRec, ei);
-				break;
-			}
 		}
 		return false;
 	}
 
+
+	public Exception getRunError() {
+		return runError;
+	}
 	
 	public void setSampleSize(Integer sampleSize) {
 		this.sampleSize=sampleSize;

@@ -2,6 +2,7 @@ package inescid.dataaggregation.crawl.sitemap;
 
 import crawlercommons.sitemaps.SiteMapURL;
 import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.observer.JobObserverStdout;
 
 public class TestCrawlSitemap {
 	
@@ -19,7 +20,7 @@ public class TestCrawlSitemap {
 				public void handleUrl(SiteMapURL subSm) throws Exception {
 					System.out.print(subSm.getUrl());	
 				}
-			});
+			}, new JobObserverStdout());
 			crawler.run();
 			System.out.println("All done. exiting.");
 			if(crawler.getRunError()!=null)

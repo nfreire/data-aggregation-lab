@@ -37,9 +37,7 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception{
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			GregorianCalendar startOfCrawl=new GregorianCalendar();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
@@ -68,10 +66,5 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 			Global.getDatasetRegistryRepository().updateDataset(dataset);
 			timestampTracker.setDatasetTimestamp(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
 			timestampTracker.commit();
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 }

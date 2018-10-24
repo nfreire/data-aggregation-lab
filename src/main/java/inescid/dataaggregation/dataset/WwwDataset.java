@@ -13,7 +13,7 @@ public class WwwDataset extends Dataset {
 	public enum CrawlMethod {SITEMAP, HTML_LINK_CRAWL};
 	public enum Microformat {SCHEMAORG, DC, HTML5_META,  META_ALL};
 	
-	Microformat microdata=Microformat.SCHEMAORG;
+	Microformat microformat=Microformat.SCHEMAORG;
 	
 	public WwwDataset(String uri) {
 		super(DatasetType.WWW);
@@ -26,7 +26,7 @@ public class WwwDataset extends Dataset {
 
 	public WwwDataset(CSVRecord csvRecord) {
 		super(csvRecord, DatasetType.WWW);
-		microdata=Microformat.valueOf(csvRecord.get(7));
+		microformat=Microformat.valueOf(csvRecord.get(7));
 //		readMetaFromCsv(csvRecord, 7);
 	}
 
@@ -36,7 +36,7 @@ public class WwwDataset extends Dataset {
 			StringBuilder sb=new StringBuilder();
 			CSVPrinter rec=new CSVPrinter(sb, CSVFormat.DEFAULT);
 			super.toCsvPrint(rec);
-			rec.print(microdata);
+			rec.print(microformat);
 //			super.toCsvPrintMeta(rec);
 			rec.println();
 			rec.close();
@@ -47,10 +47,10 @@ public class WwwDataset extends Dataset {
 	}
 
 	public Microformat getMicroformat() {
-		return microdata;
+		return microformat;
 	}
 
 	public void setMicroformat(Microformat microdata) {
-		this.microdata = microdata;
+		this.microformat = microdata;
 	}
 }

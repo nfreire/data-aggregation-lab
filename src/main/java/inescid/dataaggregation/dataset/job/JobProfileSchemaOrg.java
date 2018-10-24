@@ -16,20 +16,13 @@ import inescid.dataaggregation.dataset.profile.RdfDataUsageProfilerSchemaorgEdm;
 public class JobProfileSchemaOrg extends JobWorker {
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			RdfDataUsageProfilerSchemaorgEdm profiler=new RdfDataUsageProfilerSchemaorgEdm(Global.getDataRepository());
 			profiler.process(dataset, Global.getPublicationRepository().getProfileFolder(dataset), 0);	
 			
 			ConversionSpecificationAnalyzer conv=new ConversionSpecificationAnalyzer();
 			conv.process(dataset, Global.getPublicationRepository());
 			
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 	
 	

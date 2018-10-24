@@ -56,9 +56,7 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		running = true;
-		try {
+	public void runJob()  throws Exception {
 			File profileFolder = Global.getPublicationRepository().getProfileFolder(dataset);
 			Validator validator=new Validator(Global.getValidatorResourceFolder(), validationSchema);
 			File validationCsvFile = new File(profileFolder, "edm-validation.csv");
@@ -96,11 +94,6 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 			
 			String spreadsheetId=GoogleSheetsCsvUploader.getDatasetAnalysisSpreadsheet(dataset, GoogleSheetsCsvUploader.sheetTitleFromFileName(validationCsvFile));
 			GoogleSheetsCsvUploader.update(spreadsheetId, validationCsvFile);			
-			successful = true;
-		} catch (Exception e) {
-			failureCause = e;
-		}
-		running = false;
 	}
 
 

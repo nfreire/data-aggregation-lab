@@ -24,7 +24,7 @@ import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.store.Repository;
-import inescid.util.HttpRequestException;
+import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 import inescid.util.LinkedDataUtil;
 
@@ -72,7 +72,7 @@ public class ManifestSeeAlsoHarvester {
 			try {
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
 				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
-			} catch (HttpRequestException e) {
+			} catch (AccessException e) {
 				log.warn(targetSeeAlso.id, e);
 				continue;
 			} catch (Exception e) {

@@ -1,5 +1,6 @@
 package inescid.dataaggregation.dataset.job;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
@@ -25,9 +26,7 @@ public class JobHarvestLod extends JobWorker implements Runnable {
 	}
 	
 	@Override
-	public void run() {
-		running=true;
-		try {
+	public void runJob() throws Exception {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			LodDataset lodDataset=(LodDataset)dataset;
 			LdDatasetHarvest harvest=new LdDatasetHarvest(lodDataset, Global.getDataRepository(), true/*skip existing*/);
@@ -56,11 +55,6 @@ public class JobHarvestLod extends JobWorker implements Runnable {
 			}
 			timestampTracker.setDatasetTimestamp(lodDataset.getUri(), startOfCrawl);
 			timestampTracker.commit();
-			successful=true;
-		} catch (Exception e) {
-			failureCause=e;
-		}
-		running=false;
 	}
 
 }
