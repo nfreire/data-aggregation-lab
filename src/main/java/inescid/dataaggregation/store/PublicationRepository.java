@@ -32,12 +32,12 @@ public class PublicationRepository {
 	static private class FilenameManager {
 		public static String getDatasetFolderName(Dataset dataset) {
 			try {
-				return URLEncoder.encode(dataset.getUri(), "UTF-8");
+				return URLEncoder.encode(dataset.getLocalId(), "UTF-8");
 			} catch (UnsupportedEncodingException e) {/* impossible */ return null;}
 		}
 		public static String getDatasetFolderNameForUrl(Dataset dataset) {
 			try {
-				return  URLEncoder.encode(URLEncoder.encode(dataset.getUri(), "UTF-8"), "UTF-8");
+				return  URLEncoder.encode(URLEncoder.encode(dataset.getLocalId(), "UTF-8"), "UTF-8");
 			} catch (UnsupportedEncodingException e) {/* impossible */ return null;}
 		}
 	}
@@ -61,6 +61,9 @@ public class PublicationRepository {
 	
 	public File getProfileFolder(Dataset dataset) {
 		return new File(getDatasetFolder(dataset), "profile");
+	}
+	public File getReportsFolder(Dataset dataset) {
+		return new File(getDatasetFolder(dataset), "reports");
 	}
 
 	public File getExportZipFile(Dataset dataset) {

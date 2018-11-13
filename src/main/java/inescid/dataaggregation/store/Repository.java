@@ -104,11 +104,14 @@ public class Repository {
 	}
 	public List<Entry<String, String>> getMeta(String datasetUri, String resourceUri) throws IOException {
 		List<Entry<String, String>> meta=new ArrayList<>();
-		CSVParser parser=CSVParser.parse(getMetaFile(datasetUri, resourceUri), UTF8, CSVFormat.DEFAULT);
-		parser.forEach(entry -> {
-			meta.add(new AbstractMap.SimpleEntry<String, String>(entry.get(0),entry.get(1)));
-		});
-		parser.close();
+		File metaFile = getMetaFile(datasetUri, resourceUri);
+		if(metaFile.exists()) {
+			CSVParser parser=CSVParser.parse(metaFile, UTF8, CSVFormat.DEFAULT);
+			parser.forEach(entry -> {
+				meta.add(new AbstractMap.SimpleEntry<String, String>(entry.get(0),entry.get(1)));
+			});
+			parser.close();
+		}
 		return meta;
 	}
 	public List<Entry<String, File>> getAllDatasetResourceFiles(String datasetUri) {

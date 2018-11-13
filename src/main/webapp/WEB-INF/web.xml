@@ -31,9 +31,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 
 	<servlet>
         <servlet-name>default</servlet-name>
-        <servlet-class>
-          org.apache.catalina.servlets.DefaultServlet
-        </servlet-class>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
         <init-param>
             <param-name>debug</param-name>
             <param-value>1</param-value>

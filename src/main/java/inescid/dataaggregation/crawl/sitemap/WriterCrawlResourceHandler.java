@@ -22,10 +22,14 @@ public class WriterCrawlResourceHandler extends CrawlResourceHandler{
 	}
 	
 	@Override
-	public void handleUrl(SiteMapURL url) throws Exception {
-		writer.write(url.getUrl().toString());
-		writer.write('\n');
-		writer.flush();
+	public void handleUrl(SiteMapURL url) {
+		try {
+			writer.write(url.getUrl().toString());
+			writer.write('\n');
+			writer.flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 	}
 	
 	@Override

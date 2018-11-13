@@ -1,6 +1,8 @@
 package inescid.dataaggregation.dataset.job;
 
 public interface JobObserver {
+	void started();
+
 	void signalResourceFailure(String uri, Exception resourceException);
 	
 	void signalResourceSuccess(String uri);	

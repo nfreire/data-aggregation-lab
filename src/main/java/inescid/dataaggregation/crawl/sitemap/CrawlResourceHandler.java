@@ -15,7 +15,7 @@ public abstract class CrawlResourceHandler {
 		}
 		
 //		public interface CrawlHandler {
-		public abstract void handleUrl(SiteMapURL subSm) throws Exception;
+		public abstract void handleUrl(SiteMapURL subSm);
 //
 //		public void setSession(CrawlingSession session) {
 //			this.session = session;

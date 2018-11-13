@@ -72,6 +72,7 @@ public abstract class JobWorker extends JobObserverList implements Runnable{
 	@Override
 	public final void run() {
 		try {
+			started();
 			runJob();
 			finishedSuccsessfuly();
 		} catch (Exception e) {

@@ -2,6 +2,7 @@ package inescid.dataaggregation.dataset.job;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -48,9 +49,14 @@ public class JobRunner implements Runnable {
 		if(operationsLogFile.exists()) {
 			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
-				JobLog ds= JobLog.fromCsv(lines.get(i));
-				if(ds.datasetLocalId.equals(localId))
-					jobHistoric.add(ds);
+				JobLog ds;
+				try {
+					ds = JobLog.fromCsv(lines.get(i));
+					if(ds.datasetLocalId.equals(localId))
+						jobHistoric.add(ds);
+				} catch (ParseException e) {
+					log.warn("Parse of logline failed. discarding it.", e);
+				}
 			}
 		}
 		return jobHistoric;
@@ -78,6 +84,7 @@ public class JobRunner implements Runnable {
 					if(job==null)
 						Thread.sleep(5000);
 					else {
+						log.info("Job "+job.type +" for dataset "+job.worker.getDataset().getTitle());
 						Thread thr = job.worker.start();
 						job.status=JobStatus.RUNNING;
 						addJob(job);
@@ -91,7 +98,8 @@ public class JobRunner implements Runnable {
 								log.warn("Job failed for dataset "+job.worker.getDataset().getTitle(), job.worker.getFailureCause());
 							}else
 								log.warn("Job failed for dataset "+job.worker.getDataset().getTitle());
-						}
+						} else
+							log.info("Job "+job.type +" ended successfuly for dataset "+job.worker.getDataset().getTitle());
 					}
 				} catch (IOException e) {
 					log.error(e.getMessage(), e);
@@ -107,11 +115,15 @@ public class JobRunner implements Runnable {
 			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			HashSet<String> datasetsListed=new HashSet<>();
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
-				JobLog ds= JobLog.fromCsv(lines.get(i));
-				if(!datasetsListed.contains(ds.datasetLocalId)) {
-					if(ds.status==JobStatus.PENDING)
-						return new Job(ds, datasetRepository.getDataset(ds.datasetLocalId));
-					datasetsListed.add(ds.datasetLocalId);
+				try {
+					JobLog ds= JobLog.fromCsv(lines.get(i));
+					if(!datasetsListed.contains(ds.datasetLocalId)) {
+						if(ds.status==JobStatus.PENDING)
+							return new Job(ds, datasetRepository.getDataset(ds.datasetLocalId));
+						datasetsListed.add(ds.datasetLocalId);
+					}
+				} catch (ParseException e) {
+						log.warn("Parse of logline failed. discarding it.", e);
 				}
 			}
 		}
@@ -127,13 +139,17 @@ public class JobRunner implements Runnable {
 		if(operationsLogFile.exists()) {
 			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
-				JobLog ds= JobLog.fromCsv(lines.get(i));
-				if(!datasetsListed.contains(ds.datasetLocalId)) {
-					if ((ds.status!=JobStatus.COMPLETED && ds.status!=JobStatus.FAILED) || 
-					(ds.statusTime.after(nowMinusReportInterval))) {
-						jobList.add(ds);
+				try {
+					JobLog ds= JobLog.fromCsv(lines.get(i));
+					if(!datasetsListed.contains(ds.datasetLocalId)) {
+						if ((ds.status!=JobStatus.COMPLETED && ds.status!=JobStatus.FAILED) || 
+						(ds.statusTime.after(nowMinusReportInterval))) {
+							jobList.add(ds);
+						}
+						datasetsListed.add(ds.datasetLocalId);
 					}
-					datasetsListed.add(ds.datasetLocalId);
+				} catch (ParseException e) {
+					log.warn("Parse of logline failed. discarding it.", e);
 				}
 			}
 		}

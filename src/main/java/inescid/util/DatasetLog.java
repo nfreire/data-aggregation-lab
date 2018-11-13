@@ -30,6 +30,11 @@ public class DatasetLog {
 			log.warn(e.getMessage(), e);
 		}
 	}
+	
+	public void logHarvestIssue(String rdfResouceUri, Exception e) {
+		logHarvestIssue(rdfResouceUri, e.getClass().getSimpleName()+" - "+e.getMessage());
+		log.info(rdfResouceUri, e);
+	}
 	public void logValidationIssue(String rdfResouceUri, String message) {
 		try {
 			FileUtils.write(logFile, String.format("[%1$tF %1$tR] %2$s [V] %3$s\n", new Date(), rdfResouceUri, message), Global.UTF8, true);

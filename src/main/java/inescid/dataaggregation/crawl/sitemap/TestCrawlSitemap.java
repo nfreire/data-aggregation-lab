@@ -17,7 +17,7 @@ public class TestCrawlSitemap {
 			
 			SitemapResourceCrawler crawler=new SitemapResourceCrawler(sitemapUrl, null, new CrawlResourceHandler() {
 				@Override
-				public void handleUrl(SiteMapURL subSm) throws Exception {
+				public void handleUrl(SiteMapURL subSm) {
 					System.out.print(subSm.getUrl());	
 				}
 			}, new JobObserverStdout());

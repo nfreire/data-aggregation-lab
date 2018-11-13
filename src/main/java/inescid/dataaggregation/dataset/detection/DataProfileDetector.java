@@ -52,10 +52,10 @@ public class DataProfileDetector {
 		if(detected.format!=null) {
 			switch (detected.format) {
 			case JSON_LD:
-				detectProfileFromJsonLd(inString);
+				detected.profile=detectProfileFromJsonLd(inString);
 				break;
 			case XML:
-				detectProfileFromXml(inString);
+				detected.profile=detectProfileFromXml(inString);
 				break;
 			}
 		}
@@ -75,6 +75,11 @@ public class DataProfileDetector {
 	private DatasetProfile detectProfileFromJsonLd(String inString) {
 		JsonReader jr=new JsonReader(new StringReader(inString));
 		try {
+			try {
+				jr.beginObject();
+			} catch (IllegalStateException e) {
+				return DatasetProfile.ANY_TRIPLES;
+			}
 			while(jr.peek()!=JsonToken.END_OBJECT){
 				String field = jr.nextName();
 				if(field.equals("@context")) {
@@ -98,6 +103,11 @@ public class DataProfileDetector {
 		JsonReader jr=new JsonReader(new StringReader(inString));
 		Boolean onlyUriNames=null;
 		try {
+			try {
+				jr.beginObject();
+			} catch (IllegalStateException e) {
+				return false;
+			}
 			while(jr.peek()!=JsonToken.END_OBJECT){
 				String field = jr.nextName();
 				if(field.equals("@context")) {

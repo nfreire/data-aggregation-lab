@@ -10,9 +10,10 @@ public enum DatasetProfile {
 				context.equals("https://www.europeana.eu/schemas/edm/")
 				) {
 			return DatasetProfile.EDM;
-		} else if(context.equals("https://schema.org") ||
-				context.equals("https://schema.org/") ||
-				context.equals("https://schema.org/docs/jsonldcontext.json")) {
+		} else if(context.equals("http://schema.org") ||
+				context.equals("http://schema.org/") ||
+				context.equals("http://schema.org/docs/jsonldcontext.json") ||
+			context.equals("https://schema.org/docs/jsonldcontext.json")) {
 			return DatasetProfile.SCHEMA_ORG;
 		}
 		return null;

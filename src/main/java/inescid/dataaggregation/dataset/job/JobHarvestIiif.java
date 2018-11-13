@@ -15,6 +15,9 @@ import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 import inescid.dataaggregation.dataset.DatasetProfile;
 
 public class JobHarvestIiif extends JobWorker implements Runnable {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(JobHarvestIiif.class);
+	
 	Integer sampleSize;
 
 	public JobHarvestIiif() {
@@ -29,19 +32,27 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
 			Calendar startOfCrawl=null;
-			if(iiifDataset.getCrawlMethod()==IiifCrawlMethod.COLLECTION) {
-				CollectionCrawler harvester=new CollectionCrawler(timestampTracker, iiifDataset.getUri());
-				harvester.setSampleSize(sampleSize);
-				startOfCrawl = harvester.crawl(false);
-			} else if(iiifDataset.getCrawlMethod()==IiifCrawlMethod.DISCOVERY) {
-				ProcesssingAlgorithm iiifDiscovery = new ProcesssingAlgorithm(timestampTracker, new TimestampCrawlingHandler()); 
-				iiifDiscovery.setSampleSize(sampleSize);
-				startOfCrawl=iiifDiscovery.startProcess(iiifDataset.getUri(), false);
+			try {
+				if(iiifDataset.getCrawlMethod()==IiifCrawlMethod.COLLECTION) {
+					CollectionCrawler harvester=new CollectionCrawler(timestampTracker, iiifDataset.getUri());
+					harvester.setSampleSize(sampleSize);
+					startOfCrawl = harvester.crawl(false);
+				} else if(iiifDataset.getCrawlMethod()==IiifCrawlMethod.DISCOVERY) {
+					ProcesssingAlgorithm iiifDiscovery = new ProcesssingAlgorithm(timestampTracker, new TimestampCrawlingHandler()); 
+					iiifDiscovery.setSampleSize(sampleSize);
+					startOfCrawl=iiifDiscovery.startProcess(iiifDataset.getUri(), false);
+				}
+				ManifestHarvester harvester=new ManifestHarvester(Global.getDataRepository(), timestampTracker, iiifDataset.getUri());
+				harvester.harvest();
+				timestampTracker.setDatasetTimestamp(iiifDataset.getUri(), startOfCrawl);
+				timestampTracker.commit();
+				finishedSuccsessfuly();
+			} catch (Exception e) {
+				log.warn(e.getMessage(), e);
+				timestampTracker.setDatasetLastError(iiifDataset.getUri(), startOfCrawl);				
+				timestampTracker.commit();
+				finishedWithFailure(e);
 			}
-			ManifestHarvester harvester=new ManifestHarvester(Global.getDataRepository(), timestampTracker, iiifDataset.getUri());
-			harvester.harvest();
-			timestampTracker.setDatasetTimestamp(iiifDataset.getUri(), startOfCrawl);
-			timestampTracker.commit();
 	}
 	
 	

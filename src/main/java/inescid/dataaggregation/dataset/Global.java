@@ -60,7 +60,10 @@ public class Global {
 	public static synchronized void init(Properties prop) {
 		try {
 			if(registryRepository==null) {
-				webappRoot=new File(prop.getProperty("dataaggregation.webapp.root-folder"));
+				String webAppRoot = prop.getProperty("dataaggregation.webapp.root-folder");
+				if(webAppRoot==null)
+					webAppRoot = prop.getProperty("dataaggregation.publication-repository.folder");
+				webappRoot=new File(webAppRoot);
 				
 				initDatasetRegistryRepository(prop);
 				initDataRepository(prop);
@@ -93,9 +96,9 @@ public class Global {
 		props.setProperty("dataaggregation.dataset-registry.repository.folder", "${dataaggregation.dataset-registry.repository.folder}");
 		props.setProperty("dataaggregation.data-repository.folder", "${dataaggregation.data-repository.folder}");
 		props.setProperty("dataaggregation.timestamp.repository.folder", "${dataaggregation.timestamp.repository.folder}");
-		props.setProperty("dataaggregation.publication-repository.folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
+		props.setProperty("dataaggregation.publication-repository.folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\data-aggregation-lab");
 		props.setProperty("dataaggregation.publication-repository.url", "/static/data");
-		props.setProperty("dataaggregation.webapp.root-folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp1\\wtpwebapps\\data-aggregation-lab");
+		props.setProperty("dataaggregation.webapp.root-folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\data-aggregation-lab");
 		props.setProperty("googleapi.credentials", "C:\\Users\\nfrei\\.credentials\\Data Aggregation Lab-b1ec5c3705fc.json");
 		init(props);
 	}

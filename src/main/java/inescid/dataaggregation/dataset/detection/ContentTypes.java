@@ -38,4 +38,8 @@ public enum ContentTypes {
 		}
 		return f !=null && (f==RDF_XML || f==TURTLE || f==ContentTypes.JSON_LD);
 	}
+	
+	public String getMimetype() {
+		return mime;
+	}
 }

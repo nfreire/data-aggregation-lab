@@ -49,7 +49,7 @@ public class JobPublish extends JobWorker {
 //					if(detected!=null)
 //						break;
 //				}
-				ContentTypes format=ContentTypes.fromMime(dataset.getDataFormat());
+				ContentTypes format=dataset.getDataFormat()==null ? null : ContentTypes.fromMime(dataset.getDataFormat());
 				String fileExtension=format!=null ? "."+format.getFilenameExtension() : "";
 				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
 					ziper.addFile(manifEntry.getValue().getName()+fileExtension);

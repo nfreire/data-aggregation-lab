@@ -12,6 +12,13 @@ public class JobObserverStdout implements JobObserver {
 		this.printSuccesses = printSuccesses;
 	}
 
+	
+	@Override
+	public void started() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void signalResourceFailure(String uri, Exception resourceException) {
 		System.out.println("RESOURCE FAILURE: "+uri);

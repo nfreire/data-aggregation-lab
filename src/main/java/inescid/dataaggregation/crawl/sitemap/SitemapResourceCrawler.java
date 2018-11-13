@@ -19,11 +19,13 @@ import inescid.util.DevelopementSingleton;
 
 public class SitemapResourceCrawler {
 
-	
 	String sitemapUrl;
 	String robotsTxtUrl;
 	CrawlResourceHandler handler;
 	JobObserver observer;
+	
+	Integer sampleSize=null;
+	int harvestedCnt=0;
 	
 	Exception runError=null;
 	
@@ -77,9 +79,13 @@ public class SitemapResourceCrawler {
 				}
 				try {
 					handler.handleUrl(subSm);
+					observer.signalResourceSuccess(subSm.getUrl().toString());
 				} catch (Exception e) {
 					observer.signalResourceFailure(subSm.getUrl().toString(), e);
 				}
+				harvestedCnt++;
+				if(sampleSize!=null && sampleSize>0 && harvestedCnt>=sampleSize)
+					break;
 			}
 		}
 	}
@@ -88,6 +94,10 @@ public class SitemapResourceCrawler {
 		SiteMapParser parser=new SiteMapParser(false);
 		AbstractSiteMap siteMap = parser.parseSiteMap(content.getType().getMimeType(), content.asBytes(), new URL(url));
 		return siteMap;
+	}
+
+	public void setSampleSize(Integer sampleSize) {
+		this.sampleSize = sampleSize;
 	}
 	
 }

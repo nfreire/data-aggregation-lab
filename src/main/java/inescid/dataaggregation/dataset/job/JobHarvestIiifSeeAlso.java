@@ -41,30 +41,37 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			GregorianCalendar startOfCrawl=new GregorianCalendar();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
-			String[] ps=SeeAlsoProfile.parseFormatProfile(seeAlsoType);
-			String format=ps[0];
-			String profile=ps[1];
-			iiifDataset.setDataFormat(format);
-			ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), iiifDataset, format, profile);
-			harvester.harvest();
-			DatasetProfile datasetProfileEnum=DatasetProfile.fromString(profile);
-			if(datasetProfileEnum==null || datasetProfileEnum==DatasetProfile.ANY_TRIPLES) {
-				DataTypeResult detected = DataProfileDetector.detect(iiifDataset.getSeeAlsoDatasetUri(), Global.getDataRepository());
-				if(detected!=null) {
-					if(detected.format!=null && dataset.getDataFormat()==null) {
-						dataset.setDataFormat(detected.format.toString());
+			try {
+				String[] ps=SeeAlsoProfile.parseFormatProfile(seeAlsoType);
+				String format=ps[0];
+				String profile=ps[1];
+				iiifDataset.setDataFormat(format);
+				ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), iiifDataset, format, profile);
+				harvester.harvest();
+				DatasetProfile datasetProfileEnum=DatasetProfile.fromString(profile);
+				if(datasetProfileEnum==null || datasetProfileEnum==DatasetProfile.ANY_TRIPLES) {
+					DataTypeResult detected = DataProfileDetector.detect(iiifDataset.getSeeAlsoDatasetUri(), Global.getDataRepository());
+					if(detected!=null) {
+						if(detected.format!=null && dataset.getDataFormat()==null) {
+							dataset.setDataFormat(detected.format.toString());
+						}
+						if(detected.profile!=null && dataset.getDataProfile()==null) {
+							dataset.setDataProfile(detected.profile.toString());
+						}
+					} else if (datasetProfileEnum!=null){
+						dataset.setDataProfile(datasetProfileEnum.toString());
 					}
-					if(detected.profile!=null && dataset.getDataProfile()==null) {
-						dataset.setDataProfile(detected.profile.toString());
-					}
-				} else if (datasetProfileEnum!=null){
-					dataset.setDataProfile(datasetProfileEnum.toString());
+				} else {
+					dataset.setDataProfile(datasetProfileEnum.toString());				
 				}
-			} else {
-				dataset.setDataProfile(datasetProfileEnum.toString());				
+				Global.getDatasetRegistryRepository().updateDataset(dataset);
+				timestampTracker.setDatasetTimestamp(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
+				timestampTracker.commit();
+				finishedSuccsessfuly();
+			} catch (Exception e) {
+				timestampTracker.setDatasetLastError(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
+				timestampTracker.commit();
+				finishedWithFailure(e);
 			}
-			Global.getDatasetRegistryRepository().updateDataset(dataset);
-			timestampTracker.setDatasetTimestamp(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
-			timestampTracker.commit();
 	}
 }

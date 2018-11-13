@@ -103,13 +103,20 @@ public class WwwDatasetHarvest {
 		SitemapResourceCrawler smCrawler=new SitemapResourceCrawler(dataset.getUri(), null, new CrawlResourceHandler() {
 			int harvestedCnt=0;
 			@Override
-			public void handleUrl(SiteMapURL subSm) throws Exception {
-				if(sampleSize!=null && sampleSize>0 && harvestedCnt>=sampleSize)
-					return;
-				if(harvestResource(dataset.getUri(), subSm.getUrl().toString()))
-						harvestedCnt++;
+			public void handleUrl(SiteMapURL subSm) {
+				try {
+					if(sampleSize==null || sampleSize<=0 || harvestedCnt<sampleSize)
+						if(harvestResource(dataset.getUri(), subSm.getUrl().toString()))
+								harvestedCnt++;
+				} catch (InterruptedException e) {
+					log.warn(e.getMessage(), e);
+				} catch (Exception e) {
+					datasetLog.logHarvestIssue(subSm.getUrl().toString(), e);
+					observer.signalResourceFailure(subSm.getUrl().toString(), e);
+				}
 			}
 		}, observer);
+		smCrawler.setSampleSize(sampleSize);
 		smCrawler.run();
 		runError=smCrawler.getRunError();
 		return start;
@@ -185,7 +192,7 @@ public class WwwDatasetHarvest {
 					throw e;
 			}
 			retries--;
-			datasetLog.logHarvestIssue(uriOfRec, null);
+			datasetLog.logHarvestIssue(uriOfRec, (String)null);
 //							log.debug("Harvester sleeping", e);
 				Thread.sleep((retriesMaxAttempts-retries)*retriesSleepMicrosecs);
 		}

@@ -73,7 +73,7 @@ public class DatasetStatusView extends DatasetView{
 		}
 	}
 	public boolean isHarvested() {
-		return Global.getTimestampTracker().getDatasetStatus(dataset.getUri())!=null;
+		return Global.getTimestampTracker().getDatasetTimestamp(dataset.getUri())!=null;
 	}
 	public boolean isProfilable() {
 		return isHarvested(); 
@@ -106,16 +106,16 @@ public class DatasetStatusView extends DatasetView{
 	}
 	
 	public boolean isHarvestedForSeeAlso() {
-		return Global.getTimestampTracker().getDatasetStatus(((IiifDataset)dataset).getSeeAlsoDatasetUri())!=null;
+		return Global.getTimestampTracker().getDatasetTimestamp(((IiifDataset)dataset).getSeeAlsoDatasetUri())!=null;
 	}
 	public String getLastHarvest() {
-		Calendar date = Global.getTimestampTracker().getDatasetStatus(dataset.getUri());
+		Calendar date = Global.getTimestampTracker().getDatasetTimestamp(dataset.getUri());
 		if(date==null) 
 			return "never";
 		return new SimpleDateFormat("dd-MM-yyyy HH:mm").format(date.getTime());
 	}
 	public String getSeeAlsoLastHarvest() {
-		Calendar date = Global.getTimestampTracker().getDatasetStatus(((IiifDataset)dataset).getSeeAlsoDatasetUri());
+		Calendar date = Global.getTimestampTracker().getDatasetTimestamp(((IiifDataset)dataset).getSeeAlsoDatasetUri());
 		if(date==null) 
 			return "never";
 		return new SimpleDateFormat("dd-MM-yyyy HH:mm").format(date.getTime());

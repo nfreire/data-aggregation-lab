@@ -27,6 +27,11 @@ public class JobObserverList implements JobObserver {
 			o.finishedSuccsessfuly();
 	}
 	
+	public void started() {
+		for(JobObserver o: observers)
+			o.started();
+	}
+	
 	public void finishedWithFailure(Exception failureCause) {
 		for(JobObserver o: observers)
 			o.finishedWithFailure(failureCause);

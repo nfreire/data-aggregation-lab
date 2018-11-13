@@ -27,6 +27,8 @@ public class Job {
 					return new JobHarvestIiif();
 				else if(datasetType==DatasetType.LOD)
 					return new JobHarvestLod();
+				else if(datasetType==DatasetType.WWW)
+					return new JobHarvestWww();
 			case HARVEST_SAMPLE:
 				if(datasetType==DatasetType.IIIF)
 					return new JobHarvestIiif(100);
