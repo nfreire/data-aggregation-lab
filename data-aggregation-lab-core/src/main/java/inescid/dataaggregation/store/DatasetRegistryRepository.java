@@ -60,7 +60,8 @@ public class DatasetRegistryRepository {
 			if(deduplicator.contains(ds.getLocalId()))
 				toArchiveLines.add(lines.get(i));
 			else if(ds.getLocalId().equals(localId)) {
-				removed=ds;
+				if(removed==null)
+					removed=ds;
 				toArchiveLines.add(lines.get(i));
 			} else
 				FileUtils.write(requestsLogFile, lines.get(i)+"\n", GlobalCore.UTF8, true);

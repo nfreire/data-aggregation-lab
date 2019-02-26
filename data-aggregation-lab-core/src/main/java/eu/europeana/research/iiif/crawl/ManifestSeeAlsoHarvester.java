@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -32,16 +33,17 @@ public class ManifestSeeAlsoHarvester {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger(ManifestSeeAlsoHarvester.class);
 
-	TimestampTracker manifestSource;
 	IiifDataset dataset;
 	Repository repository;
+	TimestampTracker timestampTracker;
 	String format;
 	String profile;
 	
-	public ManifestSeeAlsoHarvester(Repository repository, IiifDataset dataset, String seeAlsoFormat, String seeAlsoProfile) {
+	public ManifestSeeAlsoHarvester(Repository repository, TimestampTracker timestampTracker, IiifDataset dataset, String seeAlsoFormat, String seeAlsoProfile) {
 		super();
 		this.dataset = dataset;
 		this.repository = repository;
+		this.timestampTracker = timestampTracker;
 		this.format = seeAlsoFormat;
 		this.profile = seeAlsoProfile;
 	}
@@ -72,6 +74,7 @@ public class ManifestSeeAlsoHarvester {
 			try {
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
 				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
+				timestampTracker.setObjectTimestamp(dataset.getSeeAlsoDatasetUri(), targetSeeAlso.id, new GregorianCalendar());
 			} catch (AccessException e) {
 				log.warn(targetSeeAlso.id, e);
 				continue;

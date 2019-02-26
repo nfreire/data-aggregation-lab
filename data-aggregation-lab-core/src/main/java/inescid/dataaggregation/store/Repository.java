@@ -8,6 +8,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,7 +99,9 @@ public class Repository {
 	public File getFile(String datasetUri, String resourceUri) {
 		return new File(getDatasetFolder(datasetUri), FilenameManager.getResourceFolderAndFilename(resourceUri));
 	}
-
+	public boolean contains(String datasetUri, String resourceUri) {
+		return getFile(datasetUri, resourceUri).exists();
+	}
 	public File getMetaFile(String datasetUri, String resourceUri) {
 		return new File(getDatasetFolder(datasetUri), FilenameManager.getMetaResourceFolderAndFilename(resourceUri));
 	}
@@ -157,6 +160,14 @@ public class Repository {
 			throws IOException {
 		save(datasetUri, resourceUri, content);
 		saveMeta(datasetUri, resourceUri, meta);
+	}
+	
+	public void save(String datasetUri, String resourceUri, byte[] content, String oneMetaParam, String oneMetaValue)
+			throws IOException {
+		save(datasetUri, resourceUri, content);
+		saveMeta(datasetUri, resourceUri, new ArrayList<Map.Entry<String,String>>(){{
+			add(new AbstractMap.SimpleEntry<String, String>(oneMetaParam, oneMetaValue));
+		}});
 	}
 
 	
@@ -291,5 +302,10 @@ public class Repository {
 				};
 			}
 		};
+	}
+
+	public byte[] getContent(String datasetId, String url) throws IOException {
+		File file = getFile(datasetId, url);
+		return FileUtils.readFileToByteArray(file);
 	}
 }

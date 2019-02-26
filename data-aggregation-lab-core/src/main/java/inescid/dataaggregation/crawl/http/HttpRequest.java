@@ -12,6 +12,7 @@ import org.apache.http.client.fluent.Content;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 
+import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
 import inescid.dataaggregation.dataset.GlobalCore;
 
 public class HttpRequest {
@@ -50,6 +51,10 @@ public class HttpRequest {
 		return url.getUrl();
 	}
 
+	public HttpMethod getHttpMethod() {
+		return url.getMethod();
+	}
+	
 //	public void setUrl(UrlRequest url) {
 //		this.url = url;
 //	}

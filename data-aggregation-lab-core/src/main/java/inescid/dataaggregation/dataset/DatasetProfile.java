@@ -12,6 +12,8 @@ public enum DatasetProfile {
 			return DatasetProfile.EDM;
 		} else if(context.equals("http://schema.org") ||
 				context.equals("http://schema.org/") ||
+				context.equals("https://schema.org") ||
+				context.equals("https://schema.org/") ||
 				context.equals("http://schema.org/docs/jsonldcontext.json") ||
 			context.equals("https://schema.org/docs/jsonldcontext.json")) {
 			return DatasetProfile.SCHEMA_ORG;

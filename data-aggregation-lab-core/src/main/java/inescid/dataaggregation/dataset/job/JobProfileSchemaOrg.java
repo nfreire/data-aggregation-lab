@@ -15,6 +15,10 @@ import inescid.dataaggregation.dataset.profile.RdfDataUsageProfilerSchemaorgEdm;
 
 public class JobProfileSchemaOrg extends JobWorker {
 	
+	protected JobProfileSchemaOrg(Job job, Dataset dataset) {
+		super(job, dataset);
+	}
+
 	@Override
 	public void runJob() throws Exception {
 			RdfDataUsageProfilerSchemaorgEdm profiler=new RdfDataUsageProfilerSchemaorgEdm(GlobalCore.getDataRepository());

@@ -19,39 +19,40 @@ public class Job {
 
 	public enum JobType {
 		HARVEST, HARVEST_SAMPLE, HARVEST_SEEALSO, PUBLISH_DATA, PUBLISH_SEEALSO_DATA, PROFILE_MANIFESTS, PROFILE_RDF, CONVERT, VALIDATE_EDM;
-		
-		public JobWorker newWorker(DatasetType datasetType, String jobParams) {
+
+		public JobWorker newWorker(Job job, Dataset dataset, String jobParams) {
+			DatasetType datasetType=dataset.getType();
 			switch (this) {
 			case HARVEST:
 				if(datasetType==DatasetType.IIIF)
-					return new JobHarvestIiif();
+					return new JobHarvestIiif(job, dataset);
 				else if(datasetType==DatasetType.LOD)
-					return new JobHarvestLod();
+					return new JobHarvestLod(job, dataset);
 				else if(datasetType==DatasetType.WWW)
-					return new JobHarvestWww();
+					return new JobHarvestWww(job, dataset);
 			case HARVEST_SAMPLE:
 				if(datasetType==DatasetType.IIIF)
-					return new JobHarvestIiif(100);
+					return new JobHarvestIiif(job, dataset,100);
 				else if(datasetType==DatasetType.LOD)
-					return new JobHarvestLod(100);
+					return new JobHarvestLod(job, dataset,100);
 				else if(datasetType==DatasetType.WWW)
-					return new JobHarvestWww(100);
+					return new JobHarvestWww(job, dataset,100);
 			case PROFILE_MANIFESTS:
 				if(datasetType==DatasetType.IIIF)
-					return new JobProfileIiifManifests();
+					return new JobProfileIiifManifests(job, dataset);
 				break;
 			case PROFILE_RDF:
-				return new JobProfileSchemaOrg();
+				return new JobProfileSchemaOrg(job, dataset);
 			case CONVERT:
-				return new JobConvertSchemaOrgToEdm();
+				return new JobConvertSchemaOrgToEdm(job, dataset);
 			case VALIDATE_EDM:
-				return new JobValidateEdm();
+				return new JobValidateEdm(job, dataset);
 			case PUBLISH_DATA:
-				return new JobPublish();
+				return new JobPublish(job, dataset);
 			case PUBLISH_SEEALSO_DATA:
-				return new JobPublishSeeAlso();
+				return new JobPublishSeeAlso(job, dataset);
 			case HARVEST_SEEALSO:
-				return new JobHarvestIiifSeeAlso(jobParams);
+				return new JobHarvestIiifSeeAlso(job, dataset, jobParams);
 			}
 			throw new RuntimeException("Missing implementation: "+this+" "+datasetType);
 		}
@@ -69,8 +70,7 @@ public class Job {
 		this.type = type;
 		status=JobStatus.PENDING;
 		statusTime=new GregorianCalendar();
-		worker=type.newWorker(dataset.getType(), null);
-		worker.setDataset(dataset);
+		worker=type.newWorker(this, dataset, null);
 	}
 	
 //	public Job(JobType type, Dataset dataset, JobStatus status) {
@@ -85,8 +85,7 @@ public class Job {
 		type=jl.type;
 		status=jl.status;
 		statusTime=jl.statusTime;
-		worker=jl.type.newWorker(dataset.getType(), jl.parameters);
-		worker.setDataset(dataset);
+		worker=jl.type.newWorker(this, dataset, jl.parameters);
 	}
 
 

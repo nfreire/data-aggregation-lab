@@ -31,9 +31,16 @@
 		<tr><td class="field_title">Organization</td><td class="field_value">${organization}</td></tr>
 		<tr><td class="field_title">Type:</td><td class="field_value">${type}</td></tr>
 		<tr><td class="field_title">Crawling base URL:</td><td class="field_value">${uri}</td></tr>
-		<tr><td class="field_title">Format:</td>
+		<tr><td class="field_title">Data format:</td>
 		<td class="field_value"><#if dataFormat??>${dataFormat}</#if></td></tr>
-		<tr><td class="field_title">Data profile:</td><td class="field_value"><#if dataProfile??>${dataProfileDisplay}</#if></td></tr>	
+		<tr><td class="field_title">Data model profile:</td><td class="field_value"><#if dataProfile??>${dataProfileDisplay}</#if>
+			<#if harvested>
+				<a href="${context}/harvester/set-form-of-data?dataset=${localId}">(set manually...)</a>		
+			<#else>
+					<span class="unavailableLink">(set manually...)</span>
+			</#if>		
+			<br/>	
+		</td></tr>	
   <#list typeInformation as field>
 		<tr><td class="field_title">${field.key}:</td><td class="field_value">${field.value}</td></tr>
   </#list>	
@@ -45,28 +52,30 @@
 		<td class="field_value">
 
 <table style="padding-bottom:10px">
-		<tr><td class="field_title">Harvesting status:</td><td class="field_value"><#if harvested>Last harvest:${lastHarvest}<#else>Not harvested</#if>
+		<tr><td class="field_title">Harvesting:</td><td class="field_value">
 			<#if type=="IIIF">
+<#if harvested>Last Manifests harvest:${lastHarvest}<#else>Not harvested</#if>
 			<br />
-<#if harvestedForSeeAlso>Last harvest of 'seeAlso' metadata: ${seeAlsoLastHarvest}<#else>Not harvested for 'seeAlso' metadata</#if>
+<#if harvestedForSeeAlso>Last harvest of 'seeAlso' objects: ${seeAlsoLastHarvest}<#else>Not harvested for 'seeAlso' objects</#if>
+			<#else>
+<#if harvested>Last harvest:${lastHarvest}<#else>Not harvested</#if>
 			</#if>
-		</td></tr>		
-		
-		
-		<tr><td class="field_title">Export status:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>not exported</#if></td></tr>
+		</td></tr>	
+		<tr><td class="field_title">Data profiling:</td><td class="field_value"><#if profiled>Profiled (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not profiled</#if></td></tr>
+		<#if convertibleToEdm>
+			<tr><td class="field_title">Conversion to EDM:</td><td class="field_value">
+				 <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if>
+				 <#if convertedAnalysis><br />Conversion analysis (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)</#if>
+			</td></tr>
+		</#if>
+		<tr><td class="field_title">EDM Validation:</td><td class="field_value"><#if validatedEdm>Validated (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not validated</#if></td></tr>
+		<tr><td class="field_title">
+			Export<#if type=="IIIF"> of Manifests</#if>:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>not exported</#if></td></tr>
 		<#if type=="IIIF">
-			<tr><td class="field_title">Export of 'seeAlso' metadata status:</td><td class="field_value">
+			<tr><td class="field_title">Export of 'seeAlso':</td><td class="field_value">
 				 <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>not exported</#if>
 			</td></tr>
 		</#if>
-		<#if convertibleToEdm>
-			<tr><td class="field_title">Conversion to EDM status:</td><td class="field_value">
-				 <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if>
-				 <#if convertedAnalysis><br />Conversion analysis (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not converted</#if>
-			</td></tr>
-		</#if>
-		<tr><td class="field_title">Data profiling status:</td><td class="field_value"><#if profiled>Profiled (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not profiled</#if></td></tr>
-		<tr><td class="field_title">EDM Validation status:</td><td class="field_value"><#if validatedEdm>Validated (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not validated</#if></td></tr>
 </table>
 		</td>
 	</tr>
@@ -84,31 +93,33 @@
 		<#if type=="IIIF">
 			<br/>
 			<#if profiledForIiif>
-				<a href="${context}/harvester/dataset-iiif-harvest-seealso?dataset=${localId}">Harvest 'seeAlso' metadata</a>				
+				<a href="${context}/harvester/dataset-iiif-harvest-seealso?dataset=${localId}">Harvest 'seeAlso' objects</a>				
 			<#else>	
-				<span class="unavailableLink">Harvest 'seeAlso' metadata</span>				
+				<span class="unavailableLink">Harvest 'seeAlso' objects</span>				
 			</#if>	
 		</#if>	
 		</td></tr>
-		<tr><td class="field_title">Process/Analyse:</td><td class="field_value">
-			<#if harvested>
-				<a href="${context}/harvester/set-form-of-data?dataset=${localId}">Set data model profile</a>		
-			<#else>
-					<span class="unavailableLink">Set data model profile</span>
-			</#if>		
-			<br/>		
+		<tr><td class="field_title">Process/Analyse:</td><td class="field_value">	
 			<#if type=="IIIF">
 				<#if profilableForIiif>
-					<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Data profile of IIIF Manifest</a>
+					<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Data profile of IIIF Manifests</a>
 				<#else>
-					<span class="unavailableLink">Data profile of IIIF Manifest</span>
+					<span class="unavailableLink">Data profile of Manifests</span>
 				</#if>
 				<br/>
 			</#if>
 			<#if profilableForRdf>
-				<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Data profile of RDF data</a>
+				<#if type=="IIIF">
+					<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Data profile of 'seeAlso' objects</a>
+				<#else>
+					<a href="${context}/harvester/profile-dataset-rdf?dataset=${localId}">Data profile of RDF data</a>
+				</#if>
 			<#else>
-				<span class="unavailableLink">Data profile of RDF data</span>
+				<#if type=="IIIF">
+					<span class="unavailableLink">Data profile of 'seeAlso' objects</span>
+				<#else>
+					<span class="unavailableLink">Data profile of RDF data</span>
+				</#if>
 			</#if>
 			<br/>
 			<#if convertibleToEdm>
@@ -124,17 +135,24 @@
 			</#if>	
 		</td></tr>
 		<tr><td class="field_title">Export:</td><td class="field_value">
-				<#if harvested>
-					<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Export</a>
-				<#else>
-					<span class="unavailableLink">Export</span>
-				</#if>
 			<#if type=="IIIF">
+
+				<#if harvested>
+					<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Export Manifests</a>
+				<#else>
+					<span class="unavailableLink">Export Manifests</span>
+				</#if>
 				<br/>
 				<#if harvestedForSeeAlso>
 					<a href="${context}/harvester/publish-dataset-seealso-data?dataset=${localId}">Export 'seeAlso'</a>
 				<#else>
 					<span class="unavailableLink">Export 'seeAlso'</span>
+				</#if>
+			<#else>
+				<#if harvested>
+					<a href="${context}/harvester/publish-dataset-data?dataset=${localId}">Export</a>
+				<#else>
+					<span class="unavailableLink">Export</span>
 				</#if>
 			</#if>
 		</td></tr>

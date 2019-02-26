@@ -23,14 +23,19 @@ import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.util.LinkedDataUtil;
 
 public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+		.getLogger(JobHarvestIiifSeeAlso.class);
+	
 	Integer sampleSize;
 	String seeAlsoType;
 
-	public JobHarvestIiifSeeAlso(String seeAlsoType) {
+	public JobHarvestIiifSeeAlso(Job job, Dataset dataset, String seeAlsoType) {
+		super(job, dataset);
 		this.seeAlsoType = seeAlsoType;
 	}
 	
-	public JobHarvestIiifSeeAlso(String seeAlsoType, int sampleSize) {
+	public JobHarvestIiifSeeAlso(Job job, Dataset dataset, String seeAlsoType, int sampleSize) {
+		super(job, dataset);
 		this.sampleSize = sampleSize;
 		this.seeAlsoType = seeAlsoType;
 	}
@@ -45,7 +50,7 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 				String format=ps[0];
 				String profile=ps[1];
 				iiifDataset.setDataFormat(format);
-				ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(GlobalCore.getDataRepository(), iiifDataset, format, profile);
+				ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(GlobalCore.getDataRepository(), timestampTracker, iiifDataset, format, profile);
 				harvester.harvest();
 				DatasetProfile datasetProfileEnum=DatasetProfile.fromString(profile);
 				if(datasetProfileEnum==null || datasetProfileEnum==DatasetProfile.ANY_TRIPLES) {
@@ -68,6 +73,7 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 				timestampTracker.commit();
 				finishedSuccsessfuly();
 			} catch (Exception e) {
+				log.info("Harvest failed: ",e);
 				timestampTracker.setDatasetLastError(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
 				timestampTracker.commit();
 				finishedWithFailure(e);

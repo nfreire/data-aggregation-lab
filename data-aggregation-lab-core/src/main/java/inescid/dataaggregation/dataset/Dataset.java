@@ -157,7 +157,7 @@ public abstract class Dataset {
 	}
 
 	public String getConvertedEdmDatasetUri() {
-			return GlobalCore.CONVERTED_EDM_DATASET_PREFIX+uri;
+			return GlobalCore.CONVERTED_EDM_DATASET_PREFIX+localId;
 	}
 
 	public String getMetadataUri() {

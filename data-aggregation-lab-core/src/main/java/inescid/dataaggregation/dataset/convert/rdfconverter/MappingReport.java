@@ -11,7 +11,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
-import inescid.util.MapOfInts;
+import inescid.util.datastruct.MapOfInts;
 
 public  class MappingReport {
 		Map<Resource, Map<Resource,Integer>> usageCounts=new HashMap<>(); 

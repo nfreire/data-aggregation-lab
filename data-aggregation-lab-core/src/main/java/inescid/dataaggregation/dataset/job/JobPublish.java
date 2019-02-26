@@ -33,6 +33,10 @@ import inescid.dataaggregation.store.PublicationRepository;
 
 public class JobPublish extends JobWorker {
 	
+	protected JobPublish(Job job, Dataset dataset) {
+		super(job, dataset);
+	}
+
 	@Override
 	public void runJob() throws Exception {
 			PublicationRepository repository=GlobalCore.getPublicationRepository();

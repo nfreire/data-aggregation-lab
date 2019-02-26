@@ -6,6 +6,7 @@ import java.util.Calendar;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.crawl.ld.LdDatasetHarvest;
 import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.convert.RdfReg;
@@ -17,11 +18,13 @@ import inescid.util.LinkedDataUtil;
 public class JobHarvestLod extends JobWorker implements Runnable {
 	Integer sampleSize;
 
-	public JobHarvestLod() {
+	public JobHarvestLod(Job job, Dataset dataset) {
+		super(job, dataset);
 	}
 	
 	
-	public JobHarvestLod(int sampleSize) {
+	public JobHarvestLod(Job job, Dataset dataset,int sampleSize) {
+		super(job, dataset);
 		this.sampleSize = sampleSize;
 	}
 	

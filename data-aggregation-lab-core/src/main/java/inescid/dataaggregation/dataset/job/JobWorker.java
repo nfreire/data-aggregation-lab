@@ -13,18 +13,26 @@ import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
+import inescid.dataaggregation.dataset.job.Job.JobStatus;
 import inescid.dataaggregation.dataset.observer.JobObserverList;
 
 public abstract class JobWorker extends JobObserverList implements Runnable{
 	private Exception failureCause;
 	private boolean running=false;
 	private boolean successful=false;
-	Dataset dataset;
+	protected Dataset dataset;
+	protected Job job;
 
+	protected JobWorker(Job job, Dataset dataset) {
+		this.dataset = dataset;
+		this.job = job;
+	}
+	
 	public Thread start() {
 		Thread thread = new Thread(this);
 		thread.start();
 		running=true;
+		job.status=JobStatus.RUNNING;
 		return thread;
 	}
 
@@ -45,9 +53,9 @@ public abstract class JobWorker extends JobObserverList implements Runnable{
 		return failureCause!=null;
 	}
 
-	public void setDataset(Dataset dataset) {
-		this.dataset=dataset;
-	}
+//	public void setDataset(Dataset dataset) {
+//		this.dataset=dataset;
+//	}
 
 	public Dataset getDataset() {
 		return dataset;
@@ -61,12 +69,14 @@ public abstract class JobWorker extends JobObserverList implements Runnable{
 		successful=true;
 		super.finishedSuccsessfuly();
 		running = false;
+		job.status=JobStatus.COMPLETED;
 	}
 	
 	public void finishedWithFailure(Exception failureCause) {
 		this.failureCause=failureCause;
 		running = false;
 		super.finishedWithFailure(failureCause);
+		job.status=JobStatus.FAILED;
 	}
 	
 	@Override

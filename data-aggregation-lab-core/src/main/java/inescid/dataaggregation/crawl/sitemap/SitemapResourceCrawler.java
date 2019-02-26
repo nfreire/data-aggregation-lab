@@ -19,7 +19,7 @@ import inescid.util.DevelopementSingleton;
 
 public class SitemapResourceCrawler {
 
-	String sitemapUrl;
+	String rootSitemapUrl;
 	String robotsTxtUrl;
 	CrawlResourceHandler handler;
 	JobObserver observer;
@@ -31,7 +31,7 @@ public class SitemapResourceCrawler {
 	
 	public SitemapResourceCrawler(String sitemapUrl, String robotsTxtUrl, CrawlResourceHandler handler, JobObserver observer) {
 		super();
-		this.sitemapUrl = sitemapUrl;
+		this.rootSitemapUrl = sitemapUrl;
 		this.handler = handler;
 		this.robotsTxtUrl = robotsTxtUrl;
 		this.observer = observer;
@@ -45,13 +45,24 @@ public class SitemapResourceCrawler {
 		try {
 //			if(robotsTxtUrl!=null)
 //				session.setRobotsTxtRules(robotsTxtUrl);
-			fetchSitemap(sitemapUrl);
+			fetchSitemap(rootSitemapUrl);
 			handler.close();
 		} catch (Exception e) {
 			runError=e;
 		}
 	}
-	
+
+	public void run(String sitemapContent) {
+		try {
+//			if(robotsTxtUrl!=null)
+//				session.setRobotsTxtRules(robotsTxtUrl);
+			AbstractSiteMap siteMap = parseSiteMap(sitemapContent, rootSitemapUrl);
+			processSitemap(siteMap);
+			handler.close();
+		} catch (Exception e) {
+			runError=e;
+		}
+	}
 	
 	
 	private void fetchSitemap(String sitemapUrl) throws Exception {
@@ -60,8 +71,10 @@ public class SitemapResourceCrawler {
 		GlobalCore.getHttpRequestService().fetch(sitemapRequest);
 		if (sitemapRequest.getResponseStatusCode() != 200) 
 			throw new IOException(sitemapUrl);
-		AbstractSiteMap siteMap;
-		siteMap = parseSiteMap(sitemapRequest.getContent(), sitemapUrl);
+		AbstractSiteMap siteMap = parseSiteMap(sitemapRequest.getContent(), sitemapUrl);
+		processSitemap(siteMap);
+	}		
+	private void processSitemap(AbstractSiteMap siteMap) throws Exception {	
 		if (siteMap.isIndex()) {
 			SiteMapIndex smIdx=(SiteMapIndex) siteMap;
 			for(AbstractSiteMap subSm : smIdx.getSitemaps()) {
@@ -93,6 +106,12 @@ public class SitemapResourceCrawler {
 	private static AbstractSiteMap parseSiteMap(Content content, String url) throws IOException, UnknownFormatException {
 		SiteMapParser parser=new SiteMapParser(false);
 		AbstractSiteMap siteMap = parser.parseSiteMap(content.getType().getMimeType(), content.asBytes(), new URL(url));
+		return siteMap;
+	}
+	
+	private static AbstractSiteMap parseSiteMap(String content, String url) throws IOException, UnknownFormatException {
+		SiteMapParser parser=new SiteMapParser(false);
+		AbstractSiteMap siteMap = parser.parseSiteMap("application/xml", content.getBytes("UTF-8"), new URL(url));
 		return siteMap;
 	}
 

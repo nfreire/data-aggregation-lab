@@ -301,14 +301,14 @@ public class ConversionSpecificationAnalyzer {
 
 	public static void main(String[] args) {
 		try {
-			GlobalCore.init_developement();
-
-			ConversionSpecificationAnalyzer c=new ConversionSpecificationAnalyzer();
-			Dataset dataset = GlobalCore.getDatasetRegistryRepository().getDatasetByUri("https://scrc.lib.ncsu.edu/sal_staging/iiif-discovery.json");
-			c.process(dataset, GlobalCore.getPublicationRepository());
-			System.out.println( c.getRpt().toCsv() );
-
-			
+//			GlobalCore.init_developement();
+//
+//			ConversionSpecificationAnalyzer c=new ConversionSpecificationAnalyzer();
+//			Dataset dataset = GlobalCore.getDatasetRegistryRepository().getDatasetByUri("https://scrc.lib.ncsu.edu/sal_staging/iiif-discovery.json");
+//			c.process(dataset, GlobalCore.getPublicationRepository());
+//			System.out.println( c.getRpt().toCsv() );
+//
+//			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -42,7 +42,6 @@ public class PropertyProfiler  implements ProfileOfInterface {
 	public void eventProperty(Statement statement) {
 		for (ProfileOfInterface p: profilesListAux)
 			p.eventProperty(statement);
-		
 	}
 
 	@Override
@@ -63,6 +62,18 @@ public class PropertyProfiler  implements ProfileOfInterface {
 		csv.print(profileOfExternalLinks.literalRatio);		
 		csv.print(profileOfExternalLinks.linkageToInternalRatio);		
 		csv.print(profileOfExternalLinks.linkageToExternalRatio);		
+	}
+
+	public ProfileOfUniqueness getProfileOfUniqueness() {
+		return profileOfUniqueness;
+	}
+
+	public ProfileOfExternalLinks getProfileOfExternalLinks() {
+		return profileOfExternalLinks;
+	}
+
+	public ProfileOfValueDistribution getProfileOfValueDistribution() {
+		return profileOfValueDistribution;
 	}
 
 

@@ -29,13 +29,17 @@ import inescid.dataaggregation.store.PublicationRepository;
 
 public class JobPublishSeeAlso extends JobWorker {
 	
+	protected JobPublishSeeAlso(Job job, Dataset dataset) {
+		super(job, dataset);
+	}
+
 	@Override
 	public void runJob()  throws Exception {
 			PublicationRepository repository=GlobalCore.getPublicationRepository();
 			if(dataset.getType()==DatasetType.IIIF) {
 				File targetZipFile = repository.getExportSeeAlsoZipFile(dataset);
 				ZipArchiveExporter ziper=new ZipArchiveExporter(targetZipFile);
-				List<Entry<String, File>> allDatasetManifestSeeAlsoFiles = GlobalCore.getDataRepository().getAllDatasetResourceFiles(GlobalCore.SEE_ALSO_DATASET_PREFIX+dataset.getUri());
+				List<Entry<String, File>> allDatasetManifestSeeAlsoFiles = GlobalCore.getDataRepository().getAllDatasetResourceFiles(((IiifDataset)dataset).getSeeAlsoDatasetUri());
 				for(Entry<String, File> manifEntry: allDatasetManifestSeeAlsoFiles) {
 					ziper.addFile(manifEntry.getValue().getName());
 					FileInputStream fis = new FileInputStream(manifEntry.getValue());

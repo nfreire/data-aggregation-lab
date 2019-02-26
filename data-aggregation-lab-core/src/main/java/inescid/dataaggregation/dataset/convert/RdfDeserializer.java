@@ -39,7 +39,7 @@ public class RdfDeserializer {
 	}
 	
 	static final Pattern XML_DECLARATION_PATTERN=Pattern.compile("^\\s*<\\?xml\\s");
-	static final Pattern JSON_BRACES_PATTERN=Pattern.compile("^\\s*\\{.*\\}\\s*$");
+	static final Pattern JSON_BRACES_PATTERN=Pattern.compile("^\\s*\\{.*\\}\\s*$",Pattern.DOTALL);
 	public static String detectMimeType(byte[] rdfBytes) {
 		String s=new String(rdfBytes, GlobalCore.UTF8);
 		if(XML_DECLARATION_PATTERN.matcher(s).find())

@@ -19,7 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.dataset.Dataset;
+import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.job.Job;
 import inescid.dataaggregation.dataset.job.Job.JobType;
 import inescid.dataaggregation.dataset.job.JobRunner;
@@ -119,6 +121,10 @@ public class ManagementServlet extends HttpServlet {
 		try {
 			RequestOperation operation = RequestOperation.fromHttpRequest(req);
 			System.out.println(operation);
+			
+			
+			
+			
 			switch (operation) {
 			case DISPLAY_DATASETS: {
 				ListDatasetsView view=new ListDatasetsView(datasetRepository, jobRunner, req);
@@ -132,33 +138,27 @@ public class ManagementServlet extends HttpServlet {
 			}case HARVEST_START:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(Job.JobType.HARVEST, dataset));
-				sendResponse(resp, 200, new JobStatus("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the page of the dataset.", dataset).output());
 				break;
 			}case HARVEST_START_SAMPLE:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(Job.JobType.HARVEST_SAMPLE, dataset));
-				sendResponse(resp, 200, new JobStatus("Harvesting of a sample of the dataset will be executed. The status of the harvesting process can be followed in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Harvesting of a sample of the dataset will be executed. The status of the harvesting process can be followed in the page of the dataset.", dataset).output());
 				break;
 			} case PUBLISH_DATASET_DATA:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.PUBLISH_DATA, dataset));
-				sendResponse(resp, 200, new JobStatus("Publication of the dataset will be executed. The public link for the published data will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Publication of the dataset will be executed. The public link for the published data will later be available in the  page of the dataset.", dataset).output());
 				break;
 			} case PUBLISH_DATASET_SEEALSO_DATA:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.PUBLISH_SEEALSO_DATA, dataset));
-				sendResponse(resp, 200, new JobStatus("Publication of the dataset will be executed. The public link for the published data will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Publication of the dataset will be executed. The public link for the published data will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case CLEAR_DATASET_DATA:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				if(req.getParameter("confirmation")!=null && req.getParameter("confirmation").equals("yes")) {
-					GlobalCore.getPublicationRepository().clear(dataset);
-					GlobalCore.getDataRepository().clear(dataset);
-					GlobalCore.getTimestampTracker().clear(dataset.getUri());
-					GlobalCore.getTimestampTracker().clear(GlobalCore.SEE_ALSO_DATASET_PREFIX+dataset.getUri());
-					GlobalCore.getTimestampTracker().commit();
-					dataset.setDataFormat(null);
-					dataset.setDataProfile(null);
+					clearDatasetData(dataset);
 					datasetRepository.updateDataset(dataset);
 					sendResponse(resp, 200, new JobStatus("All data has been cleared.", dataset).output());
 				} else {
@@ -173,30 +173,28 @@ public class ManagementServlet extends HttpServlet {
 			}case PROFILE_DATASET_MANIFESTS:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.PROFILE_MANIFESTS, dataset));
-				sendResponse(resp, 200, new JobStatus("Profiling of the dataset will be executed. The link to the profile results will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Profiling of the dataset will be executed. The link to the profile results will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case PROFILE_DATASET_RDF:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.PROFILE_RDF, dataset));
-				sendResponse(resp, 200, new JobStatus("Profiling of the dataset will be executed. The link to the profile results will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("Profiling of the dataset will be executed. The link to the profile results will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case CONVERT_DATASET_DATA:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.CONVERT, dataset));
-				sendResponse(resp, 200, new JobStatus("To EDM Conversion of the dataset will be executed. The link to the EDM export will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("To EDM Conversion of the dataset will be executed. The link to the EDM export will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case VALIDATE_EDM:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.VALIDATE_EDM, dataset));
-				sendResponse(resp, 200, new JobStatus("To EDM Validation of the dataset will be executed. The link to the report export will later be available in the list of datasets.", dataset).output());
+				sendResponse(resp, 200, new JobStatus("To EDM Validation of the dataset will be executed. The link to the report export will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case REMOVE_DATASET:{
 				if(req.getParameter("confirmation")!=null && req.getParameter("confirmation").equals("yes")) {
 					Dataset dataset = datasetRepository.removeDataset(req.getParameter("dataset"));
-					GlobalCore.getPublicationRepository().clear(dataset);
-					GlobalCore.getDataRepository().clear(dataset);
-					GlobalCore.getTimestampTracker().clear(dataset.getLocalId());
-					GlobalCore.getTimestampTracker().commit();
+					if(dataset!=null) 
+						clearDatasetData(dataset);
 					ListDatasetsView view=new ListDatasetsView(datasetRepository, jobRunner, req);
 					view.setMessage("Dataset has been removed");
 					sendResponse(resp, 200, view.output());
@@ -217,7 +215,7 @@ public class ManagementServlet extends HttpServlet {
 				HarvestIiifSeeAlsoForm form=new HarvestIiifSeeAlsoForm(dataset, seeAlsoParam, GlobalCore.getPublicationRepository(), harvestParam!=null && harvestParam.equals("Initiate harvest")); 
 				if(form.executeJob()) {
 					jobRunner.addJob(new Job(JobType.HARVEST_SEEALSO, dataset, seeAlsoParam));
-					form.setMessage("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the list of datasets.");
+					form.setMessage("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the page of the dataset.");
 				}
 				sendResponse(resp, 200, form.output());
 				break;
@@ -244,6 +242,18 @@ public class ManagementServlet extends HttpServlet {
 		doGetOrPost(req, resp);
 	}
 
+	protected void clearDatasetData(Dataset dataset) throws Exception {
+		GlobalCore.getPublicationRepository().clear(dataset);
+		GlobalCore.getDataRepository().clear(dataset);
+		GlobalCore.getTimestampTracker().clear(dataset.getUri());
+		GlobalCore.getTimestampTracker().clear(dataset.getConvertedEdmDatasetUri());
+		if(dataset.getType()==DatasetType.IIIF)
+			GlobalCore.getTimestampTracker().clear(((IiifDataset)dataset).getSeeAlsoDatasetUri());
+		GlobalCore.getTimestampTracker().commit();
+		dataset.setDataFormat(null);
+		dataset.setDataProfile(null);
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGetOrPost(req, resp);

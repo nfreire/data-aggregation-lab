@@ -20,10 +20,12 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 	
 	Integer sampleSize;
 
-	public JobHarvestIiif() {
+	public JobHarvestIiif(Job job, Dataset dataset) {
+		super(job, dataset);
 	}
 	
-	public JobHarvestIiif(int sampleSize) {
+	public JobHarvestIiif(Job job, Dataset dataset, int sampleSize) {
+		super(job, dataset);
 		this.sampleSize = sampleSize;
 	}
 

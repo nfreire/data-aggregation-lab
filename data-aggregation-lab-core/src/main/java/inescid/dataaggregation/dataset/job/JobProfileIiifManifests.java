@@ -13,6 +13,10 @@ import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 
 public class JobProfileIiifManifests extends JobWorker {
 	
+	protected JobProfileIiifManifests(Job job, Dataset dataset) {
+		super(job, dataset);
+	}
+
 	@Override
 	public void runJob() throws Exception {
 			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)

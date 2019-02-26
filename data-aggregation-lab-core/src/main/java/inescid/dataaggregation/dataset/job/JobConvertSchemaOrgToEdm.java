@@ -2,15 +2,10 @@ package inescid.dataaggregation.dataset.job;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
@@ -19,18 +14,10 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.mortbay.log.Log;
 import org.w3c.dom.Document;
 
-import eu.europeana.research.iiif.crawl.CollectionCrawler;
-import eu.europeana.research.iiif.crawl.ManifestHarvester;
-import eu.europeana.research.iiif.crawl.ManifestSeeAlsoHarvester;
-import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
-import eu.europeana.research.iiif.discovery.demo.TimestampCrawlingHandler;
-import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
-import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import eu.europeana.research.iiif.profile.SeeAlsoProfile;
 import inescid.dataaggregation.dataset.Dataset;
+import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.RdfReg;
@@ -47,7 +34,8 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 	String provider;
 	String dataProvider;
 
-	public JobConvertSchemaOrgToEdm() {
+	public JobConvertSchemaOrgToEdm(Job job, Dataset dataset) {
+		super(job, dataset);
 	}
 
 	@Override

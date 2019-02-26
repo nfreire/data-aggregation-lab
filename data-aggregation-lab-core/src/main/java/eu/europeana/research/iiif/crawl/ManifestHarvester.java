@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -42,6 +43,8 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(
 						new UrlRequest(mUrl, "accept", "application/json"), repository.getFile(datasetUri, mUrl));
 				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
+
+				manifestSource.setObjectTimestamp(datasetUri, mUrl, new GregorianCalendar());
 			} catch (IOException | AccessException e) {
 				log.error(e.getMessage(), e);
 				continue;

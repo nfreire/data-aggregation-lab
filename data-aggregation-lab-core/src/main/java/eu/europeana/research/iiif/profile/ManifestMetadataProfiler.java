@@ -59,7 +59,7 @@ public class ManifestMetadataProfiler {
 				seeAlsoProfile.profileManifest(m);
 				licenseProfile.profileManifest(m);
 			} catch (JsonSyntaxException e) {
-				log.debug("Error parsing of "+manifestJsonFile.getKey()+"\n"+ fileData);
+				log.info("Error parsing of "+manifestJsonFile.getKey()+"\n"+ fileData, e);
 			}
 		}
 		File manifestMdCsvFile = new File(outputFolder, "manifest-metadata-profile.csv");

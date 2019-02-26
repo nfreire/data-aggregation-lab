@@ -16,6 +16,9 @@ import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.dataaggregation.dataset.job.JobObserver;
 
 public class JobObserverList implements JobObserver {
+	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger(JobObserverList.class);
+	
 	protected List<JobObserver> observers=new ArrayList<>();
 
 	public void addObserver(JobObserver obs) {
@@ -33,6 +36,7 @@ public class JobObserverList implements JobObserver {
 	}
 	
 	public void finishedWithFailure(Exception failureCause) {
+		log.error("Job failed ", failureCause);
 		for(JobObserver o: observers)
 			o.finishedWithFailure(failureCause);
 	}

@@ -27,10 +27,12 @@ import inescid.util.XmlUtil;
 
 public class DataProfileDetector { 
 	static final Pattern xmlDecl=Pattern.compile("^([^\\s\\n\\r]{3}[\\s\\n\\r]*|[\\s\\n\\r]*)<\\?xml ");
-	static final Pattern jsonPattern=Pattern.compile("^([^\\s\\n\\r]{3})?[\\s\\n\\r]*\\{.*\\}[\\s\\n\\r]*$");
+	static final Pattern jsonPattern=Pattern.compile("^([^\\s\\n\\r]{3})?[\\s\\n\\r]*\\{.*\\}[\\s\\n\\r]*$", Pattern.DOTALL);
 
 	
 	public DataTypeResult detect(File source) throws IOException {
+		if(!source.exists())
+			return null;
 		String inString = FileUtils.readFileToString(source, "UTF-8");
 		return detect(inString);
 	}
@@ -148,6 +150,8 @@ public class DataProfileDetector {
 	}
 
 	public static DataTypeResult detect(String datasetUri, Repository repo) throws IOException{
+//		public static DataTypeResult detect(Dataset dataset, Repository repo) throws IOException{
+//			String datasetUri=dataset.getUri();
 		DataTypeResult detectedInHeaders=DataProfileDetectorFromHttpHeaders.detect(datasetUri, repo);
 		if(detectedInHeaders!=null && detectedInHeaders.profile!=null) {
 			if (detectedInHeaders.profile!=DatasetProfile.ANY_TRIPLES) 
@@ -162,7 +166,9 @@ public class DataProfileDetector {
 				if(idx>50)
 					break;
 			}
-		}	
+		} else {
+			
+		}
 		return detectedInHeaders;
 	}
 	

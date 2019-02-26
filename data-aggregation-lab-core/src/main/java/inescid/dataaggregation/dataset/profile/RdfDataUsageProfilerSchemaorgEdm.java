@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.Resource;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.store.Repository;
@@ -44,7 +45,7 @@ public class RdfDataUsageProfilerSchemaorgEdm {
 		
 		List<Entry<String, File>> allDatasetResourceFiles = (dataset.getType()==DatasetType.IIIF ? 					
 				GlobalCore.getDataRepository()
-				.getAllDatasetResourceFiles(GlobalCore.SEE_ALSO_DATASET_PREFIX+dataset.getUri())
+				.getAllDatasetResourceFiles(((IiifDataset)dataset).getSeeAlsoDatasetUri())
 				: GlobalCore.getDataRepository()
 				.getAllDatasetResourceFiles(dataset.getUri()));
 		for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {

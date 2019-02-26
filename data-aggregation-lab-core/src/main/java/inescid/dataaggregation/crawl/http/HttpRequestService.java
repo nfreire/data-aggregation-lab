@@ -6,12 +6,15 @@ import java.util.Vector;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
+import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
 import inescid.util.DevelopementSingleton;
 
 
@@ -61,10 +64,16 @@ public class HttpRequestService {
 		taskSyncManager.acquireHttpFetch();
 		try {
 			Long startTime = requestTimeStats!=null ? System.nanoTime() : null;
-			HttpGet request = new HttpGet(url.getUrl());
+			HttpRequestBase request;
+			if(url.getHttpMethod()==null || url.getHttpMethod()==HttpMethod.GET) 
+				request = new HttpGet(url.getUrl());
+			else if(url.getHttpMethod()==HttpMethod.HEAD)
+				request = new HttpHead(url.getUrl());
+			else
+				throw new RuntimeException("Not implemented: "+url.getHttpMethod());
+				
 			url.addHeaders(request);
 			CloseableHttpResponse response = httpClient.execute(request);
-			
 			
 //			if(httpCookieStore.getCookies().size()>50) {
 //				httpCookieStore.clearExpired(new Date());

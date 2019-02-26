@@ -6,16 +6,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import eu.europeana.research.iiif.profile.ManifestLabelValuesProfile.MetadataLabelProfile;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import eu.europeana.research.iiif.profile.model.Metadata;
 import eu.europeana.research.iiif.profile.model.SeeAlso;
+import inescid.util.JsonUtil;
 
 public class LicenseProfile {
 
@@ -27,15 +32,16 @@ public class LicenseProfile {
 	
 	public void profileManifest(Manifest manifest) {
 		if(manifest.license==null) return;
-		for(String md: manifest.license) {
-			if(md!=null){
-				Integer lbProf = values.get(md);
-				if(lbProf==null) 
-					values.put(md, 1);
-				else
-					values.put(md, lbProf+1);
+			if(manifest.license!=null){
+				List<String> vals = JsonUtil.readArrayOrValue(manifest.license);
+				for(String val: vals) {
+					Integer lbProf = values.get(val);
+					if(lbProf==null) 
+						values.put(val, 1);
+					else
+						values.put(val, lbProf+1);
+				}
 			}
-		}
 	}
 
 	public void save(File csvFile) throws IOException {

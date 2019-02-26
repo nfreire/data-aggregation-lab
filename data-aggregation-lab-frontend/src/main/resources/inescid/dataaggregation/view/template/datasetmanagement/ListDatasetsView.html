@@ -21,15 +21,7 @@
 			${ds.type}
 			</td>
 			<td  class="field_operations">
-			    <a href="${context}/harvester/dataset-detail?dataset=${ds.localId}">consult status</a>
-				<#if ds.published>
-					<br/>
-					<a href="${context}/${ds.publicationUrl}">Download export</a>
-				</#if>
-				<#if ds.profiled>
-					<br/>
-					<a target="_blank" href="${ds.profileUrl}">See profile</a>
-				</#if>
+			    <a href="${context}/harvester/dataset-detail?dataset=${ds.localId}">more details...</a>
 			</td>
 		</tr>
   </#list>	

@@ -103,7 +103,8 @@ public class SchemaOrgToEdmDataConverter {
 			if(!rights.hasNext())
 				mainTargetResource.getModel().add(ag, RdfReg.EDM_RIGHTS, mainTargetResource.getModel().createResource(datasetRights));
 		}
-		addAdditionalStatements(additionalStatements);
+		if(additionalStatements!=null && !additionalStatements.isEmpty())
+			addAdditionalStatements(additionalStatements);
 		return mainTargetResource;
 	}
 

@@ -51,7 +51,8 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 			.getLogger(JobValidateEdm.class);
 	Schema validationSchema=Schema.EDM;
 
-	public JobValidateEdm() {
+	public JobValidateEdm(Job job, Dataset dataset) {
+		super(job, dataset);
 	}
 
 	@Override

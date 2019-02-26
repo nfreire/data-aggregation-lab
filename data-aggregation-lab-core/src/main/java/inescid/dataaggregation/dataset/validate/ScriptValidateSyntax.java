@@ -18,8 +18,8 @@ import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.observer.JobObserverStdout;
-import inescid.util.MapOfInts;
 import inescid.util.XmlUtil;
+import inescid.util.datastruct.MapOfInts;
 
 public class ScriptValidateSyntax {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -30,7 +30,8 @@ public class ScriptValidateSyntax {
 			GlobalCore.init_developement();
 			DataProfileDetector dtc=new DataProfileDetector();
 			
-			Dataset dataset=GlobalCore.getDatasetRegistryRepository().getDatasetByUri("http://192.92.149.69:8983/data-aggregation-lab/static/data-external/europeana-dataset-sitemap/sitemap.xml");
+			Dataset dataset=null;
+//					GlobalCore.getDatasetRegistryRepository().getDatasetByUri("http://192.92.149.69:8983/data-aggregation-lab/static/data-external/europeana-dataset-sitemap/sitemap.xml");
 			
 			File reportFolder = GlobalCore.getPublicationRepository().getReportsFolder(dataset);
 			if(!reportFolder.exists())

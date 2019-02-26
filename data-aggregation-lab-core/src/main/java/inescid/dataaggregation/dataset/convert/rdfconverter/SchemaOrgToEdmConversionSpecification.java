@@ -101,7 +101,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER);
 		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfReg.EDM_TYPE);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
-		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "TEXT");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "IMAGE");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_WEB_PAGE.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_MEDIA_OBJECT.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_BOOK.getURI(), "TEXT");

@@ -85,7 +85,7 @@ public class IiifForm extends DatasetForm {
 					String contentType = req.getResponseHeader("content-type");
 					ContentTypes detectedType = null;
 					DataProfileDetector dpd=new DataProfileDetector();
-					if(StringUtils.isEmpty(contentType)) {
+					if(StringUtils.isEmpty(contentType) || contentType.startsWith("text/plain")) {
 						 DataTypeResult detect = dpd.detect(req.getContent().asString());
 						if(detect!=null)
 							detectedType=detect.format;
@@ -96,7 +96,7 @@ public class IiifForm extends DatasetForm {
 					else if(detectedType==ContentTypes.XML) {
 						message=("Harvesting method detected: Sitemaps");
 						((IiifDataset)dataset).setCrawlMethod(IiifCrawlMethod.SITEMAP);
-					} else if(contentType.contains("json")) {
+					} else if(detectedType==ContentTypes.JSON_LD) {
 						try {
 							String collectionJson = req.getContent().asString();
 							JsonReader jr=new JsonReader(new StringReader(collectionJson));

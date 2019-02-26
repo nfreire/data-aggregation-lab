@@ -34,7 +34,7 @@ public class LinkedDataUtil {
 	}
 	
 	public static Resource getResource(String resourceUri) throws AccessException, InterruptedException {
-		Model dsModel = readRdf(getResourceRdfBytes(resourceUri));
+		Model dsModel = RdfUtil.readRdf(getResourceRdfBytes(resourceUri).asStream());
 		if(!dsModel.containsResource(ResourceFactory.createResource(resourceUri)))
 			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
 		return dsModel.createResource(resourceUri);
@@ -50,33 +50,11 @@ public class LinkedDataUtil {
 		return HttpUtil.makeRequest(resourceUri, DEFAULT_ACCEPT);
 	}
 	
-	private static Model readRdf(Content content) {
-		Model model = null;
-		Lang rdfLang=null;
-		if (content.getType()!=null && content.getType().getMimeType()!=null){
-			rdfLang=RdfUtil.fromMimeType(content.getType().getMimeType());
-			if (rdfLang!=null) {
-	//		byte[] fileBytes = FileUtils.readFileToByteArray(schemaorgFile);
-				model = ModelFactory.createDefaultModel();
-				model.read(content.asStream(), null, rdfLang.getName());
-			} else {
-				for(Lang l: new Lang[] { Lang.RDFXML, Lang.TURTLE, Lang.JSONLD}) {
-					try {
-						model = ModelFactory.createDefaultModel();
-						model.read(content.asStream(), null, rdfLang.getName());
-						break;
-					} catch (Exception e){
-						//ignore and try another reader
-					}
-				}
-			}
-		}
-		return model;
-	}
+
 
 	public static Resource getAndStoreResource(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		Content resourceRdfBytes = getResourceRdfBytes(resourceUri);
-		Model dsModel = readRdf(resourceRdfBytes);
+		Model dsModel = RdfUtil.readRdf(resourceRdfBytes.asStream());
 		FileUtils.writeByteArrayToFile(storeFile, resourceRdfBytes.asBytes(), false);		
 		Resource resource = dsModel.getResource(resourceUri);
 		if(resource==null)

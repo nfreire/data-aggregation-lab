@@ -19,6 +19,7 @@ import org.mortbay.log.Log;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
+import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
 import inescid.dataaggregation.dataset.GlobalCore;
 
 public class HttpUtil {
@@ -59,6 +60,11 @@ public class HttpUtil {
 	
 	public static HttpRequest makeRequest(String resourceUri) throws AccessException, InterruptedException {
 		UrlRequest ldReq=new UrlRequest(resourceUri);
+		return makeRequest(ldReq);
+	}
+	public static HttpRequest makeHeadRequest(String resourceUri) throws AccessException, InterruptedException {
+		UrlRequest ldReq=new UrlRequest(resourceUri);
+		ldReq.setMethod(HttpMethod.HEAD);
 		return makeRequest(ldReq);
 	}
 	private static HttpRequest makeRequest(UrlRequest ldReq) throws AccessException, InterruptedException {
@@ -123,5 +129,12 @@ public class HttpUtil {
 		for(Header h : headers)
 			meta.add(new AbstractMap.SimpleEntry<String, String>(h.getName(), h.getValue()));
 		return meta;
+	}
+	public static String getHeader(String headerToGet, List<Entry<String, String>> headers) {
+		for (Entry<String, String> h : headers) {
+			if(h.getKey().equalsIgnoreCase(headerToGet))
+				return h.getValue();
+		}
+		return null;
 	}
 }

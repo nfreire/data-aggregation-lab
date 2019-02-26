@@ -107,7 +107,7 @@ public class GlobalCore {
 		if(dataRepository==null) {
 			String repositoryFolder = prop
 					.getProperty("dataaggregation.data-repository.folder");
-			if (repositoryFolder.equals("${dataaggregation.data-repository.folder}"))
+			if (repositoryFolder==null || repositoryFolder.equals("${dataaggregation.data-repository.folder}"))
 				repositoryFolder = "C:\\Users\\nfrei\\Desktop\\data-aggregation-lab\\data-repository";
 			dataRepository=new Repository();
 			dataRepository.init(repositoryFolder);
@@ -151,12 +151,20 @@ public class GlobalCore {
 	}
 
 	public static File getValidatorResourceFolder() {
-		URL resource = GlobalCore.class.getResource("edmschema.EDM.xsd");
+		URL resource = GlobalCore.class.getClassLoader().getResource("edmschema/EDM.xsd");
 		try {
-			return Paths.get(resource.toURI()).toFile();
+			return Paths.get(resource.toURI()).toFile().getParentFile().getParentFile();
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
+	}
+	public static void init_componentHttpRequestService() {
+		httpRequestService.init();
+	}
+	public static void init_componentDataRepository(String repositoryFolder) {
+		Properties repoProps=new Properties();
+		repoProps.setProperty("dataaggregation.data-repository.folder", repositoryFolder);
+		initDataRepository(repoProps);
 	}
 
 //	private static void initLogging() {

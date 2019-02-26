@@ -67,7 +67,7 @@ public class HarvestIiifSeeAlsoForm extends DatasetView {
 //			formatAndProfileValues.set(i, formatAndProfileValues.get(i).replaceAll("", "  ");)
 //		}
 		if(formatAndProfileValues.isEmpty())
-			setMessage("The profile results of the dataset contains no valid seeAlso references to allow harvesting");
+			setMessage("The profile results of the dataset contains no valid 'seeAlso' references to allow harvesting");
 		else 
 			Collections.sort(formatAndProfileValues);
 		return formatAndProfileValues;

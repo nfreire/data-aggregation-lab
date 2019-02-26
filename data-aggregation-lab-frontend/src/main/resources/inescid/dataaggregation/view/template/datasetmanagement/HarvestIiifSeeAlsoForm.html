@@ -14,13 +14,13 @@
 <form action="${context}/harvester/dataset-iiif-harvest-seealso" method="post">
 <input type="hidden" name="dataset" value="${localId}" />
 <table style="padding-bottom:10px">
-	<tr><td colspan="2" class="form_title">Selection of the seeAlso links for harvesting</td></tr>
+	<tr><td colspan="2" class="form_title">Selection of the 'seeAlso' links for harvesting</td></tr>
 	<#if message??>
 		<tr><td colspan="2" class="validation_message">${message}</td></tr>
 	</#if>
 	<#if seeAlsoTypes?has_content>
-		<tr><td colspan="2" class="field_value">The dataset contains the types of seeAlso links listed below. Please select the one that should be harvested.</td></tr>
-		<tr><td width="400" class="field_title">Types of seeAlso<font color="red">*</font></td>
+		<tr><td colspan="2" class="field_value">The dataset contains the types of 'seeAlso' links listed below. Please select the one that should be harvested.</td></tr>
+		<tr><td width="400" class="field_title">Types of 'seeAlso'<font color="red">*</font></td>
 		<td class="field_value">
 			<select name="seeAlso">
 			  		<option value="">«select value»</option>

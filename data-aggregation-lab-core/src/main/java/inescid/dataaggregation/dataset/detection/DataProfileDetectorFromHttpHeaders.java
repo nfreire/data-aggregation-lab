@@ -46,6 +46,9 @@ public class DataProfileDetectorFromHttpHeaders {
 			} 
 		}
 		
+		if(contentType==null) 
+			return null;
+		
 		DataTypeResult ret=null;
 		ContentTypes mimeEnum = ContentTypes.fromMime(contentType);
 		if(mimeEnum!=null) {
