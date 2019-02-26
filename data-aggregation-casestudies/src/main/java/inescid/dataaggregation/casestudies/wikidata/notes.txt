@@ -1,0 +1,5 @@
+A Person record referencing a CHO:
+https://www.wikidata.org/wiki/Q2500931
+http://www.europeana.eu/portal/en/record/90402/SK_A_2437.html
+
+

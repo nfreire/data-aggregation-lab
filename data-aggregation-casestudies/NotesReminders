@@ -1,0 +1,42 @@
+https://query.wikidata.org/ - sparql ui
+https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries/examples - Wikidata:SPARQL query service/queries/examples 
+
+wikidata URIs (entity): http://www.wikidata.org/entity/Q50378472
+wikidata URIs (property): http://www.wikidata.org/entity/P727 (Europeana ID) P6108 (IIIFManifest)
+
+Object with IIIF Manifest and EuropeanaID
+https://www.wikidata.org/wiki/Q21612591
+
+###### SPAQL query for all entities with EuropeanaID
+SELECT
+  ?item
+# valueLabel is only useful for properties with item-datatype
+WHERE 
+{
+  ?item wdt:P727 ?value
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+
+###### SPAQL query for all entities with EuropeanaID and IIIF Manifest
+SELECT
+  ?item
+# valueLabel is only useful for properties with item-datatype
+WHERE 
+{
+  ?item wdt:P6108 ?x .
+  ?item wdt:P727 ?r .
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+
+
+***** Spreasheets on edm wikidata mappings
+Mapping WIKIDATA/EDM
+https://docs.google.com/spreadsheets/d/1lK0IGgmZLOE5xcvs6zMj7631uSDBV-u9VQKeoq9PFqs
+
+Mappings to EDM Contextual Entities
+https://docs.google.com/spreadsheets/d/1HatX13gn4VeRGciv2IvrkzIJ3LKO5AhCyfZmlywUtUs/
+
+Old curation work by dps team
+Europeana Vocabulary Final Draft
+https://docs.google.com/spreadsheets/d/1qjyyneg6aMoPC2v5hwC8YinmHKNyJtvTJp1HJdnnPc8/
+
