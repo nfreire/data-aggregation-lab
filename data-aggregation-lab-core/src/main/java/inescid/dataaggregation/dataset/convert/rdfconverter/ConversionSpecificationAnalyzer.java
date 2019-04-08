@@ -84,7 +84,9 @@ public class ConversionSpecificationAnalyzer {
 									mappedProps=new HashSet<>();
 									currentClassMappings.put(prop, mappedProps);
 								}
-								mappedProps.addAll(getAllMappedProperties(prop, currentClass, currentClassSpec));
+								Set<PropertyMappingSpecification> allMappedProperties = getAllMappedProperties(prop, currentClass, currentClassSpec);
+								for(PropertyMappingSpecification pSpec: allMappedProperties)
+									mappedProps.add(pSpec.getProperty());
 								mappedProps.addAll(getAllMappedPropertiesInMerge(prop, currentClass, currentClassSpec));
 							}
 						}
@@ -136,10 +138,10 @@ public class ConversionSpecificationAnalyzer {
 //				}
 				
 				
-				Set<Entry<Property, Property>> allMappedPropertiesInReferencedResources = getAllMappedPropertiesInReferencedResources((Property)currentProp, currentClass, currentClassSpec);
+				Set<Entry<Property, PropertyMappingSpecification>> allMappedPropertiesInReferencedResources = getAllMappedPropertiesInReferencedResources((Property)currentProp, currentClass, currentClassSpec);
 //				System.out.println(allMappedPropertiesInReferencedResources);
-				for(Entry<Property, Property> map: allMappedPropertiesInReferencedResources) {
-					rpt.addPropertyMapInReferencedResource(map.getKey(), map.getValue());
+				for(Entry<Property, PropertyMappingSpecification> map: allMappedPropertiesInReferencedResources) {
+					rpt.addPropertyMapInReferencedResource(map.getKey(), map.getValue().getProperty());
 				}
 				
 				
@@ -207,10 +209,10 @@ public class ConversionSpecificationAnalyzer {
 		}
 	}
 	
-	private static Set<Property> getAllMappedProperties(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
-		Set<Property> mappedProps = new HashSet<>();
+	private static Set<PropertyMappingSpecification> getAllMappedProperties(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
+		Set<PropertyMappingSpecification> mappedProps = new HashSet<>();
 		for(ResourceTypeConversionSpecification spec: currentClassSpec) {
-			Property propertyMapping = spec.getPropertyMapping(prop);
+			PropertyMappingSpecification propertyMapping = spec.getPropertyMapping(prop);
 			if (propertyMapping != null)
 				mappedProps.add(propertyMapping);
 			DerivedPropertyConversionSpecification derivedPropertyMapping = spec.getDerivedPropertyMapping(prop);
@@ -236,13 +238,13 @@ public class ConversionSpecificationAnalyzer {
 	private static Set<Property> getAllMappedPropertiesInMerge(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
 		Set<Property> mappedProps = new HashSet<>();
 		for(ResourceTypeConversionSpecification spec: currentClassSpec) {
-			for(Entry<Property, Property> mapping : spec.getPropertiesMapping().entrySet()) {
+			for(Entry<Property, PropertyMappingSpecification> mapping : spec.getPropertiesMapping().entrySet()) {
 				if(mapping.getKey().equals(prop)) continue;
 				Property[] merdedProps=spec.getPropertyMerge(mapping.getKey());
 				if(merdedProps!=null) {
 					for(Property p: merdedProps) {
 						if(p.equals(prop)) {
-							mappedProps.add(mapping.getValue());
+							mappedProps.add(mapping.getValue().getProperty());
 							break;
 						}
 					}
@@ -251,7 +253,7 @@ public class ConversionSpecificationAnalyzer {
 		}
 		return mappedProps;
 	}
-	private static Set<Entry<Property, Property>> getAllMappedPropertiesInReferencedResources(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
+	private static Set<Entry<Property, PropertyMappingSpecification>> getAllMappedPropertiesInReferencedResources(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
 		System.out.println("RefRes in:"+currentClass+" - "+prop);
 		
 		if(
@@ -260,15 +262,15 @@ public class ConversionSpecificationAnalyzer {
 			System.out.println("Debug here");
 		}
 		
-		Set<Entry<Property, Property>> mappedProps = new HashSet<>();
+		Set<Entry<Property, PropertyMappingSpecification>> mappedProps = new HashSet<>();
 		for(ResourceTypeConversionSpecification spec: currentClassSpec) {
-			for(Entry<Property, Property> mapping : spec.getPropertiesMapping().entrySet()) {
+			for(Entry<Property, PropertyMappingSpecification> mapping : spec.getPropertiesMapping().entrySet()) {
 				if(mapping.getKey().equals(prop)) continue;
 				System.out.println("RefRes inner spec: "+mapping.getKey()+" - "+mapping.getValue());
 				
 				List<ResourceTypeConversionSpecification> propertiesMappingFromReferencedResource = spec.searchPropertyMappingFromReferencedResource(mapping.getKey());
 				for(ResourceTypeConversionSpecification propertyMappingFromReferencedResource: propertiesMappingFromReferencedResource) {
-					for(Entry<Property, Property> srcPropMapping: propertyMappingFromReferencedResource.getPropertiesMapping().entrySet()) {
+					for(Entry<Property, PropertyMappingSpecification> srcPropMapping: propertyMappingFromReferencedResource.getPropertiesMapping().entrySet()) {
 						mappedProps.add(srcPropMapping);
 					}
 //					Entry<Property, Property> srcPropMapping=propertyMappingFromReferencedResource.getPropertiesMapping().entrySet().iterator().next();

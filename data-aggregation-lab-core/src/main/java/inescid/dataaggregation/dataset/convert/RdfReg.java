@@ -139,6 +139,7 @@ public final class RdfReg {
 	public static final Resource SCHEMAORG_IMAGE_OBJECT  = ResourceFactory.createResource(NsSchemaOrg+"ImageObject");
 	public static final Resource SCHEMAORG_DISTANCE  = ResourceFactory.createResource(NsSchemaOrg+"Distance");
 	public static final Resource SCHEMAORG_VISUAL_ARTWORK  = ResourceFactory.createResource(NsSchemaOrg+"VisualArtwork");
+	public static final Resource SCHEMAORG_PAINTING  = ResourceFactory.createResource(NsSchemaOrg+"Painting");
 	public static final Resource SCHEMAORG_WEB_PAGE  = ResourceFactory.createResource(NsSchemaOrg+"WebPage");
 	public static final Resource SCHEMAORG_BOOK  = ResourceFactory.createResource(NsSchemaOrg+"Book");
 	public static final Resource SCHEMAORG_MEDIA_OBJECT  = ResourceFactory.createResource(NsSchemaOrg+"MediaObject");
@@ -160,6 +161,7 @@ public final class RdfReg {
 	public static final Property SCHEMAORG_ABOUT = ResourceFactory.createProperty(NsSchemaOrg+"about");
 	public static final Property SCHEMAORG_KEYWORDS = ResourceFactory.createProperty(NsSchemaOrg+"keywords");
 	public static final Property SCHEMAORG_IS_PART_OF = ResourceFactory.createProperty(NsSchemaOrg+"isPartOf");
+	public static final Property SCHEMAORG_HAS_PART = ResourceFactory.createProperty(NsSchemaOrg+"hasPart");
 	public static final Property SCHEMAORG_URL = ResourceFactory.createProperty(NsSchemaOrg+"url");
 	public static final Property SCHEMAORG_THUMBNAIL_URL = ResourceFactory.createProperty(NsSchemaOrg+"thumbnailUrl");
 	public static final Property SCHEMAORG_IMAGE = ResourceFactory.createProperty(NsSchemaOrg+"image");

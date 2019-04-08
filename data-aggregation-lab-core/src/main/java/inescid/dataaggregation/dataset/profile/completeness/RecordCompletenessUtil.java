@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package inescid.dataaggregation.dataset.profile;
+package inescid.dataaggregation.dataset.profile.completeness;
 
 import java.util.ArrayList;
 import java.util.Collection;

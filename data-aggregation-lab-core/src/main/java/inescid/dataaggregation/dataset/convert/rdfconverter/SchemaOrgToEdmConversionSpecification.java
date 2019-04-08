@@ -1,5 +1,8 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
+import org.apache.jena.rdf.model.Statement;
+
+import inescid.dataaggregation.dataset.convert.FilterOfReferencedResource;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 
 public class SchemaOrgToEdmConversionSpecification {
@@ -11,11 +14,12 @@ public class SchemaOrgToEdmConversionSpecification {
 		
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PAINTING, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_BOOK, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		
 //		Article
-//		Blog
+//		Blog 
 //		Book
 //		Clip
 //		Comment
@@ -69,6 +73,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ABOUT, RdfReg.DC_SUBJECT);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_KEYWORDS, RdfReg.DC_SUBJECT);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IS_PART_OF, RdfReg.DCTERMS_IS_PART_OF);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_HAS_PART, RdfReg.DCTERMS_HAS_PART);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.DC_TITLE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IN_LANGUAGE, RdfReg.DC_LANGUAGE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_DATE_CREATED, RdfReg.DCTERMS_CREATED);
@@ -98,7 +103,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_WIDTH, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
 		pchoMapping.putPropertyMapping(RdfReg.RDF_TYPE, RdfReg.EDM_HAS_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDITIONAL_TYPE, RdfReg.EDM_HAS_TYPE);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER, true);
 		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfReg.EDM_TYPE);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "IMAGE");
@@ -162,6 +167,14 @@ public class SchemaOrgToEdmConversionSpecification {
 
 		ResourceTypeConversionSpecification addressMapping = spec.getTypePropertiesMapping(RdfReg.VCARD_ADDRESS);
 		addressMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDRESS_REGION, RdfReg.VCARD_REGION);
+		
+		spec.setFilterOfReferencedResource(new FilterOfReferencedResource() {
+			@Override
+			public boolean filterOut(Statement reference) {
+				return reference.getPredicate().equals(RdfReg.SCHEMAORG_HAS_PART) ||
+						reference.getPredicate().equals(RdfReg.SCHEMAORG_IS_PART_OF);
+			}
+		});
 	}
 
 }

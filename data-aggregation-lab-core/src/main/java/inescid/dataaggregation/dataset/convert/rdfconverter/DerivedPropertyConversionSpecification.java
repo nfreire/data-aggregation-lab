@@ -7,13 +7,13 @@ import org.apache.jena.rdf.model.Property;
 
 public class DerivedPropertyConversionSpecification {
 
-	Property derivedProperty;
+	PropertyMappingSpecification derivedProperty;
 	Map<String, String> literalMapping=new HashMap<>();
 	Map<String, String> uriMapping=new HashMap<>();
 	
 	public DerivedPropertyConversionSpecification(Property derivedProperty) {
 		super();
-		this.derivedProperty = derivedProperty;
+		this.derivedProperty = new PropertyMappingSpecification(derivedProperty);
 	}
 
 	public void putLiteralMapping(String from, String to) {
@@ -24,7 +24,7 @@ public class DerivedPropertyConversionSpecification {
 		uriMapping.put(from, to);
 	}
 
-	public Property getDerivedProperty() {
+	public PropertyMappingSpecification getDerivedProperty() {
 		return derivedProperty;
 	}
 

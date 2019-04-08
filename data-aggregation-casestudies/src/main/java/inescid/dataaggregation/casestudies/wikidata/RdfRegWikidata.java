@@ -18,6 +18,7 @@ public class RdfRegWikidata {
 	public static final Property COLLECTION = ResourceFactory.createProperty(NsWdt+"P195");
 	public static final Property INSTANCE_OF = ResourceFactory.createProperty(NsWdt+"P31");
 	public static final Property SUBCLASS_OF = ResourceFactory.createProperty(NsWdt+"P279");
+	public static final Property SUBPROPERTY_OF = ResourceFactory.createProperty(NsWdt+"P1647");
 	
 	public static final Property EQUIVALENT_PROPERTY = ResourceFactory.createProperty(NsWdt+"P1628");
 	public static final Property EQUIVALENT_CLASS = ResourceFactory.createProperty(NsWdt+"P1709");

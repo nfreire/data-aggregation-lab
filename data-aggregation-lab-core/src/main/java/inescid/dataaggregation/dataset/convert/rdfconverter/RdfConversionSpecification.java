@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.dataaggregation.dataset.convert.FilterOfReferencedResource;
 import inescid.util.RdfUtil.Jena;
 
 public class RdfConversionSpecification {
@@ -17,6 +18,8 @@ public class RdfConversionSpecification {
 	
 	Map<Resource, ResourceTypeConversionSpecification> typePropertiesMappings=new HashMap<>();
 
+	FilterOfReferencedResource filterOfReferencedResource;
+	
 //	public Map<Resource, Resource> getRootResourcesTypeMapping() {
 //		return rootResourcesTypeMapping;
 //	}
@@ -60,6 +63,14 @@ public class RdfConversionSpecification {
 
 	public Resource[] getRootResourceTypeMapping(String rdfTypeUriRef) {
 		return rootResourcesTypeMapping.get(Jena.createResource(rdfTypeUriRef));
+	}
+
+	public FilterOfReferencedResource getFilterOfReferencedResource() {
+		return filterOfReferencedResource;
+	}
+
+	public void setFilterOfReferencedResource(FilterOfReferencedResource filterOfReferencedResource) {
+		this.filterOfReferencedResource = filterOfReferencedResource;
 	}
 
 	

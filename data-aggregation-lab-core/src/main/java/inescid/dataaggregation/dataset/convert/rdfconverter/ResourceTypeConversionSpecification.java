@@ -14,7 +14,7 @@ import org.apache.jena.rdf.model.Resource;
 
 public class ResourceTypeConversionSpecification {
 	Resource type;
-	Map<Property, Property> propertiesMapping;
+	Map<Property, PropertyMappingSpecification> propertiesMapping;
 	Map<Property, Property[]> propertiesMerge;
 	Map<Property, DerivedPropertyConversionSpecification> derivedProperties;
 	Map<ImmutablePair<Property, Resource>, ResourceTypeConversionSpecification> propertiesMappingFromReferencedResources;
@@ -36,13 +36,17 @@ public class ResourceTypeConversionSpecification {
 		derivedProperties.put(from, spec);
 	}
 	public void putPropertyMapping(Property from, Property to) {
-		propertiesMapping.put(from, to);
+		propertiesMapping.put(from, new PropertyMappingSpecification(to));
+	}
+	public void putPropertyMapping(Property from, Property to, boolean mapToValueAlways) {
+		propertiesMapping.put(from, new PropertyMappingSpecification(to, mapToValueAlways));
 	}
 	public DerivedPropertyConversionSpecification getDerivedPropertyMapping(Property from) {
 		return derivedProperties.get(from);
 	}
-	public Property getPropertyMapping(Property from) {
-		return propertiesMapping.get(from);
+	public PropertyMappingSpecification getPropertyMapping(Property from) {
+		PropertyMappingSpecification spec = propertiesMapping.get(from);
+		return spec;
 	}
 	public void putPropertyMerge(Property from, Property... fromProperties) {
 		propertiesMerge.put(from, fromProperties);
@@ -56,7 +60,7 @@ public class ResourceTypeConversionSpecification {
 	public void putPropertyMappingFromReferencedResource(Property property, Resource type, Property srcTypeProp, Property targetProp) {
 		ResourceTypeConversionSpecification mapping = getCreatePropertyMappingFromReferencedResource(property, type);
 		mapping.putPropertyMapping(srcTypeProp , targetProp);
-		propertiesMapping.put(property, targetProp);
+		propertiesMapping.put(property, new PropertyMappingSpecification(targetProp));
 	}
 	
 	public ResourceTypeConversionSpecification getPropertyMappingFromReferencedResource(Property property, Resource type) {
@@ -92,7 +96,7 @@ public class ResourceTypeConversionSpecification {
 	}
 
 
-	public Map<Property, Property> getPropertiesMapping() {
+	public Map<Property, PropertyMappingSpecification> getPropertiesMapping() {
 		return propertiesMapping;
 	}
 

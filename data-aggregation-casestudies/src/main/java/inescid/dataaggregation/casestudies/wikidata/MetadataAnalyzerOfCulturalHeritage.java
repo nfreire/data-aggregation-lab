@@ -52,9 +52,9 @@ import inescid.util.datastruct.MapOfLists;
 
 public class MetadataAnalyzerOfCulturalHeritage {
 
-	public static void main(String[] args) {
-		String httpCacheFolder = "c://users/nfrei/desktop/HttpRepository";
+	public static void main(String[] args)  throws Exception {
 		File outputFolder = new File("c://users/nfrei/desktop");
+		String httpCacheFolder = "c://users/nfrei/desktop/HttpRepository";
 		final int SAMPLE_RECORDS;
 
 		if (args.length > 0)
@@ -98,12 +98,12 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		rdfCache.setRequestRetryAttempts(1);
 		
 		UsageProfiler chEntitiesProfile = new UsageProfiler();
-
+		chEntitiesProfile.setOptionProfileObjectsOfTriples(false);
 		WikidataSparqlClient.querySolutions("SELECT ?item ?europeana WHERE {" +
 //                "  ?item wdt:"+RdfRegWikidata.IIIF_MANIFEST+" ?x ." + 
 				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new UriHandler() {
 
-					int stop = SAMPLE_RECORDS+1;
+					int stop = SAMPLE_RECORDS;
 
 					@Override
 					public boolean  handleSolution(QuerySolution solution) throws AccessException, InterruptedException, IOException {
@@ -126,6 +126,8 @@ public class MetadataAnalyzerOfCulturalHeritage {
 //							System.out.println("Statements for " + uri);
 //							System.out.println(RdfUtil.printStatements(rdfWikidata));
 						stop--;
+						if(stop % 100 == 0)
+							System.out.println("progress "+stop);
 						return stop != 0;
 //						return true;
 					}
@@ -134,15 +136,19 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				});
 		chEntitiesProfile.finish();
 
+		FileUtils.write(new File(httpCacheFolder, "wd_ch_profile.csv"), chEntitiesProfile.getUsageStats().toCsv(), "UTF-8");
+		
 //		System.out.println(chEntitiesProfile);
+		System.out.println(chEntitiesProfile.printSummary());
 
 		UsageProfiler wdEntPropProfile = new UsageProfiler();
 		final EquivalenceMapping wdEntPropEquivalences = new EquivalenceMapping(rdfCache);
-//		final MapOfLists<String, String> wdEntPropEquivalences = new MapOfLists<String, String>();
-//		final MapOfLists<String, String> wdEntPropEquivalencesSuperclasses = new MapOfLists<String, String>();
-
+		HashSet<String> existingEntsSet=new HashSet<String>();
+		HashSet<String> existingPropsSet=new HashSet<String>();
+		
+		
 		//TMP HACK
-		wdEntPropEquivalences.putEquivalence(RdfRegWikidata.CREATIVE_WORK.getURI(), RdfReg.SCHEMAORG_CREATIVE_WORK.getURI());
+//		wdEntPropEquivalences.putEquivalence(RdfRegWikidata.CREATIVE_WORK.getURI(), RdfReg.SCHEMAORG_CREATIVE_WORK.getURI());
 		
 		// harvest all wd entities and properties used, and profile them
 		for (Entry<String, ClassUsageStats> entry : chEntitiesProfile.getUsageStats().getClassesStats().entrySet()) {
@@ -150,7 +156,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 
 			if(!wdResourceUri.startsWith("http://www.wikidata.org/")) {
 				String[] wdEqUri=new String[1];
-				int query = WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+
+				 WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+
 				RdfRegWikidata.EQUIVALENT_CLASS.getLocalName()+" <"+wdResourceUri+"> .", new UriHandler() {
 					public boolean handleUri(String uri) throws Exception {
 						wdEqUri[0]=uri;
@@ -163,9 +169,12 @@ public class MetadataAnalyzerOfCulturalHeritage {
 			}
 			
 			try {
-
+				existingEntsSet.add(wdResourceUri);
 				Resource wdResource=fetchresource(wdResourceUri, rdfCache);
+				removeOtherResources(wdResource.getModel(), wdResourceUri);
+				removeNonTruthyStatements(wdResource.getModel());
 				
+//				System.out.println( RdfUtil.printStatementsOfNamespace(wdResource, RdfReg.NsRdf) );
 					wdEntPropProfile.collect(wdResource.getModel());
 
 //					System.out.println(new String(fetched.getKey()));
@@ -174,67 +183,9 @@ public class MetadataAnalyzerOfCulturalHeritage {
 //					System.out.println(RdfUtil.printStatements(rdfWikidata));
 					wdEntPropEquivalences.analyzeEntity(wdResource, wdResource);
 					
-//					typeProperties = rdfWikidata.listStatements(wdResource, RdfRegWikidata.EQUIVALENT_PROPERTY, (RDFNode)null);
-//					for(Statement st : typeProperties.toList()) {
-////						System.out.println(st);
-//						String objUri = st.getObject().asNode().getURI();
-//						wdEntPropEquivalences.put(wdResourceUri, objUri);
-//					}
 				for (String propUri : entry.getValue().getPropertiesProfiles().keySet()) {
 					wdEntPropEquivalences.analyzeProperty(propUri, propUri);
-//					if(!propUri.startsWith("http://www.wikidata.org/")) {
-//						String[] wdEqUri=new String[1];
-//						WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+wdResourceUri+"> .", new UriHandler() {
-//							public boolean handleUri(String uri) throws Exception {
-//								wdEqUri[0]=uri;
-//								return false;
-//							}
-//						});
-//						propUri=wdEqUri[0];
-//						if(propUri==null)
-//							continue;
-//					}
-//					if(!propUri.startsWith(RdfRegWikidata.NsWd)) 
-//						propUri="http://www.wikidata.org/entity/"+propUri.substring(propUri.lastIndexOf('/')+1);
-//					System.out.println("Analyzing "+propUri);
-//					try {
-//						
-//						SimpleEntry<byte[], List<Entry<String, String>>> propFetched = rdfCache.fetchRdf(propUri);
-//						if (propFetched == null || propFetched.getKey() == null || propFetched.getKey().length == 0) {
-//							System.out.printf("Access to %s failed\n", propUri);
-//						} else {
-////							System.out.println(new String(propFetched.getKey()));
-////							System.out.println(propFetched.getValue());
-//							
-//							Model rdfWikidata = RdfUtil.readRdf(propFetched.getKey(),
-//									RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", propFetched.getValue())));
-//							if(rdfWikidata.size()==0)
-//								continue;
-//							wdEntPropProfile.collect(rdfWikidata);
-////							System.out.println(RdfUtil.printStatements(rdfWikidata));
-//
-//							Resource wdPropResource = rdfWikidata.getResource(propUri);
-////							for (Statement st : rdfWikidata.listStatements().toList()) {
-//								StmtIterator typeProperties = rdfWikidata.listStatements(wdPropResource,
-//										RdfRegWikidata.EQUIVALENT_PROPERTY, (RDFNode) null);
-//								for (Statement st : typeProperties.toList()) {
-////							System.out.println(st);
-//							
-//								String objUri = st.getObject().asNode().getURI();
-//								if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RdfReg.NsRdf))
-//									wdEntPropEquivalences.put(propUri, objUri);
-//							}
-////							typeProperties = rdfWikidata.listStatements(wdPropResource, RdfRegWikidata.EQUIVALENT_CLASS, (RDFNode)null);
-////							for(Statement st : typeProperties.toList()) {
-//////							System.out.println(st);
-////								String objUri = st.getObject().asNode().getURI();
-////								wdEntPropEquivalences.put(wdResourceUri, objUri);
-////							}
-//						}
-//					} catch (Exception e) {
-//						System.out.printf("Access to %s failed\n", propUri);
-//						e.printStackTrace(System.out);
-//					}
+					existingPropsSet.add(propUri);
 				}
 			} catch (Exception e) {
 				System.out.printf("Access to %s failed\n", wdResourceUri);
@@ -243,6 +194,34 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		}
 		wdEntPropProfile.finish();
 
+		int existingEntsEqs=0;
+		int existingEntsEqsSuper=0;
+		int existingPropsEqs=0;
+		int existingPropsEqsSuper=0;
+		for(String entUri: existingEntsSet) {
+			if (wdEntPropEquivalences.getEquivalence(entUri, false)!=null)
+				existingEntsEqs++;
+			else if (wdEntPropEquivalences.getEquivalence(entUri, true)!=null)
+				existingEntsEqsSuper++;
+			System.out.println("No eq for "+entUri);
+		}
+		for(String propUri: existingPropsSet) {
+			if (wdEntPropEquivalences.getEquivalence(propUri, false)!=null)
+				existingPropsEqs++;
+			else if (wdEntPropEquivalences.getEquivalence(propUri, true)!=null)
+				existingPropsEqsSuper++;
+			else
+				System.out.println("No eq for "+propUri);
+		}
+		System.out.println();
+
+//		write csv
+		FileUtils.write(new File(httpCacheFolder, "wd_schemaOrg_equivalences.csv"), 
+				"Existing ents. "+existingEntsSet.size()+", eqs.," + existingEntsEqs + ",Existing ent eqs. generic," + existingEntsEqsSuper + "\n" +
+				"Existing props,"+existingPropsSet.size()+", eqs.," + existingPropsEqs + ",Existing props eqs. generic," + existingPropsEqsSuper + "\n" +
+				wdEntPropEquivalences.toCsv(), "UTF-8");
+		
+		
 //		System.out.println(wdEntPropProfile.printShort());
 		System.out.println(wdEntPropEquivalences);
 		
@@ -253,7 +232,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		WikidataSparqlClient.querySolutions("SELECT ?item ?europeana WHERE {" +
 //              "  ?item wdt:"+RdfRegWikidata.IIIF_MANIFEST+" ?x ." + 
 				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new UriHandler() {
-					int stop = SAMPLE_RECORDS+1;
+					int stop = SAMPLE_RECORDS;
 					@Override
 					public boolean  handleSolution(QuerySolution solution) throws AccessException, InterruptedException, IOException {
 						String europeanaId=solution.getLiteral("europeana").getString();
@@ -272,21 +251,22 @@ public class MetadataAnalyzerOfCulturalHeritage {
 //					System.out.println(RdfUtil.printStatements(rdfWikidata));
 //							System.out.println("--- "+uri +" ---");
 							
-							rdfWikidata.add(Jena.createStatement(wdResource, RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.CREATIVE_WORK));
+//							rdfWikidata.add(Jena.createStatement(wdResource, RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.CREATIVE_WORK));
 							
 							for (Statement st : rdfWikidata.listStatements().toList()) {
 								String predUri = st.getPredicate().getURI().toString();
 								
 								if(predUri.startsWith("http://www.wikidata.org/")) {
-									if(!predUri.startsWith(RdfRegWikidata.NsWd)) 
-										predUri=RdfRegWikidata.NsWd+predUri.substring(predUri.lastIndexOf('/')+1);
+//									if(!predUri.startsWith(RdfRegWikidata.NsWd)) 
+//										predUri=RdfRegWikidata.NsWd+predUri.substring(predUri.lastIndexOf('/')+1);
 									
-									ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(predUri);
+									ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(predUri, true);
 									if(mappingsToSchema!=null && !mappingsToSchema.isEmpty()) {
 										Statement newSt=rdfWikidata.createStatement(st.getSubject(), rdfWikidata.createProperty(mappingsToSchema.get(0)), st.getObject());
 //										System.out.println("replacing "+predUri+" -> "+mappingsToSchema.get(0));
 										rdfWikidata.remove(st);
 										st=newSt;
+										rdfWikidata.add(st);
 									}
 								}
 								
@@ -294,17 +274,18 @@ public class MetadataAnalyzerOfCulturalHeritage {
 									String objUri = st.getObject().asResource().getURI();
 									if(objUri.startsWith("http://www.wikidata.org/")) {
 		//								replace objuri by mapping, if exists	
-										ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(objUri);
+										ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(objUri, true);
 										if(mappingsToSchema!=null && !mappingsToSchema.isEmpty()) {
 											st.getSubject().addProperty(st.getPredicate(), rdfWikidata.createResource(mappingsToSchema.get(0)));
 //											System.out.println("replacing "+objUri+" -> "+mappingsToSchema.get(0));
 											rdfWikidata.remove(st);
+											rdfWikidata.add(st);
 										}
 									}
 								}
 							}
 					
-//					System.out.println(RdfUtil.printStatements(rdfWikidata));
+					System.out.println(RdfUtil.printStatementsOfNamespace(rdfWikidata, RdfReg.NsRdf));
 //							System.out.println("---------------------------------------------------");
 						
 							SchemaOrgToEdmDataConverter edmConverter=new SchemaOrgToEdmDataConverter();
@@ -380,7 +361,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 	private static void addRdfTypesFromP31(Model rdfWikidata) {
 		for(StmtIterator stmts = rdfWikidata.listStatements(null, RdfRegWikidata.INSTANCE_OF, (RDFNode)null); stmts.hasNext() ; ) {
 			Statement stm=stmts.next();
-			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfReg.RDF_TYPE, stm.getSubject()));
+			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfReg.RDF_TYPE, stm.getObject()));
 		}
 	}
 

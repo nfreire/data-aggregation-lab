@@ -19,7 +19,11 @@ import inescid.util.RdfUtil;
 public class UsageProfiler {
 	int maxWarns=5;
 	
+	boolean optionProfileObjectsOfTriples=true;
+	boolean optionCountRdfType=true;
+	
 	UsageStats usageStats=new UsageStats();
+	int collectedCount=0;
 	
 	public void collect(Model model, String fromUri) {
 		collect(model.getResource(fromUri));
@@ -28,9 +32,7 @@ public class UsageProfiler {
 		if(r==null) return;
 		ArrayList<ClassUsageStats> classesOfSubject=new ArrayList<>(3);
 		ArrayList<String> classesOfSubjectUris=new ArrayList<>(3);
-		StmtIterator typeProperties = r.listProperties(RdfReg.RDF_TYPE);
-//		StmtIterator typeProperties = r.listProperties(RdfReg.RDF_TYPE);
-		for(Statement st : typeProperties.toList()) {
+		for(Statement st : r.listProperties(RdfReg.RDF_TYPE).toList()) {
 //			System.out.println(st);
 			String clsUri = st.getObject().asNode().getURI();
 			ClassUsageStats classStats = usageStats.getClassStats(clsUri);
@@ -54,7 +56,7 @@ public class UsageProfiler {
 //		r.listProperties(RdfReg.RDF_TYPE);
 		StmtIterator properties = r.listProperties();
 		for(Statement st : properties.toList()) {
-			if(st.getPredicate().equals(RdfReg.RDF_TYPE)) continue;
+			if(!optionCountRdfType && st.getPredicate().equals(RdfReg.RDF_TYPE)) continue;
 			for(ClassUsageStats stat : classesOfSubject)
 				stat.eventProperty(st);
 		}
@@ -69,7 +71,7 @@ public class UsageProfiler {
 		}
 		classesOfSubject.clear();
 		classesOfSubjectUris.clear();
-
+		collectedCount++;
 	}
 	
 	public void collect(Model model) {
@@ -78,8 +80,6 @@ public class UsageProfiler {
 		for(Resource r: subjs.toList()) {
 			collect(r);
 //			System.out.println("URI-"+RdfUtil.getUriOrId(r));
-			
-			
 		}
 	}
 
@@ -101,7 +101,7 @@ public class UsageProfiler {
 	public String printSummary() {
 		StringBuilder sb=new StringBuilder();
 		//harvest all wd entities and properties used, and profile them
-		sb.append("[Usage profile: "+usageStats.getClassesStats().size()).append(" classes, ");
+		sb.append("["+collectedCount+" resources - Usage profile: "+ usageStats.getClassesStats().size()).append(" classes, ");
 		int propCnt=0;
 		for (Entry<String, ClassUsageStats> entry : getUsageStats().getClassesStats().entrySet() ) {
 			propCnt+=entry.getValue().getPropertiesStats().size();
@@ -112,12 +112,15 @@ public class UsageProfiler {
 	public String printShort() {
 		StringBuilder sb=new StringBuilder();
 		//harvest all wd entities and properties used, and profile them
-		sb.append("[Usage profile: "+usageStats.getClassesStats().size()).append(" classes\n");
+		sb.append("["+collectedCount+" resources - Usage profile: "+usageStats.getClassesStats().size()).append(" classes\n");
 		for (Entry<String, ClassUsageStats> entry : getUsageStats().getClassesStats().entrySet() ) {
 			sb.append(entry.getKey()).append(" ").append( entry.getValue().getPropertiesStats().size()).append(" props.\n");
 		}		
 		sb.append("]");
 		return sb.toString();
+	}
+	public void setOptionProfileObjectsOfTriples(boolean b) {
+		optionProfileObjectsOfTriples=false;
 	}
 
 

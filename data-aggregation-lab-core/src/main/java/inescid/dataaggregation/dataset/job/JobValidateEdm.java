@@ -58,6 +58,8 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 	@Override
 	public void runJob()  throws Exception {
 			File profileFolder = GlobalCore.getPublicationRepository().getProfileFolder(dataset);
+			if(!profileFolder.exists())
+				profileFolder.mkdirs();
 			Validator validator=new Validator(GlobalCore.getValidatorResourceFolder(), validationSchema);
 			File validationCsvFile = new File(profileFolder, "edm-validation.csv");
 			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(validationCsvFile, GlobalCore.UTF8);

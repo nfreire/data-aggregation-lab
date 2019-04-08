@@ -183,6 +183,22 @@ public class RdfUtil {
 			sb.append(st.toString()).append('\n');
 		return sb.toString();
 	}
+	public static String printStatementsOfNamespace(Model rdf, String ns) {
+		StringBuilder sb=new StringBuilder();
+		StmtIterator typeProperties = rdf.listStatements();
+		for(Statement st : typeProperties.toList()) 
+			if(st.getPredicate().getNameSpace().equals(ns))
+				sb.append(st.toString()).append('\n');
+		return sb.toString();
+	}
+	public static String printStatementsOfNamespace(Resource rdf, String ns) {
+		StringBuilder sb=new StringBuilder();
+		StmtIterator typeProperties = rdf.listProperties();
+		for(Statement st : typeProperties.toList()) 
+			if(st.getPredicate().getNameSpace().equals(ns))
+				sb.append(st.toString()).append('\n');
+		return sb.toString();
+	}
 
 	public static Set<Resource> findResourceWithProperties(Model model, Property propA, RDFNode valuePropA,
 			Property propB, RDFNode valuePropB) {
@@ -228,4 +244,5 @@ public class RdfUtil {
 		}
 		return null;
 	}
+
 }

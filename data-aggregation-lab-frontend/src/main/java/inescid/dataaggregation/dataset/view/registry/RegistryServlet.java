@@ -116,6 +116,9 @@ public class RegistryServlet extends HttpServlet {
 					datasetToRegister = new WwwForm(req);
 				}
 				
+				if(datasetToRegister==null)
+					sendResponse(resp, 404, "type ofdataset not supported or empty");
+				else {
 //				if(! "import".equals(req.getParameter("registration"))) 
 					if(datasetToRegister!=null && datasetToRegister.register() && datasetToRegister.validate()) {
 						Dataset dataset = datasetToRegister.toDataset();
@@ -123,9 +126,9 @@ public class RegistryServlet extends HttpServlet {
 						DatasetRegistrationResultForm formRes = new DatasetRegistrationResultForm(dataset);
 						formRes.setMessage("Dataset registered");
 						sendResponse(resp, 200, formRes.output());
-						break;
-					}
-				sendResponse(resp, 200, datasetToRegister.output());
+					}else
+						sendResponse(resp, 200, datasetToRegister.output());
+				}
 				break;
 			} case DISPLAY_START_PAGE:{
 				StartPage form = new StartPage();
