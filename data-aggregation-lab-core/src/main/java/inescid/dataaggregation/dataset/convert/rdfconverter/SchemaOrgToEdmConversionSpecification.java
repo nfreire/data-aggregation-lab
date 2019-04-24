@@ -17,6 +17,11 @@ public class SchemaOrgToEdmConversionSpecification {
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PAINTING, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_BOOK, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_NEWSPAPER, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PERIODICAL, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PHOTOGRAPH, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK_SERIES, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_SCULPTURE, RdfReg.EDM_PROVIDED_CHO, RdfReg.ORE_AGGREGATION);
 		
 //		Article
 //		Blog 
@@ -98,6 +103,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTWORK_SURFACE, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTFORM, RdfReg.DC_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SPATIAL_COVERAGE, RdfReg.EDM_CURRENT_LOCATION);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION, RdfReg.DCTERMS_SPATIAL);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_TEMPORAL_COVERAGE, RdfReg.DCTERMS_TEMPORAL_COVERAGE);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_HEIGHT, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_WIDTH, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
@@ -107,11 +113,16 @@ public class SchemaOrgToEdmConversionSpecification {
 		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfReg.EDM_TYPE);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "IMAGE");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_PAINTING.getURI(), "IMAGE");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_PHOTOGRAPH.getURI(), "IMAGE");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_WEB_PAGE.getURI(), "TEXT");
-		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_MEDIA_OBJECT.getURI(), "TEXT");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_MEDIA_OBJECT.getURI(), "IMAGE");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_BOOK.getURI(), "TEXT");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_NEWSPAPER.getURI(), "TEXT");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_PERIODICAL.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT.getURI(), "IMAGE");
-		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_AUDIO_OBJECT.getURI(), "SOUND");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK_SERIES.getURI(), "IMAGE");
+		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_SCULPTURE.getURI(), "IMAGE");
 //		edmTypeSpec.putUriMapping("", "VIDEO");
 //		edmTypeSpec.putUriMapping("", "3D");
 		pchoMapping.putDerivedProperty(RdfReg.RDF_TYPE, edmTypeSpec);

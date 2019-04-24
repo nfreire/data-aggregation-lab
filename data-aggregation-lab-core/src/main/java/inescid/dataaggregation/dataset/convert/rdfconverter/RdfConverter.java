@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +41,8 @@ public class RdfConverter {
 
 	Resource mainTargetResource=null;
 	
+	HashSet<String> reportedMappingMissing=new HashSet<String>();
+	
 	public RdfConverter(RdfConversionSpecification spec) {
 		this.spec=spec;
 	}
@@ -66,7 +69,18 @@ public class RdfConverter {
 		} 
 		
 		if (rootResourceTypeMapping==null) {
-			return convert(source);
+			String msg="No mapping found for Entity(ies)";
+			propTypesStms = source.listStatements(srcRoot, RdfReg.RDF_TYPE, (RDFNode) null);
+			while (propTypesStms.hasNext()) {
+				Statement typeStm = propTypesStms.next();
+				msg+=" "+typeStm.getObject().asResource().getURI();
+			} 
+			if (!reportedMappingMissing.contains(msg)) {
+				System.out.println(msg);
+				reportedMappingMissing.add(msg);
+			}
+			return null;
+//			return convert(source);
 		}		
 		for (Resource trgType: spec.getRootResourceTypeMapping(resType)) {
 			String uri=srcRoot.getURI();
@@ -238,7 +252,11 @@ public class RdfConverter {
 										continue;
 									Resource convertedType=spec.getTypeMapping((Resource) typeStm.getObject());
 									if(convertedType==null) {
-										System.out.println("No mapping found for Entity "+typeStm.getObject());
+										String msg=("No mapping found for Entity "+typeStm.getObject());
+										if (!reportedMappingMissing.contains(msg)) {
+											System.out.println(msg);
+											reportedMappingMissing.add(msg);
+										}
 										continue;
 									}
 									ResourceTypeConversionSpecification trgSubResourceMap = spec.getTypePropertiesMapping(convertedType);
@@ -281,13 +299,16 @@ public class RdfConverter {
 							trgResource.addProperty(specOfDerived.getDerivedProperty().getProperty(),val);
 					}
 				}
-			} else if(!st.getPredicate().equals(RdfReg.RDF_TYPE)){
-				System.out.println("No mapping found for Property "+st.getPredicate()+ " in " + trgResourceMap.getType());
-				System.out.println("Property Value:"+st.getObject());
+//			} else if(!st.getPredicate().equals(RdfReg.RDF_TYPE)){
+//				String msg=("No mapping found for Property "+st.getPredicate()+ " in " + trgResourceMap.getType());
+//				if (!reportedMappingMissing.contains(msg)) {
+//					System.out.println(msg);
+//					reportedMappingMissing.add(msg);
+//				}
+////				System.out.println("No mapping found for Property "+st.getPredicate()+ " in " + trgResourceMap.getType());
+////				System.out.println("Property Value:"+st.getObject());
 			}
-		
 		}	
-		
 		return trgResource;
 	}
 

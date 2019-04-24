@@ -3,26 +3,18 @@ package inescid.dataaggregation.casestudies.wikidata;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.HashSet;
-import java.util.Map.Entry;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.QuerySolution;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Resource;
 
 import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
-import inescid.util.RdfUtil;
 
 public class ScriptEuropeanaLinkChecker {
 	public static void main(String[] args) throws Exception {

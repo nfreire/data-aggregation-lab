@@ -11,8 +11,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.andrewoma.dexx.collection.Map;
-import com.google.gson.stream.JsonReader;
 
 public class ScriptAnalyzePageJsonForEuropeanaLinks {
 

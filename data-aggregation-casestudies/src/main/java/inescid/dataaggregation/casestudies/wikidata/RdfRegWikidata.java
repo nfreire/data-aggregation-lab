@@ -29,4 +29,23 @@ public class RdfRegWikidata {
 
 	public static final Property RIGHTS_STATEMENT  = ResourceFactory.createProperty(NsWdt+"P6426");
 	public static final Resource CREATIVE_WORK = ResourceFactory.createResource(NsWd+"Q178706");
+
+	public static final Property IMAGE = ResourceFactory.createProperty(NsWdt+"P18");
+	public static final Property ICON = ResourceFactory.createProperty(NsWdt+"P2910");
+	public static final Property LOGO_IMAGE = ResourceFactory.createProperty(NsWdt+"P154");
+	public static final Property COAT_OF_ARMS = ResourceFactory.createProperty(NsWdt+"P94");
+	public static final Property SEAL_IMAGE = ResourceFactory.createProperty(NsWdt+"P158");
+	public static final Property FLAG_IMAGE = ResourceFactory.createProperty(NsWdt+"P41");
+	public static final Property COMEMORATIVE_PLAQUE = ResourceFactory.createProperty(NsWdt+"P1801");
+	public static final Property PLACE_NAME_SIGN = ResourceFactory.createProperty(NsWdt+"P");
+	public static final Property MONOGRAM = ResourceFactory.createProperty(NsWdt+"P1543");
+	public static final Property IMAGE_OF_TOMBSTONE = ResourceFactory.createProperty(NsWdt+"P1442");
+	public static final Property SIGNATURE = ResourceFactory.createProperty(NsWdt+"P109");
+	public static final Property COLLAGE_IMAGE = ResourceFactory.createProperty(NsWdt+"P2716");
+	public static final Property SECTIONAL_VIEW = ResourceFactory.createProperty(NsWdt+"P2715");
+	public static final Property NIGHTTIME_VIEW = ResourceFactory.createProperty(NsWdt+"P3451");
+	public static final Property PANORAMA_VIEW = ResourceFactory.createProperty(NsWdt+"P4291");
+	public static final Property PHOTOSHERE_IMAGE = ResourceFactory.createProperty(NsWdt+"P4640");
+	public static final Property WINTER_VIEW = ResourceFactory.createProperty(NsWdt+"P5252");
+	public static final Property IMAGE_OF_INTERIOR = ResourceFactory.createProperty(NsWdt+"P5775");
 }

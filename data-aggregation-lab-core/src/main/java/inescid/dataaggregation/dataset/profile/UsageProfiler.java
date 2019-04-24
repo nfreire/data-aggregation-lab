@@ -78,8 +78,8 @@ public class UsageProfiler {
 		ResIterator subjs = model.listSubjects();
 		
 		for(Resource r: subjs.toList()) {
-			collect(r);
 //			System.out.println("URI-"+RdfUtil.getUriOrId(r));
+			collect(r);
 		}
 	}
 

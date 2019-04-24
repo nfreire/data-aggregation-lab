@@ -76,9 +76,9 @@ public class Validator {
 	
     private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(Validator.class);
 
-    File resourceFolder;
-    Schema schema=Schema.EDM;
-    String schematronXsl=null;
+    protected File resourceFolder;
+    protected Schema schema=Schema.EDM;
+    protected String schematronXsl=null;
     
     public Validator(File resourceFolder, Schema schema) {
     	this.resourceFolder = resourceFolder;
@@ -96,7 +96,6 @@ public class Validator {
      * @return The outcome of the Validation
      */
     public ValidationResult validate(String uri, Document doc) {
-        log.info("Validation started");
         SchemaValidationErrorHandler errors=new SchemaValidationErrorHandler();
         try {
 //        	XmlUtil.validateXmlOnSchema(new File(resourceFolder, "edmschema/EDM.xsd"), new DOMSource(doc));
@@ -118,11 +117,29 @@ public class Validator {
             Transformer transformer = TransformerFactory.newInstance().newTemplates(new StreamSource(reader)).newTransformer();
             transformer.transform(new DOMSource(doc), result);
 
+            
+            
             NodeList nresults = result.getNode().getFirstChild().getChildNodes();
             for (int i = 0; i < nresults.getLength(); i++) {
                 Node nresult = nresults.item(i);
                 if ("failed-assert".equals(nresult.getLocalName())) {
-                   errors.messages.add(nresult.getTextContent());
+//                	NodeList detailNodes = nresult.getChildNodes();
+//                	for (int j = 0; j < detailNodes.getLength(); j++) {
+//                		Node detailNode = nresults.item(j);
+//                		System.out.println(detailNode.getLocalName());
+//                	}
+//                	String[] lines = nresult.getTextContent().split("\\s*[\\n\\r]+\\s*");
+//                	if(lines.length>3) {
+//	                	String msg=lines[3];
+//	                	for(int k=4 ; k<lines.length ; k++) {
+//	                		msg+=" "+lines[k];
+//	                	}
+//	                   errors.messages.add(msg);
+//                	} else 
+                		errors.messages.add(nresult.getAttributes().getNamedItem("test").getTextContent());
+//                		errors.messages.add(XmlUtil.writeDomToString((Document) result.getNode()));
+//                		errors.messages.add(nresult.getTextContent());
+                		
                 }
             }
         } catch (Exception e) {
@@ -134,7 +151,7 @@ public class Validator {
         return constructValidationError(uri, errors.messages);
     }
 
-    private ValidationResult constructValidationError(String recordId, List<String> messages) {
+    protected ValidationResult constructValidationError(String recordId, List<String> messages) {
         ValidationResult res = new ValidationResult();
         res.addMessages(messages);
         res.setRecordId(recordId);

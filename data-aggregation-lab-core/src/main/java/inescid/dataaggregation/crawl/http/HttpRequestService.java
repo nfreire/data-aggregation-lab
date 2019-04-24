@@ -1,6 +1,9 @@
 package inescid.dataaggregation.crawl.http;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
 
 import org.apache.http.client.CookieStore;
@@ -8,11 +11,19 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 
 import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
 import inescid.util.DevelopementSingleton;
@@ -34,7 +45,16 @@ public class HttpRequestService {
 		if(DevelopementSingleton.DEVEL_TEST && DevelopementSingleton.HTTP_REQUEST_TIME_STATS)
 			requestTimeStats=new Vector<>();
 		
-		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+		SSLContextBuilder builder = new SSLContextBuilder();
+		 try {
+			builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+		 SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(builder.build(), NoopHostnameVerifier.INSTANCE);
+		 Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+		            .register("http", new PlainConnectionSocketFactory())
+		            .register("https", sslConnectionSocketFactory)
+		            .build();
+		
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
 		cm.setMaxTotal(200);
 		cm.setDefaultMaxPerRoute(41);
 
@@ -42,11 +62,30 @@ public class HttpRequestService {
 
 		httpClient = 
 				HttpClients.custom()
-				.setSSLHostnameVerifier(new NoopHostnameVerifier())
+				.setSSLSocketFactory(sslConnectionSocketFactory)
 				.setConnectionManager(cm) 
 				.setDefaultCookieStore(httpCookieStore)
 //                .setRedirectStrategy(new LaxRedirectStrategy())
 				.build();
+		
+		
+		 } catch (NoSuchAlgorithmException e) {
+			 throw new RuntimeException(e.getMessage(), e);
+		 } catch (KeyStoreException e) {
+			 throw new RuntimeException(e.getMessage(), e);
+		 } catch (KeyManagementException e) {
+			 throw new RuntimeException(e.getMessage(), e);
+		}
+		
+
+
+//		 PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+//		 cm.setMaxTotal(100);
+//		 CloseableHttpClient httpclient = HttpClients.custom()
+//		            .setSSLSocketFactory(sslConnectionSocketFactory)
+//		            .setConnectionManager(cm)
+//		            .build();
+		
 	}	
 	
 	public void close() throws Exception {

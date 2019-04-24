@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
+import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.profile.ProfileOfUniqueness.Calc;
 import inescid.util.RdfUtil;
 import opennlp.tools.util.StringUtil;
@@ -67,7 +68,7 @@ public class ProfileOfValueDistribution  implements ProfileOfInterface{
 				double pct = cnt/(double)totalCount;
 				if(discardValuesUnderCount>0 && cnt<discardValuesUnderCount)
 					continue;
-				if(discardValuesUnderPercentage>0 && pct<discardValuesUnderCount)
+				if(discardValuesUnderPercentage>0 && pct<discardValuesUnderPercentage)
 					continue;
 				distribution.add(new ValueDistribution(v.getKey(), pct));
 			}

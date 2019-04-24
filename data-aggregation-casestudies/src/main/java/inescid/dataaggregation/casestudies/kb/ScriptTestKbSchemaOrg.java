@@ -1,36 +1,21 @@
 package inescid.dataaggregation.casestudies.kb;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
-import org.mortbay.log.Log;
 import org.w3c.dom.Document;
 
-import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.IiifDataset;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
-import inescid.dataaggregation.dataset.job.Job;
-import inescid.dataaggregation.dataset.job.ZipArchiveExporter;
-import inescid.dataaggregation.store.PublicationRepository;
-import inescid.util.LinkedDataUtil;
 import inescid.util.XmlUtil;
 
 public class ScriptTestKbSchemaOrg {

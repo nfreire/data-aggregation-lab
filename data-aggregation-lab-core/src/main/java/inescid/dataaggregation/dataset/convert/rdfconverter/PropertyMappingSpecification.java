@@ -1,10 +1,13 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 
 public class PropertyMappingSpecification {
 	Property property;
 	boolean mapToValueAlways=false;
+	Resource mapToResource=null;
+	
 	public PropertyMappingSpecification(Property property) {
 		super();
 		this.property = property;
@@ -25,6 +28,12 @@ public class PropertyMappingSpecification {
 	}
 	public void setProperty(Property property) {
 		this.property = property;
+	}
+	public Resource getMapToResource() {
+		return mapToResource;
+	}
+	public void setMapToResource(Resource mapToResource) {
+		this.mapToResource = mapToResource;
 	}
 	
 	

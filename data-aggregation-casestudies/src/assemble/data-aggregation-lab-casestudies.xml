@@ -20,6 +20,14 @@
 	          <exclude>**/*.xml</exclude>
 	          <exclude>**/*.sh</exclude>
 	        </excludes>
+    </fileSet>    
+    <fileSet>
+      <directory>../data-aggregation-lab-core/src/main/resources</directory>
+      <outputDirectory>/classes</outputDirectory>
+	        <excludes>
+	          <exclude>**/*.xml</exclude>
+	          <exclude>**/*.sh</exclude>
+	        </excludes>
     </fileSet>
     <fileSet>
       <directory>${project.build.outputDirectory}</directory>

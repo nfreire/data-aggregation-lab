@@ -1,25 +1,10 @@
 package inescid.dataaggregation.casestudies.wikidata;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Resource;
-
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.util.AccessException;
-import inescid.util.RdfUtil;
 
 public class WikidataSparqlClient {
 	

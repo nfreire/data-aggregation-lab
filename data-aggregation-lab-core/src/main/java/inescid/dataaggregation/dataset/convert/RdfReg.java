@@ -36,6 +36,7 @@ public final class RdfReg {
 	public static final Resource EDM_PLACE = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/Place");
 	public static final Resource EDM_AGENT = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/Agent");
 	public static final Resource FOAF_ORGANIZATION = ResourceFactory.createResource(NsFoaf+ "Organization");
+	public static final Property FOAF_PAGE= ResourceFactory.createProperty(NsFoaf+ "page");
 	public static final Resource EDM_TIMESPAN = ResourceFactory.createResource("http://www.europeana.eu/schemas/edm/TimeSpan");
 	public static final Resource IIIF_COLLECTION = ResourceFactory.createResource("http://iiif.io/api/presentation/2#Collection");
 	public static final Resource ORE_AGGREGATION = ResourceFactory.createResource(NsOre+"Aggregation");
@@ -129,6 +130,8 @@ public final class RdfReg {
 	public static final Property SKOS_NOTE = ResourceFactory.createProperty(RdfReg.NsSkos+"note");
 	
 	public static final Resource SCHEMAORG_CREATIVE_WORK  = ResourceFactory.createResource(NsSchemaOrg+"CreativeWork");
+	public static final Resource SCHEMAORG_CREATIVE_WORK_SERIES  = ResourceFactory.createResource(NsSchemaOrg+"CreativeWorkSeries");
+	public static final Resource SCHEMAORG_SCULPTURE  = ResourceFactory.createResource(NsSchemaOrg+"Sculpture");
 	public static final Resource SCHEMAORG_PERSON  = ResourceFactory.createResource(NsSchemaOrg+"Person");
 	public static final Resource SCHEMAORG_ORGANIZATION  = ResourceFactory.createResource(NsSchemaOrg+"Organization");
 	public static final Resource SCHEMAORG_GEO_COORDINATES = ResourceFactory.createResource(NsSchemaOrg+"GeoCoordinates");
@@ -137,6 +140,9 @@ public final class RdfReg {
 	public static final Resource SCHEMAORG_POSTAL_ADDRESS  = ResourceFactory.createResource(NsSchemaOrg+"PostalAddress");
 	public static final Resource SCHEMAORG_AUDIO_OBJECT  = ResourceFactory.createResource(NsSchemaOrg+"AudioObject");
 	public static final Resource SCHEMAORG_IMAGE_OBJECT  = ResourceFactory.createResource(NsSchemaOrg+"ImageObject");
+	public static final Resource SCHEMAORG_NEWSPAPER  = ResourceFactory.createResource(NsSchemaOrg+"Newspaper");
+	public static final Resource SCHEMAORG_PERIODICAL  = ResourceFactory.createResource(NsSchemaOrg+"Periodical");
+	public static final Resource SCHEMAORG_PHOTOGRAPH  = ResourceFactory.createResource(NsSchemaOrg+"Photograph");
 	public static final Resource SCHEMAORG_DISTANCE  = ResourceFactory.createResource(NsSchemaOrg+"Distance");
 	public static final Resource SCHEMAORG_VISUAL_ARTWORK  = ResourceFactory.createResource(NsSchemaOrg+"VisualArtwork");
 	public static final Resource SCHEMAORG_PAINTING  = ResourceFactory.createResource(NsSchemaOrg+"Painting");
@@ -196,6 +202,7 @@ public final class RdfReg {
 	public static final Property SCHEMAORG_MAIN_ENTITY_OF_PAGE = ResourceFactory.createProperty(NsSchemaOrg+"mainEntityOfPage");
 	public static final Property SCHEMAORG_AUTHOR = ResourceFactory.createProperty(NsSchemaOrg+"author");
 	public static final Property SCHEMAORG_SPATIAL_COVERAGE = ResourceFactory.createProperty(NsSchemaOrg+"spatialCoverage");
+	public static final Property SCHEMAORG_LOCATION = ResourceFactory.createProperty(NsSchemaOrg+"location");
 	public static final Property SCHEMAORG_TEMPORAL_COVERAGE = ResourceFactory.createProperty(NsSchemaOrg+"temporalCoverage");
 	public static final Property SCHEMAORG_LICENSE = ResourceFactory.createProperty(NsSchemaOrg+"license");
 //	public static final Property SCHEMAORG_ = ResourceFactory.createProperty(NsSchemaOrg+"");
