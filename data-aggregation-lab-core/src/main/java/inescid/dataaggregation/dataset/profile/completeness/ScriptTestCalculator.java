@@ -20,6 +20,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.RdfReg;
@@ -107,8 +108,8 @@ public class ScriptTestCalculator {
 			String uri=reader.readLine();
 			
 			try {
-				SimpleEntry<byte[], List<Entry<String, String>>> fetched = httpRequestService.fetchRdf(uri); 				
-				Model rdf = RdfUtil.readRdf(fetched.getKey(), RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", fetched.getValue())));
+				HttpResponse fetched = httpRequestService.fetchRdf(uri); 				
+				Model rdf = RdfUtil.readRdf(fetched.body, RdfUtil.fromMimeType(fetched.getHeader("Content-Type")));
 				System.out.println(uri);
 //				System.out.println("*** "+uri);
 //				System.out.println(RdfUtil.printStatements(rdf));

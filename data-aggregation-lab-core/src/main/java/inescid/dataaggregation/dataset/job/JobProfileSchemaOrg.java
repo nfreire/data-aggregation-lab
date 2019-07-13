@@ -25,7 +25,7 @@ public class JobProfileSchemaOrg extends JobWorker {
 			profiler.process(dataset, GlobalCore.getPublicationRepository().getProfileFolder(dataset), 0);	
 			
 			ConversionSpecificationAnalyzer conv=new ConversionSpecificationAnalyzer();
-			conv.process(dataset, GlobalCore.getPublicationRepository());
+			conv.process(dataset);
 			
 	}
 	

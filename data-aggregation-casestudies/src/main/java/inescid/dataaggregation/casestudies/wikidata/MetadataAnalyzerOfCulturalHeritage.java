@@ -31,6 +31,7 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingC
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
@@ -446,12 +447,12 @@ public class MetadataAnalyzerOfCulturalHeritage {
 
 	public static Resource fetchresource(String resourceUri, CachedHttpRequestService rdfCache)
 			throws AccessException, InterruptedException, IOException {
-		SimpleEntry<byte[], List<Entry<String, String>>> propFetched = rdfCache.fetchRdf(resourceUri);
-		if (propFetched == null || propFetched.getKey() == null || propFetched.getKey().length == 0) {
+		HttpResponse propFetched = rdfCache.fetchRdf(resourceUri);
+		if (propFetched.isSuccess()) {
 			throw new AccessException(resourceUri);
 		} else {
-			Model rdfWikidata = RdfUtil.readRdf(propFetched.getKey(),
-					RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", propFetched.getValue())));
+			Model rdfWikidata = RdfUtil.readRdf(propFetched.body,
+					RdfUtil.fromMimeType(propFetched.getHeader("Content-Type")));
 			if (rdfWikidata.size() == 0)
 				throw new AccessException(resourceUri, "No data found");
 			Resource wdPropResource = rdfWikidata.getResource(resourceUri);

@@ -24,6 +24,7 @@ import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
@@ -110,12 +111,12 @@ public class EnrichEuropeanaWithIiif {
 						Resource wdResource = hit.getResource("item");
 						wdUri = wdResource.getURI();
 						wikidataUrisAlreadyProcessed.add(wdUri);
-						SimpleEntry<byte[], List<Entry<String, String>>> wikidataFetched = rdfCache.fetchRdf(wdUri);
-						if(wikidataFetched==null || wikidataFetched.getKey()==null || wikidataFetched.getKey().length==0) {
+						HttpResponse wikidataFetched = rdfCache.fetchRdf(wdUri);
+						if(wikidataFetched.isSuccess()) {
 							System.out.printf("Access to %s failed\n", wdUri);
 							rep.wdAccessFailure(wdUri);
 	            		} else {
-							Model rdfWikidata = RdfUtil.readRdf(wikidataFetched.getKey(), RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", wikidataFetched.getValue())));
+							Model rdfWikidata = RdfUtil.readRdf(wikidataFetched.body, RdfUtil.fromMimeType(wikidataFetched.getHeader("Content-Type")));
 							StmtIterator stms = rdfWikidata.listStatements(null, RdfRegWikidata.IIIF_MANIFEST, (RDFNode)null);
 							ArrayList<String> iiifManifests=new ArrayList<>();
 							while(stms.hasNext()) {
@@ -128,8 +129,8 @@ public class EnrichEuropeanaWithIiif {
 								} else
 									manifestUri=null;
 								if(manifestUri!=null){
-									SimpleEntry<byte[], List<Entry<String, String>>> manifestFetched = rdfCache.fetchRdf(manifestUri);
-									if(manifestFetched==null || manifestFetched.getKey()==null || manifestFetched.getKey().length==0) {
+									HttpResponse manifestFetched = rdfCache.fetchRdf(manifestUri);
+									if(manifestFetched.isSuccess()) {
 										System.out.printf("Access to %s failed\n", manifestUri);									
 									} else {
 	//									System.out.printf("Saved %s (%d Kb)\n", manifestUri, manifestFetched.getKey().length / 1024);
@@ -163,13 +164,13 @@ public class EnrichEuropeanaWithIiif {
 										} else
 											europeanaObjectUri=null;
 										if(europeanaObjectUri!=null){
-											SimpleEntry<byte[], List<Entry<String, String>>> europeanaFetched = rdfCache.fetchRdf(europeanaObjectUri);
-											if(europeanaFetched==null || europeanaFetched.getKey()==null || europeanaFetched.getKey().length==0) {
+											HttpResponse europeanaFetched = rdfCache.fetchRdf(europeanaObjectUri);
+											if(europeanaFetched.isSuccess()) {
 												System.out.printf("Access to %s failed\n", europeanaObjectUri);	
 												rep.idNotFoundInEuropeana(europeanaObjectUri);
 											} else {
 	//											System.out.printf("Saved %s (%d Kb)\n", europeanaObjectUri, europeanaFetched.getKey().length / 1024);
-												Model rdfEdm = RdfUtil.readRdf(europeanaFetched.getKey(), RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", europeanaFetched.getValue())));
+												Model rdfEdm = RdfUtil.readRdf(europeanaFetched.body, RdfUtil.fromMimeType(europeanaFetched.getHeader("Content-Type")));
 												
 												String europeanaCollection=null;
 												Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RdfReg.RDF_TYPE, RdfReg.EDM_EUROPEANA_AGGREGATION, null, null);
@@ -184,8 +185,8 @@ public class EnrichEuropeanaWithIiif {
 													rep.enrichements(europeanaCollection, europeanaObjectUri, wdUri, iiifManifests);
 													rep.profileEdm(europeanaCollection, rdfEdm);
 													for(String manifestUri : iiifManifests) {
-														SimpleEntry<byte[], List<Entry<String, String>>> manifestFetched = rdfCache.fetchRdf(manifestUri);
-														Model rdfManifest = RdfUtil.readRdf(manifestFetched.getKey(), Lang.JSONLD);
+														HttpResponse manifestFetched = rdfCache.fetchRdf(manifestUri);
+														Model rdfManifest = RdfUtil.readRdf(manifestFetched.body, Lang.JSONLD);
 														rep.profileIiifManifest(europeanaCollection, rdfManifest);
 													}
 												} else
@@ -246,12 +247,12 @@ public class EnrichEuropeanaWithIiif {
 						wdUri = wdResource.getURI();
 						if(wikidataUrisAlreadyProcessed.contains(wdUri))
 							continue;
-						SimpleEntry<byte[], List<Entry<String, String>>> wikidataFetched = rdfCache.fetchRdf(wdUri);
-						if(wikidataFetched==null || wikidataFetched.getKey()==null || wikidataFetched.getKey().length==0) {
+						HttpResponse wikidataFetched = rdfCache.fetchRdf(wdUri);
+						if(wikidataFetched.isSuccess()) {
 							System.out.printf("Access to %s failed\n", wdUri);
 							rep.wdAccessFailure(wdUri);
 	            		} else {
-							Model rdfWikidata = RdfUtil.readRdf(wikidataFetched.getKey(), RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", wikidataFetched.getValue())));
+							Model rdfWikidata = RdfUtil.readRdf(wikidataFetched.body, RdfUtil.fromMimeType(wikidataFetched.getHeader("Content-Type")));
 
 							StmtIterator stms = rdfWikidata.listStatements(null, RdfRegWikidata.EUROPEANAID, (RDFNode)null);
 							if(stms.hasNext()) {
@@ -285,13 +286,13 @@ public class EnrichEuropeanaWithIiif {
 										if(! hasImage) 
 											continue;
 										
-										SimpleEntry<byte[], List<Entry<String, String>>> europeanaFetched = rdfCache.fetchRdf(europeanaObjectUri);
-										if(europeanaFetched==null || europeanaFetched.getKey()==null || europeanaFetched.getKey().length==0) {
+										HttpResponse europeanaFetched = rdfCache.fetchRdf(europeanaObjectUri);
+										if(europeanaFetched.isSuccess()) {
 											System.out.printf("Access to %s failed\n", europeanaObjectUri);	
 											rep.idNotFoundInEuropeana(europeanaObjectUri);
 										} else {
 //											System.out.printf("Saved %s (%d Kb)\n", europeanaObjectUri, europeanaFetched.getKey().length / 1024);
-											Model rdfEdm = RdfUtil.readRdf(europeanaFetched.getKey(), RdfUtil.fromMimeType(HttpUtil.getHeader("Content-Type", europeanaFetched.getValue())));
+											Model rdfEdm = RdfUtil.readRdf(europeanaFetched.body, RdfUtil.fromMimeType(europeanaFetched.getHeader("Content-Type")));
 											
 											String europeanaCollection=null;
 											Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RdfReg.RDF_TYPE, RdfReg.EDM_EUROPEANA_AGGREGATION, null, null);

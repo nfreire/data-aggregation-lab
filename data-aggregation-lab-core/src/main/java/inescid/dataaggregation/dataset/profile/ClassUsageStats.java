@@ -22,7 +22,7 @@ public class ClassUsageStats implements ProfileOfInterface {
 //		public HashMap<String, PropertyProfiler> getPropertiesProfiles() {
 //			return propertiesProfiles;
 //		}
-		MapOfInts<String> getPropertiesStats() {
+		public MapOfInts<String> getPropertiesStats() {
 			return propertiesStats;
 		}
 		

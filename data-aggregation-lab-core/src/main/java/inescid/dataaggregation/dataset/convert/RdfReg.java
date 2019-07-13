@@ -43,8 +43,12 @@ public final class RdfReg {
 	public static final Resource ORE_PROXY = ResourceFactory.createResource(NsOre+"Proxy");
 	public static final Property IIIF_METADATA_LABELS = ResourceFactory.createProperty("http://iiif.io/api/presentation/2#metadataLabels");
 	public static final Property IIIF_PROFiLE_DOAP_IMPLEMENTS = ResourceFactory.createProperty("http://usefulinc.com/ns/doap#implements");
-	public static final Property RDFS_LABEL = ResourceFactory.createProperty("http://www.w3.org/2000/01/rdf-schema#label");
-	public static final Property RDF_VALUE = ResourceFactory.createProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#value");
+	public static final Property RDFS_LABEL = ResourceFactory.createProperty(NsRdfs, "label");
+	public static final Property RDFS_IS_DEFINED_BY = ResourceFactory.createProperty(NsRdfs, "isDefinedBy");
+	public static final Resource RDFS_CLASS = ResourceFactory.createResource(NsRdfs + "Class");
+	public static final Resource RDFS_DATA_TYPE = ResourceFactory.createResource(NsRdfs + "DataType");
+	public static final Resource RDF_PROPERTY = ResourceFactory.createResource(NsRdf + "Property");
+	public static final Property RDF_VALUE = ResourceFactory.createProperty(NsRdf, "value");
 	public static final Property DCTERMS_HAS_FORMAT = ResourceFactory.createProperty(NsDcterms+"hasFormat");
 	public static final Property DC_FORMAT = ResourceFactory.createProperty(NsDc+"format");
 	public static final Property DC_SOURCE = ResourceFactory.createProperty(NsDc+"source");
@@ -124,6 +128,12 @@ public final class RdfReg {
 	public static final Property WGS84_LAT = ResourceFactory.createProperty(NsWgs84+"lat");
 
 	public static final Property OWL_SAME_AS = ResourceFactory.createProperty(RdfReg.NsOwl+"sameAs");
+	public static final Resource OWL_CLASS  = ResourceFactory.createResource(NsOwl+"Class");
+	public static final Resource OWL_DATA_RANGE  = ResourceFactory.createResource(NsOwl+"DataRange");
+	public static final Resource OWL_DATA_TYPE_PROPERTY  = ResourceFactory.createResource(NsOwl+"DatatypeProperty");
+	public static final Resource OWL_FUNCTIONAL_PROPERTY  = ResourceFactory.createResource(NsOwl+"FunctionalProperty");
+	public static final Resource OWL_OBJECT_PROPERTY  = ResourceFactory.createResource(NsOwl+"owl:ObjectProperty");
+	public static final Resource OWL_ONTOLOGY_PROPERTY  = ResourceFactory.createResource(NsOwl+"owl:OntologyProperty");
 
 	public static final Property SKOS_PREF_LABEL = ResourceFactory.createProperty(RdfReg.NsSkos+"prefLabel");
 	public static final Property SKOS_ALT_LABEL = ResourceFactory.createProperty(RdfReg.NsSkos+"altLabel");

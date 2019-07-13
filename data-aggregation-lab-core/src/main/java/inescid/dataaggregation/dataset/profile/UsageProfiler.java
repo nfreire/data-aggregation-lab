@@ -120,7 +120,7 @@ public class UsageProfiler {
 		return sb.toString();
 	}
 	public void setOptionProfileObjectsOfTriples(boolean b) {
-		optionProfileObjectsOfTriples=false;
+		optionProfileObjectsOfTriples=b;
 	}
 
 

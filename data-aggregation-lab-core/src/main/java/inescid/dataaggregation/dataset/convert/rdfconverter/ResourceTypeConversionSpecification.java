@@ -13,6 +13,8 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 public class ResourceTypeConversionSpecification {
+	public static final boolean DEDUPLICATE_STATEMENTS=true;
+
 	Resource type;
 	Map<Property, PropertyMappingSpecification> propertiesMapping;
 	Map<Property, Property[]> propertiesMerge;

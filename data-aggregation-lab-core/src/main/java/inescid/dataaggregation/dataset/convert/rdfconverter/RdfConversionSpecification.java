@@ -12,6 +12,8 @@ import inescid.dataaggregation.dataset.convert.FilterOfReferencedResource;
 import inescid.util.RdfUtil.Jena;
 
 public class RdfConversionSpecification {
+	ConversionHandler conversionHandler;
+	
 	Map<Resource, Resource> typesMapping=new HashMap<>();
 
 	Map<Resource, Resource[]> rootResourcesTypeMapping=new HashMap<>();
@@ -71,6 +73,14 @@ public class RdfConversionSpecification {
 
 	public void setFilterOfReferencedResource(FilterOfReferencedResource filterOfReferencedResource) {
 		this.filterOfReferencedResource = filterOfReferencedResource;
+	}
+
+	public ConversionHandler getConversionHandler() {
+		return conversionHandler;
+	}
+
+	public void setConversionHandler(ConversionHandler conversionHandler) {
+		this.conversionHandler = conversionHandler;
 	}
 
 	

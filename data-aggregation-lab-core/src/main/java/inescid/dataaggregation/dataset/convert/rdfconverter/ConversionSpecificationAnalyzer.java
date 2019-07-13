@@ -32,7 +32,7 @@ import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 public class ConversionSpecificationAnalyzer {
 
 	MappingReport rpt;
-	public void process(Dataset dataset, PublicationRepository pubRepo) throws Exception {
+	public void process(Dataset dataset) throws Exception {
 		rpt=new MappingReport();
 		File profileFolder=GlobalCore.getPublicationRepository().getProfileFolder(dataset);
 		File schemaorgFile = new File(profileFolder, "schema.org-profile.csv");

@@ -7,6 +7,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpMessage;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -49,6 +50,9 @@ public class HttpRequest {
 
 	public String getUrl() {
 		return url.getUrl();
+	}
+	public UrlRequest getUrlRequest() {
+		return url;
 	}
 
 	public HttpMethod getHttpMethod() {
@@ -155,5 +159,9 @@ public class HttpRequest {
 
 	public void fetch() throws InterruptedException, IOException {
 		GlobalCore.getHttpRequestService().fetch(this);
+	}
+
+	public HttpEntity getRequestContent() {
+		return url.getRequestContent();
 	}	
 }

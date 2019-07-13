@@ -79,6 +79,10 @@ public class LodForm extends DatasetForm {
 						if (stmTitle!=null) 
 							dataset.setTitle(stmTitle.getObject().asLiteral().getString());
 					}
+					Statement stmProvider = dsResource.getProperty(RdfReg.SCHEMAORG_PROVIDER);
+					if (stmProvider!=null) {
+						dataset.setOrganization(stmProvider.getObject().asLiteral().getString());
+					} 			
 					uriChecked=true;
 				}
 			} catch (InterruptedException e) {

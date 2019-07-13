@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 
 public class UrlRequest {
@@ -17,6 +18,7 @@ public class UrlRequest {
 	String url;
 	HttpMethod method=HttpMethod.GET;
 	List<AbstractMap.SimpleImmutableEntry<String, String>> headers;
+	HttpEntity requestContent;
 	boolean refresh=false;
 	
 	public UrlRequest(String url) {
@@ -96,6 +98,12 @@ public class UrlRequest {
 	@Override
 	public String toString() {
 		return url ;
+	}
+	public HttpEntity getRequestContent() {
+		return requestContent;
+	}
+	public void setRequestContent(HttpEntity requestContent) {
+		this.requestContent=requestContent;
 	}
 
 	

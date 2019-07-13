@@ -24,7 +24,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import eu.europeana.research.iiif.crawl.Collection;
-import eu.europeana.research.iiif.discovery.model.IiifContextReference;
+import eu.europeana.research.iiif.discovery.model.IiifSeeAlsoReference;
 import eu.europeana.research.iiif.discovery.model.OrderedCollection;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
@@ -125,7 +125,7 @@ public class IiifForm extends DatasetForm {
 									else if(ctx.equals("http://iiif.io/api/discovery/0/context.json")) {
 										message=("Harvesting method detected: Change Discovery API");
 										((IiifDataset)dataset).setCrawlMethod(IiifCrawlMethod.DISCOVERY);
-										List<IiifContextReference> context = OrderedCollection.getContext(collectionJson);
+										List<IiifSeeAlsoReference> context = OrderedCollection.getSeeAlso(collectionJson);
 										if(!context.isEmpty())
 											dataset.setMetadataUri(context.get(0).getId());
 									} else if(ctx.startsWith("http://iiif.io/api/presentation")) {

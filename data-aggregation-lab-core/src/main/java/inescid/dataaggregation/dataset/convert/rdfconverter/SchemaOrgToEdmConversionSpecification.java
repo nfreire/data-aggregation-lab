@@ -1,12 +1,53 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.dataset.convert.FilterOfReferencedResource;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 
 public class SchemaOrgToEdmConversionSpecification {
 	public static final RdfConversionSpecification spec;
+	
+	private static class EdmTypePreferedValueHandler implements ConversionHandler {
+		private static Set<String> propertiesProcessed=new HashSet<String>() {{
+			add(RdfReg.EDM_TYPE.getURI());
+		}};
+		@Override
+		public Set<String> propertiesProcessed() {
+			return propertiesProcessed;
+		}
+
+		@Override
+		public void handleConvertedResult(Resource source, Resource target) {
+			Statement firstType=null;
+			ArrayList<Statement> typeCnt=new ArrayList<Statement>();
+			StmtIterator cwStms = target.listProperties(RdfReg.EDM_TYPE);
+			while (cwStms.hasNext()) {
+				Statement st = cwStms.next();
+				typeCnt.add(st);
+				if(st.getObject().isLiteral()) {
+					if(st.getObject().asLiteral().getString().equals("TEXT")) 
+						firstType=st;
+					else if (firstType==null)
+						firstType=st;
+				}
+			}
+			if(!typeCnt.isEmpty()) {
+				for (Statement st: typeCnt) {
+					if(!st.equals(firstType)) 
+						target.getModel().remove(st);
+				}
+			}
+		}
+		
+	}
 	
 //	public SchemaOrgToEdmConversionSpecification() {
 	static {
@@ -180,12 +221,14 @@ public class SchemaOrgToEdmConversionSpecification {
 		addressMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDRESS_REGION, RdfReg.VCARD_REGION);
 		
 		spec.setFilterOfReferencedResource(new FilterOfReferencedResource() {
-			@Override
 			public boolean filterOut(Statement reference) {
 				return reference.getPredicate().equals(RdfReg.SCHEMAORG_HAS_PART) ||
 						reference.getPredicate().equals(RdfReg.SCHEMAORG_IS_PART_OF);
 			}
 		});
+		
+		spec.setConversionHandler(new EdmTypePreferedValueHandler());
+		
 	}
 
 }

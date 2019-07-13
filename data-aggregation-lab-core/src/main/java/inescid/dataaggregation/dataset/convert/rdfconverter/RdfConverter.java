@@ -99,8 +99,17 @@ public class RdfConverter {
 //	while (choStms.hasNext()) 
 //		System.out.println(choStms.next());
 
+		finalizeConversion(targetModelRdf, srcRoot);
 		return mainTargetResource;
 
+	}
+
+	private void finalizeConversion(Model targetModelRdf, Resource srcRoot) {
+		if (mainTargetResource!=null) {
+			deduplicateStatements(targetModelRdf);
+			if(spec.getConversionHandler()!=null)
+				spec.getConversionHandler().handleConvertedResult(srcRoot, mainTargetResource);
+		}
 	}
 
 	public Resource convert(Model ldModelRdf) {
@@ -130,6 +139,7 @@ public class RdfConverter {
 						if (mainTargetResource==null)
 							mainTargetResource=trgResource;
 					} 
+					finalizeConversion(targetModelRdf, srcRoot);
 					return mainTargetResource;
 				}
 				
@@ -336,6 +346,20 @@ public class RdfConverter {
 		}
 	}
 
+	private void deduplicateStatements(Model model) {
+		HashSet<Statement> dedupeSet=new HashSet<>();
+		if(ResourceTypeConversionSpecification.DEDUPLICATE_STATEMENTS) {
+			StmtIterator srcStms = model.listStatements();
+			while (srcStms.hasNext()) {
+				Statement st = srcStms.next();
+				if (dedupeSet.contains(st))
+					model.remove(st);
+				else
+					dedupeSet.add(st);
+			}
+		}
+	}
+	
 	private String getElementName(String uri) {
 		int lastPath=uri.lastIndexOf('/');
 		int lastFrag=uri.lastIndexOf('#');

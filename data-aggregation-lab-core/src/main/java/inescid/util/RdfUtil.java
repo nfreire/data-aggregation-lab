@@ -27,6 +27,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
 
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 
 
@@ -46,6 +47,14 @@ public class RdfUtil {
 		}
 		public static Statement createStatement(Resource sub, Property pred, RDFNode obj) {
 			return ResourceFactory.createStatement(sub, pred, obj);
+		}
+		public static Resource getResourceIfExists(String uri, Model model) {
+			Resource createResource = model.createResource(uri);
+			StmtIterator stms = model.listStatements(createResource, null, (RDFNode) null);
+			if(stms.hasNext())
+				return createResource;
+			else
+				return null;
 		}
 	}
 	
@@ -243,6 +252,13 @@ public class RdfUtil {
 			}
 		}
 		return null;
+	}
+
+	public static Model readRdf(HttpResponse rdf) {
+		Model model = readRdf(rdf.body, fromMimeType(rdf.getHeader("Content-Type")));
+		if (model.size() == 0)
+			return null;
+		return model;
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.util.AccessException;
 
@@ -44,12 +45,12 @@ public class HarvesterWikidataUris {
 						if(rdfCache.contains(uri)) {
 							System.out.printf("%s already exists. Skipping.\n", uri);
 						}else {
-							SimpleEntry<byte[], List<Entry<String, String>>> fetched = rdfCache.fetchRdf(uri); 
+							HttpResponse fetched = rdfCache.fetchRdf(uri); 
 							
-							if(fetched==null || fetched.getKey()==null || fetched.getKey().length==0)
+							if(fetched.isSuccess())
 								System.out.printf("Access to %s failed\n", uri);
 							else
-								System.out.printf("Saved %s (%d Kb)\n", uri, fetched.getKey().length / 1024);
+								System.out.printf("Saved %s (%d Kb)\n", uri, fetched.body.length / 1024);
 						}
 						return true;
 					}

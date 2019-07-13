@@ -48,6 +48,9 @@ public class UsageStats {
 			for(Entry<String, Integer> prop: clsStats.getPropertiesStats().getSortedEntries()) {
 				sb.append(String.format("  %5d - %s\n", prop.getValue(), prop.getKey()));
 			}
+			for(Entry<String, Integer> prop: clsStats.getPropertiesObjectStats().getSortedEntries()) {
+				sb.append(String.format("  %5d - %s (as object)\n", prop.getValue(), prop.getKey()));
+			}
 		}
 		return sb.toString();
 	}

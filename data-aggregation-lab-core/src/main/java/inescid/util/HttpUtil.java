@@ -82,6 +82,18 @@ public class HttpUtil {
 							ldReq.setUrl(location);
 							return makeRequest(ldReq);
 						}
+					}else if( resStatusCode==429) {
+						String retryAfter = resourceRequest.getResponseHeader("Retry-After");
+						if(retryAfter!=null) {
+							try {
+								Thread.sleep(Long.parseLong(retryAfter));
+								return makeRequest(ldReq);						
+							} catch (NumberFormatException e) {
+								//ignore and proceed to sleep
+							}
+						}
+						Thread.sleep(1000);
+						return makeRequest(ldReq);
 					}
 					if (tries > RETRIES_ON_HTTP_STATUS)
 						throw new AccessException(ldReq.getUrl(), resStatusCode);
@@ -130,11 +142,5 @@ public class HttpUtil {
 			meta.add(new AbstractMap.SimpleEntry<String, String>(h.getName(), h.getValue()));
 		return meta;
 	}
-	public static String getHeader(String headerToGet, List<Entry<String, String>> headers) {
-		for (Entry<String, String> h : headers) {
-			if(h.getKey().equalsIgnoreCase(headerToGet))
-				return h.getValue();
-		}
-		return null;
-	}
+
 }
