@@ -1,0 +1,5 @@
+/target/
+/.settings/
+/.classpath
+/.project
+/dataaggregation.log.txt

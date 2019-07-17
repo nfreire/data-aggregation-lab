@@ -105,7 +105,9 @@ public class OntologiesLinkedDataStudy {
 						e.printStackTrace();
 					}
 				}
-				System.out.println(analyser);
+				System.out.println(analyser.namespace);
+				System.out.println(analyser.report.ontologyExists);
+				System.out.println();
 				allAnaliser.addOntology(analyser);
 			}
 
@@ -118,7 +120,7 @@ public class OntologiesLinkedDataStudy {
 			FileUtils.write(new File(outputFolder, "all-ontologies-profile.txt"), allAnaliser.allOntologiesProfiler.toString(), "UTF8");
 			FileUtils.write(new File(outputFolder, "all-ontologies-elements-profile.txt"), allAnaliser.allOntologiesProfilerDataElements.toString(), "UTF8");
 			
-			FileUtils.write(new File(outputFolder, "all-ontologies-global-analyzer.csv"), allAnaliser.toCsv(), "UTF8");
+			FileUtils.write(new File(outputFolder, "all-ontologies-global-analyzer.csv"), allAnaliser.toCsv(ontologiesUris), "UTF8");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

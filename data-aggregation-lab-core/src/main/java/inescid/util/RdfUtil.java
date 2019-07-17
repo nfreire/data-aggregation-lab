@@ -260,5 +260,11 @@ public class RdfUtil {
 			return null;
 		return model;
 	}
+	public static Model readRdf(HttpResponse rdf, Lang l) {
+		Model model = readRdf(rdf.body, l);
+		if (model.size() == 0)
+			return null;
+		return model;
+	}
 
 }

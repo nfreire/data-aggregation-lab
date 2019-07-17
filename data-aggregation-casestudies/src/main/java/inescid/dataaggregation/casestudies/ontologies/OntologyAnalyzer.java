@@ -10,6 +10,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RiotException;
 
 import eu.europeana.ld.jena.JenaUtils;
@@ -47,8 +48,9 @@ public class OntologyAnalyzer {
 			} catch (RiotException e) {
 				System.out.println("Invalid RDF: "+namespace);
 				e.printStackTrace(System.out);
+				modelOnt = RdfUtil.readRdf(rdf, Lang.TURTLE);
 			}
-			if (modelOnt == null) {
+			if (modelOnt == null || modelOnt.size()==0) {
 				report.namespaceResolvable=false;
 				if(sourceUri==null)
 					report.ontologyExists=false;
@@ -76,7 +78,7 @@ public class OntologyAnalyzer {
 			rdf = rdfCache.fetchRdf(sourceUri);
 			if(rdf.isSuccess()) {
 				modelOnt = RdfUtil.readRdf(rdf);
-					report.namespaceResolvable=true;
+//					report.namespaceResolvable=true;
 					report.ontologyExists=true;
 			} else {
 				report.ontologyExists=false;
@@ -91,7 +93,7 @@ public class OntologyAnalyzer {
 				Resource ontRes=Jena.getResourceIfExists(namespace, modelOnt);
 				if(ontRes==null && namespace.endsWith("#")) 
 					ontRes=Jena.getResourceIfExists(namespace.substring(0, namespace.length()-1), modelOnt);
-				if(ontRes!=null) {
+				if(ontRes!=null  && modelOnt.size()!=0) {
 					report.rdfResourceForNamespaceExists=true;
 					UsageProfiler profilerOnt=new UsageProfiler();
 					profilerOnt.collect(ontRes);

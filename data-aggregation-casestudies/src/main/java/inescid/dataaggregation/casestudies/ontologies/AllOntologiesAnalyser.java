@@ -2,8 +2,12 @@ package inescid.dataaggregation.casestudies.ontologies;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -59,9 +63,34 @@ public class AllOntologiesAnalyser {
 		ontologies.put(o.namespace, o);
 	}
 	
-	public String toCsv() throws IOException {
+	public String toCsv(String[][] ontologiesUris) throws IOException {
 		StringBuilder sb=new StringBuilder();
 		CSVPrinter prt = new CSVPrinter(sb, CSVFormat.DEFAULT);
+		prt.printRecord("Ontologies namespaces");
+		prt.printRecord("Namespace(s)", "Location of definition(s)");
+		
+		for(int i=0; i<ontologiesUris.length; i++) {
+			String[] ontUriGroup=ontologiesUris[i];
+			String namespaces="";
+			String defs="";
+			for(int ig=0; ig<ontUriGroup.length; ig++) {
+				String ontUri=ontUriGroup[ig];
+				ig++;
+				String ontDef=ontUriGroup[ig];
+				if(namespaces.isEmpty())
+					namespaces=ontUri;
+				else
+					namespaces+="\n"+ontUri;
+				if(ontDef!=null) {
+					if(defs.isEmpty())
+						defs=ontDef;
+					else
+						defs+="\n"+ontDef;
+				}
+			}
+			prt.printRecord(namespaces, defs);
+		}
+		
 		prt.printRecord("Ontologies", ontologies.size());
 		prt.printRecord("namespaceResolvable", namespaceResolvable, String.format("%.2f", namespaceResolvable / ontologies.size()));
 		prt.printRecord("ontologyExists", ontologyExists, String.format("%.2f", ontologyExists / ontologies.size()));
@@ -69,20 +98,34 @@ public class AllOntologiesAnalyser {
 		prt.printRecord("withDataElements", withDataElements, String.format("%.2f", withDataElements / ontologies.size()));
 		prt.printRecord("#Ontologies' classes");
 		prt.printRecord("URI", "usage count");
-		for(String uri: classesUsage.keySet()) 
-			prt.printRecord(uri, classesUsage.get(uri).size() , String.format("%.2f", (float)classesUsage.get(uri).size() / ontologies.size()));
+		ArrayList<Entry<String, HashSet<String>>> sorted=new ArrayList<>(classesUsage.entrySet());
+		Comparator<Entry<String, HashSet<String>>> comparator = new Comparator<Entry<String, HashSet<String>>>() {
+			@Override
+			public int compare(Entry<String, HashSet<String>> o1, Entry<String, HashSet<String>> o2) {
+				return o2.getValue().size() - o1.getValue().size();
+			}
+		};
+		Collections.sort(sorted, comparator);
+		for(Entry<String, HashSet<String>> uri: sorted) 
+			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("# Ontologies' properties");
 		prt.printRecord("URI", "usage count");
-		for(String uri: propertiesUsage.keySet()) 
-			prt.printRecord(uri, propertiesUsage.get(uri).size(), String.format("%.2f", (float)propertiesUsage.get(uri).size() / ontologies.size()));
+		sorted=new ArrayList<>(propertiesUsage.entrySet());
+		Collections.sort(sorted, comparator);
+		for(Entry<String, HashSet<String>> uri: sorted) 
+			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("#Data elements' classes");
 		prt.printRecord("URI", "usage count");
-		for(String uri: dataElementClassUsage.keySet()) 
-			prt.printRecord(uri, dataElementClassUsage.get(uri).size(), String.format("%.2f", (float)dataElementClassUsage.get(uri).size() / ontologies.size()));
+		sorted=new ArrayList<>(dataElementClassUsage.entrySet());
+		Collections.sort(sorted, comparator);
+		for(Entry<String, HashSet<String>> uri: sorted) 
+			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("#Data elements' properties");
 		prt.printRecord("URI", "usage count");
-		for(String uri: dataElementPropertyUsage.keySet()) 
-			prt.printRecord(uri, dataElementPropertyUsage.get(uri).size(), String.format("%.2f", (float)dataElementPropertyUsage.get(uri).size() / ontologies.size()));
+		sorted=new ArrayList<>(dataElementPropertyUsage.entrySet());
+		Collections.sort(sorted, comparator);
+		for(Entry<String, HashSet<String>> uri: sorted) 
+			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.close();
 		return sb.toString();
 	}

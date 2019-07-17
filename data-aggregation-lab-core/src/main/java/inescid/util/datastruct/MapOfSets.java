@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -100,6 +101,10 @@ public class MapOfSets<K,V> {
 			buffer.append(super.toString());
 			buffer.append("]");
 			return buffer.toString();
+		}
+
+		public Set<Entry<K, HashSet<V>>> entrySet() {
+			return hashtable.entrySet();
 		}
 
 }
