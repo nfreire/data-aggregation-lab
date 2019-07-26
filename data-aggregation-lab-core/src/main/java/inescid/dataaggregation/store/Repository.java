@@ -31,8 +31,10 @@ import org.apache.jena.ext.com.google.common.math.LinearTransformation;
 
 import com.mchange.v1.util.SimpleMapEntry;
 
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.job.ZipArchiveExporter;
 
 public class Repository {
 	private static final Charset UTF8 = Charset.forName("UTF-8");
@@ -307,5 +309,19 @@ public class Repository {
 	public byte[] getContent(String datasetId, String url) throws IOException {
 		File file = getFile(datasetId, url);
 		return FileUtils.readFileToByteArray(file);
+	}
+
+	public void exportDatasetToZip(String datasetUri, File targetZipFile, ContentTypes format_opt) throws IOException {
+		ZipArchiveExporter ziper=new ZipArchiveExporter(targetZipFile);
+		List<Entry<String, File>> allDatasetManifestFiles = GlobalCore.getDataRepository().getAllDatasetResourceFiles(datasetUri);
+
+		String fileExtension=format_opt!=null ? "."+format_opt.getFilenameExtension() : "";
+		for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
+			ziper.addFile(manifEntry.getValue().getName()+fileExtension);
+			FileInputStream fis = new FileInputStream(manifEntry.getValue());
+			IOUtils.copy(fis, ziper.outputStream());
+			fis.close();
+		}
+		ziper.close();
 	}
 }

@@ -10,6 +10,7 @@ import org.apache.http.HeaderElement;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeaderValueParser;
 
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 import inescid.dataaggregation.store.Repository;

@@ -1,6 +1,6 @@
 package inescid.dataaggregation.dataset;
 
-import inescid.dataaggregation.dataset.detection.ContentTypes;
+import inescid.dataaggregation.data.ContentTypes;
 
 public enum DatasetProfile {
 	EDM, SCHEMA_ORG, ANY_TRIPLES, IIIF_PRESENTATION;

@@ -12,10 +12,13 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.w3c.dom.Document;
 
+import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
+import inescid.util.HttpUtil;
+import inescid.util.RdfUtil;
 import inescid.util.XmlUtil;
 
 public class ScriptTestKbSchemaOrg {
@@ -23,9 +26,11 @@ public class ScriptTestKbSchemaOrg {
 	
 	public static void main(String[] args) throws Exception {
 		List<Entry<String, File>> testDs=new ArrayList<>();
-		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p398494843", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
-		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p418098271", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
-		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p418098344", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
+//		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p398494843", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
+//		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p418098271", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
+//		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p418098344", new File("C:\\Users\\nfrei\\Desktop\\KB_ALBA_Item_1900_A_002_example.xml") ));
+		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p419099018", null));
+		testDs.add(new SimpleEntry<String, File>("http://data.bibliotheken.nl/id/alba/p421349735", null ));
 	
 		ScriptTestKbSchemaOrg test=new ScriptTestKbSchemaOrg();
 		test.dataProvider="KB";
@@ -41,6 +46,8 @@ public class ScriptTestKbSchemaOrg {
 	String dataProvider;
 
 	public void runJob(List<Entry<String, File>> allDatasetResourceFiles) throws Exception {
+		GlobalCore.init_developement();
+		
 			SchemaOrgToEdmDataConverter converter = new SchemaOrgToEdmDataConverter();
 			converter.setDataProvider(dataProvider);
 			converter.setProvider(provider);
@@ -48,7 +55,19 @@ public class ScriptTestKbSchemaOrg {
 			
 			for (Entry<String, File> schemaOrgFile : allDatasetResourceFiles) {
 				try {
-					byte[] schemaOrgBytes = FileUtils.readFileToByteArray(schemaOrgFile.getValue());
+					System.out.println(schemaOrgFile.getKey());
+					byte[] schemaOrgBytes;
+					if(schemaOrgFile.getValue()==null) {
+						File schemaFile=new File(URLEncoder.encode(schemaOrgFile.getKey(), "UTF8")+".schema.xml");
+						if(schemaFile.exists())
+							schemaOrgBytes = FileUtils.readFileToByteArray(schemaFile);
+						else {
+							HttpRequest req = HttpUtil.makeRequest(schemaOrgFile.getKey(), RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+							schemaOrgBytes = req.getContent().asBytes();
+							FileUtils.writeByteArrayToFile(schemaFile, schemaOrgBytes);
+						}
+					}else 
+						schemaOrgBytes = FileUtils.readFileToByteArray(schemaOrgFile.getValue());
 					byte[] edmBytes = getEdmRecord(converter, schemaOrgFile.getKey(), schemaOrgBytes);
 					if(edmBytes!=null) {
 						String edmFilename = URLEncoder.encode(schemaOrgFile.getKey(), "UTF8")+".edm.xml";
@@ -59,6 +78,7 @@ public class ScriptTestKbSchemaOrg {
 					e.printStackTrace();
 				}
 			}
+			GlobalCore.shutdown();
 	}
 
 	private byte[] getEdmRecord(SchemaOrgToEdmDataConverter converter, String resUri, byte[] sourceRdfBytes) {

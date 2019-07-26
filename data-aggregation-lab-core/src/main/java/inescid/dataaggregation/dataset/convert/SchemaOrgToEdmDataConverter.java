@@ -3,6 +3,7 @@ package inescid.dataaggregation.dataset.convert;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConversionSpecifi
 import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.ResourceTypeConversionSpecification;
 import inescid.dataaggregation.dataset.convert.rdfconverter.SchemaOrgToEdmConversionSpecification;
+import inescid.util.RdfUtil;
 import inescid.util.XmlUtil;
 
 /**
@@ -103,6 +105,27 @@ public class SchemaOrgToEdmDataConverter {
 			if(!rights.hasNext())
 				mainTargetResource.getModel().add(ag, RdfReg.EDM_RIGHTS, mainTargetResource.getModel().createResource(datasetRights));
 		}
+		
+		// logic to calculate hasViews would be to complex to implement in the RdfConverter. So we do like this:
+		HashSet<String> wrUris=new HashSet<>();
+		StmtIterator provs = mainTargetResource.getModel().listStatements(null, RdfReg.RDF_TYPE, RdfReg.EDM_WEB_RESOURCE);
+		while(provs.hasNext()) {
+			Statement stm = provs.next();
+			wrUris.add(stm.getSubject().getURI());
+		}
+		for(Resource schemaWebResourceType: new Resource[] {RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.SCHEMAORG_MEDIA_OBJECT, RdfReg.SCHEMAORG_AUDIO_OBJECT}) {
+			StmtIterator mediaStms = source.getModel().listStatements(null, RdfReg.RDF_TYPE, schemaWebResourceType);
+			while(mediaStms.hasNext()) {
+				Statement medStm = mediaStms.next();				
+				StmtIterator contStms = source.getModel().listStatements(medStm.getSubject(), RdfReg.SCHEMAORG_CONTENT_URL, (RDFNode) null);
+				while(contStms.hasNext()) {
+					Statement stm = contStms.next();		
+					if(!wrUris.contains(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())))
+						mainTargetResource.getModel().add(ag, RdfReg.EDM_HAS_VIEW, mainTargetResource.getModel().createResource(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())));
+				}
+			}
+		}
+		
 		if(additionalStatements!=null && !additionalStatements.isEmpty())
 			addAdditionalStatements(additionalStatements);
 		return mainTargetResource;

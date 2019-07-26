@@ -32,7 +32,9 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.convert.EdmUtil;
 import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
@@ -42,11 +44,15 @@ import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.AccessException;
+import inescid.util.EdmRdfUtil;
 import inescid.util.HttpUtil;
 import inescid.util.MapOfInts;
 import inescid.util.RdfUtil;
 
 public class MetadataAnalyzerOfCulturalHeritage {
+	enum DataDumps {
+		WIKIDATA_EDM, EUROPEANA_EDM, WIKIDATA_ONTOLOGY, WIKIDATA_SCHEMAORG
+	};
 
 	public static void main(String[] args) throws Exception {
 		File outputFolder = new File("c://users/nfrei/desktop");
@@ -99,6 +105,8 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				new File(outputFolder, "edm-validation-nonpartner.csv"),
 				new ValidatorForNonPartners(GlobalCore.getValidatorResourceFolder(), Schema.EDM, "edm:dataProvider",
 						"edm:provider", "edm:rights and exists(edm:rights/@rdf:resource)"));
+		MapOfInts<String> wikidataCollectionsSampled=new MapOfInts<String>();
+		MapOfInts<String> europeanaCollectionsSampled=new MapOfInts<String>();
 		UsageProfiler chEntitiesProfile = new UsageProfiler();
 		chEntitiesProfile.setOptionProfileObjectsOfTriples(false);
 
@@ -145,6 +153,13 @@ public class MetadataAnalyzerOfCulturalHeritage {
 //		System.out.println(new String(fetched.getKey()));
 //		System.out.println("Statements for " + uri);
 //		System.out.println(RdfUtil.printStatements(rdfWikidata));
+				
+				Statement wdCol = resource.getProperty(RdfRegWikidata.COLLECTION);
+				if(wdCol!=null) {
+					wikidataCollectionsSampled.incrementTo(RdfUtil.getUriOrLiteralValue(wdCol.getObject()));
+				} else
+					wikidataCollectionsSampled.incrementTo("collection missing");
+				
 			} catch (AccessException | InterruptedException | IOException e) {
 				System.err.println("Exception in " + uri);
 				e.printStackTrace();
@@ -221,13 +236,18 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		int existingEntsEqsSuper = 0;
 		int existingPropsEqs = 0;
 		int existingPropsEqsSuper = 0;
+		
+		HashSet<String> missingEqsEnts=new HashSet<String>();
+		HashSet<String> missingEqsProps=new HashSet<String>();
+		
 		for (String entUri : existingEntsSet) {
 			if (wdEntPropEquivalences.getEquivalence(entUri, false) != null)
 				existingEntsEqs++;
 			else if (wdEntPropEquivalences.getEquivalence(entUri, true) != null)
 				existingEntsEqsSuper++;
-			else
-				System.out.println("No eq for " + entUri);
+			else 
+				missingEqsEnts.add(entUri);
+//				System.out.println("No eq for " + entUri);
 		}
 		for (String propUri : existingPropsSet) {
 			if (wdEntPropEquivalences.getEquivalence(propUri, false) != null)
@@ -235,10 +255,19 @@ public class MetadataAnalyzerOfCulturalHeritage {
 			else if (wdEntPropEquivalences.getEquivalence(propUri, true) != null)
 				existingPropsEqsSuper++;
 			else
-				System.out.println("No eq for " + propUri);
+				missingEqsProps.add(propUri);
+//				System.out.println("No eq for " + propUri);
 		}
 		System.out.println();
 
+		HashSet<String> missingEqs=new HashSet<String>(missingEqsEnts);
+		missingEqs.addAll(missingEqsProps);
+		
+		System.out.println("missing ents "+ missingEqsEnts.size() + " - missing props "+ missingEqsProps.size() +
+				" - merged "+missingEqs.size() + " - by sum "+(missingEqsEnts.size()+missingEqsProps.size()));
+		
+		wdEntPropEquivalences.setEquivalencesNotFound(missingEqs);
+		
 //		write csv
 		FileUtils.write(new File(httpCacheFolder, "wd_schemaOrg_equivalences_stats.csv"),
 				"Existing ents. " + existingEntsSet.size() + ", eqs.," + existingEntsEqs + ",Existing ent eqs. generic,"
@@ -246,7 +275,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 						+ existingPropsEqs + ",Existing props eqs. generic," + existingPropsEqsSuper + "\n"
 						+ wdEntPropEquivalences.toCsv(),
 				"UTF-8");
-		FileUtils.write(new File(httpCacheFolder, "wd_schemaOrg_equivalences.csv"),
+		FileUtils.write(new File(outputFolder, "wd_schemaOrg_equivalences.csv"),
 				wdEntPropEquivalences.toCsvDetailed(), "UTF-8");
 
 //		System.out.println(wdEntPropProfile.printShort());
@@ -312,45 +341,45 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				if(rdfWikidataEdm==null) {
 					unconvertableWikidataChos.put(uri, europeanaId);
 				} else {
+					String eCol=europeanaId.substring(0, europeanaId.indexOf('/'));
+					europeanaCollectionsSampled.incrementTo(eCol);
+					
 					EuropeanaApiClient europeanaApiClient = new EuropeanaApiClient("pSZnyqunm");
-	
-					ByteArrayOutputStream edmOutBytes = new ByteArrayOutputStream();
-					RdfUtil.writeRdf(rdfWikidataEdm.getModel(), Lang.TURTLE, edmOutBytes);
-					edmOutBytes.close();
-					try {
-						dataRepository.save("wikidata-edm", uri, edmOutBytes.toByteArray(), "Content-Type",
-								Lang.TURTLE.getContentType().getContentType());
-					} catch (Exception e) {
-						System.out.printf("Writing EDM for %s failed\n", uri);
-						e.printStackTrace(System.out);
-					}
-	
+					
 					Model rdfEdmAtEuropeana;
 					try {
 						if(dataRepository.contains("wikidata-edm-at-europeana", uri)) {
 							File file = dataRepository.getFile("wikidata-edm-at-europeana", uri);
 							rdfEdmAtEuropeana = RdfUtil.readRdf(FileUtils.readFileToByteArray(file), Lang.TURTLE);
-						} else {
-							
+						} else 
 							rdfEdmAtEuropeana = europeanaApiClient.getRecord(europeanaId);
-							dataRepository.save("wikidata-edm-at-europeana", uri, edmOutBytes.toByteArray(), "Content-Type",
-									Lang.TURTLE.getContentType().getContentType());
-		
-							edmOutBytes = new ByteArrayOutputStream();
-							RdfUtil.writeRdf(rdfEdmAtEuropeana, Lang.TURTLE, edmOutBytes);
-							edmOutBytes.close();
-							try {
-								dataRepository.save("wikidata-edm-at-europeana", uri, edmOutBytes.toByteArray(), "Content-Type",
-										Lang.TURTLE.getContentType().getContentType());
-							} catch (Exception e) {
-								System.out.printf("Writing EDM of Europeana for %s failed\n", uri);
-								e.printStackTrace(System.out);
-							}
-						}
+
+						Resource wdResourceOrig = fetchresource(uri, rdfCache);
+						Model rdfWikidataOrig = wdResource.getModel();
+						removeOtherResources(rdfWikidataOrig, uri);
+						removeNonTruthyStatements(rdfWikidataOrig);
+						dataRepository.save(DataDumps.WIKIDATA_ONTOLOGY.name(), uri, RdfUtil.writeRdf(rdfWikidataOrig, Lang.TURTLE), "Content-Type",
+								Lang.TURTLE.getContentType().getContentType());
+						
+						dataRepository.save(DataDumps.WIKIDATA_EDM.name(), uri, RdfUtil.writeRdf(rdfWikidataEdm.getModel(), Lang.TURTLE), "Content-Type",
+								Lang.TURTLE.getContentType().getContentType());
+						
+						dataRepository.save(DataDumps.EUROPEANA_EDM.name(), uri, RdfUtil.writeRdf(rdfEdmAtEuropeana, Lang.TURTLE), "Content-Type",
+								Lang.TURTLE.getContentType().getContentType());
+								
 					} catch (inescid.europeanaapi.AccessException e) {
 						throw new AccessException(e.getAddress(), e);
 					}
-	
+
+
+					
+//					RDFNode euCol = EdmRdfUtil.getPropertyOfAggregation(rdfEdmAtEuropeana, RdfReg.EDM_DATASET_NAME);
+//					if(euCol!=null) {
+//						europeanaCollectionsSampled.incrementTo(RdfUtil.getUriOrLiteralValue(euCol));
+//					} else
+//						europeanaCollectionsSampled.incrementTo("collection missing");
+					
+					
 					double completeness = Dqc10PointRatingCalculatorNoRights.calculate(rdfWikidataEdm.getModel());
 					double completenessEuropeana = Dqc10PointRatingCalculator.calculate(rdfEdmAtEuropeana);
 					completnesses.add(new ImmutableTriple(uri, completeness, completenessEuropeana));
@@ -367,6 +396,10 @@ public class MetadataAnalyzerOfCulturalHeritage {
 
 		validation.finalize();
 		validationForNonPartners.finalize();
+		
+		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_ONTOLOGY.name(), new File(outputFolder, "wikidata-subdataset-ontology.zip"), ContentTypes.TURTLE);
+		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_EDM.name(), new File(outputFolder, "wikidata-subdataset-edm.zip"), ContentTypes.TURTLE);
+		dataRepository.exportDatasetToZip(DataDumps.EUROPEANA_EDM.name(), new File(outputFolder, "europeana-subdataset-edm.zip"), ContentTypes.TURTLE);
 		
 		{
 			File outFile=new File(outputFolder, "wikidata-unconvertable-to-schemaorg.csv");
@@ -415,6 +448,12 @@ public class MetadataAnalyzerOfCulturalHeritage {
 			fileWriter.close();	
 			csvPrinter.close();
 		}
+		{
+			FileUtils.write(new File(httpCacheFolder, "collections_wd_and_europeana_counts.csv"), 
+					"Recs/collection in europeana\n"+europeanaCollectionsSampled.toCsv()+
+					"\nRecs/collection in wikidata\n"+wikidataCollectionsSampled.toCsv(),
+					"UTF-8");
+		}
 	}
 
 	private static void removeOtherResources(Model rdfWikidata, String keepUri) {
@@ -448,7 +487,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 	public static Resource fetchresource(String resourceUri, CachedHttpRequestService rdfCache)
 			throws AccessException, InterruptedException, IOException {
 		HttpResponse propFetched = rdfCache.fetchRdf(resourceUri);
-		if (propFetched.isSuccess()) {
+		if (!propFetched.isSuccess()) {
 			throw new AccessException(resourceUri);
 		} else {
 			Model rdfWikidata = RdfUtil.readRdf(propFetched.body,

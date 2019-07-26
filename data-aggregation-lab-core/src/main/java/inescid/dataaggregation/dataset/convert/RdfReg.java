@@ -218,6 +218,8 @@ public final class RdfReg {
 //	public static final Property SCHEMAORG_ = ResourceFactory.createProperty(NsSchemaOrg+"");
 	public static final Property VOID_ROOT_RESOURCE = ResourceFactory.createProperty(NsVoid+"rootResource");
 	public static final Property SCHEMAORG_IDENTIFIER = ResourceFactory.createProperty(NsSchemaOrg+"identifier");
+	public static final Property SCHEMAORG_NUMBER_OF_PAGES = ResourceFactory.createProperty(NsSchemaOrg+"numberOfPages");
+	public static final Property SCHEMAORG_PAGINATION = ResourceFactory.createProperty(NsSchemaOrg+"pagination");
 	public static final Property DC_IDENTIFIER = ResourceFactory.createProperty(NsDc+"identifier");
 	
 }

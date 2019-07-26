@@ -30,6 +30,7 @@ public class AllOntologiesAnalyser {
 	float ontologyExists=0;
 	float rdfResourceForNamespaceExists=0;
 	float withDataElements=0;
+	float dataElementsCount=0;
 	
 	public void runAnalysis() {
 		for(OntologyAnalyzer oAn : ontologies.values()) {
@@ -37,6 +38,7 @@ public class AllOntologiesAnalyser {
 			ontologyExists+=oAn.report.ontologyExists ? 1 : 0;
 			rdfResourceForNamespaceExists+=oAn.report.rdfResourceForNamespaceExists ? 1 : 0;
 			withDataElements+=oAn.report.dataElementResources>0 ? 1 : 0;
+			dataElementsCount+=oAn.report.dataElementResources;
 			if(oAn.report.ontologyExists) {
 				ClassUsageStats oStats = oAn.report.profileOfOntology.getClassesStats().values().iterator().next();
 				for(String prop: oStats.getPropertiesStats().keySet()){
@@ -95,7 +97,7 @@ public class AllOntologiesAnalyser {
 		prt.printRecord("namespaceResolvable", namespaceResolvable, String.format("%.2f", namespaceResolvable / ontologies.size()));
 		prt.printRecord("ontologyExists", ontologyExists, String.format("%.2f", ontologyExists / ontologies.size()));
 		prt.printRecord("rdfResourceForNamespaceExists", rdfResourceForNamespaceExists, String.format("%.2f", rdfResourceForNamespaceExists / ontologies.size()));
-		prt.printRecord("withDataElements", withDataElements, String.format("%.2f", withDataElements / ontologies.size()));
+		prt.printRecord("withDataElements", withDataElements, "dataElementsCount", dataElementsCount, String.format("%.2f", withDataElements / ontologies.size()));
 		prt.printRecord("#Ontologies' classes");
 		prt.printRecord("URI", "usage count");
 		ArrayList<Entry<String, HashSet<String>>> sorted=new ArrayList<>(classesUsage.entrySet());

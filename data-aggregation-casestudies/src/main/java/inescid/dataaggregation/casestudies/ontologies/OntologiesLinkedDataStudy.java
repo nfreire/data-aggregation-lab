@@ -112,6 +112,8 @@ public class OntologiesLinkedDataStudy {
 			}
 
 			allAnaliser.runAnalysis();
+			System.out.println("\n\n########################\n### ALL ONTOLOGIES ###\n########################");
+			System.out.println(allAnaliser);
 			System.out.println("\n\n########################\n### ALL ONTOLOGIES PROFILE ###\n########################");
 			System.out.println(allAnaliser.allOntologiesProfiler);
 			System.out.println("\n\n########################\n### ALL ONTOLOGIES DATA ELEMENTS PROFILE ###\n########################");

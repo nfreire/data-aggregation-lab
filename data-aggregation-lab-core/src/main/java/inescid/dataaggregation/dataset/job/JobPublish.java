@@ -21,12 +21,12 @@ import eu.europeana.research.iiif.discovery.demo.TimestampCrawlingHandler;
 import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.profile.ManifestMetadataProfiler;
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-import inescid.dataaggregation.dataset.detection.ContentTypes;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.dataaggregation.store.PublicationRepository;
@@ -44,24 +44,10 @@ public class JobPublish extends JobWorker {
 				File targetZipFile = repository.getExportZipFile(dataset);
 				if(!targetZipFile.getParentFile().exists())
 					targetZipFile.getParentFile().mkdirs();
-				ZipArchiveExporter ziper=new ZipArchiveExporter(targetZipFile);
-				List<Entry<String, File>> allDatasetManifestFiles = GlobalCore.getDataRepository().getAllDatasetResourceFiles(dataset.getUri());
-//				DataProfileDetector detector=new DataProfileDetector();
-//				DataTypeResult detected=null;
-//				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
-//					detected=detector.detect(manifEntry.getValue());
-//					if(detected!=null)
-//						break;
-//				}
 				ContentTypes format=dataset.getDataFormat()==null ? null : ContentTypes.fromMime(dataset.getDataFormat());
-				String fileExtension=format!=null ? "."+format.getFilenameExtension() : "";
-				for(Entry<String, File> manifEntry: allDatasetManifestFiles) {
-					ziper.addFile(manifEntry.getValue().getName()+fileExtension);
-					FileInputStream fis = new FileInputStream(manifEntry.getValue());
-					IOUtils.copy(fis, ziper.outputStream());
-					fis.close();
-				}
-				ziper.close();
+				GlobalCore.getDataRepository().exportDatasetToZip(dataset.getUri(), targetZipFile, format);
+
+
 //			} else 
 //				throw new RuntimeException("Not implemented: "+dataset.getType());
 	}

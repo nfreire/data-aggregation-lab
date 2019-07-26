@@ -19,6 +19,7 @@ import eu.europeana.research.iiif.discovery.model.JsonObject;
 import eu.europeana.research.iiif.discovery.model.OrderedCollection;
 import eu.europeana.research.iiif.discovery.model.OrderedCollectionPage;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.convert.RdfReg;

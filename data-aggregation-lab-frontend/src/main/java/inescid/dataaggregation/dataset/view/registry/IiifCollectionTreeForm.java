@@ -17,11 +17,11 @@ import org.apache.commons.lang.StringUtils;
 import eu.europeana.research.iiif.crawl.IiifCollectionTree;
 import freemarker.template.SimpleDate;
 import freemarker.template.Template;
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.detection.ContentTypes;
 import inescid.dataaggregation.dataset.job.JobLog;
 import inescid.dataaggregation.dataset.view.Global;
 

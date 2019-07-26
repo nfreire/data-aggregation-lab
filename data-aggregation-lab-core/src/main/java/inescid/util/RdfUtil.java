@@ -1,6 +1,7 @@
 package inescid.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -91,6 +92,8 @@ public class RdfUtil {
 			return null;
 		if (mimeType.contains(";"))
 			mimeType=mimeType.substring(0, mimeType.indexOf(';')).trim();
+		if (mimeType.contains(","))
+			mimeType=mimeType.substring(0, mimeType.indexOf(',')).trim();
 		return RDFLanguages.contentTypeToLang(mimeType);
 	}
 
@@ -183,6 +186,22 @@ public class RdfUtil {
 	}		
 	public static void writeRdf(Model model, Lang l, Writer out) {
 		model.write(out, l.getName());
+	}		
+	public static byte[] writeRdf(Model model, Lang l) {
+		ByteArrayOutputStream outBytes = new ByteArrayOutputStream();
+		RdfUtil.writeRdf(model, l, outBytes);
+		try {
+			outBytes.close();
+		} catch (IOException e) { /* does not happen with byte array */ }
+		return outBytes.toByteArray();
+	}		
+	public static String writeRdfToString(Model model, Lang l) {
+		StringWriter writer=new StringWriter();
+		RdfUtil.writeRdf(model, l, writer);
+		try {
+			writer.close();
+		} catch (IOException e) { /* does not happen with string writer */ }
+		return writer.toString();
 	}		
 	
 	public static String printStatements(Model rdf) {

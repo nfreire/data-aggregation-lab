@@ -1,5 +1,6 @@
 package inescid.dataaggregation.dataset.detection;
 
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.DatasetProfile;
 
 public class DataTypeResult {

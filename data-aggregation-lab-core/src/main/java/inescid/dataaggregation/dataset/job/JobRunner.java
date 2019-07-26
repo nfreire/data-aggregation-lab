@@ -106,7 +106,7 @@ public class JobRunner implements Runnable {
 				}
 			}
 		} catch (InterruptedException e) {
-			log.warn("JobRunner interrupted. Exiting.", e);
+			log.warn("JobRunner interrupted. Exiting.");
 		}		
 	}
 

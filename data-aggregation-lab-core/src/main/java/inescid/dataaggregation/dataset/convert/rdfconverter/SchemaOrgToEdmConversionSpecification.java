@@ -131,7 +131,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_PUBLISHER, RdfReg.DCTERMS_PUBLISHER);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_MATERIAL, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION_CREATED, RdfReg.DC_DESCRIPTION);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION_CREATED, RdfReg.DCTERMS_SPATIAL);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_EXAMPLE_OF_WORK, RdfReg.EDM_REALIZES);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_MAIN_ENTITY_OF_PAGE, RdfReg.DCTERMS_TABLE_OF_CONTENTS);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_COPYRIGHT_HOLDER, RdfReg.DC_RIGHTS);
@@ -151,6 +151,8 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.RDF_TYPE, RdfReg.EDM_HAS_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDITIONAL_TYPE, RdfReg.EDM_HAS_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER, true);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_NUMBER_OF_PAGES, RdfReg.DCTERMS_EXTENT);		
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_PAGINATION, RdfReg.DC_DESCRIPTION);		
 		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfReg.EDM_TYPE);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "IMAGE");
@@ -175,6 +177,8 @@ public class SchemaOrgToEdmConversionSpecification {
 		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_URL, RdfReg.EDM_IS_SHOWN_AT);
 		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_IMAGE, RdfReg.EDM_IS_SHOWN_BY);
 		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_THUMBNAIL_URL, RdfReg.EDM_OBJECT);
+		// next one is commented because it is not supported in the rdfConverter at this time
+		//		aggregationMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_IMAGE, RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.SCHEMAORG_CONTENT_URL, RdfReg.EDM_HAS_VIEW);
 //		ResourceTypeConversionSpecification aggregationMapping = spec.getTypeMapping(RdfReg.EDM_AGENT);
 
 		ResourceTypeConversionSpecification webResourceMapping = spec.getTypePropertiesMapping(RdfReg.EDM_WEB_RESOURCE);

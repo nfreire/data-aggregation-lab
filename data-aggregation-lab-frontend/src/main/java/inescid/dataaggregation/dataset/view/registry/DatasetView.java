@@ -11,12 +11,12 @@ import org.apache.commons.collections4.keyvalue.DefaultMapEntry;
 import org.apache.commons.lang3.StringUtils;
 
 import freemarker.template.Template;
+import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.WwwDataset;
-import inescid.dataaggregation.dataset.detection.ContentTypes;
 import inescid.dataaggregation.dataset.view.Global;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 

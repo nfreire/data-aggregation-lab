@@ -90,8 +90,9 @@ public class EquivalenceMapping {
 			}	
 			
 			if(wdResource.getURI().equals(leafResource.getURI())) {
-				if (! wdEntPropEquivalencesSuperclasses.containsKey(leafResource.getURI()) &&
-						! wdEntPropEquivalencesSuperclassesNonSchemaOrg.containsKey(leafResource.getURI()))
+				if (! wdEntPropEquivalencesSuperclasses.containsKey(leafResource.getURI()) 
+//						&& ! wdEntPropEquivalencesSuperclassesNonSchemaOrg.containsKey(leafResource.getURI())
+						)
 					equivalencesNotFound.add(leafResource.getURI());
 //			} else {
 //				ArrayList<String> eqSuper = wdEntPropEquivalencesSuperclasses.get(leafResource.getURI());
@@ -363,6 +364,11 @@ public class EquivalenceMapping {
 				wdEntPropEquivalencesSuperclasses.putAll(uri, dedup);
 			}
 		}	
+	}
+
+	public void setEquivalencesNotFound(HashSet<String> missingEqs) {
+		equivalencesNotFound.clear();
+		equivalencesNotFound.addAll(missingEqs);
 	}
 
 	
