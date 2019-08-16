@@ -1,0 +1,25 @@
+class,class count
+http://www.w3.org/2002/07/owl#Class,7
+http://www.w3.org/2002/07/owl#DatatypeProperty,13
+"",
+http://www.w3.org/2002/07/owl#Class
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,0,22
+http://www.w3.org/2000/01/rdf-schema#label,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,11
+http://www.w3.org/2000/01/rdf-schema#subClassOf,20,1,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentClass,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#historyNote,2,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#DatatypeProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,5,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,10,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,6,4,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#onProperty,0,4
+http://www.w3.org/2004/02/skos/core#historyNote,1,0,0.0,0.0,0.0,0.0

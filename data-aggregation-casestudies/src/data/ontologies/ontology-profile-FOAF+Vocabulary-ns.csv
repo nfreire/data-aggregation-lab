@@ -1,0 +1,9 @@
+class,class count
+http://www.w3.org/2002/07/owl#Ontology,1
+"",
+http://www.w3.org/2002/07/owl#Ontology
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/elements/1.1/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/title,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,0,75

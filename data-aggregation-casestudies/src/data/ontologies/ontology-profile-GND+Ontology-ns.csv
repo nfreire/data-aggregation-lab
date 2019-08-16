@@ -1,0 +1,45 @@
+class,class count
+http://purl.org/vocommons/voaf#Vocabulary,1
+http://www.w3.org/2002/07/owl#Ontology,1
+"",
+http://purl.org/vocommons/voaf#Vocabulary
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://creativecommons.org/ns#license,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/title,2,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/available,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/contributor,2,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/license,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/rights,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespacePrefix,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespaceUri,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,0,302
+http://www.w3.org/2002/07/owl#priorVersion,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionIRI,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionInfo,1,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#Ontology
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://creativecommons.org/ns#license,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/title,2,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/available,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/contributor,2,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/license,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/rights,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespacePrefix,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespaceUri,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,0,302
+http://www.w3.org/2002/07/owl#priorVersion,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionIRI,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionInfo,1,0,0.0,0.0,0.0,0.0

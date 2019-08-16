@@ -1,0 +1,9 @@
+class,class count
+http://www.w3.org/2000/01/rdf-schema#Resource,1
+"",
+http://www.w3.org/2000/01/rdf-schema#Resource
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/title,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,0,98

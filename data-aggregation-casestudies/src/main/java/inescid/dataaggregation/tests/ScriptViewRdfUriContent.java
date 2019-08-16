@@ -28,7 +28,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://hdl.handle.net/10107/3100021", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/identifier_type", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-			HttpRequest req = HttpUtil.makeRequest("http://10.1.0.17/idbnp/bib/catbnp/1", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+			HttpRequest req = HttpUtil.makeRequest("http://id.bnportugal.gov.pt/bib/catbnp/1", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/lido00007", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.europeana.eu/schemas/edm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);

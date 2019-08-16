@@ -1,0 +1,43 @@
+class,class count
+http://purl.org/vocommons/voaf#Vocabulary,1
+http://www.w3.org/2002/07/owl#Ontology,1
+"",
+http://purl.org/vocommons/voaf#Vocabulary
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/elements/1.1/contributor,6,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/title,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/changes,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/example,2,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespacePrefix,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespaceUri,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocommons/voaf#toDoList,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionInfo,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/ns/adms#relatedWebPage,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/ns/radion#versionNotes,1,0,0.0,0.0,0.0,0.0
+http://xmlns.com/foaf/0.1/homepage,1,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#Ontology
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/elements/1.1/contributor,6,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/elements/1.1/title,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/changes,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/example,2,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespacePrefix,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespaceUri,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocommons/voaf#toDoList,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionInfo,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/ns/adms#relatedWebPage,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/ns/radion#versionNotes,1,0,0.0,0.0,0.0,0.0
+http://xmlns.com/foaf/0.1/homepage,1,0,0.0,0.0,0.0,0.0
