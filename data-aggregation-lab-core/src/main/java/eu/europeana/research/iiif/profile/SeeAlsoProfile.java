@@ -15,22 +15,30 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang3.StringUtils;
 
 import eu.europeana.research.iiif.profile.model.Manifest;
 import eu.europeana.research.iiif.profile.model.SeeAlso;
+import inescid.util.datastruct.MapOfLists;
 
 public class SeeAlsoProfile {
 	private static final String formatProfileSeparator = " | ";
 
 	HashMap<String, UsageCount> formatAndProfile;
+	MapOfLists<String, String> formatAndProfileExamples;
 	HashMap<String, UsageCount> label;
+	int profiledManifestsCount=0;
+	int withSeeAlsoCount=0;
 	
 	public SeeAlsoProfile() {
 		formatAndProfile=new HashMap<>();
+		formatAndProfileExamples=new MapOfLists<>();
 		label=new HashMap<>();
 	}
 	
 	public void profileManifest(Manifest manifest) {
+		profiledManifestsCount++;
+		boolean hasSeeAlso=false;
 		if(manifest.seeAlso==null) return;
 		HashSet<String> onceOrMoreUsageFormat=new HashSet<>();
 		HashSet<String> onceOrMoreUsageLabel=new HashSet<>();
@@ -40,13 +48,17 @@ public class SeeAlsoProfile {
 				if(md.profile!=null) {
 					formatProf+=formatProfileSeparator+md.profile;
 				}
+				if(StringUtils.isEmpty(formatProf))	continue;
 				UsageCount lbProf = formatAndProfile.get(formatProf);
 				if(lbProf==null) {
 					lbProf=new UsageCount();
 					formatAndProfile.put(formatProf, lbProf);
 				}
 				lbProf.total++;
+				if (lbProf.total<=3)
+					formatAndProfileExamples.put(formatProf, md.id);
 				onceOrMoreUsageFormat.add(formatProf);
+				hasSeeAlso=true;
 			}
 			if(md.label!=null){
 				String labelString = md.getLabelString();
@@ -59,11 +71,13 @@ public class SeeAlsoProfile {
 				onceOrMoreUsageLabel.add(labelString);
 			}
 		}
-		
 		for(String lb : onceOrMoreUsageFormat) 
 			formatAndProfile.get(lb).onceOrMore++;
 		for(String lb : onceOrMoreUsageLabel) 
 			label.get(lb).onceOrMore++;
+		if(hasSeeAlso)
+			withSeeAlsoCount++;
+		
 	}
 
 	public void save(File csvFile) throws IOException {
@@ -119,5 +133,23 @@ public class SeeAlsoProfile {
 			return new String[] { seeAlsoType, null };
 		return new String[] { seeAlsoType.substring(0, idx), seeAlsoType.substring(idx + formatProfileSeparator.length()) };
 	}
+
+	public float getSeeAlsoCoverage() {
+		return (float)withSeeAlsoCount / (float)profiledManifestsCount;
+	}
+
+	public HashMap<String, UsageCount> getFormatAndProfile() {
+		return formatAndProfile;
+	}
+
+	public HashMap<String, UsageCount> getLabel() {
+		return label;
+	}
+
+	public MapOfLists<String, String> getFormatAndProfileExamples() {
+		return formatAndProfileExamples;
+	}
+	
+	
 
 }

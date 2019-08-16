@@ -62,6 +62,9 @@
 			</#if>
 		</td></tr>	
 		<tr><td class="field_title">Data profiling:</td><td class="field_value"><#if profiled>Profiled (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not profiled</#if></td></tr>
+		<#if type=="IIIF">
+			<tr><td class="field_title">Diagnosis for Europeana aggregation:</td><td class="field_value"><#if diagnosed>Executed (<a target="_blank" href="${context}/${publicationDiagnosisUrl}">consult</a>)<#else>Not executed</#if></td></tr>
+		</#if>
 		<#if convertibleToEdm>
 			<tr><td class="field_title">Conversion to EDM:</td><td class="field_value">
 				 <#if converted>Converted (<a href="${context}/${publicationConvertedEdmUrl}">download</a>)<#else>Not converted</#if>
@@ -70,12 +73,10 @@
 		</#if>
 		<tr><td class="field_title">EDM Validation:</td><td class="field_value"><#if validatedEdm>Validated (<a target="_blank" href="${profileUrl}">consult spreadsheet</a>)<#else>Not validated</#if></td></tr>
 		<tr><td class="field_title">
-			Export<#if type=="IIIF"> of Manifests</#if>:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>not exported</#if></td></tr>
-		<#if type=="IIIF">
+			Export<#if type=="IIIF"> of Manifests</#if>:</td><td class="field_value"><#if published>Exported (<a href="${context}/${publicationUrl}">download</a>)<#else>Not exported</#if></td></tr>
 			<tr><td class="field_title">Export of 'seeAlso':</td><td class="field_value">
-				 <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>not exported</#if>
+				 <#if publishedForSeeAlso>Exported (<a href="${context}/${publicationSeeAlsoUrl}">download</a>)<#else>Not exported</#if>
 			</td></tr>
-		</#if>
 </table>
 		</td>
 	</tr>
@@ -99,8 +100,15 @@
 			</#if>	
 		</#if>	
 		</td></tr>
+		
 		<tr><td class="field_title">Process/Analyse:</td><td class="field_value">	
 			<#if type=="IIIF">
+				<#if harvested>
+					<a href="${context}/harvester/diagnose-dataset?dataset=${localId}">Diagnose for Europeana aggregation</a>
+				<#else>
+					<span class="unavailableLink">Diagnose for Europeana aggregation</span>
+				</#if>
+				<br/>
 				<#if profilableForIiif>
 					<a href="${context}/harvester/profile-dataset-manifests?dataset=${localId}">Data profile of IIIF Manifests</a>
 				<#else>

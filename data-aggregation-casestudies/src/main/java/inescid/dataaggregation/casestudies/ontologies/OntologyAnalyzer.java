@@ -23,8 +23,9 @@ import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
 
 public class OntologyAnalyzer {
-	String namespace;
-	String sourceUri;
+	public String namespace;
+	public String sourceUri;
+	public String title;
 	
 	ReportOfOntology report;
 	

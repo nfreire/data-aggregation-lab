@@ -26,3 +26,8 @@ hs_err_pid*
 /.classpath
 /.gitignore
 /.project
+/dataset-registry-requests.csv
+/dataset-registry-requests.csv.archive
+/job-runner-jobs.csv
+/tomcat-log.txt
+/timestamp-db/

@@ -47,6 +47,12 @@ public class DatasetStatusView extends DatasetView{
 	public String getPublicationSeeAlsoUrl() {
 		return GlobalCore.getPublicationRepository().getPublicationSeeAlsoUrl(dataset);
 	}
+	public String getPublicationDiagnosisUrl() {
+		return GlobalCore.getPublicationRepository().getIiifDiagnosisForEuropeanaUrl(dataset);
+	}
+	public boolean isDiagnosed() {
+		return GlobalCore.getPublicationRepository().isDiagnosed(dataset);
+	}
 	public boolean isConverted() {
 		return GlobalCore.getPublicationRepository().isConverted(dataset);
 	}

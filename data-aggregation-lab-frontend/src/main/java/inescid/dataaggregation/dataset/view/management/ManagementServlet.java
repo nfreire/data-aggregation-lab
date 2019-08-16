@@ -47,6 +47,7 @@ public class ManagementServlet extends HttpServlet {
 		CLEAR_DATASET_DATA, 
 		PROFILE_DATASET_RDF, 
 		PROFILE_DATASET_MANIFESTS, 
+		DIAGNOSE_DATASET, 
 		CONVERT_DATASET_DATA, 
 		REMOVE_DATASET, 
 		HARVEST_START_SEEALSO, 
@@ -69,6 +70,8 @@ public class ManagementServlet extends HttpServlet {
 					return CLEAR_DATASET_DATA;
 				} else if (req.getPathInfo().endsWith("/profile-dataset-manifests")) {
 					return PROFILE_DATASET_MANIFESTS;
+				} else if (req.getPathInfo().endsWith("/diagnose-dataset")) {
+					return DIAGNOSE_DATASET;
 				} else if (req.getPathInfo().endsWith("/profile-dataset-rdf")) {
 					return PROFILE_DATASET_RDF;
 				} else if (req.getPathInfo().endsWith("/convert-dataset")) {
@@ -174,6 +177,11 @@ public class ManagementServlet extends HttpServlet {
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
 				jobRunner.addJob(new Job(JobType.PROFILE_MANIFESTS, dataset));
 				sendResponse(resp, 200, new JobStatus("Profiling of the dataset will be executed. The link to the profile results will later be available in the page of the dataset.", dataset).output());
+				break;
+			}case DIAGNOSE_DATASET:{
+				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));
+				jobRunner.addJob(new Job(JobType.DIAGNOSE_DATASET, dataset));
+				sendResponse(resp, 200, new JobStatus("Diagnosis of the dataset for aggregation by Europeana will be executed. The link to the results will later be available in the page of the dataset.", dataset).output());
 				break;
 			}case PROFILE_DATASET_RDF:{
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));

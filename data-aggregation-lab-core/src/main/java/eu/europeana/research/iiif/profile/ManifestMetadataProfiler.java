@@ -46,7 +46,7 @@ public class ManifestMetadataProfiler {
 		this.outputFolder = outputFolder;
 	}
 	
-	public void process() throws IOException {
+	public void process(boolean saveResults) throws IOException {
 		Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
 		for(Entry<String, File> manifestJsonFile: repository.getAllDatasetResourceFiles(dataset.getUri())) {
 			String fileData = new String(Files.readAllBytes(Paths.get(manifestJsonFile.getValue().getAbsolutePath())));
@@ -62,29 +62,43 @@ public class ManifestMetadataProfiler {
 				log.info("Error parsing of "+manifestJsonFile.getKey()+"\n"+ fileData, e);
 			}
 		}
-		File manifestMdCsvFile = new File(outputFolder, "manifest-metadata-profile.csv");
-		manifestMdProfile.save(manifestMdCsvFile);
-		File seeAlsoCsvFile = new File(outputFolder, "seeAlso-profile.csv");
-		seeAlsoProfile.save(seeAlsoCsvFile);
-		File licenseCsvFile = new File(outputFolder, "license-profile.csv");
-		licenseProfile.save(licenseCsvFile);
-		
-		String manifestMdSheetTitle=manifestMdCsvFile.getName().substring(0, manifestMdCsvFile.getName().lastIndexOf('.'));
-		String seeAlsoSheetTitle=seeAlsoCsvFile.getName().substring(0, seeAlsoCsvFile.getName().lastIndexOf('.'));
-		String licenseSheetTitle=licenseCsvFile.getName().substring(0, licenseCsvFile.getName().lastIndexOf('.'));
-
-		File sheetsIdFile = new File(outputFolder, "google-sheet-id.txt");
-		String spreadsheetId=null;
-		if(sheetsIdFile.exists()) {
-			 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, GlobalCore.UTF8);
-		} else {
-			String spreadsheetTitle="Data Profiling - "+ dataset.getTitle();
-			spreadsheetId=GoogleSheetsCsvUploader.create(spreadsheetTitle, manifestMdSheetTitle);
-			FileUtils.write(sheetsIdFile, spreadsheetId, GlobalCore.UTF8);
+		if(saveResults) {
+			File manifestMdCsvFile = new File(outputFolder, "manifest-metadata-profile.csv");
+			manifestMdProfile.save(manifestMdCsvFile);
+			File seeAlsoCsvFile = new File(outputFolder, "seeAlso-profile.csv");
+			seeAlsoProfile.save(seeAlsoCsvFile);
+			File licenseCsvFile = new File(outputFolder, "license-profile.csv");
+			licenseProfile.save(licenseCsvFile);
+			
+			String manifestMdSheetTitle=manifestMdCsvFile.getName().substring(0, manifestMdCsvFile.getName().lastIndexOf('.'));
+			String seeAlsoSheetTitle=seeAlsoCsvFile.getName().substring(0, seeAlsoCsvFile.getName().lastIndexOf('.'));
+			String licenseSheetTitle=licenseCsvFile.getName().substring(0, licenseCsvFile.getName().lastIndexOf('.'));
+	
+			File sheetsIdFile = new File(outputFolder, "google-sheet-id.txt");
+			String spreadsheetId=null;
+			if(sheetsIdFile.exists()) {
+				 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, GlobalCore.UTF8);
+			} else {
+				String spreadsheetTitle="Data Profiling - "+ dataset.getTitle();
+				spreadsheetId=GoogleSheetsCsvUploader.create(spreadsheetTitle, manifestMdSheetTitle);
+				FileUtils.write(sheetsIdFile, spreadsheetId, GlobalCore.UTF8);
+			}
+			GoogleSheetsCsvUploader.update(spreadsheetId, manifestMdSheetTitle, manifestMdCsvFile);			
+			GoogleSheetsCsvUploader.update(spreadsheetId, seeAlsoSheetTitle, seeAlsoCsvFile);			
+			GoogleSheetsCsvUploader.update(spreadsheetId, licenseSheetTitle, licenseCsvFile);	
 		}
-		GoogleSheetsCsvUploader.update(spreadsheetId, manifestMdSheetTitle, manifestMdCsvFile);			
-		GoogleSheetsCsvUploader.update(spreadsheetId, seeAlsoSheetTitle, seeAlsoCsvFile);			
-		GoogleSheetsCsvUploader.update(spreadsheetId, licenseSheetTitle, licenseCsvFile);			
+	}
+
+	public SeeAlsoProfile getSeeAlsoProfile() {
+		return seeAlsoProfile;
+	}
+
+	public ManifestLabelValuesProfile getManifestMdProfile() {
+		return manifestMdProfile;
+	}
+
+	public LicenseProfile getLicenseProfile() {
+		return licenseProfile;
 	}
 	
 }

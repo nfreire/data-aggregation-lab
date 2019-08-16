@@ -21,7 +21,7 @@ public class JobProfileIiifManifests extends JobWorker {
 	public void runJob() throws Exception {
 			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)
 					, GlobalCore.getDataRepository(), GlobalCore.getPublicationRepository().getProfileFolder(dataset));
-			profiler.process();			
+			profiler.process(true);			
 	}
 	
 	

@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A068:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A068:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p417221843">
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698663"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Marcus Wels (1794-1865), luitenant te zee</schema:isPartOf>
+    <schema:dateCreated>1819/1849</schema:dateCreated>
+    <schema:identifier>1900 A 068</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697101"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41972284X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722254"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698507"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722505"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419699821"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41969689X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419687807"/>
+    <schema:width xml:lang="nl">150 mm</schema:width>
+    <schema:funder xml:lang="nl">In 2015 gekocht op de auctie Bubb Kuyper, 19 mei, lot 2389.</schema:funder>
+    <schema:inLanguage>dui</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698787"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419724370"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41969739X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419721231"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419696202"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722769"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41970034X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419696067"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698604"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419724451"/>
+    <schema:locationCreated xml:lang="nl">Aan boord van Z.M. Brik Zwaluw</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697020"/>
+    <schema:height xml:lang="nl">98 mm</schema:height>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+417221843"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41969806X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419699953"/>
+    <schema:author xml:lang="nl">Marcus Wels</schema:author>
+    <schema:locationCreated xml:lang="nl">Curacao</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419723609"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419723005"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698566"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698450"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419696237"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722602"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419721843"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419724532"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41969594X"/>
+    <schema:locationCreated xml:lang="nl">Aan boord van Z.M. Brik Gier</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722939"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419721320"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:inLanguage>ned</schema:inLanguage>
+    <schema:numberOfPages xml:lang="nl">81 losse fol., de fol. 26, 29 en 60-81 zijn blanco</schema:numberOfPages>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p417221843"/>
+    <schema:inLanguage>fra</schema:inLanguage>
+    <schema:identifier>EPN 1209135213</schema:identifier>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419699325"/>
+    <schema:description xml:lang="nl">Bevat 55 bijdragen van mede-opvarenden, familieleden en vrienden waaronder een portret in aquarel van 's Konings Brik De Zwaluw (fol. 2r), een aquarel van een tweemaster op zee (fol. 3r), potloodtekeningen, aanhef en ondertekening van een brief van J.C.J. van Speijk (fol. 15-16), een gevlochten kransje van haar (fol. 57).</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722122"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419721673"/>
+    <schema:locationCreated xml:lang="nl">Vlissingen</schema:locationCreated>
+    <schema:description xml:lang="nl">In groen kartonnen schuifdoos losse rode leren band met goudstempeling met in het midden een groen leren ovaal met in een gouden ruitvormig kader in goud op het voorplat de letters 'SOUVENIR D'AMITIÉ en op het achterplat M.WELS, 1817.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419722521"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419695842"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419724338"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697233"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419696008"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419695761"/>
+    <schema:name xml:lang="nl">Album amicorum van Marcus Wels (1794-1865), luitenant te zee</schema:name>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419696970"/>
+    <schema:inLanguage>eng</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697551"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419700218"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419721592"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697470"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419723749"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419698973"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41972429X"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419695796"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419700161"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419723471"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41969854X"/>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419697659"/>
+  </rdf:Description>
+</rdf:RDF>

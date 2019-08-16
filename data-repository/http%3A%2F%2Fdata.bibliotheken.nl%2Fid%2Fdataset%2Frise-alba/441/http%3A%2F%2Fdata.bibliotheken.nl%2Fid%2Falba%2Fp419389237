@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p419389237">
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419551905"/>
+    <schema:inLanguage>mis</schema:inLanguage>
+    <schema:height xml:lang="nl">124 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419551735"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419554378"/>
+    <schema:image rdf:nodeID="A0"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419550763"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419471251"/>
+    <schema:funder xml:lang="nl">Former owner: M. Thierry de Bye Dólleman (1908-1994)</schema:funder>
+    <schema:identifier>EPN 1254209891</schema:identifier>
+    <schema:description xml:lang="nl">Blauwzwart doosje, versierd met bladmotief, centraal op voor en achterplat een ovaal met een afbeelding van Diana en een luipaard. Dekblad: gelithografeerde voorstelling van een jong paar.</schema:description>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:numberOfPages xml:lang="nl">24 losse blaadjes in doosje (1 onbeschreven)</schema:numberOfPages>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419552375"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419552936"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419552537"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:citation xml:lang="nl">Diederick Wildeman, "Varenslui en fotografen. Stuurman Jan Carel Thierry de Bye (1808-1846) en de fotografie". In: Amstelodamum, 87 (2000), 129-135.</schema:citation>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419553045"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:locationCreated xml:lang="nl">Zeist</schema:locationCreated>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Jan Carel Thierry de Bye (1805-1846), stuurman</schema:isPartOf>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p419389237"/>
+    <schema:funder xml:lang="nl">In 2018 gekocht bij Antiquariaat Arine van der Steur samen met 12 andere alba, 8 augustus 2018</schema:funder>
+    <schema:locationCreated xml:lang="nl">Utrecht</schema:locationCreated>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:locationCreated xml:lang="nl">Rotterdam</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41955386X"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419471162"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419554106"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419552782"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419550992"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419471316"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419471782"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:funder xml:lang="nl">Former owner: A.G. van der Steur (1938-2012)</schema:funder>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419552669"/>
+    <schema:identifier>1900 A 132</schema:identifier>
+    <schema:artform xml:lang="nl">Ill. tekening, borduurwerk, haarstuk</schema:artform>
+    <schema:dateCreated>1839/1845</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419550674"/>
+    <schema:description xml:lang="nl">Bevat 21 gedateerde en 2 ongedateerde bijdragen van vrienden, familieleden en bekenden van Jan Carel Thierry de Bye, een stuurman voor Amsterdamse reders. Bevat 4 tekeningen (fol. 8, 10, 16, 23), 1 borduurwerkje (4) en 1 haarstukje (19).</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419553983"/>
+    <schema:name xml:lang="nl">Album amicorum van Jan Carel Thierry de Bye (1805-1846), stuurman</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41947160X"/>
+    <schema:author xml:lang="nl">Jan Carel Thierry de Bye (1818-1846)</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41955209X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419554289"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+419389237"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:width xml:lang="nl">216 mm</schema:width>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41947126X"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A132:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A132:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

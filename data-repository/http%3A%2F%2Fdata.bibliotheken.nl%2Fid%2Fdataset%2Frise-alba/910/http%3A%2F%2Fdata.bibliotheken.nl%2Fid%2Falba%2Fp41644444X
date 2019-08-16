@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A056:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A056:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p41644444X">
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:inLanguage>dui</schema:inLanguage>
+    <schema:dateCreated>1860/1865</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006591"/>
+    <schema:identifier>1900 A 056</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419005307"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418997772"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419002251"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418742065"/>
+    <schema:description xml:lang="nl">Bevat 25 gedateerde en 24 ongedateerde bijdragen van vriendinnen, familieleden en bekenden van Marie Thorbecke tijdens een reis naar Duitsland (Dresden). Met onder andere 9 tekeningen, 1 aquarel, 1 gouache, 3 foto’s, 4 bladen muziek, 7 etsen en 4 kunstreproducties.</schema:description>
+    <schema:artform xml:lang="nl">ill. Verschillende tekeningen en ingekleurde etsen met stadsgezichten van Dresden en Duitse landschappen. Enkele kunstreproducties (o.a. van Jacob van Ruisdael). Twee foto's van Dresden en een albumine foto met een groepsportret.</schema:artform>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419037349"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006273"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418731233"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418995699"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:funder xml:lang="nl">In 2017 gekocht bij Veiling Zwiggelaar, 5 december (nr. 762)</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419004165"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Marie Thorbecke (1845-1929)</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419007628"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419004327"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418729301"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p41644444X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418740143"/>
+    <schema:numberOfPages xml:lang="nl">49 losse bladen in een doos</schema:numberOfPages>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006354"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418729409"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419003576"/>
+    <schema:locationCreated xml:lang="nl">Dresden</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41900646X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419007733"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418744025"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036415"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418996725"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036814"/>
+    <schema:width xml:lang="nl">294 mm</schema:width>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006966"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419002502"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419035664"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006877"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418743703"/>
+    <schema:height xml:lang="nl">222 mm</schema:height>
+    <schema:name xml:lang="nl">Album amicorum van Marie Thorbecke (1845-1929)</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036369"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419004440"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036466"/>
+    <schema:author xml:lang="nl">Marie Thorbecke</schema:author>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418740615"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+41644444X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418728585"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419007024"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419006494"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418996806"/>
+    <schema:description xml:lang="nl">Geornamenteerd linnen boekfacsimile-doos met gouden belettering en ‘boekblok’ in goud. Mist bovenzijde boekblok.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419004610"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419004866"/>
+    <schema:identifier>EPN 1197198938</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418996466"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419037187"/>
+    <schema:locationCreated xml:lang="nl">Den Haag</schema:locationCreated>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419003738"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419034706"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036644"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418728941"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418742472"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419036288"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419003371"/>
+  </rdf:Description>
+</rdf:RDF>

@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,23 +26,30 @@ import inescid.util.JsonUtil;
 public class LicenseProfile {
 
 	HashMap<String, Integer> values;
+	int profiledManifestsCount=0;
+	int with1plusLicenses=0;
 	
 	public LicenseProfile() {
 		values=new HashMap<>();
 	}
 	
 	public void profileManifest(Manifest manifest) {
-		if(manifest.license==null) return;
-			if(manifest.license!=null){
-				List<String> vals = JsonUtil.readArrayOrValue(manifest.license);
-				for(String val: vals) {
-					Integer lbProf = values.get(val);
-					if(lbProf==null) 
-						values.put(val, 1);
-					else
-						values.put(val, lbProf+1);
-				}
+		profiledManifestsCount++;
+		boolean hasLicense=false;
+		if(manifest.license!=null){
+			List<String> vals = JsonUtil.readArrayOrValue(manifest.license);
+			for(String val: vals) {
+				if(StringUtils.isEmpty(val)) continue;
+				hasLicense=true;
+				Integer lbProf = values.get(val);
+				if(lbProf==null) 
+					values.put(val, 1);
+				else
+					values.put(val, lbProf+1);
 			}
+		}
+		if(hasLicense)
+			with1plusLicenses++;
 	}
 
 	public void save(File csvFile) throws IOException {
@@ -61,5 +69,21 @@ public class LicenseProfile {
 		}
 		
 		printer.close();
+	}
+
+	public HashMap<String, Integer> getValues() {
+		return values;
+	}
+
+	public int getProfiledManifestsCount() {
+		return profiledManifestsCount;
+	}
+
+	public int getWith1plusLicenses() {
+		return with1plusLicenses;
+	}
+	
+	public float getLicensingCoverage(){
+		return (float)with1plusLicenses / (float)profiledManifestsCount;
 	}
 }

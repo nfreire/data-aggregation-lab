@@ -77,6 +77,9 @@ public class PublicationRepository {
 	public File getExportSeeAlsoZipFile(Dataset dataset) {
 		return new File(getDatasetFolder(dataset), GlobalCore.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderName(dataset)+".zip");
 	}
+	public File getIiifDiagnosisForEuropeanaFile(Dataset dataset) {
+		return new File(getDatasetFolder(dataset), FilenameManager.getDatasetFolderName(dataset)+"-iiif_source_diagnosis.html");
+	}
 	
 	public String getExportSeeAlsoZipFileForUrl(Dataset dataset) {
 		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+  GlobalCore.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderNameForUrl(dataset)+".zip";
@@ -103,6 +106,10 @@ public class PublicationRepository {
 		File convertedZipFile = getExportEdmZipFile(dataset);
 		return convertedZipFile.exists() && convertedZipFile.length()>0;
 	}
+	public boolean isDiagnosed(Dataset dataset) {
+		File dFile = getIiifDiagnosisForEuropeanaFile(dataset);
+		return dFile.exists() && dFile.length()>0;
+	}
 	public boolean isConvertedAnalysis(Dataset dataset) {
 		File f=new File(getProfileFolder(dataset), "schema.org-mapping-analysis.csv");
 		return  isConverted(dataset) && f.exists() && f.length()>0;
@@ -113,6 +120,9 @@ public class PublicationRepository {
 	}
 	public String getPublicationSeeAlsoUrl(Dataset dataset) {
 		return getExportSeeAlsoZipFileForUrl(dataset);
+	}
+	public String getIiifDiagnosisForEuropeanaUrl(Dataset dataset) {
+		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+ FilenameManager.getDatasetFolderNameForUrl(dataset)+"-iiif_source_diagnosis.html";
 	}
 	public String getPublicationConvertedUrl(Dataset dataset) {
 		return getExportEdmZipFileForUrl(dataset);
@@ -137,6 +147,9 @@ public class PublicationRepository {
 		File exportSeeAlsoZipFile = getExportSeeAlsoZipFile(dataset);
 		if(exportSeeAlsoZipFile.exists())
 			exportSeeAlsoZipFile.delete();
+		File iiifDiagnosisFile = getIiifDiagnosisForEuropeanaFile(dataset);
+		if(iiifDiagnosisFile.exists())
+			iiifDiagnosisFile.delete();
 		if (getProfileFolder(dataset).exists()) {
 			for(File f: getProfileFolder(dataset).listFiles()) 
 				f.delete();

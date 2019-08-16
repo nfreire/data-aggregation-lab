@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:77K8:59v:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p418906955">
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:dateCreated>1870</schema:dateCreated>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+418906955"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:position>65</schema:position>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:pagination xml:lang="nl">fol. 59v-60</schema:pagination>
+    <schema:author xml:lang="nl">Horatius Bonar (1808-1889)</schema:author>
+    <schema:identifier>EPN 125012350X</schema:identifier>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:dateCreated xml:lang="nl">13 oktober 1870</schema:dateCreated>
+    <schema:author xml:lang="nl">Laura</schema:author>
+    <schema:identifier>77 K 8</schema:identifier>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p418906955"/>
+    <schema:description xml:lang="nl">Engels citaat van Prediker 9:10: 'Whatsoever thy hand findeth to do, do it with thy might; for there is no work, nor device, nor knowledge, nor wisdom, in the grave, whither thou goest'.</schema:description>
+    <schema:locationCreated xml:lang="nl">Triëst</schema:locationCreated>
+    <schema:name xml:lang="nl">Albumbijdrage in het album amicorum van Marie Müller door Laura</schema:name>
+    <schema:isPartOf rdf:resource="http://data.bibliotheken.nl/id/alba/p310840538"/>
+    <schema:inLanguage>dui</schema:inLanguage>
+    <schema:description xml:lang="nl">Engelse hymne van Horatius Bonar, incipit: 'Tis not for man to trifle! Time is short, and sin is here'.</schema:description>
+    <schema:description xml:lang="nl">Duits gedicht van L. Gabus, getiteld: 'Mädchen und blume'. Incipit: 'Leibe als mädchen ein die duftende blume'.</schema:description>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Marie Müller</schema:isPartOf>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <rdf:type rdf:resource="http://schema.org/Chapter"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:inLanguage>eng</schema:inLanguage>
+    <schema:description xml:lang="nl">3 bijdragen.</schema:description>
+  </rdf:Description>
+</rdf:RDF>

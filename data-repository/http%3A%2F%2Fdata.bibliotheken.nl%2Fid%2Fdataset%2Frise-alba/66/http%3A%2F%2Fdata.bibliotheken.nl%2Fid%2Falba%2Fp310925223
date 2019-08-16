@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p310925223">
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767515"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767620"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766896"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767078"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767183"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766845"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767108"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276687X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276690X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767329"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767345"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767043"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767418"/>
+    <schema:numberOfPages xml:lang="nl">65 fol</schema:numberOfPages>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767299"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767035"/>
+    <schema:author xml:lang="nl">F.W. Jagow</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767442"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767116"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p310925223"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:description xml:lang="nl">Achternaam bezitter afgeleid van de inscr. op fol. 50r en 51r</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767566"/>
+    <schema:funder xml:lang="nl">In 2005 gekocht van S. van Son te Amsterdam</schema:funder>
+    <schema:locationCreated xml:lang="nl">Greiffenberg</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767469"/>
+    <schema:height xml:lang="nl">106 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767450"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767205"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767124"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766829"/>
+    <schema:description xml:lang="nl">Bevat 67 inscripties, inclusief een bijdrage van "Deinem Freunde und Collegen"</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767280"/>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767493"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766926"/>
+    <schema:funder xml:lang="nl">Former owner: Sal van Son</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767140"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767175"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767353"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767027"/>
+    <schema:description xml:lang="nl">Bevat 1 aquarel</schema:description>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767647"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767264"/>
+    <schema:dateCreated>1811/1835</schema:dateCreated>
+    <schema:locationCreated xml:lang="nl">Königsberg (Neumark) [e.a.]</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767663"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767558"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767000"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332777839"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276754X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276740X"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766969"/>
+    <schema:width xml:lang="nl">173 mm</schema:width>
+    <schema:locationCreated xml:lang="nl">Züllichau</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767477"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767272"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767051"/>
+    <schema:name xml:lang="nl">Album amicorum van F.W. Jagow</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767590"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767434"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767213"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:identifier>EPN 494654082</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276737X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767507"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767167"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766888"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767671"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766918"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767655"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767248"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767310"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:isPartOf xml:lang="nl">Album amicorum van F.W. Jagow</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767086"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767426"/>
+    <schema:identifier>76 K 20</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767337"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767256"/>
+    <schema:description xml:lang="nl">Een aantal bijdragen heeft als localisering: `Paedagogium bei Züllichau"; mogelijk was de bezitter daar docent</schema:description>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:inLanguage>und</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767612"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767574"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767159"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+310925223"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767221"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767396"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767132"/>
+    <schema:description xml:lang="nl">Kartonnen band beplakt op voor en achterplat met een rechthoekig stuk groen handmarmer waarop op het voorplat 'F.W.J.' en op de achterzijde een vaas met bloemen. Vergulde sneden</schema:description>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332766977"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332767191"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:schutblad_voor:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:schutblad_achter:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:binnenzijde_voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:binnenzijde_achterplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K20:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

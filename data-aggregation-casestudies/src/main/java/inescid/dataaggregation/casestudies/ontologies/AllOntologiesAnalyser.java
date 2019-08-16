@@ -75,7 +75,7 @@ public class AllOntologiesAnalyser {
 			String[] ontUriGroup=ontologiesUris[i];
 			String namespaces="";
 			String defs="";
-			for(int ig=0; ig<ontUriGroup.length; ig++) {
+			for(int ig=1; ig<ontUriGroup.length; ig++) {
 				String ontUri=ontUriGroup[ig];
 				ig++;
 				String ontDef=ontUriGroup[ig];

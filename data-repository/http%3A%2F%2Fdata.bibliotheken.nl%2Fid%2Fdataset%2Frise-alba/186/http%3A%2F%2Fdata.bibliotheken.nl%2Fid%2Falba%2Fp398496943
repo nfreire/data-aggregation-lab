@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A003:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A003:schutblad_voor:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A003:schutblad_achter:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A003:binnenzijde_voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A003:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p398496943">
+    <schema:numberOfPages xml:lang="nl">123 fol.</schema:numberOfPages>
+    <schema:locationCreated xml:lang="nl">Den Haag e.a.</schema:locationCreated>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830762"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830533"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830185"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830347"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830142"/>
+    <schema:funder xml:lang="nl">In 2014 geschonken  door mevr. J.J. Ruitenberg te Den Haag</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830568"/>
+    <schema:identifier>EPN 1098681940</schema:identifier>
+    <schema:image rdf:nodeID="A0"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+398496943"/>
+    <schema:locationCreated xml:lang="nl">Geertruidenberg</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830061"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Simon van der Waal</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398827389"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830959"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p39883072X"/>
+    <schema:inLanguage>ned</schema:inLanguage>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p398496943"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830800"/>
+    <schema:dateCreated>1777/1780</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830622"/>
+    <schema:height xml:lang="nl">120 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830681"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830479"/>
+    <schema:author xml:lang="nl">Simon van der Waal (1751-1781)</schema:author>
+    <schema:funder xml:lang="nl">Former owner: Jacoba Johanna Ruitenberg</schema:funder>
+    <schema:description xml:lang="nl">Rode leren band met goudstempeling. Op voorplat: Album amicorum S. van der Waal, op achterplat: Anno 1777. Geciseleerde vergulde sneden. In bruinleren foedraal met rugschildje: Album amicorum.</schema:description>
+    <schema:temporalCoverage xml:lang="en">18th century</schema:temporalCoverage>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p39883086X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830215"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830274"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:name xml:lang="nl">Album amicorum van Simon van der Waal</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830010"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p398830428"/>
+    <schema:temporalCoverage xml:lang="nl">18e eeuw</schema:temporalCoverage>
+    <schema:identifier>1900 A 003</schema:identifier>
+    <schema:description xml:lang="nl">Bevat 5 inscripties, 13 gedichten waarvan 1 los gedicht, en 1 losse brief</schema:description>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:width xml:lang="nl">185 mm</schema:width>
+    <schema:locationCreated xml:lang="nl">Alkmaar</schema:locationCreated>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+  </rdf:Description>
+</rdf:RDF>

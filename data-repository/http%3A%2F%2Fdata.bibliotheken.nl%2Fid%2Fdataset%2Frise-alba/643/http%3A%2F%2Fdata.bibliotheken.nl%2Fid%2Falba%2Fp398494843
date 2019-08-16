@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p398494843">
+    <schema:locationCreated xml:lang="nl">Amsterdam</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418103208"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418157049"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418104085"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418142718"/>
+    <schema:dateCreated>1798/1833</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418214816"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418104948"/>
+    <schema:height xml:lang="nl">160 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160570"/>
+    <schema:name xml:lang="nl">Album amicorum van Annette Croese</schema:name>
+    <schema:temporalCoverage xml:lang="nl">18e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418105456"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41816049X"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418105316"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160244"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418213178"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418107246"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418098344"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:description xml:lang="nl">Losse bladen in band, bijdragen met potlood gefolieerd.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418107165"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418143714"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418143757"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418143005"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418140952"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418107106"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418106983"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+398494843"/>
+    <schema:identifier>EPN 1098678222</schema:identifier>
+    <schema:identifier>1900 A 002</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418140618"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418104565"/>
+    <schema:funder xml:lang="nl">In 2014 gekocht bij antiquariaat Forum</schema:funder>
+    <schema:width xml:lang="nl">197 mm</schema:width>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418104344"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41810302X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41815676X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418104786"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Annette Croese</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418143641"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418103550"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41816021X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41814351X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418213054"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160635"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418140537"/>
+    <schema:description xml:lang="nl">Bevat 66 bijdrages; o.a. 8 tekeningen, 6 aquarellen, 1 knipwerkje en bijgevoegd 1 brief en 3 gedrukte stukken.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418140766"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418098271"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418141487"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418103828"/>
+    <schema:inLanguage>ita</schema:inLanguage>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160074"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418106096"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418141363"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418142629"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418143811"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418157715"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418156425"/>
+    <schema:inLanguage>ned</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418157944"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418157359"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418142874"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:description xml:lang="nl">Anna Clementina Croese (1786-1827) getrouwd met Jan van der Voort (± 1772-1814) in 1808.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418102538"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418141169"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418157820"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418156913"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418106479"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41809862X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418142939"/>
+    <schema:locationCreated xml:lang="nl">Utrecht [e.a.]</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160775"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418158754"/>
+    <schema:inLanguage>eng</schema:inLanguage>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:locationCreated xml:lang="nl">Den Haag</schema:locationCreated>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p398494843"/>
+    <schema:inLanguage>dui</schema:inLanguage>
+    <schema:description xml:lang="nl">Rood marokijnen band met goudstempeling. Rocaille-and-Flower Bindery, Amsterdam (ca. 1775-1812). Aan voorsnede twee paar groene sluitlinten. Binnenzijde band beplakt met marmerpapier.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418159939"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418102082"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418141762"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418098417"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418160856"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41810641X"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418102317"/>
+    <schema:temporalCoverage xml:lang="en">18th century</schema:temporalCoverage>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418103445"/>
+    <schema:inLanguage>fra</schema:inLanguage>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418142793"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418214972"/>
+    <schema:author xml:lang="nl">Anna Clementina Croese (1786-1827)</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418098360"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418159858"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A002:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A002:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

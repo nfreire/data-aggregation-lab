@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p410415162">
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419040005"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419040234"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419040064"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:locationCreated xml:lang="nl">Ouderkerk aan de IJssel</schema:locationCreated>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:description xml:lang="nl">Bevat 21 bijdragen van leden van de families Staats en Bulterman, en Hendrik Tollens, 3 tekeningen, 7 borduurwerkjes en 3 vlechtwerkjes.</schema:description>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p410415162"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41904275X"/>
+    <schema:locationCreated xml:lang="nl">Rotterdam</schema:locationCreated>
+    <schema:description xml:lang="nl">Contemporain met witte zijde overtrokken doosje in boekvorm met goudstempeling in kartonnen omslag.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495247"/>
+    <schema:name xml:lang="nl">Album amicorum van Elizabeth Adriana Staats (1823-1896), echtgenote van Jesaia Bulterman (1809-1886), drogist te Rotterdam.</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419039503"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:locationCreated xml:lang="nl">Deventer</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495468"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:funder xml:lang="nl">In 2016 gekocht bij Aeric books and prints, Oudemirdum</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495670"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495573"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Elizabeth Adriana Staats (1823-1896), echtgenote van Jesaia Bulterman (1809-1886), drogist te Rotterdam.</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419042601"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419039724"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419042539"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419042458"/>
+    <schema:numberOfPages xml:lang="nl">25 fol.</schema:numberOfPages>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:inLanguage>mis</schema:inLanguage>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419042881"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495794"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+410415162"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:width xml:lang="nl">ca. 155 mm</schema:width>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:identifier>EPN 1162773685</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419043039"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419038159"/>
+    <schema:height xml:lang="nl">ca. 85 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419042490"/>
+    <schema:dateCreated>1840/1866</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p410495344"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419043241"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:author xml:lang="nl">Elizabeth Adriana Staats (1823-1896)</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419039856"/>
+    <schema:identifier>1900 A 019</schema:identifier>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A019:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A019:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

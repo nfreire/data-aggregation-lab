@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A150:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A150:schutblad_voor:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A150:schutblad_achter:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A150:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p419519939">
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926054"/>
+    <schema:citation xml:lang="nl">Eerder in bezit van Jacobus Koning, zie 'Catalogus der letterkundige nalatenschap van wijlen Jacobus Koning'.</schema:citation>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420486151"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927514"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420516484"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927441"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:width xml:lang="nl">125 mm</schema:width>
+    <schema:identifier>1900 A 150</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420516395"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419894926"/>
+    <schema:description xml:lang="nl">Met Ex Libris van E.A. Beresteyn en van het familie-archief Beresteyn.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927581"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419886583"/>
+    <schema:locationCreated xml:lang="nl">Den Haag</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420542256"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927522"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926410"/>
+    <schema:funder xml:lang="nl">Former owner: R.W.P. de Vries (1841-1919)</schema:funder>
+    <schema:funder xml:lang="nl">Former owner: Jacobus Koning (1770-1832)</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420525270"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420542167"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420516328"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419925198"/>
+    <schema:identifier>EPN 1256047023</schema:identifier>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:locationCreated xml:lang="nl">Leiden</schema:locationCreated>
+    <schema:description xml:lang="nl">33 bijdragen uit het album amicorum van Cornelius Buys (1559-1632), samengebonden in een nieuwe band met doorschoten pagina's. Het album is eerder uit elkaar gehaald en de bijdragen verspreid. Dit album bevat 26 gouaches van wapenschilden en 4 tekeningen.</schema:description>
+    <schema:temporalCoverage xml:lang="nl">17e eeuw</schema:temporalCoverage>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:locationCreated xml:lang="nl">Amsterdam</schema:locationCreated>
+    <schema:image rdf:nodeID="A0"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420486267"/>
+    <schema:height xml:lang="nl">178 mm</schema:height>
+    <schema:author xml:lang="nl">Cornelis Buys (1559-1632)</schema:author>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:locationCreated xml:lang="nl">Brussel</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926534"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420542124"/>
+    <schema:numberOfPages xml:lang="nl">68 fol</schema:numberOfPages>
+    <schema:description xml:lang="nl">19de-eeuwse leren band met gemarmerd sierpapier beplakt. Op de rug: "Album Amicroum Cornelis Busius"</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419886737"/>
+    <schema:temporalCoverage xml:lang="en">16th century</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926895"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927646"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419886923"/>
+    <schema:inLanguage>fra</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420527796"/>
+    <schema:name xml:lang="nl">Album amicorum van Cornelius Buys (1559-1632), baljuw en drossaard van Puremerend</schema:name>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926690"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420516360"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p419519939"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926380"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419925902"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Cornelius Buys (1559-1632), baljuw en drossaard van Puremerend</schema:isPartOf>
+    <schema:citation xml:lang="nl">Thomassen (red.), Alba Amicorum. Vijf eeuwen vriendschap op papier gezet. Den Haag 1990, p. 56 (nr. 13)</schema:citation>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927670"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420525130"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+419519939"/>
+    <schema:artform xml:lang="nl">Ill. Gouaches</schema:artform>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419927360"/>
+    <schema:dateCreated>1573/1631</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419926364"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:funder xml:lang="nl">Former owner: E.A. van Beresteyn (1876-1948)</schema:funder>
+    <schema:temporalCoverage xml:lang="nl">16e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41992695X"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:temporalCoverage xml:lang="en">17th century</schema:temporalCoverage>
+    <schema:funder xml:lang="nl">In 2017 gekocht bij Veiling Bubb Kuyper, 22 november 2017 (nr. 2524). Geschenk van de Vereniging 'Vrienden der Koninklijke Bibliotheek'.</schema:funder>
+  </rdf:Description>
+</rdf:RDF>

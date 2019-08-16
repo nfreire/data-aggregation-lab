@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A135:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A135:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p419395571">
+    <schema:isPartOf xml:lang="nl">Album amicorum van baron Johannes Fredericus van Reede van Oudtshoorn (1779-1850)</schema:isPartOf>
+    <schema:funder xml:lang="nl">Former owner: M. Thierry de Bye Dólleman (1908-1994)</schema:funder>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+419395571"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419634800"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635173"/>
+    <schema:artform xml:lang="nl">Ill. tekening</schema:artform>
+    <schema:inLanguage>mis</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635823"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:width xml:lang="nl">150 mm</schema:width>
+    <schema:temporalCoverage xml:lang="nl">18e eeuw</schema:temporalCoverage>
+    <schema:identifier>1900 A 135</schema:identifier>
+    <schema:name xml:lang="nl">Album amicorum van baron Johannes Fredericus van Reede van Oudtshoorn (1779-1850)</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635645"/>
+    <schema:author xml:lang="nl">Johannes Fredericus van Reede van Oudtshoorn (1779-1850)</schema:author>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p419395571"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41963570X"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419620389"/>
+    <schema:height xml:lang="nl">93 mm</schema:height>
+    <schema:funder xml:lang="nl">In 2018 gekocht bij Antiquariaat Arine van der Steur samen met 12 andere alba, 8 augustus 2018</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635424"/>
+    <schema:description xml:lang="nl">Contemporaine rode marokijnen omslag met goudstempelling. Voorplat: "J.F. van Reede / van Oudtshoorn". Achterplat: "Anno / 1796". Vergulde sneden</schema:description>
+    <schema:description xml:lang="nl">Bevat 12 gedateerde en 2 ongedateerde bijdragen van vrienden, familieleden en bekenden van baron Johannes Fredericus van Reede van Oudtshoor. Bevat 5 tekeningen (fol. 3, 4, 5, 9, 13).</schema:description>
+    <schema:identifier>EPN 1254321403</schema:identifier>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:locationCreated xml:lang="nl">Leiden</schema:locationCreated>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41963536X"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:locationCreated xml:lang="nl">Zwolle</schema:locationCreated>
+    <schema:locationCreated xml:lang="nl">Den Haag</schema:locationCreated>
+    <schema:numberOfPages xml:lang="nl">48 losse blaadjes in omslag (34 onbeschreven)</schema:numberOfPages>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635610"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419621075"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41962063X"/>
+    <schema:funder xml:lang="nl">Former owner: A.G. van der Steur (1938-2012)</schema:funder>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419621946"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635556"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419635807"/>
+    <schema:locationCreated xml:lang="nl">Bentheim</schema:locationCreated>
+    <schema:temporalCoverage xml:lang="en">18th century</schema:temporalCoverage>
+    <schema:dateCreated>1796/1801</schema:dateCreated>
+  </rdf:Description>
+</rdf:RDF>

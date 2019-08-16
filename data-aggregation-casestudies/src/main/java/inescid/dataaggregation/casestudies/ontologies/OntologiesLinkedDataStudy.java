@@ -1,6 +1,11 @@
 package inescid.dataaggregation.casestudies.ontologies;
 
 import java.io.File;
+import java.io.PrintStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
@@ -51,12 +56,17 @@ public class OntologiesLinkedDataStudy {
 			CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 			rdfCache.setRequestRetryAttempts(1);
 			String[][] ontologiesUris=new String[][] {
-				new String[] {"http://purl.org/dc/elements/1.1/", null},
-				new String[] {"http://purl.org/dc/terms/", null},
-				new String[] {"http://dbpedia.org/ontology/", null},
+				new String[] {"Dublin Core Metadata Element Set",
+						"http://purl.org/dc/elements/1.1/", null},
+				new String[] {"DCMI Metadata Terms",
+						"http://purl.org/dc/terms/", null},
+				new String[] {"The DBpedia Ontology",
+						"http://dbpedia.org/ontology/", null},
 //				new String[] {"http://wikiba.se/ontology#", null},
-				new String[] {"http://id.loc.gov/ontologies/bibframe/", null},
-				new String[] {"http://rdaregistry.info/Elements/c/", "http://rdaregistry.info/Elements/c.ttl",
+				new String[] {"BIBFRAME vocabulary",
+						"http://id.loc.gov/ontologies/bibframe/", null},
+				new String[] {"RDA Vocabularies",
+						"http://rdaregistry.info/Elements/c/", "http://rdaregistry.info/Elements/c.ttl",
 				"http://rdaregistry.info/Elements/a/", "http://rdaregistry.info/Elements/a.ttl",
 				"http://rdaregistry.info/Elements/e/", "http://rdaregistry.info/Elements/e.ttl",
 				"http://rdaregistry.info/Elements/i/", "http://rdaregistry.info/Elements/i.ttl",
@@ -67,34 +77,53 @@ public class OntologiesLinkedDataStudy {
 				"http://rdaregistry.info/Elements/w/", "http://rdaregistry.info/Elements/w.ttl",
 				"http://rdaregistry.info/Elements/x/", "http://rdaregistry.info/Elements/x.ttl",
 				"http://rdaregistry.info/Elements/u/", "http://rdaregistry.info/Elements/u.ttl"},
-				new String[] {"http://xmlns.com/foaf/0.1/", null},
-				new String[] {"http://www.cidoc-crm.org/cidoc-crm/", "http://www.cidoc-crm.org/sites/default/files/CIDOCCRM_ecrm.owl"},
-				new String[] {"http://www.europeana.eu/schemas/edm/", null},
-				new String[] {"http://terminology.lido-schema.org/identifier_type", null,
+				new String[] {"FOAF Vocabulary",
+						"http://xmlns.com/foaf/0.1/", null},
+				new String[] {"CIDOC Conceptual Reference Model",
+						"http://www.cidoc-crm.org/cidoc-crm/", "http://www.cidoc-crm.org/sites/default/files/CIDOCCRM_ecrm.owl"},
+				new String[] {"Europeana Data Model",
+						"http://www.europeana.eu/schemas/edm/", null},
+				new String[] {"LIDO Terminology",
+						"http://terminology.lido-schema.org/identifier_type", null,
 				"http://terminology.lido-schema.org/recordMetadataDate_type", null,
 				"http://terminology.lido-schema.org/recordType", null,
 				"http://terminology.lido-schema.org/repositorySet_type", null,
 				"http://terminology.lido-schema.org/resourceRepresentation_type", null,
 				"http://terminology.lido-schema.org/termMaterialsTech_type", null},
-				new String[] {"http://www.wikidata.org/entity/", null,
+				new String[] {"Wikidata Ontology",
+						"http://www.wikidata.org/entity/", null,
 						"http://www.wikidata.org/entity/statement/", null,
 						"http://www.wikidata.org/value/", null,
 						"http://www.wikidata.org/prop/direct/", null,
 						"http://www.wikidata.org/prop/", null,
 						"http://www.wikidata.org/prop/statement/", null,
 						"http://www.wikidata.org/prop/qualifier/", null}, 
-				new String[] {"http://www.geonames.org/ontology#", null},
-				new String[] {"http://d-nb.info/standards/elementset/gnd#", null},
+				new String[] {"GeoNames Ontology",
+						"http://www.geonames.org/ontology#", null},
+				new String[] {"GND Ontology",
+						"http://d-nb.info/standards/elementset/gnd#", null},
 				// http://terminology.lido-schema.org URIs are resolvable to owl, but need to use sparql to locate them
 					//				"http://www.wikidata.org/entity/", //no owl (use sparql)
 			};
 			
 			
+			File ontologyDetailsOutFolder=new File(outputFolder, "ontology_details");
+			if(!ontologyDetailsOutFolder.exists())
+				ontologyDetailsOutFolder.mkdir();
+			File ontologyDetailsIndexRawDataFile = new File(ontologyDetailsOutFolder, "OntologyResultsCsvIndex.html");
+			PrintStream ps = new PrintStream(ontologyDetailsIndexRawDataFile, "UTF-8");
+			ps.println("<HTML><BODY>");
+			ps.println("<H3>RDF Data Profile reports</H3>");
+			ps.println("<p>Report date: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date())+"</p>");
+			ps.println("<p>Reports:</p>");
+			ps.println("<ul>");			
+			
 			AllOntologiesAnalyser allAnaliser=new AllOntologiesAnalyser();
 			for(int i=0; i<ontologiesUris.length; i++) {
 				String[] ontUriGroup=ontologiesUris[i];
 				OntologyAnalyzer analyser=new OntologyAnalyzer(rdfCache);
-				for(int ig=0; ig<ontUriGroup.length; ig++) {
+				analyser.title=ontUriGroup[0];
+				for(int ig=1; ig<ontUriGroup.length; ig++) {
 					String ontUri=ontUriGroup[ig];
 					ig++;
 					String ontDef=ontUriGroup[ig];
@@ -105,11 +134,27 @@ public class OntologiesLinkedDataStudy {
 						e.printStackTrace();
 					}
 				}
+				try {
+					String ontFn = "ontology-profile-"+URLEncoder.encode(analyser.title, StandardCharsets.UTF_8.name())+"-ns.csv";
+					FileUtils.write(new File(ontologyDetailsOutFolder, ontFn), analyser.report.profileOfOntology.toCsv(), "UTF8");
+					String elsFn = "ontology-profile-"+URLEncoder.encode(analyser.title, StandardCharsets.UTF_8.name())+"-elements.csv";
+					FileUtils.write(new File(ontologyDetailsOutFolder, elsFn), analyser.report.profileOfDataElements.toCsv(), "UTF8");
+					ps.printf("<li>%s<br />&nbsp;&nbsp;&nbsp;- <a href=\"%s\">ontology RDF resource</a>", 
+							analyser.title, ontFn);
+					ps.printf("<br />&nbsp;&nbsp;&nbsp;- <a href=\"%s\">ontology subelements RDF resources</a></li>", 
+						elsFn);
+				} catch (NullPointerException e) {
+					//not crawlable, skip it
+				}
+				
 				System.out.println(analyser.namespace);
 				System.out.println(analyser.report.ontologyExists);
 				System.out.println();
 				allAnaliser.addOntology(analyser);
 			}
+			ps.println("</ul>");			
+			ps.println("\n</BODY></HTML>");		
+			ps.close();
 
 			allAnaliser.runAnalysis();
 			System.out.println("\n\n########################\n### ALL ONTOLOGIES ###\n########################");

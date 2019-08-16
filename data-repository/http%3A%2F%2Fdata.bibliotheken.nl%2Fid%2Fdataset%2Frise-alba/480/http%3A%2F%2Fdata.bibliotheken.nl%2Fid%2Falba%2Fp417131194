@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p417131194">
+    <schema:locationCreated xml:lang="nl">Amsterdam</schema:locationCreated>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:identifier>EPN 1208573373</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095914"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418080410"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41806573X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418070857"/>
+    <schema:author xml:lang="nl">Derk Pas</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418097089"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418081247"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418076324"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41807948X"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:name xml:lang="nl">Album amicorum van Derk Pas (1796-1879)</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418071047"/>
+    <schema:width xml:lang="nl">155 mm</schema:width>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418079161"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095450"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418097437"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418075018"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418096139"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418076979"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418097372"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095132"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418081913"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418096325"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418069174"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41807058X"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:inLanguage>und</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41808016X"/>
+    <schema:locationCreated xml:lang="nl">Tiel</schema:locationCreated>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:funder xml:lang="nl">In 2015 gekocht op de auctie Bubb Kuyper, 19 mei, lot 2388.</schema:funder>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418076529"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418138982"/>
+    <schema:identifier>1900 A 066</schema:identifier>
+    <schema:dateCreated>1806/1817</schema:dateCreated>
+    <schema:height xml:lang="nl">95 mm</schema:height>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+417131194"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p417131194"/>
+    <schema:locationCreated xml:lang="nl">Nijmegen</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418076154"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Derk Pas (1796-1879)</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418076731"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095833"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418075417"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418097755"/>
+    <schema:description xml:lang="nl">Contemporaine losse rode leren band met goudstempeling aan de binnenzijde beplakt met blauw gemarmerd papier.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418094195"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418066361"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418077703"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:numberOfPages xml:lang="nl">50 losse fol., de fol. 46-50 zijn blanco</schema:numberOfPages>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418075190"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418067139"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41809599X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418096678"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418068585"/>
+    <schema:description xml:lang="nl">Bevat 43 inscripties, 1 aquarel (berglandschapje), 11 potloodtekeningen (liefdestempel, putti, (fol. 17) Franse militairen) en 7 borduurwerkjes (rozentakjes, vergeet-me-nietjes), ingeschreven door familieleden, zus Theodora Elizabeth Pas, fol. 12, echtgenote Christina Maria Wijts (1802-1856) en anderen.</schema:description>
+    <schema:locationCreated xml:lang="nl">Lith</schema:locationCreated>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095663"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418139180"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418095299"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418081972"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p418074860"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A066:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A066:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p310925258">
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:dateCreated xml:lang="nl">1818-1821, 1840</schema:dateCreated>
+    <schema:width xml:lang="nl">178 mm</schema:width>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332763684"/>
+    <schema:author xml:lang="nl">Conrad Dressel</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332764079"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332765997"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332763013"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+310925258"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:inLanguage>und</schema:inLanguage>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762149"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762610"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332761681"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332761274"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332764583"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:identifier>EPN 494654112</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332765733"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762777"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762378"/>
+    <schema:numberOfPages xml:lang="nl">91 fol</schema:numberOfPages>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p310925258"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332761584"/>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:description xml:lang="nl">Merkwaardigerwijze is een aantal bijdragen expliciet gericht tot een "Freundin"</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332763722"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332765520"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332760820"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332763234"/>
+    <schema:height xml:lang="nl">100 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332765385"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332764265"/>
+    <schema:locationCreated xml:lang="nl">Erlangen</schema:locationCreated>
+    <schema:name xml:lang="nl">Album amicorum van Conrad Dressel uit Erlangen</schema:name>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332765830"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762890"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276141X"/>
+    <schema:identifier>76 K 25</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p332762211"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Conrad Dressel uit Erlangen</schema:isPartOf>
+    <schema:description xml:lang="nl">Een groot deel van de namen laat zich nauwelijks ontcijferen</schema:description>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:description xml:lang="nl">Rode papieren band met sierkaders in goudstempeling en centraal op voor- en achterplat een vignetje van twee vogels op de rand van een beker. Groengeverfde sneden</schema:description>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:locationCreated xml:lang="nl">Nürnberg [e.a.]</schema:locationCreated>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:description xml:lang="nl">Bevat 24 bijdragen inclusief een eigendomsinscriptie</schema:description>
+    <schema:dateCreated>1818/1840</schema:dateCreated>
+    <schema:funder xml:lang="nl">Former owner: Sal van Son</schema:funder>
+    <schema:funder xml:lang="nl">In 2005 gekocht van S. van Son te Amsterdam</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p33276477X"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:schutblad_voor:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:schutblad_achter:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:binnenzijde_voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:binnenzijde_achterplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:76K25:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

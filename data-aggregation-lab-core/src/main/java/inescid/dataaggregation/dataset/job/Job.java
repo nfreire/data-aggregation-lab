@@ -18,7 +18,7 @@ public class Job {
 	public enum JobStatus {PENDING, RUNNING, COMPLETED, FAILED};
 
 	public enum JobType {
-		HARVEST, HARVEST_SAMPLE, HARVEST_SEEALSO, PUBLISH_DATA, PUBLISH_SEEALSO_DATA, PROFILE_MANIFESTS, PROFILE_RDF, CONVERT, VALIDATE_EDM;
+		HARVEST, HARVEST_SAMPLE, HARVEST_SEEALSO, PUBLISH_DATA, PUBLISH_SEEALSO_DATA, PROFILE_MANIFESTS, DIAGNOSE_DATASET, PROFILE_RDF, CONVERT, VALIDATE_EDM;
 
 		public JobWorker newWorker(Job job, Dataset dataset, String jobParams) {
 			DatasetType datasetType=dataset.getType();
@@ -40,6 +40,10 @@ public class Job {
 			case PROFILE_MANIFESTS:
 				if(datasetType==DatasetType.IIIF)
 					return new JobProfileIiifManifests(job, dataset);
+				break;
+			case DIAGNOSE_DATASET:
+				if(datasetType==DatasetType.IIIF)
+					return new JobDiagnoseIiifSourceForEuropeana(job, dataset);
 				break;
 			case PROFILE_RDF:
 				return new JobProfileSchemaOrg(job, dataset);

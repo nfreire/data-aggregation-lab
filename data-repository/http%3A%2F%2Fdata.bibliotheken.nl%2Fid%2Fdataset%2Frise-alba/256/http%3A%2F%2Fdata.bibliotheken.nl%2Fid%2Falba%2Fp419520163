@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p419520163">
+    <schema:width xml:lang="nl">153 mm</schema:width>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421118229"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421097558"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421096586"/>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738215"/>
+    <schema:locationCreated xml:lang="nl">Frankfurt</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421134097"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421133538"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132868"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421114509"/>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p419520163"/>
+    <schema:numberOfPages xml:lang="nl">205 fol</schema:numberOfPages>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421114649"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421096691"/>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117907"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:locationCreated xml:lang="nl">Orléans</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738908"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117591"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738800"/>
+    <schema:identifier>EPN 1256047228</schema:identifier>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:funder xml:lang="nl">In 2017 gekocht bij Veiling Bubb Kuyper, 22 november 2017 (nr. 2528). Geschenk van de Vereniging 'Vrienden der Koninklijke Bibliotheek'.</schema:funder>
+    <schema:locationCreated xml:lang="nl">Rotterdam</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p42109737X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421116323"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738843"/>
+    <schema:locationCreated xml:lang="nl">Bourges</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421134348"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738894"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421133694"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421116145"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p42110371X"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:funder xml:lang="nl">Former owner: Wittenius Breeman van der Hagen (1656-1701)</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421115815"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+419520163"/>
+    <schema:funder xml:lang="nl">Former owner: Abraham van Veen</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421133473"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738738"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132825"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421114452"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132817"/>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421115718"/>
+    <schema:locationCreated xml:lang="nl">Saumur</schema:locationCreated>
+    <schema:temporalCoverage xml:lang="en">17th century</schema:temporalCoverage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132663"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738347"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421134283"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421133961"/>
+    <schema:description xml:lang="nl">Contemporaine zwarte marokijnen band met blindstempeling. Vergulde en geciseleerde sneden. In 18de-eeuwse leren albumkoker met goudstempeling.</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117931"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738754"/>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421097779"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p42109639X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421098198"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421115955"/>
+    <schema:dateCreated>1605/1611</schema:dateCreated>
+    <schema:locationCreated xml:lang="nl">Parijs</schema:locationCreated>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:locationCreated xml:lang="nl">Leiden</schema:locationCreated>
+    <schema:author xml:lang="nl">Cornelis van Beresteyn (1586-1638)</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117877"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421116315"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117796"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421115734"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p42111567X"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421095113"/>
+    <schema:description xml:lang="nl">Met Ex Libris van het familie-archief Beresteyn en van Veiling Frederik Muller, 1910 no.1667 (Collection chevaliers Van Rappard).</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738916"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421117389"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738304"/>
+    <schema:inLanguage>lat</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132620"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738266"/>
+    <schema:funder xml:lang="nl">Former owner: A. van Hartisgevelt</schema:funder>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p420738711"/>
+    <schema:locationCreated xml:lang="nl">Angers</schema:locationCreated>
+    <schema:locationCreated xml:lang="nl">Blois</schema:locationCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421133368"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421098163"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421114525"/>
+    <schema:isPartOf xml:lang="nl">Album amicorum van Cornelis van Beresteyn (1586-1638), advocaat te Delft</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421132949"/>
+    <schema:temporalCoverage xml:lang="nl">17e eeuw</schema:temporalCoverage>
+    <schema:name xml:lang="nl">Album amicorum van Cornelis van Beresteyn (1586-1638), advocaat te Delft</schema:name>
+    <schema:identifier>1900 A 151</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421097817"/>
+    <schema:height xml:lang="nl">106 mm</schema:height>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p421118210"/>
+    <schema:description xml:lang="nl">57 bijdragen uit het album amicorum van Cornelis van Beresteyn (1586-1638), met index vooraan. 7 gouache van wapenschilden en 3 tekeningen. Enkele bijdragen ontbreken.</schema:description>
+    <schema:artform xml:lang="nl">Ill. Gouaches en tekeningen</schema:artform>
+    <schema:locationCreated xml:lang="nl">Genève</schema:locationCreated>
+    <schema:funder xml:lang="nl">Former owner: E.A. van Beresteyn (1876-1948)</schema:funder>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A151:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A151:foedraal_voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A151:foedraal_open:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A151:foedraal_achterplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:1900A151:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+</rdf:RDF>

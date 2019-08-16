@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rel="http://purl.org/vocab/relationship/"
+    xmlns:npg="http://ns.nature.com/terms/"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:crm-owl="http://purl.org/NET/crm-owl#"
+    xmlns:bio="http://purl.org/vocab/bio/0.1/"
+    xmlns:conf="http://lodview.it/conf#"
+    xmlns:dbpedia-owl="http://dbpedia.org/ontology/"
+    xmlns:ibc="http://dati.ibc.it/ibc/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:prov="http://www.w3.org/ns/prov#"
+    xmlns:ods="http://lod.xdams.org/ontologies/ods/"
+    xmlns:frbr="http://purl.org/vocab/frbr/core#"
+    xmlns:units="http://dbpedia.org/units/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:bibleontology="http://bibleontology.com/property#"
+    xmlns:gml="http://www.opengis.net/gml/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:gn="http://www.geonames.org/ontology#"
+    xmlns:dbpprop="http://dbpedia.org/property/"
+    xmlns:aemetonto="http://aemet.linkeddata.es/ontology/"
+    xmlns:kbdef="http://data.kb.nl/def/"
+    xmlns:time="http://www.w3.org/2006/time#"
+    xmlns:po="http://purl.org/ontology/po/"
+    xmlns:crm="http://erlangen-crm.org/current/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:muninn="http://rdf.muninn-project.org/ontologies/documents#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:skos-xl="http://www.w3.org/2008/05/skos-xl#"
+    xmlns:bmuseum="http://collection.britishmuseum.org/id/ontology/"
+    xmlns:claros="http://purl.org/NET/Claros/vocab#"
+    xmlns:prism21="http://prismstandard.org/namespaces/basic/2.1/"
+    xmlns:yago="http://dbpedia.org/class/yago/"
+    xmlns:meta="http://example.org/metadata#"
+    xmlns:shoah="http://dati.cdec.it/lod/shoah/"
+    xmlns:metalex="http://www.metalex.eu/metalex/2008-05-02#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rso="http://www.researchspace.org/ontology/"
+    xmlns:dwc="http://rs.tdwg.org/dwc/terms/"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:crm120111="http://erlangen-crm.org/120111/"
+    xmlns:cc="http://creativecommons.org/ns#"
+    xmlns:org="http://www.w3.org/ns/org#"
+    xmlns:bbc="http://www.bbc.co.uk/ontologies/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:ocd="http://dati.camera.it/ocd/"
+    xmlns:oad="http://lod.xdams.org/reload/oad/"
+    xmlns:schema="http://schema.org/"
+    xmlns:dbpedia="http://dbpedia.org/resource/"
+    xmlns:void="http://rdfs.org/ns/void#"
+    xmlns:cdoc="http://www.cidoc-crm.org/cidoc-crm#"
+    xmlns:eac-cpf="http://archivi.ibc.regione.emilia-romagna.it/ontology/eac-cpf/"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:lgdo="http://linkedgeodata.org/ontology/capital" > 
+  <rdf:Description rdf:nodeID="A0">
+    <schema:representativeOfPage>true</schema:representativeOfPage>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:79L60:voorplat:image"/>
+    <schema:contentUrl rdf:resource="https://resolver.kb.nl/resolve?urn=alba:79L60:achterplat:image"/>
+    <schema:license rdf:resource="http://creativecommons.org/publicdomain/mark/1.0/"/>
+    <rdf:type rdf:resource="http://schema.org/ImageObject"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://data.bibliotheken.nl/id/alba/p323922708">
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419156410"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419136843"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419363955"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419156267"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419366660"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419136770"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419364730"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419138366"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419139265"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41936482X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419138919"/>
+    <schema:genre rdf:resource="http://www.productontology.org/id/Autograph_book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419141057"/>
+    <rdf:type rdf:resource="http://schema.org/Book"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419363696"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419136827"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419102779"/>
+    <schema:identifier>EPN 523128347</schema:identifier>
+    <schema:dateCreated>1884/1890</schema:dateCreated>
+    <schema:funder xml:lang="nl">In 2010 geschonken door een anonymus. Herkomst onbekend</schema:funder>
+    <schema:material rdf:resource="http://vocab.getty.edu/aat/300014109"/>
+    <schema:dateCreated xml:lang="nl">1884-1890</schema:dateCreated>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419141405"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419100105"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419158340"/>
+    <schema:numberOfPages xml:lang="nl">62 fol (waarvan fol. 19-62 los)</schema:numberOfPages>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419139656"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419138676"/>
+    <schema:inLanguage>mis</schema:inLanguage>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419102922"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419366474"/>
+    <schema:genre xml:lang="nl">Album amicorum</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419365494"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419364897"/>
+    <schema:name xml:lang="nl">Album amicorum van J.S. ('Betsy') Kosters</schema:name>
+    <rdf:type rdf:resource="http://schema.org/VisualArtwork"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419136630"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419138218"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419137378"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419101225"/>
+    <schema:temporalCoverage xml:lang="en">19th century</schema:temporalCoverage>
+    <schema:locationCreated xml:lang="nl">[Nederland]</schema:locationCreated>
+    <schema:identifier rdf:resource="http://data.bibliotheken.nl/id/alba/p323922708"/>
+    <schema:url rdf:resource="http://opc4.kb.nl/xslt/DB=1/SET=1/TTL=1/CMD?ACT=SRCHA%26IKT=1016%26SRT=YOP%26TRM=ppn+323922708"/>
+    <schema:material xml:lang="nl">Papier</schema:material>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419363874"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419101063"/>
+    <schema:author xml:lang="nl">J.S. Kosters</schema:author>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419363831"/>
+    <schema:temporalCoverage xml:lang="nl">19e eeuw</schema:temporalCoverage>
+    <schema:isPartOf xml:lang="nl">Album amicorum van J.S. ('Betsy') Kosters</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419100326"/>
+    <schema:height xml:lang="nl">209×164 mm en wisselende afmetingen</schema:height>
+    <schema:description xml:lang="nl">Het is niet zeker dat alle bijdragen aan detzelfde albumhouder zijn gericht</schema:description>
+    <schema:isPartOf xml:lang="nl">Alba amicorum van de Koninklijke Bibliotheek</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419365001"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41913672X"/>
+    <schema:image rdf:nodeID="A0"/>
+    <schema:provider>KB – National Library of the Netherlands</schema:provider>
+    <schema:genre rdf:resource="http://vocab.getty.edu/aat/300374942"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419140026"/>
+    <schema:genre xml:lang="nl">Handschrift</schema:genre>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419141596"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419156186"/>
+    <schema:description xml:lang="nl">Contemporaine kartonnen band met borduurwerk. Vergulde snede</schema:description>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419136908"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419137440"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419140883"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419156216"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419138404"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41936630X"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419366881"/>
+    <rdf:type rdf:resource="http://schema.org/IndiviualProduct"/>
+    <schema:identifier>79 L 60</schema:identifier>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419140980"/>
+    <schema:isPartOf xml:lang="en">Alba amicorum of the KB - National Library of the Netherlands</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419100059"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p41913669X"/>
+    <schema:isPartOf xml:lang="en">Europeana - Rise of Literacy project</schema:isPartOf>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419367012"/>
+    <schema:hasPart rdf:resource="http://data.bibliotheken.nl/id/alba/p419156674"/>
+  </rdf:Description>
+</rdf:RDF>
