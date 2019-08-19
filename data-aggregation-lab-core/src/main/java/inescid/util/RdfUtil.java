@@ -29,10 +29,18 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
 
 
 public class RdfUtil {
+	public static class Templates {
+		public void iterateStatements() {
+//			for (StmtIterator props = resource.listProperties() ; props.hasNext() ; ) {
+//				Statement nextStatement = props.nextStatement();
+//			}
+			throw new RuntimeException("this is a template, should not be used in execution");
+		}
+	}
 	public static class Jena {
 		public static Resource createResource() {
 			return ResourceFactory.createResource();
@@ -58,6 +66,11 @@ public class RdfUtil {
 				return null;
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static final String CONTENT_TYPES_ACCEPT_HEADER=Lang.RDFXML.getContentType().getContentType()+", "+Lang.TURTLE.getContentType().getContentType()+", "+Lang.JSONLD.getContentType().getContentType();
 	
@@ -174,8 +187,14 @@ public class RdfUtil {
 		return model;
 	}
 
+//	public static final String UTF8_BOM = "\uFEFF";
 	public static Model readRdfFromUri(String uri) throws AccessException, InterruptedException, IOException {
 		String rdfString = HttpUtil.makeRequestForContent(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER); 
+//		if(rdfString.startsWith(UTF8_BOM)) {
+//			rdfString = rdfString.substring(1);
+//	    }
+		System.out.println(rdfString.charAt(0));
+		System.out.println(rdfString);
 		return readRdf(rdfString);
 	}
 

@@ -15,7 +15,7 @@ import com.mchange.v1.util.SimpleMapEntry;
 
 import eu.europeana.pf.alg.AlgorithmUtils;
 import eu.europeana.pf.alg.TierClassifierAlgorithm;
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
 
 public class TiersDqcCompletenessCalculator {
 	public static int TOTAL_TIERS=3;

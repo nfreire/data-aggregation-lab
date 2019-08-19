@@ -3,7 +3,8 @@ package inescid.dataaggregation.dataset.profile;
 import java.util.HashMap;
 import java.util.Map;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
 
 public class RecordCompletenessDqcSpec {
 	public enum Dimension {Descriptiveness,	Searchability,	Contextualisation,	Identification,	Browsing,	Viewing,	ReUsability,	Multilinguality};
@@ -18,7 +19,7 @@ public class RecordCompletenessDqcSpec {
 		maxScoreSpec=new CompletenessSpecResources();
 		minScoreSpec=new CompletenessSpecResources();
 		
-		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(RdfReg.EDM_PROVIDED_CHO);
+		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(RdfRegEdm.ProvidedCHO);
 		CompletenessSpecProperties maxScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
 		maxScoreChoSpec.addProperty(RdfReg.DC_DESCRIPTION);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_TITLE, RdfReg.DCTERMS_ALTERNATIVE);
@@ -34,13 +35,13 @@ public class RecordCompletenessDqcSpec {
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_FORMAT, RdfReg.DCTERMS_MEDIUM);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_SOURCE, RdfReg.DCTERMS_PROVENANCE);
 		maxScoreChoSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfReg.EDM_IS_NEXT_IN_SEQUENCE);
-		maxScoreChoSpec.addProperty(RdfReg.EDM_RIGHTS);
+		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfRegEdm.isNextInSequence);
+		maxScoreChoSpec.addProperty(RdfRegEdm.rights);
 		
 //		maxScoreAggSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreAggSpec.addProperty(RdfReg.EDM_RIGHTS);
+		maxScoreAggSpec.addProperty(RdfRegEdm.rights);
 		
-		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(RdfReg.EDM_PROVIDED_CHO);
+		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(RdfRegEdm.ProvidedCHO);
 		CompletenessSpecProperties minScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
 		
 		

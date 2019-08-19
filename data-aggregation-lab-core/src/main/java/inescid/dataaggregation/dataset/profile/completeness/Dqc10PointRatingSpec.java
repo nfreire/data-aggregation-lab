@@ -9,7 +9,8 @@ import org.apache.jena.rdf.model.Resource;
 
 import com.mchange.v1.util.SimpleMapEntry;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
 
 public class Dqc10PointRatingSpec {
 	public static CompletenessSpecResources spec;
@@ -18,7 +19,7 @@ public class Dqc10PointRatingSpec {
 	static {
 		spec=new CompletenessSpecResources();
 		
-		CompletenessSpecOfProperties maxScoreChoSpec=spec.addResource(RdfReg.EDM_PROVIDED_CHO);
+		CompletenessSpecOfProperties maxScoreChoSpec=spec.addResource(RdfRegEdm.ProvidedCHO);
 		CompletenessSpecOfProperties maxScoreAggSpec=spec.addResource(RdfReg.ORE_AGGREGATION);
 		maxScoreChoSpec.addProperty(RdfReg.DC_DESCRIPTION);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_TITLE, RdfReg.DCTERMS_ALTERNATIVE);
@@ -34,12 +35,12 @@ public class Dqc10PointRatingSpec {
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_FORMAT, RdfReg.DCTERMS_MEDIUM);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_SOURCE, RdfReg.DCTERMS_PROVENANCE);
 		maxScoreChoSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfReg.EDM_IS_NEXT_IN_SEQUENCE);
+		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfRegEdm.isNextInSequence);
 		
 		CompletenessSpecOfProperties maxScoreProxySpec=spec.addResource(RdfReg.ORE_PROXY);
 		maxScoreProxySpec.copyFrom(maxScoreChoSpec);
 
-		maxScoreAggSpec.addProperty(RdfReg.EDM_RIGHTS);
+		maxScoreAggSpec.addProperty(RdfRegEdm.rights);
 	}
 	
 }

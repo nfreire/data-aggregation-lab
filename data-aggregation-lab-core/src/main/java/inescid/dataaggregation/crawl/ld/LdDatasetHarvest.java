@@ -16,8 +16,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.LodDataset;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.DatasetLog;

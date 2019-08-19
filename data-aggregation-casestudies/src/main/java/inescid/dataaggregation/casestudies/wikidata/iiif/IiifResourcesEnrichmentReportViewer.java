@@ -11,8 +11,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.profile.ProfileOfValueDistribution.ValueDistribution;
 import inescid.dataaggregation.dataset.profile.PropertyProfiler;
 
@@ -49,7 +50,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append("    <li><a href=\""+c+".html\">"+c+"</a> ("+
 							rep.enrichements.get(c).size()+" CHOs)\n"); 
 					sb.append("<br />(rights in Europeana: ");
-					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfReg.EDM_RIGHTS.getURI());
+					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfRegEdm.rights.getURI());
 					if (propertyProfiler==null) {
 						sb.append("data unavailable");
 					} else {
@@ -99,7 +100,7 @@ public class IiifResourcesEnrichmentReportViewer {
 				sb.append("    <li><a href=\""+c+"_wikimedia.html\">"+c+"</a> ("+
 						rep.enrichementsByWikimedia.get(c).size()+" CHOs)\n"); 
 				sb.append("<br />(rights in Europeana: ");
-				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfReg.EDM_RIGHTS.getURI());
+				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfRegEdm.rights.getURI());
 				if (propertyProfiler==null) {
 					sb.append("data unavailable");
 				} else {

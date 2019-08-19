@@ -17,7 +17,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.util.AccessException;
 import inescid.util.datastruct.MapOfLists;
 
@@ -167,7 +168,7 @@ public class EquivalenceMapping {
 				for (Statement st : typeProperties.toList()) {
 //				System.out.println(st);
 					String objUri = st.getObject().asNode().getURI();
-					if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RdfReg.NsRdf)) {
+					if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RdfRegRdf.NS)) {
 						if(propUriParam.equals(leafPropertyUri)) {
 							wdEntPropEquivalences.put(leafPropertyUri, objUri);
 						} else {
@@ -178,7 +179,7 @@ public class EquivalenceMapping {
 					}else if(acceptNonSchemaOrg && objUri.equals(RdfReg.FOAF_PAGE.getURI())) {
 						//TODO: this is just to test, for now. Remove next line
 						objUri=RdfReg.SCHEMAORG_URL.getURI();
-						if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RdfReg.NsRdf)) {
+						if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RdfRegRdf.NS)) {
 							if(propUriParam.equals(leafPropertyUri)) {
 								wdEntPropEquivalences.put(leafPropertyUri, objUri);
 							} else {

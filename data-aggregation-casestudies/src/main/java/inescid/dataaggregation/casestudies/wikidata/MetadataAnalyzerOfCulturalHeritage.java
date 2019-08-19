@@ -33,9 +33,10 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPa
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.EdmUtil;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
@@ -480,7 +481,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		for (StmtIterator stmts = rdfWikidata.listStatements(null, RdfRegWikidata.INSTANCE_OF, (RDFNode) null); stmts
 				.hasNext();) {
 			Statement stm = stmts.next();
-			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfReg.RDF_TYPE, stm.getObject()));
+			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfRegRdf.type, stm.getObject()));
 		}
 	}
 

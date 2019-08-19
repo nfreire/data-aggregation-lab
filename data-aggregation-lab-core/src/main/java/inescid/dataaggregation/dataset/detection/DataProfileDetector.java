@@ -20,9 +20,11 @@ import eu.europeana.research.iiif.discovery.model.OrderedCollection;
 import eu.europeana.research.iiif.discovery.model.OrderedCollectionPage;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
 import inescid.dataaggregation.data.ContentTypes;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.XmlUtil;
 
@@ -68,8 +70,8 @@ public class DataProfileDetector {
 	private DatasetProfile detectProfileFromXml(String inString) {
 		Document dom = XmlUtil.parseDom(new StringReader(inString));
 		String ns = dom.getDocumentElement().getNamespaceURI();
-		if(ns.equals(RdfReg.NsRdf)) {
-			NodeList chos = dom.getDocumentElement().getElementsByTagNameNS(RdfReg.NsEdm, RdfReg.EDM_PROVIDED_CHO.getLocalName());
+		if(ns.equals(RdfRegRdf.NS)) {
+			NodeList chos = dom.getDocumentElement().getElementsByTagNameNS(RdfRegEdm.NS, RdfRegEdm.ProvidedCHO.getLocalName());
 			if(chos!=null && chos.getLength()>0)
 				return DatasetProfile.EDM;
 		}

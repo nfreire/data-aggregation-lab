@@ -32,8 +32,8 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingC
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;

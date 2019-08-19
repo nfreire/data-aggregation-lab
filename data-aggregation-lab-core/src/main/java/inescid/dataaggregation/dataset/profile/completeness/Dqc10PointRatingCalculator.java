@@ -13,7 +13,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import com.mchange.v1.util.SimpleMapEntry;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 
 public class Dqc10PointRatingCalculator {
 	
@@ -24,7 +25,7 @@ public class Dqc10PointRatingCalculator {
 
 		for(Resource resType: rootTypes) {
 			CompletenessSpecOfProperties resRatingSpec = Dqc10PointRatingSpec.spec.resources.get(resType);
-			ResIterator roots = rdfModelOfRec.listSubjectsWithProperty(RdfReg.RDF_TYPE, resType);
+			ResIterator roots = rdfModelOfRec.listSubjectsWithProperty(RdfRegRdf.type, resType);
 			while(roots.hasNext()) {
 				Resource srcRoot = roots.next();
 				//get all props of srcRoot

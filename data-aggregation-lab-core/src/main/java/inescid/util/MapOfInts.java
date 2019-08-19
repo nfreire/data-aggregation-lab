@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
@@ -135,5 +136,16 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			} catch (IOException e) {
 				throw new RuntimeException(e.getMessage(), e);
 			}
+		}
+
+		public List<SimpleEntry<K, SimpleEntry<Integer, Double>>> getSortedEntriesWithPercent() {
+			List<java.util.Map.Entry<K, Integer>> sortedEntries = getSortedEntries();
+			double total=total();
+			ArrayList<SimpleEntry<K, SimpleEntry<Integer, Double>>> ret=new ArrayList<>(sortedEntries.size());
+			for(Entry<K, Integer> entry : sortedEntries) {
+				ret.add(new SimpleEntry<K, SimpleEntry<Integer, Double>>(entry.getKey()
+						, new SimpleEntry<>(entry.getValue(), (double) entry.getValue() / total)));
+			}
+			return ret;
 		}
 }

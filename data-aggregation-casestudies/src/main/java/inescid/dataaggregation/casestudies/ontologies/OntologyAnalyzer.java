@@ -16,7 +16,8 @@ import org.apache.jena.riot.RiotException;
 import eu.europeana.ld.jena.JenaUtils;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
@@ -106,10 +107,10 @@ public class OntologyAnalyzer {
 					report.profileOfDataElements=profilerOnt.getUsageStats();
 					
 					HashSet<String> dataElementsInOntology=new HashSet<String>();
-					for(Resource dataElement: new Resource[] {RdfReg.RDF_PROPERTY, RdfReg.RDFS_CLASS, RdfReg.RDFS_DATA_TYPE,
+					for(Resource dataElement: new Resource[] {RdfRegRdf.Property, RdfReg.RDFS_CLASS, RdfReg.RDFS_DATA_TYPE,
 							RdfReg.RDFS_RESOURCE, RdfReg.OWL_CLASS, RdfReg.OWL_DATA_RANGE, RdfReg.OWL_DATA_TYPE_PROPERTY, 
 							RdfReg.OWL_FUNCTIONAL_PROPERTY, RdfReg.OWL_OBJECT_PROPERTY, RdfReg.OWL_ONTOLOGY_PROPERTY}) {
-						StmtIterator ontStms = modelOnt.listStatements(null, RdfReg.RDF_TYPE, dataElement);
+						StmtIterator ontStms = modelOnt.listStatements(null, RdfRegRdf.type, dataElement);
 						while (ontStms.hasNext()) {
 							Statement stm = ontStms.next();
 							if(stm.getSubject().isURIResource()) {

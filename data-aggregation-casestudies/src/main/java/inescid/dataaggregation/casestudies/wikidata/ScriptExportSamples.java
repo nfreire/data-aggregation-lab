@@ -33,9 +33,9 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPa
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.EdmUtil;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;

@@ -13,14 +13,23 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RdfRegRdf;
 
 public class EdmRdfUtil {
 	
 
+	public static Resource getEuropeanaAggregationResource(Model cho) {
+		ResIterator aggregations = cho.listResourcesWithProperty(RdfRegRdf.type, RdfRegEdm.EuropeanaAggregation);
+		if (aggregations.hasNext()) {
+			return aggregations.next();
+		} else
+			return null;
+	}
 
 	public static Resource getAggregationResource(Model cho) {
-		ResIterator aggregations = cho.listResourcesWithProperty(RdfReg.RDF_TYPE, RdfReg.ORE_AGGREGATION);
+		ResIterator aggregations = cho.listResourcesWithProperty(RdfRegRdf.type, RdfReg.ORE_AGGREGATION);
 		if (aggregations.hasNext()) {
 			return aggregations.next();
 		} else
@@ -28,7 +37,7 @@ public class EdmRdfUtil {
 	}
 	
 	public static Resource getProvidedChoResource(Model cho) {
-		ResIterator aggregations = cho.listResourcesWithProperty(RdfReg.RDF_TYPE, RdfReg.EDM_PROVIDED_CHO);
+		ResIterator aggregations = cho.listResourcesWithProperty(RdfRegRdf.type, RdfRegEdm.ProvidedCHO);
 		if (aggregations.hasNext()) {
 			return aggregations.next();
 		} else
@@ -56,7 +65,7 @@ public class EdmRdfUtil {
     	}
     	return null;
     }
-//	ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfReg.RDF_TYPE, RdfReg.ORE_AGGREGATION);
+//	ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfRegRdf.type, RdfReg.ORE_AGGREGATION);
 //	while(aggregations.hasNext()) {
 //		Element resourceToXml = resourceToXml(aggregations.next());
 //		if(resourceToXml!=null)

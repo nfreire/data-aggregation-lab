@@ -5,11 +5,11 @@ import java.util.Calendar;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.crawl.ld.LdDatasetHarvest;
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.LodDataset;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataProfileDetectorFromHttpHeaders;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;

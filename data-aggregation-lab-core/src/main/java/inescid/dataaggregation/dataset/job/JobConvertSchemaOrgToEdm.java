@@ -14,13 +14,13 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.mortbay.log.Log;
 import org.w3c.dom.Document;
 
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.store.PublicationRepository;
 import inescid.util.LinkedDataUtil;

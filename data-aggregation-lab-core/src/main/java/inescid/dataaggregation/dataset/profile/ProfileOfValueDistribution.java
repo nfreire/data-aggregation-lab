@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.profile.ProfileOfUniqueness.Calc;
 import inescid.util.RdfUtil;
 import opennlp.tools.util.StringUtil;

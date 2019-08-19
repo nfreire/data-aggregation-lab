@@ -8,6 +8,10 @@ import java.util.Set;
 
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RdfRegRdf;
+
 public class EdmReg {
 
 	
@@ -15,14 +19,14 @@ public class EdmReg {
 	public static final Set<Resource> edmClasses=Collections.unmodifiableSet(new HashSet<Resource>() {
 		private static final long serialVersionUID = 1L;
 	{
-		add(RdfReg.EDM_PROVIDED_CHO); 	
-		add(RdfReg.EDM_WEB_RESOURCE); 	
-		add(RdfReg.EDM_AGENT); 	
+		add(RdfRegEdm.ProvidedCHO); 	
+		add(RdfRegEdm.WebResource); 	
+		add(RdfRegEdm.Agent); 	
 		add(RdfReg.FOAF_ORGANIZATION); 	
-		add(RdfReg.EDM_TIMESPAN); 	
-		add(RdfReg.EDM_PLACE); 	
-		add(RdfReg.EDM_EVENT); 	
-		add(RdfReg.EDM_PHYSICAL_THING); 	
+		add(RdfRegEdm.TimeSpan); 	
+		add(RdfRegEdm.Place); 	
+		add(RdfRegEdm.Event); 	
+		add(RdfRegEdm.PhysicalThing); 	
 		add(RdfReg.ORE_AGGREGATION); 	
 		add(RdfReg.SKOS_CONCEPT); 	
 		add(RdfReg.SKOS_CONCEPT_SCHEME); 	
@@ -40,9 +44,9 @@ public class EdmReg {
 		put(RdfReg.NsCc, "cc");
 		put(RdfReg.NsDc, "dc");
 		put(RdfReg.NsDcterms, "dcterms");
-		put(RdfReg.NsEdm, "edm");
+		put(RdfRegEdm.NS, RdfRegEdm.PREFIX);
 		put(RdfReg.NsOre, "ore");
-		put(RdfReg.NsRdf, "rdf");
+		put(RdfRegRdf.NS, RdfRegRdf.PREFIX);
 		put(RdfReg.NsRdfs, "rdfs");
 		put(RdfReg.NsSkos, "skos");
 		put(RdfReg.NsSvcs, "svcs");

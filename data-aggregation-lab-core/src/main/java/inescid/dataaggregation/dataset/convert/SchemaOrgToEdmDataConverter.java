@@ -18,6 +18,9 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.w3c.dom.Document;
 
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConversionSpecification;
 import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.ResourceTypeConversionSpecification;
@@ -80,48 +83,48 @@ public class SchemaOrgToEdmDataConverter {
 		Resource mainTargetResource=conv.convert(source);
 		if(mainTargetResource==null)
 			return null;
-		ResIterator aggregations = mainTargetResource.getModel().listResourcesWithProperty(RdfReg.RDF_TYPE, RdfReg.ORE_AGGREGATION);
+		ResIterator aggregations = mainTargetResource.getModel().listResourcesWithProperty(RdfRegRdf.type, RdfReg.ORE_AGGREGATION);
 		Resource ag = aggregations.next();
-		mainTargetResource.getModel().add(ag, RdfReg.EDM_AGGREGATED_CHO, mainTargetResource);
+		mainTargetResource.getModel().add(ag, RdfRegEdm.aggregatedCHO, mainTargetResource);
 		
 		if(dataProvider!=null) {
-			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RdfReg.EDM_DATA_PROVIDER, (String) null);
+			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RdfRegEdm.dataProvider, (String) null);
 			if(!provs.hasNext())
-				mainTargetResource.getModel().add(ag, RdfReg.EDM_DATA_PROVIDER, dataProvider);
+				mainTargetResource.getModel().add(ag, RdfRegEdm.dataProvider, dataProvider);
 			if(provider==null) {
-				provs = mainTargetResource.getModel().listStatements(ag, RdfReg.EDM_PROVIDER, (String) null);
+				provs = mainTargetResource.getModel().listStatements(ag, RdfRegEdm.provider, (String) null);
 				if(!provs.hasNext())
-					mainTargetResource.getModel().add(ag, RdfReg.EDM_PROVIDER, dataProvider);
+					mainTargetResource.getModel().add(ag, RdfRegEdm.provider, dataProvider);
 			}
 		}
 		
 		if(provider!=null) {
-			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RdfReg.EDM_PROVIDER, (String) null);
+			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RdfRegEdm.provider, (String) null);
 			if(!provs.hasNext())
-				mainTargetResource.getModel().add(ag, RdfReg.EDM_PROVIDER, provider);
+				mainTargetResource.getModel().add(ag, RdfRegEdm.provider, provider);
 		}
 		if(datasetRights!=null) {
-			StmtIterator rights = mainTargetResource.getModel().listStatements(ag, RdfReg.EDM_RIGHTS, (String) null);
+			StmtIterator rights = mainTargetResource.getModel().listStatements(ag, RdfRegEdm.rights, (String) null);
 			if(!rights.hasNext())
-				mainTargetResource.getModel().add(ag, RdfReg.EDM_RIGHTS, mainTargetResource.getModel().createResource(datasetRights));
+				mainTargetResource.getModel().add(ag, RdfRegEdm.rights, mainTargetResource.getModel().createResource(datasetRights));
 		}
 		
 		// logic to calculate hasViews would be to complex to implement in the RdfConverter. So we do like this:
 		HashSet<String> wrUris=new HashSet<>();
-		StmtIterator provs = mainTargetResource.getModel().listStatements(null, RdfReg.RDF_TYPE, RdfReg.EDM_WEB_RESOURCE);
+		StmtIterator provs = mainTargetResource.getModel().listStatements(null, RdfRegRdf.type, RdfRegEdm.WebResource);
 		while(provs.hasNext()) {
 			Statement stm = provs.next();
 			wrUris.add(stm.getSubject().getURI());
 		}
 		for(Resource schemaWebResourceType: new Resource[] {RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.SCHEMAORG_MEDIA_OBJECT, RdfReg.SCHEMAORG_AUDIO_OBJECT}) {
-			StmtIterator mediaStms = source.getModel().listStatements(null, RdfReg.RDF_TYPE, schemaWebResourceType);
+			StmtIterator mediaStms = source.getModel().listStatements(null, RdfRegRdf.type, schemaWebResourceType);
 			while(mediaStms.hasNext()) {
 				Statement medStm = mediaStms.next();				
 				StmtIterator contStms = source.getModel().listStatements(medStm.getSubject(), RdfReg.SCHEMAORG_CONTENT_URL, (RDFNode) null);
 				while(contStms.hasNext()) {
 					Statement stm = contStms.next();		
 					if(!wrUris.contains(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())))
-						mainTargetResource.getModel().add(ag, RdfReg.EDM_HAS_VIEW, mainTargetResource.getModel().createResource(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())));
+						mainTargetResource.getModel().add(ag, RdfRegEdm.hasView, mainTargetResource.getModel().createResource(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())));
 				}
 			}
 		}

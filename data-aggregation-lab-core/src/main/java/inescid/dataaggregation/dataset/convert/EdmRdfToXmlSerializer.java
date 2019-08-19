@@ -17,6 +17,9 @@ import org.apache.jena.reasoner.rulesys.RDFSRuleInfGraph;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.util.XmlUtil;
 
 public class EdmRdfToXmlSerializer {
@@ -37,7 +40,7 @@ public class EdmRdfToXmlSerializer {
 
 	public Document getXmlDom() {
 		edmDom = XmlUtil.newDocument();
-		rootEl = edmDom.createElementNS(RdfReg.NsRdf, "rdf:RDF");		
+		rootEl = edmDom.createElementNS(RdfRegRdf.NS, "rdf:RDF");		
 		edmDom.appendChild(rootEl);
 		rootEl.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		
@@ -46,26 +49,26 @@ public class EdmRdfToXmlSerializer {
 			rootEl.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:"+ns.getValue(), ns.getKey());
 		}
 		addedResources.add(getUriOrAnonId(cho));
-		Element choEl = edmDom.createElementNS(RdfReg.NsEdm, "edm:ProvidedCHO");
-		choEl.setAttributeNS(RdfReg.NsRdf, "rdf:about", cho.getURI());
+		Element choEl = edmDom.createElementNS(RdfRegEdm.NS, "edm:ProvidedCHO");
+		choEl.setAttributeNS(RdfRegRdf.NS, "rdf:about", cho.getURI());
 		rootEl.appendChild(choEl);
 
 		StmtIterator choStms = cho.listProperties();
 		while (choStms.hasNext()) {
 				Statement st = choStms.next();
 //			System.out.println(st);
-			if(st.getPredicate().equals(RdfReg.RDF_TYPE)) 
+			if(st.getPredicate().equals(RdfRegRdf.type)) 
 				continue;//it is a CHO 
 			
 			Element predicateEl=createXmlElement(st);
 			
  			RDFNode object = st.getObject();
 	        if (object.isURIResource()) {
-	        	predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:resource", ((Resource) object).getURI());
+	        	predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:resource", ((Resource) object).getURI());
 	        	if(! addedResources.contains(getUriOrAnonId(object.asResource())))
 	        		toAddResources.add(object.asResource());
 	        }else if (object.isAnon()) {
-	        	predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:resource", ((Resource) object).getId().getLabelString());
+	        	predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:resource", ((Resource) object).getId().getLabelString());
 	        	if(! addedResources.contains(getUriOrAnonId((Resource) object)))
 	        		toAddResources.add(((Resource) object));	 
 	        } else if (object.isLiteral()) {
@@ -77,14 +80,14 @@ public class EdmRdfToXmlSerializer {
 	                predicateEl.setAttributeNS(RdfReg.NsXml, "xml:lang", ((Literal)object).getLanguage());
 	            if(!discardDataTypes)
 	            	if(((Literal)object).getDatatype()!=null && !((Literal)object).getDatatype().getURI().equals("http://www.w3.org/2001/XMLSchema#string"))
-	            		predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:datatype", ((Literal)object).getDatatype().getURI());
+	            		predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:datatype", ((Literal)object).getDatatype().getURI());
 	        } else
 	            throw new RuntimeException("? what to do ?"+ object.getClass().getName());
 	        choEl.appendChild(predicateEl);
 		}
 		choStms.close();
 				
-		ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfReg.RDF_TYPE, RdfReg.ORE_AGGREGATION);
+		ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfRegRdf.type, RdfReg.ORE_AGGREGATION);
 		while(aggregations.hasNext()) {
 			Element resourceToXml = resourceToXml(aggregations.next());
 			if(resourceToXml!=null)
@@ -121,7 +124,7 @@ public class EdmRdfToXmlSerializer {
 		while (props.hasNext()) {
 			Statement st = props.next();
 			
-			if(st.getPredicate().equals(RdfReg.RDF_TYPE) && st.getObject().equals(edmClass)) 
+			if(st.getPredicate().equals(RdfRegRdf.type) && st.getObject().equals(edmClass)) 
 				continue;//it's the element type 
 			
 			Element predicateEl=createXmlElement(st);
@@ -129,11 +132,11 @@ public class EdmRdfToXmlSerializer {
 			RDFNode object = st.getObject();
 	        if (object.isURIResource()) {
 //	        	System.out.println(st);
-	        	predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:resource", ((Resource) object).getURI());
+	        	predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:resource", ((Resource) object).getURI());
 	        	if(! addedResources.contains(getUriOrAnonId((Resource) object)))
 	        		toAddResources.add(((Resource) object));
 	        }else if (object.isAnon()) {
-	        	predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:resource", ((Resource) object).getId().getLabelString());
+	        	predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:resource", ((Resource) object).getId().getLabelString());
 	        	if(! addedResources.contains(getUriOrAnonId((Resource) object)))
 	        		toAddResources.add(((Resource) object));	        	
 	        } else if (object.isLiteral()) {
@@ -146,7 +149,7 @@ public class EdmRdfToXmlSerializer {
 	                predicateEl.setAttributeNS(RdfReg.NsXml, "lang", ((Literal)object).getLanguage());
                 if(!discardDataTypes)
 	            	if(((Literal)object).getDatatype()!=null && !((Literal)object).getDatatype().getURI().equals("http://www.w3.org/2001/XMLSchema#string"))
-		                predicateEl.setAttributeNS(RdfReg.NsRdf, "rdf:datatype", ((Literal)object).getDatatype().toString());
+		                predicateEl.setAttributeNS(RdfRegRdf.NS, "rdf:datatype", ((Literal)object).getDatatype().toString());
 	        } else
 	            throw new RuntimeException("? what to do ?"+ object.getClass().getName());
 	        resourceEl.appendChild(predicateEl);
@@ -157,7 +160,7 @@ public class EdmRdfToXmlSerializer {
 
 
 	private Resource findEdmClassOfResource(Resource r) {
-		StmtIterator types = r.getModel().listStatements(r, RdfReg.RDF_TYPE, (RDFNode)null);
+		StmtIterator types = r.getModel().listStatements(r, RdfRegRdf.type, (RDFNode)null);
 		while (types.hasNext()) {
 			RDFNode object = types.next().getObject();
 			if(object.isURIResource() && EdmReg.isEdmClass((Resource)object))
@@ -181,7 +184,7 @@ public class EdmRdfToXmlSerializer {
 		String ns = propUri.substring(0, endOfPrefixIdx);
 		String elName = propUri.substring(endOfPrefixIdx);
 		Element stEl=edmDom.createElementNS(ns, EdmReg.nsPrefixes.get(ns)+":"+elName);
-		stEl.setAttributeNS(RdfReg.NsRdf, "rdf:about", aboutUri);
+		stEl.setAttributeNS(RdfRegRdf.NS, "rdf:about", aboutUri);
 		return stEl;
 	}
 	

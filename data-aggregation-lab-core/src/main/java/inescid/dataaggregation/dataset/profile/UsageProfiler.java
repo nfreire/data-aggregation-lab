@@ -12,7 +12,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.dataset.convert.RdfReg;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
@@ -32,7 +33,7 @@ public class UsageProfiler {
 		if(r==null) return;
 		ArrayList<ClassUsageStats> classesOfSubject=new ArrayList<>(3);
 		ArrayList<String> classesOfSubjectUris=new ArrayList<>(3);
-		for(Statement st : r.listProperties(RdfReg.RDF_TYPE).toList()) {
+		for(Statement st : r.listProperties(RdfRegRdf.type).toList()) {
 //			System.out.println(st);
 			String clsUri = st.getObject().asNode().getURI();
 			ClassUsageStats classStats = usageStats.getClassStats(clsUri);
@@ -53,10 +54,10 @@ public class UsageProfiler {
 //				System.out.print("(last warning)");
 //			System.out.println();
 		}
-//		r.listProperties(RdfReg.RDF_TYPE);
+//		r.listProperties(RdfRegRdf.type);
 		StmtIterator properties = r.listProperties();
 		for(Statement st : properties.toList()) {
-			if(!optionCountRdfType && st.getPredicate().equals(RdfReg.RDF_TYPE)) continue;
+			if(!optionCountRdfType && st.getPredicate().equals(RdfRegRdf.type)) continue;
 			for(ClassUsageStats stat : classesOfSubject)
 				stat.eventProperty(st);
 		}
@@ -65,7 +66,7 @@ public class UsageProfiler {
 		
 		StmtIterator propertiesRangeOf = r.getModel().listStatements(null, null, r);
 		for(Statement st : propertiesRangeOf.toList()) {
-			if(st.getPredicate().equals(RdfReg.RDF_TYPE)) continue;
+			if(st.getPredicate().equals(RdfRegRdf.type)) continue;
 			for(ClassUsageStats stat : classesOfSubject)
 				stat.getPropertiesObjectStats().incrementTo(st.getPredicate().getURI());
 		}

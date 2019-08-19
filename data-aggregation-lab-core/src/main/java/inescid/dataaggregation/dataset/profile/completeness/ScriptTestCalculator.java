@@ -21,9 +21,10 @@ import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
+import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.RdfReg;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
@@ -113,7 +114,7 @@ public class ScriptTestCalculator {
 				System.out.println(uri);
 //				System.out.println("*** "+uri);
 //				System.out.println(RdfUtil.printStatements(rdf));
-				StmtIterator completenessStms = rdf.listStatements(null, RdfReg.EDM_COMPLETENESS, (RDFNode)null);
+				StmtIterator completenessStms = rdf.listStatements(null, RdfRegEdm.completeness, (RDFNode)null);
 				if(completenessStms.hasNext()) {
 					int completeness = completenessStms.next().getObject().asLiteral().getInt();
 					retOldCompleteness.add(completeness);
