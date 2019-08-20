@@ -35,7 +35,6 @@ import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.validate.ValidationResult;
@@ -44,6 +43,7 @@ import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.PublicationRepository;
 import inescid.util.LinkedDataUtil;
 import inescid.util.XmlUtil;
+import inescid.util.europeana.EdmRdfToXmlSerializer;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
 public class JobValidateEdm extends JobWorker implements Runnable {

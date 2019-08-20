@@ -31,12 +31,11 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingC
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
+import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.EdmUtil;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
@@ -45,10 +44,11 @@ import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.AccessException;
-import inescid.util.EdmRdfUtil;
 import inescid.util.HttpUtil;
 import inescid.util.MapOfInts;
 import inescid.util.RdfUtil;
+import inescid.util.europeana.EdmRdfUtil;
+import inescid.util.europeana.EdmUtil;
 
 public class MetadataAnalyzerOfCulturalHeritage {
 	enum DataDumps {

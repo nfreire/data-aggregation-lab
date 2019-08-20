@@ -10,11 +10,11 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.jena.rdf.model.Resource;
 
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.validate.ValidationResult;
 import inescid.dataaggregation.dataset.validate.Validator;
 import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.opaf.data.profile.MapOfInts;
+import inescid.util.europeana.EdmRdfToXmlSerializer;
 
 public class EdmValidation {
 	final  Validator validator;

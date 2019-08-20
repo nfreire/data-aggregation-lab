@@ -14,6 +14,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RdfRegRdfs;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
@@ -44,8 +45,8 @@ public class UsageProfiler {
 		}
 		
 		if(classesOfSubject.isEmpty()) {
-			classesOfSubject.add(usageStats.getClassStats(RdfReg.RDFS_RESOURCE.getURI()));
-			ClassUsageStats classStats = usageStats.getClassStats(RdfReg.RDFS_RESOURCE.getURI());
+			classesOfSubject.add(usageStats.getClassStats(RdfRegRdfs.Resource.getURI()));
+			ClassUsageStats classStats = usageStats.getClassStats(RdfRegRdfs.Resource.getURI());
 			classStats.eventInstanceStart(r);
 		} else if(classesOfSubjectUris.size()>1 && maxWarns>0) {
 //			System.out.print("WARN: resource has multiple types: "+ classesOfSubjectUris);

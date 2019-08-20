@@ -20,10 +20,10 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
+import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;

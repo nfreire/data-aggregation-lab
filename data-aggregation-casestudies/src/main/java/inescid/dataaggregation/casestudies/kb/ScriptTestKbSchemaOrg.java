@@ -14,12 +14,12 @@ import org.w3c.dom.Document;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 import inescid.util.XmlUtil;
+import inescid.util.europeana.EdmRdfToXmlSerializer;
 
 public class ScriptTestKbSchemaOrg {
 

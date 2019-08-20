@@ -19,6 +19,7 @@ import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHand
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RdfRegRdfs;
 import inescid.util.AccessException;
 import inescid.util.datastruct.MapOfLists;
 
@@ -335,7 +336,7 @@ public class EquivalenceMapping {
 	private String getLabel(String uri) throws AccessException, InterruptedException, IOException {
 		uri=convertWdPropertyUri(uri);
 		Resource resource = MetadataAnalyzerOfCulturalHeritage.fetchresource(uri, rdfCache);
-		StmtIterator labelProps = resource.listProperties(RdfReg.RDFS_LABEL);
+		StmtIterator labelProps = resource.listProperties(RdfRegRdfs.label);
 		String label=null;
 		for (Statement st : labelProps.toList()) {
 			String lang = st.getObject().asLiteral().getLanguage();

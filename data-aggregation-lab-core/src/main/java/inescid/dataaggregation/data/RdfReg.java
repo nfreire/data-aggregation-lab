@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 
 public final class RdfReg {
 	public static String NsXml="http://www.w3.org/XML/1998/namespace";
-	public static String NsRdfs="http://www.w3.org/2000/01/rdf-schema#";
+//	public static String NsRdfs="http://www.w3.org/2000/01/rdf-schema#";
 	public static String NsDc="http://purl.org/dc/elements/1.1/";
 	public static String NsDcterms="http://purl.org/dc/terms/";
 	public static String NsDcmiType="http://purl.org/dc/dcmitype/";
@@ -31,8 +31,6 @@ public final class RdfReg {
 
 	public static final Property OA_HAS_BODY=ResourceFactory.createProperty(NsOa+"hasBody");
 
-	public static final Property RDFS_SEE_ALSO=ResourceFactory.createProperty("http://www.w3.org/2000/01/rdf-schema#seeAlso");
-	public static final Resource RDFS_RESOURCE=ResourceFactory.createProperty("http://www.w3.org/2000/01/rdf-schema#Resource");
 	public static final Resource IIIF_MANIFEST = ResourceFactory.createResource("http://iiif.io/api/presentation/2#Manifest");
 	public static final Resource FOAF_ORGANIZATION = ResourceFactory.createResource(NsFoaf+ "Organization");
 	public static final Property FOAF_PAGE= ResourceFactory.createProperty(NsFoaf+ "page");
@@ -41,10 +39,6 @@ public final class RdfReg {
 	public static final Resource ORE_PROXY = ResourceFactory.createResource(NsOre+"Proxy");
 	public static final Property IIIF_METADATA_LABELS = ResourceFactory.createProperty("http://iiif.io/api/presentation/2#metadataLabels");
 	public static final Property IIIF_PROFiLE_DOAP_IMPLEMENTS = ResourceFactory.createProperty("http://usefulinc.com/ns/doap#implements");
-	public static final Property RDFS_LABEL = ResourceFactory.createProperty(NsRdfs, "label");
-	public static final Property RDFS_IS_DEFINED_BY = ResourceFactory.createProperty(NsRdfs, "isDefinedBy");
-	public static final Resource RDFS_CLASS = ResourceFactory.createResource(NsRdfs + "Class");
-	public static final Resource RDFS_DATA_TYPE = ResourceFactory.createResource(NsRdfs + "DataType");
 	public static final Property DCTERMS_HAS_FORMAT = ResourceFactory.createProperty(NsDcterms+"hasFormat");
 	public static final Property DC_FORMAT = ResourceFactory.createProperty(NsDc+"format");
 	public static final Property DC_SOURCE = ResourceFactory.createProperty(NsDc+"source");

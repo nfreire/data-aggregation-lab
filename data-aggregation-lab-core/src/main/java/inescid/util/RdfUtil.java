@@ -28,7 +28,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
 
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
+import inescid.dataaggregation.crawl.http.HttpRequest;
+import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;
 
 
@@ -189,13 +190,15 @@ public class RdfUtil {
 
 //	public static final String UTF8_BOM = "\uFEFF";
 	public static Model readRdfFromUri(String uri) throws AccessException, InterruptedException, IOException {
-		String rdfString = HttpUtil.makeRequestForContent(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER); 
+		HttpRequest rdfReq = HttpUtil.makeRequest(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
+		
+		
+		
 //		if(rdfString.startsWith(UTF8_BOM)) {
 //			rdfString = rdfString.substring(1);
 //	    }
-		System.out.println(rdfString.charAt(0));
-		System.out.println(rdfString);
-		return readRdf(rdfString);
+//		System.out.println(rdfString);
+		return readRdf(new HttpResponse(rdfReq));
 	}
 
 	

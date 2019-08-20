@@ -1,4 +1,4 @@
-package inescid.dataaggregation.dataset.convert;
+package inescid.util.europeana;
 
 import java.util.ArrayList;
 import java.util.HashSet;

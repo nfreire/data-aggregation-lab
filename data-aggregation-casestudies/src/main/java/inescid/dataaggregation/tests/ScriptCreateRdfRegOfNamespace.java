@@ -24,10 +24,15 @@ public class ScriptCreateRdfRegOfNamespace {
 		http://www.wikidata.org/entity.json
 		try { 
 			GlobalCore.init_developement();
+//			String name="Rdfs";
+//			String ns = "http://www.w3.org/2000/01/rdf-schema#";
 			String name="Rdf";
-			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns";
+			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 //			String name="Edm";
 //			String ns = "http://www.europeana.eu/schemas/edm/";
+			
+//			String makeRequestForContent = HttpUtil.makeRequestForContent(ns);
+			
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			PrintStream o = new PrintStream(os);

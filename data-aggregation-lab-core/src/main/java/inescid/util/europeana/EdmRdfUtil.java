@@ -1,4 +1,4 @@
-package inescid.util;
+package inescid.util.europeana;
 
 import javax.xml.xpath.XPathExpressionException;
 

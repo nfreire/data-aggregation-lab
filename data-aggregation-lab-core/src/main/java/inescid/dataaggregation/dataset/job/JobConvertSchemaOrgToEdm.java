@@ -19,12 +19,12 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
-import inescid.dataaggregation.dataset.convert.EdmRdfToXmlSerializer;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.store.PublicationRepository;
 import inescid.util.LinkedDataUtil;
 import inescid.util.XmlUtil;
+import inescid.util.europeana.EdmRdfToXmlSerializer;
 
 public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager

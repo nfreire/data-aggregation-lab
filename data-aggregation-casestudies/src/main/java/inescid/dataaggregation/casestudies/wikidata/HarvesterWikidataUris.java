@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService.HttpResponse;
+import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.util.AccessException;
 

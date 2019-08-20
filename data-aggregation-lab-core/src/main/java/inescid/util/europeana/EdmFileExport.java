@@ -1,4 +1,4 @@
-package inescid.util;
+package inescid.util.europeana;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
+
+import inescid.util.XmlUtil;
 
 public class EdmFileExport {
 
