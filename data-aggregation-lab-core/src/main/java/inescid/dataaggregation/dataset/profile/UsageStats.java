@@ -1,11 +1,11 @@
 package inescid.dataaggregation.dataset.profile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -38,6 +38,13 @@ public class UsageStats {
 		for(ClassUsageStats cls: stats.values()) 
 			cls.finish();
 	}
+
+	public void exportCsvOfValueDistributions(File outputFolder) throws IOException {
+		if(!outputFolder.exists())
+			outputFolder.mkdirs();
+		for(Entry<String, ClassUsageStats> cls: stats.entrySet()) 
+			cls.getValue().toCsvOfValueDistribution(cls.getKey(), outputFolder);
+	}
 	
 	
 	public String toString() {
@@ -55,21 +62,24 @@ public class UsageStats {
 		return sb.toString();
 	}
 	public String toCsv() {
+		return toCsv(Collections.EMPTY_MAP);
+	}
+	public String toCsv(Map<String, String> uriLabels) {
 		try {
 			StringBuilder sbCsv=new StringBuilder();
 			CSVPrinter csv=new CSVPrinter(sbCsv, CSVFormat.DEFAULT);
-			csv.printRecord("class","class count");
+			csv.printRecord("class","class label","class count");
 			ArrayList<String> classesSorted = new ArrayList<String>(stats.keySet());
 			Collections.sort(classesSorted);
 			for(String cls: classesSorted) {
 				ClassUsageStats clsStats = stats.get(cls);
-				csv.printRecord(cls,clsStats.getClassUseCount());
+				csv.printRecord(cls, uriLabels.get(cls), clsStats.getClassUseCount());
 			}		
 
 			for(String cls: classesSorted) {
 				csv.printRecord("","");
 				ClassUsageStats clsStats = stats.get(cls);
-				clsStats.toCsv(cls, csv);
+				clsStats.toCsv(cls, csv, uriLabels);
 			}
 			csv.close();
 			return sbCsv.toString();

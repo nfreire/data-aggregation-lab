@@ -5,7 +5,6 @@ import java.util.HashSet;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.util.RdfUtil;
 import opennlp.tools.util.StringUtil;
 
 public class ProfileOfUniqueness implements ProfileOfInterface{

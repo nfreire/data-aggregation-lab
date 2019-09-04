@@ -1,17 +1,7 @@
 package eu.europeana.research.iiif.discovery.demo;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-
 import eu.europeana.research.iiif.crawl.CollectionCrawler;
-import eu.europeana.research.iiif.crawl.ManifestHarvester;
-import eu.europeana.research.iiif.crawl.ManifestRepository;
-import eu.europeana.research.iiif.discovery.CrawlingHandler;
-import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
-import eu.europeana.research.iiif.discovery.model.Activity;
 import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
-import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 
 public class ScriptIiifCollectionCrawlerDemo {
 

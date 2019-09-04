@@ -13,7 +13,6 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import com.mchange.v1.util.SimpleMapEntry;
 
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.profile.completeness.CompletenessSpecOfProperties;
 

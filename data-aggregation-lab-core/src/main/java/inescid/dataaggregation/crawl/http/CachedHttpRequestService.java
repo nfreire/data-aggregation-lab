@@ -12,7 +12,6 @@ import org.apache.http.Header;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
-import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 import inescid.util.RetryExec;
 
@@ -35,6 +34,9 @@ public class CachedHttpRequestService {
 		this.cache = cache;
 	}
 	
+	public boolean isFollowRedirects() {
+		return httpService.isFollowRedirects();
+	}
 	public HttpResponse fetch(String resourceUrl, String oneHheader, String headerValue) throws AccessException, InterruptedException, IOException {
 		UrlRequest r=new UrlRequest(resourceUrl, oneHheader, headerValue);
 		return fetch(new HttpRequest(r));

@@ -1,27 +1,21 @@
 package inescid.dataaggregation.dataset.profile;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.data.RdfRegRdfs;
-import inescid.util.HttpUtil;
-import inescid.util.RdfUtil;
 
 public class UsageProfiler {
 	int maxWarns=5;
 	
-	boolean optionProfileObjectsOfTriples=true;
+//	boolean optionProfileObjectsOfTriples=true;
 	boolean optionCountRdfType=true;
 	
 	UsageStats usageStats=new UsageStats();
@@ -121,9 +115,9 @@ public class UsageProfiler {
 		sb.append("]");
 		return sb.toString();
 	}
-	public void setOptionProfileObjectsOfTriples(boolean b) {
-		optionProfileObjectsOfTriples=b;
-	}
+//	public void setOptionProfileObjectsOfTriples(boolean b) {
+//		optionProfileObjectsOfTriples=b;
+//	}
 
 
 }

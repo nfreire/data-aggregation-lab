@@ -1,5 +1,13 @@
 package inescid.dataaggregation.crawl.www;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,19 +42,10 @@ import org.apache.any23.rdf.Prefixes;
 import org.apache.any23.rdf.RDFUtils;
 import org.apache.any23.vocab.SINDICE;
 import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.impl.LiteralImpl;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This extractor represents the HTML script tags used to embed blocks of data

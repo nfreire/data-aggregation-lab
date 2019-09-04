@@ -1,8 +1,5 @@
 package inescid.dataaggregation.dataset.profile;
 
-import java.io.IOException;
-
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 

@@ -9,13 +9,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -30,7 +31,7 @@ import org.apache.jena.riot.RDFLanguages;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfRegRdf;
 
 
 public class RdfUtil {
@@ -66,11 +67,13 @@ public class RdfUtil {
 			else
 				return null;
 		}
+		public static Statement createStatementAddToModel(Model model, Resource subject, Property pred,
+				RDFNode object) {
+			Statement st = model.createStatement(subject, pred, object);
+			model.add(st);
+			return st;
+		}
 	}
-	
-	
-	
-	
 	
 	
 	public static final String CONTENT_TYPES_ACCEPT_HEADER=Lang.RDFXML.getContentType().getContentType()+", "+Lang.TURTLE.getContentType().getContentType()+", "+Lang.JSONLD.getContentType().getContentType();
@@ -88,6 +91,10 @@ public class RdfUtil {
 
 	public static String getUriOrId(Resource srcResource) {
 		return srcResource.isURIResource() ? srcResource.getURI() : srcResource.getId().getBlankNodeId().toString();
+	}
+	
+	public static String getUriIfResource(RDFNode srcResource) {
+		return srcResource.isURIResource() ? srcResource.asResource().getURI() : null;
 	}
 
 	public static String getUriOrLiteralValue(RDFNode resource) {
@@ -116,12 +123,18 @@ public class RdfUtil {
 		return readRdf(new StringReader(content));
 	}
 	public static Model readRdf(byte[] content) {
-		ByteArrayInputStream in=new ByteArrayInputStream(content);
-		Model model = readRdf(in);
-		try {
-			in.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
+		Model model = null;
+		for(Lang l: new Lang[] { Lang.RDFXML, Lang.TURTLE, Lang.JSONLD}) {
+			ByteArrayInputStream in=new ByteArrayInputStream(content);
+			try {
+				model = ModelFactory.createDefaultModel();
+				RDFReader reader = model.getReader(l.getName());
+				reader.setProperty("allowBadURIs", "true");
+				reader.read(model, in, null);
+				break;
+			} catch (Exception e){
+				//ignore and try another reader
+			}
 		}
 		return model;
 	}
@@ -142,19 +155,11 @@ public class RdfUtil {
 		return model;
 	}
 	public static Model readRdf(InputStream content) {
-		Model model = null;
-		for(Lang l: new Lang[] { Lang.RDFXML, Lang.TURTLE, Lang.JSONLD}) {
-			try {
-				model = ModelFactory.createDefaultModel();
-				RDFReader reader = model.getReader(l.getName());
-				reader.setProperty("allowBadURIs", "true");
-				reader.read(model, content, null);
-				break;
-			} catch (Exception e){
-				//ignore and try another reader
-			}
+		try {
+			return readRdf(IOUtils.toByteArray(content));
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
 		}
-		return model;
 	}
 	public static Model readRdf(String content, Lang l) {
 		if(l==null)	return readRdf(content);
@@ -169,7 +174,11 @@ public class RdfUtil {
 		return model;
 	}
 	public static Model readRdf(InputStream content, Lang l) {
-		if(l==null)	return readRdf(content);
+		try {
+			if(l==null)	return readRdf(IOUtils.toByteArray(content));
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 		Model model = ModelFactory.createDefaultModel();
 		RDFReader reader = model.getReader(l.getName());
 		reader.setProperty("allowBadURIs", "true");
@@ -191,14 +200,21 @@ public class RdfUtil {
 //	public static final String UTF8_BOM = "\uFEFF";
 	public static Model readRdfFromUri(String uri) throws AccessException, InterruptedException, IOException {
 		HttpRequest rdfReq = HttpUtil.makeRequest(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
-		
-		
-		
 //		if(rdfString.startsWith(UTF8_BOM)) {
 //			rdfString = rdfString.substring(1);
 //	    }
 //		System.out.println(rdfString);
 		return readRdf(new HttpResponse(rdfReq));
+	}
+	public static Resource readRdfResourceFromUri(String resourceUri) throws AccessException, InterruptedException, IOException {
+		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
+		Model readRdf = readRdf(new HttpResponse(rdfReq));
+		if(readRdf==null)
+			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
+		Resource resource = readRdf.createResource();
+		if(resource==null)
+			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
+		return resource;
 	}
 
 	
@@ -226,14 +242,21 @@ public class RdfUtil {
 		return writer.toString();
 	}		
 	
-	public static String printStatements(Model rdf) {
+	public static String statementsToString(Model rdf) {
+		return statementsToString(rdf.listStatements());
+	}
+	
+	public static String statementsToString(StmtIterator stms) {
+		return statementsToString(stms.toList());
+	}
+	
+	public static String statementsToString(Collection<Statement> stm) {
 		StringBuilder sb=new StringBuilder();
-		StmtIterator typeProperties = rdf.listStatements();
-		for(Statement st : typeProperties.toList()) 
+		for(Statement st : stm) 
 			sb.append(st.toString()).append('\n');
 		return sb.toString();
 	}
-	public static String printStatementsOfNamespace(Model rdf, String ns) {
+	public static String statementsOfNamespaceToString(Model rdf, String ns) {
 		StringBuilder sb=new StringBuilder();
 		StmtIterator typeProperties = rdf.listStatements();
 		for(Statement st : typeProperties.toList()) 
@@ -241,7 +264,7 @@ public class RdfUtil {
 				sb.append(st.toString()).append('\n');
 		return sb.toString();
 	}
-	public static String printStatementsOfNamespace(Resource rdf, String ns) {
+	public static String statementsOfNamespaceToString(Resource rdf, String ns) {
 		StringBuilder sb=new StringBuilder();
 		StmtIterator typeProperties = rdf.listProperties();
 		for(Statement st : typeProperties.toList()) 
@@ -308,4 +331,9 @@ public class RdfUtil {
 		return model;
 	}
 
+	public static List<Statement> getAllStatementsAboutAndReferingResource(Model model, String resourceUri) {
+		ArrayList<Statement> ret=new ArrayList<Statement>(model.getResource(resourceUri).listProperties().toList()); 
+		ret.addAll(model.listStatements(null, null, resourceUri).toList());
+		return ret;
+	}
 }

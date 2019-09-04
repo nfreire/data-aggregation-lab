@@ -1,22 +1,17 @@
 package inescid.dataaggregation.dataset.profile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.dataset.profile.ProfileOfUniqueness.Calc;
-import inescid.util.RdfUtil;
 import opennlp.tools.util.StringUtil;
 
 public class ProfileOfValueDistribution  implements ProfileOfInterface{
@@ -44,6 +39,9 @@ public class ProfileOfValueDistribution  implements ProfileOfInterface{
 		@Override
 		public String toString() {
 			return "ValueDistribution [value=" + value + ", distribution=" + distribution + "]";
+		}
+		public void toCsv(CSVPrinter csv) throws IOException {
+			csv.printRecord(value, distribution*100);
 		}
 	}
 	public class Calc{

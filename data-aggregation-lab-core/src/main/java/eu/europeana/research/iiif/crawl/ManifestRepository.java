@@ -1,31 +1,5 @@
 package eu.europeana.research.iiif.crawl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import javax.swing.plaf.FileChooserUI;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-
-import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
-
 public class ManifestRepository {
 ////	private static final Pattern uriProtocolSnip=Pattern.compile("^https?://", Pattern.CASE_INSENSITIVE);
 //	private static final Charset UTF8 = Charset.forName("UTF-8"); 

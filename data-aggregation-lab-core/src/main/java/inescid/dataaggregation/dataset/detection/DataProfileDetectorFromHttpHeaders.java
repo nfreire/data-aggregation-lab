@@ -1,6 +1,5 @@
 package inescid.dataaggregation.dataset.detection;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map.Entry;
@@ -12,7 +11,6 @@ import org.apache.http.message.BasicHeaderValueParser;
 
 import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.store.DatasetRegistryRepository;
 import inescid.dataaggregation.store.Repository;
 
 public class DataProfileDetectorFromHttpHeaders {

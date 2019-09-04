@@ -2,10 +2,7 @@ package eu.europeana.research.iiif.profile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,13 +11,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import eu.europeana.research.iiif.profile.ManifestLabelValuesProfile.MetadataLabelProfile;
 import eu.europeana.research.iiif.profile.model.Manifest;
-import eu.europeana.research.iiif.profile.model.Metadata;
-import eu.europeana.research.iiif.profile.model.SeeAlso;
 import inescid.util.JsonUtil;
 
 public class LicenseProfile {

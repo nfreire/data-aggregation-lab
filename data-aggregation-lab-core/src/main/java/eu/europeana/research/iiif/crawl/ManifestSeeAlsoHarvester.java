@@ -1,9 +1,7 @@
 package eu.europeana.research.iiif.crawl;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
@@ -21,13 +18,10 @@ import com.google.gson.GsonBuilder;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import eu.europeana.research.iiif.profile.model.SeeAlso;
-import inescid.dataaggregation.crawl.http.HttpRequestService;
-import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
-import inescid.util.LinkedDataUtil;
 
 public class ManifestSeeAlsoHarvester {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -72,7 +66,7 @@ public class ManifestSeeAlsoHarvester {
 				continue;
 			
 			try {
-				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
+				List<org.apache.http.Header> headers = HttpUtil.getStoreAndReturnHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
 				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
 				timestampTracker.setObjectTimestamp(dataset.getSeeAlsoDatasetUri(), targetSeeAlso.id, new GregorianCalendar());
 			} catch (AccessException e) {

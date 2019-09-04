@@ -9,16 +9,11 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.StringUtils;
 
-import crawlercommons.sitemaps.SiteMapURL;
+import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
-import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.observer.JobObserverStdout;
-import inescid.util.XmlUtil;
 import inescid.util.datastruct.MapOfInts;
 
 public class ScriptValidateSyntax {

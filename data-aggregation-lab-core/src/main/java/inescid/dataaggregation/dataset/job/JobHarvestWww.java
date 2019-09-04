@@ -4,21 +4,17 @@ import java.io.File;
 import java.util.Calendar;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import inescid.dataaggregation.crawl.ld.LdDatasetHarvest;
 import inescid.dataaggregation.crawl.www.WwwDatasetHarvest;
-import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.LodDataset;
+import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.WwwDataset.Microformat;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
-import inescid.dataaggregation.dataset.detection.DataProfileDetectorFromHttpHeaders;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.dataaggregation.dataset.observer.JobObserverChronometer;
 import inescid.dataaggregation.dataset.observer.JobObserverErrorMeter;
 import inescid.dataaggregation.dataset.observer.JobObserverProgressLogger;
-import inescid.dataaggregation.dataset.observer.JobObserverStdout;
 
 public class JobHarvestWww extends JobWorker {
 	Integer sampleSize;

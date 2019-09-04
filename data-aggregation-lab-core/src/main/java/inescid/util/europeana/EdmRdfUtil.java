@@ -1,17 +1,11 @@
 package inescid.util.europeana;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegEdm;

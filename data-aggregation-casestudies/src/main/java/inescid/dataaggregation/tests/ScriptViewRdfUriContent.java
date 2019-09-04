@@ -1,6 +1,6 @@
 package inescid.dataaggregation.tests;
 
-import java.io.IOException;
+import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.data.RdfReg;
@@ -17,11 +17,17 @@ public class ScriptViewRdfUriContent {
 		http://www.wikidata.org/entity.json
 		try { 
 			GlobalCore.init_developement();
+			HttpRequest req = null;
+//			req = HttpUtil.makeRequest("http://schema.org/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest("http://dbpedia.org/ontology/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest("http://dbpedia.org/resource/classes#", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/prop/direct/P1889", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/P727", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/prop/P84", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/prop/direct/P84", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/P84", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.cidoc-crm.org/cidoc-crm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-//			HttpRequest req = HttpUtil.makeRequest("", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest(RdfReg.NsOwl, RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/statement/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://data.bibliotheken.nl/doc/dataset/rise-alba", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
@@ -30,7 +36,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/identifier_type", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://id.bnportugal.gov.pt/bib/catbnp/1", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/lido00007", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-			HttpRequest req = HttpUtil.makeRequest("http://www.europeana.eu/schemas/edm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			HttpRequest req = HttpUtil.makeRequest("http://www.europeana.eu/schemas/edm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/terms/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/title", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);

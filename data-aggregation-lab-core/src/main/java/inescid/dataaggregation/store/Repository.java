@@ -8,18 +8,13 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Pattern;
-
-import javax.swing.plaf.FileChooserUI;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -27,9 +22,6 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.jena.ext.com.google.common.math.LinearTransformation;
-
-import com.mchange.v1.util.SimpleMapEntry;
 
 import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;

@@ -2,7 +2,6 @@ package inescid.dataaggregation.dataset.observer;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.NumberFormat;
 
 import org.apache.commons.io.FileUtils;
 

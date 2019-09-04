@@ -1,9 +1,9 @@
 package inescid.dataaggregation.crawl.http;
 
 import java.io.IOException;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.AbstractMap.SimpleImmutableEntry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;

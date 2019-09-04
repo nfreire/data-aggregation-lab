@@ -2,9 +2,9 @@ package inescid.dataaggregation.crawl.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import org.apache.http.Header;

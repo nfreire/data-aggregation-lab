@@ -1,9 +1,7 @@
 package inescid.util.googlesheets;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,33 +16,23 @@ import org.apache.commons.io.FileUtils;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.Drive.Permissions;
 import com.google.api.services.drive.model.Permission;
-import com.google.api.services.drive.model.PermissionList;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Get;
-import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values.Clear;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values.Update;
 import com.google.api.services.sheets.v4.model.AddSheetRequest;
 import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
-import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetResponse;
 import com.google.api.services.sheets.v4.model.ClearValuesRequest;
-import com.google.api.services.sheets.v4.model.ClearValuesResponse;
-import com.google.api.services.sheets.v4.model.DimensionGroup;
 import com.google.api.services.sheets.v4.model.Request;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.SheetProperties;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
-import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 import com.google.api.services.sheets.v4.model.UpdateSheetPropertiesRequest;
-import com.google.api.services.sheets.v4.model.UpdateSpreadsheetPropertiesRequest;
-import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
-import eu.europeana.research.iiif.profile.UsageCount;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
 
 public class GoogleSheetsCsvUploader {
 	public static void update(String spreadsheetId, File csvFile) throws IOException {

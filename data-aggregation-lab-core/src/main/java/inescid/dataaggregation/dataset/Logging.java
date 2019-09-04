@@ -1,20 +1,5 @@
 package inescid.dataaggregation.dataset;
 
-import java.io.Serializable;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.FileAppender;
-import org.apache.logging.log4j.core.config.AppenderRef;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationFactory;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
-import org.apache.logging.log4j.core.layout.PatternLayout;
-
 public class Logging {
 //	
 //	

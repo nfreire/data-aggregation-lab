@@ -3,12 +3,8 @@ package inescid.dataaggregation.dataset;
 import java.io.IOException;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-
-import eu.europeana.research.iiif.crawl.Collection;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
 
 public class IiifDataset extends Dataset {
 	public enum IiifCrawlMethod {COLLECTION, SITEMAP, DISCOVERY};

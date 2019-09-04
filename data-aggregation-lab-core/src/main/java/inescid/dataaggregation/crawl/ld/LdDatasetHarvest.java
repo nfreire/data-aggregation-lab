@@ -2,15 +2,11 @@ package inescid.dataaggregation.crawl.ld;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.http.Header;
-import org.apache.jena.iri.IRI;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
@@ -21,9 +17,8 @@ import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.DatasetLog;
-import inescid.util.LinkedDataUtil;
-import inescid.util.ListOnTxtFile;
 import inescid.util.HttpUtil;
+import inescid.util.RdfUtil;
 
 public class LdDatasetHarvest {
 	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LdDatasetHarvest.class);
@@ -51,7 +46,7 @@ public class LdDatasetHarvest {
 	public Calendar startProcess() throws AccessException {
 		Calendar start=new GregorianCalendar();
 		try {
-			Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());
+			Resource  dsResource = RdfUtil.readRdfResourceFromUri(dataset.getUri());
 //			StmtIterator voidRootResources = dsResource.getModel().listStatements(dsResource, RdfReg.VOID_ROOT_RESOURCE, (String)null);
 //			StmtIterator voidRootResources = dsResource.getModel().listStatements(dsResource, null, (String)null);
 			
@@ -93,8 +88,8 @@ public class LdDatasetHarvest {
 		}
 		int retries=retriesMaxAttempts;
 		while (retries>=0) {
-			try {
-				List<Header> headers=LinkedDataUtil.getAndStoreResourceWithHeaders(uriOfRec, rdfResourceFile);
+			try { 
+				List<Header> headers=HttpUtil.getStoreAndReturnHeaders(uriOfRec, rdfResourceFile);
 				repository.saveMeta(datasetUri, uriOfRec, HttpUtil.convertHeaderStruct(headers));
 				datasetLog.logHarvestSuccess();
 				return true;

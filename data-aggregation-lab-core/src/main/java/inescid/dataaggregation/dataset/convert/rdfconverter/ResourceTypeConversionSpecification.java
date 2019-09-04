@@ -2,13 +2,10 @@ package inescid.dataaggregation.dataset.convert.rdfconverter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 

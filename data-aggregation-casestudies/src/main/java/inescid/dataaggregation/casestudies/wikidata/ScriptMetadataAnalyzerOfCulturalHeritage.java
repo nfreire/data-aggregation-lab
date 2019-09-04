@@ -1,10 +1,8 @@
 package inescid.dataaggregation.casestudies.wikidata;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,17 +24,17 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 
-import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingCalculatorNoRights;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RdfRegRdfs;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
+import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.dataaggregation.dataset.profile.completeness.Dqc10PointRatingCalculator;
@@ -44,20 +42,90 @@ import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.AccessException;
-import inescid.util.HttpUtil;
 import inescid.util.MapOfInts;
 import inescid.util.RdfUtil;
-import inescid.util.europeana.EdmRdfUtil;
-import inescid.util.europeana.EdmUtil;
+import inescid.util.SparqlClient.Handler;
+import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
-public class MetadataAnalyzerOfCulturalHeritage {
+public class ScriptMetadataAnalyzerOfCulturalHeritage {
 	enum DataDumps {
 		WIKIDATA_EDM, EUROPEANA_EDM, WIKIDATA_ONTOLOGY, WIKIDATA_SCHEMAORG
 	};
 
+	public static class Files {
+		static File defaultOutputFolder=new File("c://users/nfrei/desktop/data/wikidata-results-latest");
+		
+		public static File edmValidation;
+		public static File edmValidationNonPartner;
+		public static File wdChoProfile;
+		public static File wdChoSchemaOrgProfile;
+		public static File wdChoSchemaOrgValuesFolder;
+		public static File wdSchemaOrgConversionToEdmAnalysisReport;
+		public static File wdChoProfileValuesFolder;
+		public static File wdMetamodelProfile;
+		public static File wdMetamodelValuesFolder;
+		public static File schemaOrgEquivalences;
+		public static File wdDatasetOntologyZip;
+		public static File wdDatasetEdmZip;
+		public static File europeanaDatasetEdmZip;
+		public static File wdUnconvertableToSchemaorg;
+		public static File wdCompletenessEdm;
+		public static File wdEuropeanaCollectionCounts;
+		
+		public static void init(File outputFolder) {
+			wdChoProfile=new File(outputFolder, "wd_ch_profile.csv");
+			wdChoProfileValuesFolder=new File(outputFolder, "wd_ch_profile-property_values_distribution");
+			wdChoSchemaOrgProfile=new File(outputFolder, "wd_ch_schemaorg_profile.csv");
+			wdChoSchemaOrgValuesFolder=new File(outputFolder, "wd_ch_schemaorg_profile_property_values_distribution");
+			wdSchemaOrgConversionToEdmAnalysisReport=new File(outputFolder, "wd_ch_schemaorg_conversion_edm_anailsys_report.csv");
+			edmValidation= new File(outputFolder, "edm-validation.csv");
+			edmValidationNonPartner=new File(outputFolder, "edm-validation-nonpartner.csv");
+			wdMetamodelProfile=new File(outputFolder, "wd_metamodel_profile.csv");
+			wdMetamodelValuesFolder=new File(outputFolder, "wd_metamodel_profile-property_values_distribution");
+			schemaOrgEquivalences=new File(outputFolder, "wd_schemaOrg_equivalences.csv");
+			wdDatasetOntologyZip=new File(outputFolder, "wikidata-subdataset-ontology.zip");
+			wdDatasetEdmZip=new File(outputFolder, "wikidata-subdataset-edm.zip");
+			europeanaDatasetEdmZip=new File(outputFolder, "europeana-subdataset-edm.zip");
+			wdUnconvertableToSchemaorg=new File(outputFolder, "wikidata-unconvertable-to-schemaorg.csv");
+			wdCompletenessEdm=new File(outputFolder, "wikidata-completeness-edm.csv");
+			wdEuropeanaCollectionCounts=new File(outputFolder, "collections_wd_and_europeana_counts.csv");
+		}
+		
+	}
+	
+	private static class GoogleSheetsUploads {
+		static String credentialspath="C:\\Users\\nfrei\\.credentials\\Data Aggregation Lab-b1ec5c3705fc.json";
+		static String spreadsheetId="1i2cK_QwUPNPxdU2qQXRnhY-nry_HP3OKUHJS8hApoRI";
+		
+		static void updateCsvsAtGoogle() throws IOException {
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD-Europeana collections", Files.wdEuropeanaCollectionCounts);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD CHO's RDF profile", Files.wdChoProfile);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD Metamodel's RDF profile", Files.wdMetamodelProfile);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD-Schema equivalences", Files.schemaOrgEquivalences);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD CHO's Schema.org RDF profile", Files.wdChoSchemaOrgProfile);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD CHO's EDM conversion analysis", Files.wdSchemaOrgConversionToEdmAnalysisReport);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD CHOs unconvertable to Schema", Files.wdUnconvertableToSchemaorg);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD validation of EDM", Files.edmValidationNonPartner);
+			GoogleSheetsCsvUploader.update(spreadsheetId, "WD compleness of EDM", Files.wdCompletenessEdm);
+		}
+
+		public static void init() {
+			GlobalCore.init_componentGoogleApi(credentialspath);
+		}
+
+		public static void main(String[] args) throws IOException {
+			//upload pre-generated CSV
+			Files.init(Files.defaultOutputFolder);
+			init();
+			updateCsvsAtGoogle();
+		}
+	}
+	
+	
+	
 	public static void main(String[] args) throws Exception {
-		File outputFolder = new File("c://users/nfrei/desktop");
-		String httpCacheFolder = "c://users/nfrei/desktop/HttpRepository";
+		File outputFolder = Files.defaultOutputFolder;		
+		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepository";
 		final int SAMPLE_RECORDS;
 
 		if (args.length > 0)
@@ -67,7 +135,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		if (args.length > 2)
 			SAMPLE_RECORDS = Integer.parseInt(args[2]);
 		else
-			SAMPLE_RECORDS = 100;
+			SAMPLE_RECORDS = -1;
 
 		if (!outputFolder.exists())
 			outputFolder.mkdirs();
@@ -92,34 +160,33 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		System.out.printf(
 				"Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n-Broken EuropenaIDs:%d\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS, europeanaIdsBroken.size());
-
+		Files.init(outputFolder);
 		GlobalCore.init_componentHttpRequestService();
 		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		GoogleSheetsUploads.init();
 
 		Repository dataRepository = GlobalCore.getDataRepository();
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);
 
-		EdmValidation validation = new EdmValidation(new File(outputFolder, "edm-validation.csv"));
-		EdmValidation validationForNonPartners = new EdmValidation(
-				new File(outputFolder, "edm-validation-nonpartner.csv"),
+		EdmValidation validation = new EdmValidation(Files.edmValidation);
+		EdmValidation validationForNonPartners = new EdmValidation(	Files.edmValidationNonPartner,
 				new ValidatorForNonPartners(GlobalCore.getValidatorResourceFolder(), Schema.EDM, "edm:dataProvider",
 						"edm:provider", "edm:rights and exists(edm:rights/@rdf:resource)"));
 		MapOfInts<String> wikidataCollectionsSampled=new MapOfInts<String>();
 		MapOfInts<String> europeanaCollectionsSampled=new MapOfInts<String>();
 		UsageProfiler chEntitiesProfile = new UsageProfiler();
-		chEntitiesProfile.setOptionProfileObjectsOfTriples(false);
+		
 
 		final HashMap<String, String> wikidataEuropeanaIdsMap = new HashMap<>();
 
-		WikidataSparqlClient.querySolutions("SELECT ?item ?europeana WHERE {" +
+		SparqlClientWikidata.query("SELECT ?item ?europeana WHERE {" +
 //                "  ?item wdt:"+RdfRegWikidata.IIIF_MANIFEST+" ?x ." + 
-				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new UriHandler() {
+				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new Handler() {
 
 					int stop = SAMPLE_RECORDS;
 
-					@Override
 					public boolean handleSolution(QuerySolution solution)
 							throws AccessException, InterruptedException, IOException {
 						String europeanaId = solution.getLiteral("europeana").getString();
@@ -143,7 +210,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		final AtomicInteger cnt = new AtomicInteger(0);
 		wikidataEuropeanaIdsMap.keySet().forEach((uri) -> {
 			try {
-				Resource resource = fetchresource(uri, rdfCache);
+				Resource resource = WikidataRdfUtil.fetchresource(uri, rdfCache);
 
 				removeOtherResources(resource.getModel(), uri);
 				removeNonTruthyStatements(resource.getModel());
@@ -171,13 +238,12 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		});
 		chEntitiesProfile.finish();
 
-		FileUtils.write(new File(httpCacheFolder, "wd_ch_profile.csv"), chEntitiesProfile.getUsageStats().toCsv(),
-				"UTF-8");
 
 //		System.out.println(chEntitiesProfile);
 		System.out.println(chEntitiesProfile.printSummary());
 
-		UsageProfiler wdEntPropProfile = new UsageProfiler();
+		UsageProfiler wdMetamodelProfile = new UsageProfiler();
+		HashMap<String, String> wdMetamodelLabels = new HashMap<String, String>();
 //		final EquivalenceMapping wdEntPropEquivalences = new EquivalenceMapping(rdfCache, true); using foaf:page
 		final EquivalenceMapping wdEntPropEquivalences = new EquivalenceMapping(rdfCache, false);
 		HashSet<String> existingEntsSet = new HashSet<String>();
@@ -192,9 +258,9 @@ public class MetadataAnalyzerOfCulturalHeritage {
 
 			if (!wdResourceUri.startsWith("http://www.wikidata.org/")) {
 				String[] wdEqUri = new String[1];
-				WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"
+				SparqlClientWikidata.query("SELECT ?item WHERE { ?item wdt:"
 						+ RdfRegWikidata.EQUIVALENT_CLASS.getLocalName() + " <" + wdResourceUri + "> .",
-						new UriHandler() {
+						new Handler() {
 							public boolean handleUri(String uri) throws Exception {
 								wdEqUri[0] = uri;
 								return false;
@@ -207,13 +273,15 @@ public class MetadataAnalyzerOfCulturalHeritage {
 
 			try {
 				existingEntsSet.add(wdResourceUri);
-				Resource wdResource = fetchresource(wdResourceUri, rdfCache);
+				Resource wdResource = WikidataRdfUtil.fetchresource(wdResourceUri, rdfCache);
+				String wdLabel = getWdLabel(wdResource);
+				wdMetamodelLabels.put(wdResourceUri, wdLabel);
 				removeOtherResources(wdResource.getModel(), wdResourceUri);
 				removeNonTruthyStatements(wdResource.getModel());
 				addRdfTypesFromP31(wdResource.getModel());
 
 //				System.out.println( RdfUtil.printStatementsOfNamespace(wdResource, RdfReg.NsRdf) );
-				wdEntPropProfile.collect(wdResource.getModel());
+				wdMetamodelProfile.collect(wdResource.getModel());
 
 //					System.out.println(new String(fetched.getKey()));
 //					System.out.println(fetched.getValue());
@@ -222,16 +290,41 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				wdEntPropEquivalences.analyzeEntity(wdResource, wdResource);
 
 				for (String propUri : entry.getValue().getPropertiesProfiles().keySet()) {
-					wdEntPropEquivalences.analyzeProperty(propUri, propUri);
+					Resource propRes = wdEntPropEquivalences.analyzeProperty(propUri, propUri);
 					existingPropsSet.add(propUri);
+					if(propRes!=null)
+						wdMetamodelLabels.put(propUri, getWdLabel(propRes));
 				}
 			} catch (Exception e) {
 				System.out.printf("Access to %s failed\n", wdResourceUri);
 				e.printStackTrace(System.out);
 			}
 		}
-		wdEntPropProfile.finish();
+		wdMetamodelProfile.finish();
 		wdEntPropEquivalences.finish();
+
+		
+		
+		for (Entry<String, ClassUsageStats> entry : wdMetamodelProfile.getUsageStats().getClassesStats().entrySet()) {
+			String wdResourceUri = entry.getKey();
+			Resource wdResource = WikidataRdfUtil.fetchresource(wdResourceUri, rdfCache);
+			String wdLabel = getWdLabel(wdResource);
+			wdMetamodelLabels.put(wdResourceUri, wdLabel);
+		
+			for (String propUri : entry.getValue().getPropertiesProfiles().keySet()) {
+				Resource propRes = WikidataRdfUtil.fetchresource(EquivalenceMapping.convertWdPropertyUri(propUri), rdfCache);
+				if(propRes!=null)
+					wdMetamodelLabels.put(propUri, getWdLabel(propRes));
+			}
+		}
+		
+		FileUtils.write(Files.wdChoProfile, chEntitiesProfile.getUsageStats().toCsv(wdMetamodelLabels),
+				"UTF-8");
+		chEntitiesProfile.getUsageStats().exportCsvOfValueDistributions(Files.wdChoProfileValuesFolder);
+		
+		FileUtils.write(Files.wdMetamodelProfile, wdMetamodelProfile.getUsageStats().toCsv(wdMetamodelLabels),
+				"UTF-8");
+		wdMetamodelProfile.getUsageStats().exportCsvOfValueDistributions(Files.wdMetamodelValuesFolder);
 		
 		int existingEntsEqs = 0;
 		int existingEntsEqsSuper = 0;
@@ -270,14 +363,14 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		wdEntPropEquivalences.setEquivalencesNotFound(missingEqs);
 		
 //		write csv
-		FileUtils.write(new File(httpCacheFolder, "wd_schemaOrg_equivalences_stats.csv"),
-				"Existing ents. " + existingEntsSet.size() + ", eqs.," + existingEntsEqs + ",Existing ent eqs. generic,"
-						+ existingEntsEqsSuper + "\n" + "Existing props," + existingPropsSet.size() + ", eqs.,"
-						+ existingPropsEqs + ",Existing props eqs. generic," + existingPropsEqsSuper + "\n"
-						+ wdEntPropEquivalences.toCsv(),
-				"UTF-8");
-		FileUtils.write(new File(outputFolder, "wd_schemaOrg_equivalences.csv"),
-				wdEntPropEquivalences.toCsvDetailed(), "UTF-8");
+//		FileUtils.write(new File(outputFolder, "wd_schemaOrg_equivalences_stats.csv"),
+//				"Existing ents., " + existingEntsSet.size() + ", eqs.," + existingEntsEqs + ",Existing ent eqs. generic,"
+//						+ existingEntsEqsSuper + "\n" + "Existing props," + existingPropsSet.size() + ", eqs.,"
+//						+ existingPropsEqs + ",Existing props eqs. generic," + existingPropsEqsSuper + "\n"
+//						+ wdEntPropEquivalences.toCsv(),
+//				"UTF-8");
+		FileUtils.write(Files.schemaOrgEquivalences,
+				wdEntPropEquivalences.toCsv(wdMetamodelLabels), "UTF-8");
 
 //		System.out.println(wdEntPropProfile.printShort());
 		System.out.println(wdEntPropEquivalences);
@@ -289,9 +382,11 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		HashMap<String, String> unconvertableWikidataChos=new HashMap<>();
 		SchemaOrgToEdmDataConverter edmConverter = new SchemaOrgToEdmDataConverter();
 		cnt.set(0);
+		
+		UsageProfiler schemaorgProfile=new UsageProfiler();
 		wikidataEuropeanaIdsMap.forEach((uri, europeanaId) -> {
 			try {
-				Resource wdResource = fetchresource(uri, rdfCache);
+				Resource wdResource = WikidataRdfUtil.fetchresource(uri, rdfCache);
 				Model rdfWikidata = wdResource.getModel();
 				removeOtherResources(rdfWikidata, uri);
 				removeNonTruthyStatements(rdfWikidata);
@@ -300,6 +395,22 @@ public class MetadataAnalyzerOfCulturalHeritage {
 //							System.out.println("--- "+uri +" ---");
 //							rdfWikidata.add(Jena.createStatement(wdResource, RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.CREATIVE_WORK));
 				for (Statement st : rdfWikidata.listStatements().toList()) {
+					if (st.getObject().isURIResource()) {
+						String objUri = st.getObject().asResource().getURI();
+						if (objUri.startsWith("http://www.wikidata.org/")) {
+//								replace objuri by mapping, if exists	
+							ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(objUri, true);
+							if (mappingsToSchema != null && !mappingsToSchema.isEmpty()) {
+								for(String typeUri: mappingsToSchema) {
+									Statement newSt = rdfWikidata.createStatement(st.getSubject(),
+											st.getPredicate(), rdfWikidata.createResource(typeUri));
+									st = newSt;
+									rdfWikidata.add(st);
+								}
+							}
+						}
+					}
+
 					String predUri = st.getPredicate().getURI().toString();
 					if (predUri.startsWith("http://www.wikidata.org/")) {
 //									if(!predUri.startsWith(RdfRegWikidata.NsWd)) 
@@ -312,28 +423,13 @@ public class MetadataAnalyzerOfCulturalHeritage {
 	//										System.out.println("replacing "+predUri+" -> "+mappingsToSchema.get(0));
 								rdfWikidata.add(newSt);
 							}
-							rdfWikidata.remove(st);
 						}
+						rdfWikidata.remove(st);
 					}
 
-					if (st.getObject().isURIResource()) {
-						String objUri = st.getObject().asResource().getURI();
-						if (objUri.startsWith("http://www.wikidata.org/")) {
-//								replace objuri by mapping, if exists	
-							ArrayList<String> mappingsToSchema = wdEntPropEquivalences.getEquivalence(objUri, true);
-							if (mappingsToSchema != null && !mappingsToSchema.isEmpty()) {
-
-								for(String typeUri: mappingsToSchema) {
-									Statement newSt = rdfWikidata.createStatement(st.getSubject(),
-											st.getPredicate(), rdfWikidata.createResource(typeUri));
-									st = newSt;
-									rdfWikidata.add(st);
-								}
-							}
-						}
-					}
 				}
 
+				schemaorgProfile.collect(wdResource.getModel());
 //					System.out.println(RdfUtil.printStatementsOfNamespace(rdfWikidata, RdfReg.NsRdf));
 //							System.out.println("---------------------------------------------------");
 
@@ -355,7 +451,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 						} else 
 							rdfEdmAtEuropeana = europeanaApiClient.getRecord(europeanaId);
 
-						Resource wdResourceOrig = fetchresource(uri, rdfCache);
+						Resource wdResourceOrig = WikidataRdfUtil.fetchresource(uri, rdfCache);
 						Model rdfWikidataOrig = wdResource.getModel();
 						removeOtherResources(rdfWikidataOrig, uri);
 						removeNonTruthyStatements(rdfWikidataOrig);
@@ -395,16 +491,21 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				System.out.println("progress " + cnt);
 		});
 
+		schemaorgProfile.finish();
+		FileUtils.write(Files.wdChoSchemaOrgProfile, schemaorgProfile.getUsageStats().toCsv(),
+				"UTF-8");
+		schemaorgProfile.getUsageStats().exportCsvOfValueDistributions(Files.wdChoSchemaOrgValuesFolder);
+		ConversionSpecificationAnalyzer conv=new ConversionSpecificationAnalyzer();
+		conv.process(Files.wdChoSchemaOrgProfile, Files.wdSchemaOrgConversionToEdmAnalysisReport);
+		
 		validation.finalize();
 		validationForNonPartners.finalize();
 		
-		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_ONTOLOGY.name(), new File(outputFolder, "wikidata-subdataset-ontology.zip"), ContentTypes.TURTLE);
-		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_EDM.name(), new File(outputFolder, "wikidata-subdataset-edm.zip"), ContentTypes.TURTLE);
-		dataRepository.exportDatasetToZip(DataDumps.EUROPEANA_EDM.name(), new File(outputFolder, "europeana-subdataset-edm.zip"), ContentTypes.TURTLE);
-		
+		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_ONTOLOGY.name(), Files.wdDatasetOntologyZip, ContentTypes.TURTLE);
+		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_EDM.name(), Files.wdDatasetEdmZip, ContentTypes.TURTLE);
+		dataRepository.exportDatasetToZip(DataDumps.EUROPEANA_EDM.name(),Files.europeanaDatasetEdmZip, ContentTypes.TURTLE);
 		{
-			File outFile=new File(outputFolder, "wikidata-unconvertable-to-schemaorg.csv");
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(outFile, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdUnconvertableToSchemaorg, GlobalCore.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			csvPrinter.printRecord("Wikidata URI","Europeana ID");			
 			unconvertableWikidataChos.forEach((uri, europeanaId) -> {
@@ -419,8 +520,7 @@ public class MetadataAnalyzerOfCulturalHeritage {
 		}
 		
 		{
-			File outFile=new File(outputFolder, "wikidata-completeness-edm.csv");
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(outFile, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdCompletenessEdm, GlobalCore.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			csvPrinter.printRecord("Completeness at Wikidata","Completeness at Europeana");	
 			MapOfInts<Float> completenessDistributionWd=new MapOfInts<>();
@@ -450,12 +550,41 @@ public class MetadataAnalyzerOfCulturalHeritage {
 			csvPrinter.close();
 		}
 		{
-			FileUtils.write(new File(httpCacheFolder, "collections_wd_and_europeana_counts.csv"), 
+			FileUtils.write(Files.wdEuropeanaCollectionCounts, 
 					"Recs/collection in europeana\n"+europeanaCollectionsSampled.toCsv()+
 					"\nRecs/collection in wikidata\n"+wikidataCollectionsSampled.toCsv(),
 					"UTF-8");
 		}
+		GoogleSheetsUploads.updateCsvsAtGoogle();
 	}
+
+	private static String getWdLabel(Resource wdResource) {
+		StmtIterator labelProps = wdResource.listProperties(RdfRegRdfs.label);
+		String label=null;
+		for (Statement st : labelProps.toList()) {
+			String lang = st.getObject().asLiteral().getLanguage();
+			if(lang.equals("en"))
+				return st.getObject().asLiteral().getString();
+			if(label==null) 
+				label=st.getObject().asLiteral().getString();
+		}
+		return label;
+	}	
+//	private String getLabel(String uri) throws AccessException, InterruptedException, IOException {
+//		uri=convertWdPropertyUri(uri);
+//		Resource resource = ScriptMetadataAnalyzerOfCulturalHeritage.WikidataRdfUtil.fetchresource(uri, rdfCache);
+//		StmtIterator labelProps = resource.listProperties(RdfRegRdfs.label);
+//		String label=null;
+//		for (Statement st : labelProps.toList()) {
+//			String lang = st.getObject().asLiteral().getLanguage();
+//			if(lang.equals("en"))
+//				return st.getObject().asLiteral().getString();
+//			if(label==null) 
+//				label=st.getObject().asLiteral().getString();
+//		}
+//		return label;
+//	}
+
 
 	private static void removeOtherResources(Model rdfWikidata, String keepUri) {
 		Resource keep = rdfWikidata.createResource(keepUri);
@@ -482,21 +611,6 @@ public class MetadataAnalyzerOfCulturalHeritage {
 				.hasNext();) {
 			Statement stm = stmts.next();
 			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfRegRdf.type, stm.getObject()));
-		}
-	}
-
-	public static Resource fetchresource(String resourceUri, CachedHttpRequestService rdfCache)
-			throws AccessException, InterruptedException, IOException {
-		HttpResponse propFetched = rdfCache.fetchRdf(resourceUri);
-		if (!propFetched.isSuccess()) {
-			throw new AccessException(resourceUri);
-		} else {
-			Model rdfWikidata = RdfUtil.readRdf(propFetched.body,
-					RdfUtil.fromMimeType(propFetched.getHeader("Content-Type")));
-			if (rdfWikidata.size() == 0)
-				throw new AccessException(resourceUri, "No data found");
-			Resource wdPropResource = rdfWikidata.getResource(resourceUri);
-			return wdPropResource;
 		}
 	}
 

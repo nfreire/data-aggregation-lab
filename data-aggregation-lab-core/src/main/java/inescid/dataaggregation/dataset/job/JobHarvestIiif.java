@@ -6,13 +6,11 @@ import eu.europeana.research.iiif.crawl.CollectionCrawler;
 import eu.europeana.research.iiif.crawl.ManifestHarvester;
 import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
 import eu.europeana.research.iiif.discovery.demo.TimestampCrawlingHandler;
-import eu.europeana.research.iiif.discovery.syncdb.InMemoryTimestampStore;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-import inescid.dataaggregation.dataset.DatasetProfile;
 
 public class JobHarvestIiif extends JobWorker implements Runnable {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager

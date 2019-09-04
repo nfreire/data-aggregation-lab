@@ -4,7 +4,6 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 
 public class Metadata {
 	public JsonElement label;

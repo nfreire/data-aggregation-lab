@@ -1,34 +1,16 @@
 package eu.europeana.research.iiif.crawl;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-
-import org.apache.any23.extractor.ExtractionException;
-import org.apache.any23.writer.TripleHandlerException;
-import org.apache.any23.writer.TurtleWriter;
-import org.apache.commons.io.IOUtils;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.mchange.v1.util.SimpleMapEntry;
-
-import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
-import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
-import eu.europeana.research.iiif.profile.model.Manifest;
-import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 

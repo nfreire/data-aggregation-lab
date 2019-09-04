@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RDFDataMgr;
 
 import inescid.dataaggregation.dataset.GlobalCore;
 

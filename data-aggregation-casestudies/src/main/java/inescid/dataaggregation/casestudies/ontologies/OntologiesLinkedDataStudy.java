@@ -8,21 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.crawl.http.HttpRequestService;
-import inescid.dataaggregation.crawl.http.UrlRequest;
-import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.dataaggregation.store.Repository;
-import inescid.util.HttpUtil;
-import inescid.util.RdfUtil;
 
 public class OntologiesLinkedDataStudy {
 
@@ -136,9 +125,9 @@ public class OntologiesLinkedDataStudy {
 				}
 				try {
 					String ontFn = "ontology-profile-"+URLEncoder.encode(analyser.title, StandardCharsets.UTF_8.name())+"-ns.csv";
-					FileUtils.write(new File(ontologyDetailsOutFolder, ontFn), analyser.report.profileOfOntology.toCsv(), "UTF8");
+					FileUtils.write(new File(ontologyDetailsOutFolder, ontFn), analyser.report.profileOfOntology.toCsv(null), "UTF8");
 					String elsFn = "ontology-profile-"+URLEncoder.encode(analyser.title, StandardCharsets.UTF_8.name())+"-elements.csv";
-					FileUtils.write(new File(ontologyDetailsOutFolder, elsFn), analyser.report.profileOfDataElements.toCsv(), "UTF8");
+					FileUtils.write(new File(ontologyDetailsOutFolder, elsFn), analyser.report.profileOfDataElements.toCsv(null), "UTF8");
 					ps.printf("<li>%s<br />&nbsp;&nbsp;&nbsp;- <a href=\"%s\">ontology RDF resource</a>", 
 							analyser.title, ontFn);
 					ps.printf("<br />&nbsp;&nbsp;&nbsp;- <a href=\"%s\">ontology subelements RDF resources</a></li>", 

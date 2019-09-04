@@ -12,9 +12,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 import inescid.dataaggregation.dataset.job.Job.JobStatus;
 import inescid.dataaggregation.dataset.job.Job.JobType;
 

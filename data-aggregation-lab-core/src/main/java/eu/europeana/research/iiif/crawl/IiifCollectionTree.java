@@ -2,10 +2,7 @@ package eu.europeana.research.iiif.crawl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 

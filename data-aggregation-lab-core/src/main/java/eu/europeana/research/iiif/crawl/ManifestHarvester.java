@@ -1,16 +1,8 @@
 package eu.europeana.research.iiif.crawl;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map.Entry;
-
-import org.apache.commons.io.IOUtils;
-
 import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;

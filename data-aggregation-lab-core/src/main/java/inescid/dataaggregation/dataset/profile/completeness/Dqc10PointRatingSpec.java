@@ -1,14 +1,5 @@
 package inescid.dataaggregation.dataset.profile.completeness;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.Resource;
-
-import com.mchange.v1.util.SimpleMapEntry;
-
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegEdm;
 

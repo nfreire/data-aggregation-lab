@@ -6,9 +6,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-
 public class WwwDataset extends Dataset {
 	public enum CrawlMethod {SITEMAP, HTML_LINK_CRAWL};
 	public enum Microformat {SCHEMAORG, DC, HTML5_META,  META_ALL};

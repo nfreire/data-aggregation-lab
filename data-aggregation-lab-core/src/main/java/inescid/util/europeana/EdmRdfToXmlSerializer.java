@@ -7,13 +7,11 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.reasoner.rulesys.RDFSRuleInfGraph;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

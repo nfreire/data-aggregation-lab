@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;

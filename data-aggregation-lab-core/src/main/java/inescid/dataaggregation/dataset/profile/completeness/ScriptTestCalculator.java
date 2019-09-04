@@ -2,31 +2,22 @@ package inescid.dataaggregation.dataset.profile.completeness;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map.Entry;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
+import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.util.AccessException;
-import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
 public class ScriptTestCalculator {

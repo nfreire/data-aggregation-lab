@@ -1,34 +1,17 @@
 package inescid.dataaggregation.dataset.view.registry;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
 
-import freemarker.core.ParseException;
-import freemarker.template.MalformedTemplateNameException;
-import freemarker.template.TemplateNotFoundException;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.LodDataset;
-import inescid.dataaggregation.dataset.view.Global;
 import inescid.util.AccessException;
-import inescid.util.LinkedDataUtil;
 import inescid.util.RdfUtil;
 
 public class LodForm extends DatasetForm {
@@ -70,7 +53,7 @@ public class LodForm extends DatasetForm {
 			try {
 				message=validateUri();
 				if(message==null) {
-					Resource  dsResource = LinkedDataUtil.getResource(dataset.getUri());
+					Resource  dsResource = RdfUtil.readRdfResourceFromUri(dataset.getUri());
 					Statement stmTitle = dsResource.getProperty(RdfReg.SCHEMAORG_NAME);
 					if (stmTitle!=null) {
 						dataset.setTitle(stmTitle.getObject().asLiteral().getString());

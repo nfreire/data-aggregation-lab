@@ -6,18 +6,16 @@ package inescid.util;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-
-import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 
 /**
  * @param <K>
@@ -127,7 +125,7 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			try {
 				StringBuilder sbCsv=new StringBuilder();
 				CSVPrinter csv=new CSVPrinter(sbCsv, CSVFormat.DEFAULT);
-				csv.printRecord("key","value");
+//				csv.printRecord("key","value");
 				for(java.util.Map.Entry<K, Integer> cls: getSortedEntries()) {
 					csv.printRecord(cls.getKey().toString(), cls.getValue());
 				}		

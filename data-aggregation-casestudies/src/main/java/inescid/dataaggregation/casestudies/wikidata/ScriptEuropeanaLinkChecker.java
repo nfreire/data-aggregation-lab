@@ -9,12 +9,12 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.query.QuerySolution;
 
-import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
+import inescid.util.SparqlClient.Handler;
 
 public class ScriptEuropeanaLinkChecker {
 	public static void main(String[] args) throws Exception {
@@ -60,11 +60,10 @@ public class ScriptEuropeanaLinkChecker {
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);
 
-		WikidataSparqlClient.querySolutions("SELECT ?item ?europeana  WHERE {" +
+		SparqlClientWikidata.query("SELECT ?item ?europeana  WHERE {" +
 //                "  ?item wdt:"+RdfRegWikidata.IIIF_MANIFEST+" ?x ." + 
-				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new UriHandler() {
+				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new Handler() {
 					int stop = SAMPLE_RECORDS+1;
-					@Override
 					public boolean handleSolution(QuerySolution solution) throws AccessException, InterruptedException, IOException {
 						String wdId=solution.getResource("item").getLocalName();
 						String europeanaId=solution.getLiteral("europeana").getString();

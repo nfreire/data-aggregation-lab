@@ -3,8 +3,6 @@ package inescid.dataaggregation.dataset.detection;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
@@ -14,16 +12,9 @@ import org.w3c.dom.NodeList;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import eu.europeana.research.iiif.discovery.IiifObjectType;
-import eu.europeana.research.iiif.discovery.model.JsonObject;
-import eu.europeana.research.iiif.discovery.model.OrderedCollection;
-import eu.europeana.research.iiif.discovery.model.OrderedCollectionPage;
-import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker.Deleted;
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.XmlUtil;

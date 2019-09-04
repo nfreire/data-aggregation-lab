@@ -6,12 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.jena.rdf.model.Property;
 
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;

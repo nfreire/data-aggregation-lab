@@ -1,10 +1,7 @@
 package inescid.dataaggregation.casestudies.ontologies;
 
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
@@ -13,7 +10,6 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RiotException;
 
-import eu.europeana.ld.jena.JenaUtils;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;

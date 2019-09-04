@@ -1,14 +1,10 @@
 package inescid.dataaggregation.crawl.www;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.any23.Any23;
@@ -16,18 +12,8 @@ import org.apache.any23.extractor.ExtractionException;
 import org.apache.any23.extractor.ExtractorGroup;
 import org.apache.any23.extractor.html.EmbeddedJSONLDExtractorFactory;
 import org.apache.any23.extractor.html.HTMLMetaExtractorFactory;
-import org.apache.any23.writer.NTriplesWriter;
 import org.apache.any23.writer.TripleHandlerException;
 import org.apache.any23.writer.TurtleWriter;
-import org.apache.commons.io.FileUtils;
-import org.apache.http.Header;
-import org.apache.jena.iri.IRI;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
 
 import com.mchange.v1.util.SimpleMapEntry;
 
@@ -35,17 +21,12 @@ import crawlercommons.sitemaps.SiteMapURL;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.sitemap.CrawlResourceHandler;
 import inescid.dataaggregation.crawl.sitemap.SitemapResourceCrawler;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.job.JobObserver;
-import inescid.dataaggregation.dataset.job.JobWorker;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.DatasetLog;
 import inescid.util.HttpUtil;
-import inescid.util.LinkedDataUtil;
-import inescid.util.ListOnTxtFile;
 import inescid.util.MimeType;
 
 public class WwwDatasetHarvest {

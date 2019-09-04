@@ -1,18 +1,9 @@
 package inescid.dataaggregation.dataset.job;
 
-import java.io.IOException;
 import java.util.GregorianCalendar;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 
 public class Job {
 	public enum JobStatus {PENDING, RUNNING, COMPLETED, FAILED};

@@ -1,7 +1,6 @@
 package inescid.dataaggregation.data;
 
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
@@ -97,7 +96,11 @@ public final class RdfReg {
 	public static final Property WGS84_LAT = ResourceFactory.createProperty(NsWgs84+"lat");
 
 	public static final Property OWL_SAME_AS = ResourceFactory.createProperty(RdfReg.NsOwl+"sameAs");
+	public static final Property OWL_EQUIVALENT_CLASS = ResourceFactory.createProperty(RdfReg.NsOwl+"equivalentClass");
+	public static final Property OWL_EQUIVALENT_PROPERTY = ResourceFactory.createProperty(RdfReg.NsOwl+"equivalentProperty");
 	public static final Resource OWL_CLASS  = ResourceFactory.createResource(NsOwl+"Class");
+	public static final Resource OWL_Thing  = ResourceFactory.createResource(NsOwl+"Thing");
+	public static final Resource OWL_Nothing  = ResourceFactory.createResource(NsOwl+"Nothing");
 	public static final Resource OWL_DATA_RANGE  = ResourceFactory.createResource(NsOwl+"DataRange");
 	public static final Resource OWL_DATA_TYPE_PROPERTY  = ResourceFactory.createResource(NsOwl+"DatatypeProperty");
 	public static final Resource OWL_FUNCTIONAL_PROPERTY  = ResourceFactory.createResource(NsOwl+"FunctionalProperty");

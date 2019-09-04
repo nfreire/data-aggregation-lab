@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.job.JobObserver;
 import inescid.util.StatisticCalcMean;
-import inescid.util.datastruct.MapOfInts;
 
 public class JobObserverChronometer implements JobObserver {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager

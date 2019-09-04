@@ -9,13 +9,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.Header;
-import org.apache.http.client.fluent.Content;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.riot.Lang;
-import org.mortbay.log.Log;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
@@ -30,7 +23,7 @@ public class HttpUtil {
 	public static final int RETRIES_ON_HTTP_STATUS=1;
 	public static final int RETRY_SLEEP_MILISECONDS=1;
 
-	public static List<Header> getAndStoreWithHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
+	public static List<Header> getStoreAndReturnHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		return getAndStoreWithHeaders(new UrlRequest(resourceUri), storeFile);
 	}
 	public static List<Header> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {

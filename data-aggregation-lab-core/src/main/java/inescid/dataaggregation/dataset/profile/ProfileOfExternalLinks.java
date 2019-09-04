@@ -1,23 +1,50 @@
 package inescid.dataaggregation.dataset.profile;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.util.RdfUtil;
-import opennlp.tools.util.StringUtil;
+import inescid.util.datastruct.MapOfMapsOfInts;
 
 public class ProfileOfExternalLinks implements ProfileOfInterface{
 	double linkageToInternalRatio;
 	double linkageToExternalRatio;
 	double literalRatio;
+	ProfileOfLinkedDomains domains=new ProfileOfLinkedDomains();
+	
 	Calc calc;
+
+	public class ProfileOfLinkedDomains { 
+		MapOfMapsOfInts<String, Property> stats=new MapOfMapsOfInts<String, Property>();
+		
+		public void addLink(String uri, Property prop) {
+			if(StringUtils.isEmpty(uri) || !uri.startsWith("http") || prop==null)
+				return;
+			URI uriObj;
+			try {
+				uriObj = new URI(uri);
+			} catch (URISyntaxException e) {
+				return;
+			}
+			stats.incrementTo(uriObj.getHost(), prop);
+		}
+
+		public List<Entry<String,List<Entry<Property,Integer>>>> getSortedEntries() {
+			return stats.getSortedEntries();
+		}
+		
+	}
+
 	
 	public class Calc{
 		double linkageToInternalCount;
@@ -31,15 +58,18 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 			literalRatio=literalCount / total;
 		}
 
-		public void add(RDFNode rdfNode) {
+		public void add(Statement st) {
+			RDFNode rdfNode=st.getObject();
 			if(rdfNode.isAnon())
 				linkageToInternalCount++;
 			else if (rdfNode.isURIResource()) {
 				StmtIterator sts = rdfNode.getModel().listStatements((Resource)rdfNode, (Property)null,  (RDFNode)null);
 				if(sts.hasNext())
 					linkageToInternalCount++;
-				else
+				else {
 					linkageToExternalCount++;
+					domains.addLink(rdfNode.asResource().getURI(), st.getPredicate());
+				}
 			} else if (rdfNode.isLiteral())
 				literalCount++;
 		}
@@ -77,7 +107,27 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 
 	@Override
 	public void eventProperty(Statement statement) {
-		calc.add(statement.getObject());
+		calc.add(statement);
+	}
+
+
+
+	public void toCsv(CSVPrinter csv) throws IOException {
+		csv.print(linkageToInternalRatio*100);		
+		csv.print(linkageToExternalRatio*100);
+		int domainsCnt=0;
+		for(Entry<String, List<Entry<Property, Integer>>> e : domains.getSortedEntries()) {
+			String value=String.format("%s [", e.getKey());
+			for(Entry<Property, Integer> e2 : e.getValue()) {
+				if(domainsCnt!=0)  value += ", ";
+				value += String.format("%s - %d", e2.getKey().getURI(), e2.getValue());
+			}
+			value += "]";
+			csv.print(value);
+			domainsCnt++;
+			if(domainsCnt>=10)
+				break;
+		}
 	}
 
 

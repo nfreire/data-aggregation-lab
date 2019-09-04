@@ -20,6 +20,12 @@ public class RdfRegWikidata {
 	public static final Property SUBCLASS_OF = ResourceFactory.createProperty(NsWdt+"P279");
 	public static final Property SUBPROPERTY_OF = ResourceFactory.createProperty(NsWdt+"P1647");
 	
+	public static final Property NARROWER_EXTERNAL_CLASS = ResourceFactory.createProperty(NsWdt+"P3950");
+	public static final Property BROADER_CONCEPT = ResourceFactory.createProperty(NsWdt+"P4900");
+	public static final Property MAPPING_RELATION_TYPE = ResourceFactory.createProperty(NsWdt+"P4390");
+	public static final Property EXTERNAL_SUPERPROPERTY = ResourceFactory.createProperty(NsWdt+"P2235");
+	public static final Property EXTERNAL_SUBPROPERTY = ResourceFactory.createProperty(NsWdt+"P2236");
+	
 	public static final Property EQUIVALENT_PROPERTY = ResourceFactory.createProperty(NsWdt+"P1628");
 	public static final Property EQUIVALENT_CLASS = ResourceFactory.createProperty(NsWdt+"P1709");
 	public static final Property EXACT_MATCH = ResourceFactory.createProperty(NsWdt+"P2888");

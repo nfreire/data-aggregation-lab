@@ -6,9 +6,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
-
 public class LodDataset extends Dataset {
 	
 	public LodDataset(String uri) {

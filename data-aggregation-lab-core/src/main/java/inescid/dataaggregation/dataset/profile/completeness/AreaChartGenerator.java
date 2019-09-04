@@ -1,8 +1,6 @@
 package inescid.dataaggregation.dataset.profile.completeness;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,16 +11,12 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.AreaRenderer;
-import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.util.ExportUtils;
 import org.jfree.data.Range;
 import org.jfree.data.category.CategoryDataset;

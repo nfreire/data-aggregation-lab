@@ -1,10 +1,12 @@
 package inescid.dataaggregation.dataset.profile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVPrinter;
@@ -71,7 +73,7 @@ public class ClassUsageStats implements ProfileOfInterface {
 			}
 		}
 
-		public void toCsv(String classUri, CSVPrinter csv) throws IOException {
+		public void toCsv(String classUri, CSVPrinter csv, Map<String, String> uriLabels) throws IOException {
 			Set<String> allProps=new HashSet<>(getPropertiesStats().keySet());
 			allProps.addAll(getPropertiesObjectStats().keySet());
 			ArrayList<String> propsSorted = new ArrayList<String>(allProps);
@@ -79,6 +81,7 @@ public class ClassUsageStats implements ProfileOfInterface {
 
 			csv.printRecord(classUri);
 			csv.print("property");
+			csv.print("property label");
 			csv.print("property count");
 			csv.print("as range of property count");
 			propertiesProfiles.values().iterator().next().printCsvHeaders(csv);
@@ -88,6 +91,8 @@ public class ClassUsageStats implements ProfileOfInterface {
 				Integer cntSubject = getPropertiesStats().get(prop);
 				Integer cntObject = getPropertiesObjectStats().get(prop);
 				csv.print(prop);
+				csv.print( uriLabels.get(prop));
+				
 				csv.print(cntSubject == null ? 0 : cntSubject);
 				csv.print(cntObject == null ? 0 : cntObject);
 				
@@ -97,7 +102,19 @@ public class ClassUsageStats implements ProfileOfInterface {
 				csv.println();
 			}
 		}
-
+		public void toCsvOfValueDistribution(String classUri, File outputFolder) throws IOException {
+			Set<String> allProps=new HashSet<>(getPropertiesStats().keySet());
+			allProps.addAll(getPropertiesObjectStats().keySet());
+			ArrayList<String> propsSorted = new ArrayList<String>(allProps);
+			for(String prop: allProps) {
+				PropertyProfiler propertyProfiler = propertiesProfiles.get(prop);
+				if(propertyProfiler!=null) {
+					propertyProfiler.toCsvOfValueDistribution(classUri, prop, outputFolder);				
+				}
+			}
+			
+		}
+		
 		public HashMap<String, PropertyProfiler> getPropertiesProfiles() {
 			return propertiesProfiles;
 		}

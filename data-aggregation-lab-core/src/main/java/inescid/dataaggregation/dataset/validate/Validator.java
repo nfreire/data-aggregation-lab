@@ -47,8 +47,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.validate.Validator.SchemaValidationErrorHandler;
-import inescid.util.XmlUtil;
 
 /**
  * EDM Validator class

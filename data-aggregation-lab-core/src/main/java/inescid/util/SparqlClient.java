@@ -2,13 +2,16 @@ package inescid.util;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
+
+import inescid.util.RdfUtil.Jena;
 
 public class SparqlClient {
 	public static abstract class Handler {
@@ -67,5 +70,47 @@ public class SparqlClient {
 		}
 		return wdCount;
 	}
+	
+	public void createAllStatementsAboutAndReferingResource(String resourceUri, Model createInModel) {
+		createAllStatementsAboutResource(resourceUri, createInModel);
+		createAllStatementsReferingResource(resourceUri, createInModel);
+	}	
+	public void createAllStatementsAboutResource(String resourceUri, Model createInModel) {
+		final Resource subjRes = createInModel.createResource(resourceUri);
+		query("SELECT ?p ?o WHERE {<" + resourceUri + "> ?p ?o}", new Handler() {
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				Resource pRes = solution.getResource("p");
+				Resource oRes = null;
+				Literal oLit = null;
+				try {
+					oRes = solution.getResource("o");
+				} catch (Exception e) {
+					oLit = solution.getLiteral("o");
+				}
+				createInModel.add(createInModel.createStatement(subjRes, createInModel.createProperty(pRes.getURI()), oRes==null ? oLit : oRes));
+				return true;
+			}
+		});
+	}
 
+	public void createAllStatementsReferingResource(String resourceUri, Model createInModel) {
+		final Resource subjRes = createInModel.createResource(resourceUri);
+		query("SELECT ?s ?p WHERE {?s ?p <" + resourceUri + ">}", new Handler() {
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				Resource pRes = solution.getResource("p");
+				Resource sRes = solution.getResource("s");
+				createInModel.add(createInModel.createStatement(sRes, createInModel.createProperty(pRes.getURI()), subjRes));
+				return true;
+			}
+		});
+	}
+	
+	
+	public Model getAllStatementsAboutAndReferingResource(String resourceUri) {
+		final Model model=Jena.createModel();
+		createAllStatementsAboutAndReferingResource(resourceUri, model);
+		return model;
+	}
 }

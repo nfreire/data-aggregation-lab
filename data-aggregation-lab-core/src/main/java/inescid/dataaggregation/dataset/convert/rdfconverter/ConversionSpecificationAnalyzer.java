@@ -1,7 +1,6 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,27 +15,20 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
-import crawlercommons.sitemaps.SiteMapURL;
-import inescid.dataaggregation.crawl.sitemap.CrawlResourceHandler;
-import inescid.dataaggregation.crawl.sitemap.SitemapResourceCrawler;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.store.PublicationRepository;
 import inescid.util.RdfUtil;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
 public class ConversionSpecificationAnalyzer {
 
 	MappingReport rpt;
-	public void process(Dataset dataset) throws Exception {
+	public void process(File schemaorgProfileReportFile, File outputReportFile) throws Exception {
 		rpt=new MappingReport();
-		File profileFolder=GlobalCore.getPublicationRepository().getProfileFolder(dataset);
-		File schemaorgFile = new File(profileFolder, "schema.org-profile.csv");
-		CSVParser csvParser=CSVParser.parse(FileUtils.readFileToString(schemaorgFile, GlobalCore.UTF8), CSVFormat.DEFAULT);
+		CSVParser csvParser=CSVParser.parse(FileUtils.readFileToString(schemaorgProfileReportFile, GlobalCore.UTF8), CSVFormat.DEFAULT);
 		
 		int csvFileSection=1;
 		Resource currentClass=null;
@@ -57,7 +49,7 @@ public class ConversionSpecificationAnalyzer {
 							Resource aClass = RdfUtil.Jena.createResource(rec.get(0));
 							Map<Resource, Integer> mappedRes = new HashMap<>();
 							rpt.usageCounts.put(aClass, mappedRes);
-							mappedRes.put(aClass, Integer.parseInt(rec.get(1)));							
+							mappedRes.put(aClass, Integer.parseInt(rec.get(2)));							
 						}
 						break;
 					case 2: //skip blank line, read class
@@ -75,7 +67,7 @@ public class ConversionSpecificationAnalyzer {
 						if(rec.get(0).trim().isEmpty()) 
 							csvFileSection=2;
 						else if(!StringUtils.isEmpty(rec.get(0)) && !rec.get(0).trim().equals("property")){
-							int usageAsSubjectCnt = Integer.parseInt(rec.get(1));
+							int usageAsSubjectCnt = Integer.parseInt(rec.get(2));
 							if(usageAsSubjectCnt>0) {
 								Property prop = RdfUtil.Jena.createProperty(rec.get(0));
 								rpt.usageCounts.get(currentClass).put(prop, usageAsSubjectCnt);	
@@ -99,13 +91,19 @@ public class ConversionSpecificationAnalyzer {
 		
 		processReferencedResourcesMappings();
 		
+		FileUtils.write(outputReportFile, rpt.toCsv(), GlobalCore.UTF8, false);
+	}
+	public void process(Dataset dataset) throws Exception {
+		rpt=new MappingReport();
+		File profileFolder=GlobalCore.getPublicationRepository().getProfileFolder(dataset);
+		File schemaorgFile = new File(profileFolder, "schema.org-profile.csv");
 		File reportFile = new File(profileFolder, "schema.org-mapping-analysis.csv");
-		FileUtils.write(reportFile, rpt.toCsv(), GlobalCore.UTF8, false);
+		
+		process(schemaorgFile, reportFile);
 		
 		String spreadsheetId=GoogleSheetsCsvUploader.getDatasetAnalysisSpreadsheet(dataset, GoogleSheetsCsvUploader.sheetTitleFromFileName(reportFile));
 		GoogleSheetsCsvUploader.update(spreadsheetId, reportFile);			
 	}
-
 	private Resource[] getMappedClassesAndSpecs(List<ResourceTypeConversionSpecification> currentClassSpec, Resource currentClass) {
 		Resource[] mappedClasses=SchemaOrgToEdmConversionSpecification.spec.getRootResourceTypeMapping(currentClass);
 		if(mappedClasses==null) {

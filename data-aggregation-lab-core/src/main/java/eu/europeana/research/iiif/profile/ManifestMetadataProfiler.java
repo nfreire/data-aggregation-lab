@@ -2,25 +2,16 @@ package eu.europeana.research.iiif.profile;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.jena.atlas.logging.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.JsonReader;
 
-import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.GlobalCore;

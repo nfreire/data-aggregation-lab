@@ -1,12 +1,8 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
-import java.io.StringReader;
 import java.nio.charset.Charset;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,10 +16,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConversionSpecification;
-import inescid.dataaggregation.dataset.convert.rdfconverter.ResourceTypeConversionSpecification;
 import inescid.util.RdfUtil;
 
 /**

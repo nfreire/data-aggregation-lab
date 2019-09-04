@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -15,12 +16,11 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.data.RdfRegRdfs;
 import inescid.util.AccessException;
+import inescid.util.SparqlClient.Handler;
 import inescid.util.datastruct.MapOfLists;
 
 public class EquivalenceMapping {
@@ -82,7 +82,7 @@ public class EquivalenceMapping {
 			for (Statement st : propStms.toList()) {
 //				System.out.println(st);
 				String objUri = st.getObject().asNode().getURI();
-				Resource wdScResource = MetadataAnalyzerOfCulturalHeritage.fetchresource(objUri, rdfCache);
+				Resource wdScResource = WikidataRdfUtil.fetchresource(objUri, rdfCache);
 					analyzeEntity(wdScResource, leafResource);
 				if(! wdResource.getURI().equals(leafResource.getURI())) {
 					ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
@@ -120,11 +120,13 @@ public class EquivalenceMapping {
 		wdEntPropEquivalencesSuperclasses.putAll(uriWd, otherUris);
 	}
 
-	public void analyzeProperty(String propUriParam, String leafPropertyUri) {
+	public Resource analyzeProperty(String propUriParam, String leafPropertyUri) {
+		Resource wdPropResource = null;
 //		public void analyzeProperty(String propUri, String entityResourceUri) {
 		if(!propUriParam.startsWith("http://www.wikidata.org/")) {
 			String[] wdEqUri=new String[1];
-			WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+propUriParam+"> .", new UriHandler() {
+			SparqlClientWikidata.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+propUriParam+"> .", new Handler()
+			{
 //				WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+entityResourceUri+"> .", new UriHandler() {
 				public boolean handleUri(String uri) throws Exception {
 					wdEqUri[0]=uri;
@@ -133,7 +135,7 @@ public class EquivalenceMapping {
 			});
 			propUriParam=wdEqUri[0];
 			if(propUriParam==null)
-				return;
+				return wdPropResource;
 		}
 		String propUri=convertWdPropertyUri(propUriParam);
 
@@ -157,13 +159,13 @@ public class EquivalenceMapping {
 			}
 			
 			
-			return;
+			return wdPropResource;
 		}
 		alreadyChecked.add(propUri);
 //		System.out.println("Analyzing "+propUri);
 		
 		try {
-			Resource wdPropResource = MetadataAnalyzerOfCulturalHeritage.fetchresource(propUri, rdfCache);
+			wdPropResource = WikidataRdfUtil.fetchresource(propUri, rdfCache);
 				boolean foundEquivalent=false;
 				StmtIterator typeProperties = wdPropResource.listProperties(RdfRegWikidata.EQUIVALENT_PROPERTY);
 				for (Statement st : typeProperties.toList()) {
@@ -206,7 +208,7 @@ public class EquivalenceMapping {
 //						analyzeProperty(objUri, leafPropertyUri);
 //						foundEquivalent=true;
 						
-						Resource wdScResource = MetadataAnalyzerOfCulturalHeritage.fetchresource(objUri, rdfCache);
+						Resource wdScResource = WikidataRdfUtil.fetchresource(objUri, rdfCache);
 						analyzeProperty(toDirectProp(objUri), leafPropertyUri);
 					if(! propUriParam.equals(leafPropertyUri)) {
 						ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
@@ -228,6 +230,7 @@ public class EquivalenceMapping {
 			System.out.printf("Access to %s failed\n", propUri);
 			e.printStackTrace(System.out);
 		}
+		return wdPropResource;
 	}
 
 	private String toDirectProp(String objUri) {
@@ -237,7 +240,7 @@ public class EquivalenceMapping {
 	}
 
 	public static String convertWdPropertyUri(String propUri) {
-		if(!propUri.startsWith(RdfRegWikidata.NsWd)) 
+		if(propUri.startsWith("http://www.wikidata.org") && !propUri.startsWith(RdfRegWikidata.NsWd)) 
 			propUri="http://www.wikidata.org/entity/"+propUri.substring(propUri.lastIndexOf('/')+1);
 		return propUri;
 	}
@@ -260,35 +263,7 @@ public class EquivalenceMapping {
 				+ ", wdEntPropEquivalencesSuperclasses=" + wdEntPropEquivalencesSuperclasses + "]";
 	}
 	
-	public String toCsv() {
-		ArrayList<String> sorted=new ArrayList<String>(wdEntPropEquivalences.keySet());
-		sorted.addAll(wdEntPropEquivalencesSuperclasses.keySet());
-		Collections.sort(sorted);
-		try {
-			StringBuilder sbCsv=new StringBuilder();
-			CSVPrinter csv=new CSVPrinter(sbCsv, CSVFormat.DEFAULT);
-			csv.printRecord("URI","Equivalences","Equivalences (generic)");
-			int eqCnt=0;
-			int eqGenCnt=0;
-			for(String uri: sorted) {
-				boolean eqExists=wdEntPropEquivalences.containsKey(uri);
-				boolean eqGenExists=!eqExists && wdEntPropEquivalencesSuperclasses.containsKey(uri);
-				if (eqExists)
-					eqCnt++;
-				else
-					eqGenCnt++;
-				csv.printRecord(uri, eqExists, eqGenExists);
-			}		
-			csv.printRecord("Total URIs", "Equivalences","Equivalences (generic)");
-			csv.printRecord(sorted.size(), eqCnt, eqGenCnt);
-			csv.close();
-			return sbCsv.toString();
-		} catch (IOException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		}
-	}
-	
-	public String toCsvDetailed() {
+	public String toCsv(Map<String, String> metamodelLabels) {
 		SortedSet<String> sorted=new TreeSet<String>(wdEntPropEquivalences.keySet());
 		sorted.addAll(wdEntPropEquivalencesSuperclasses.keySet());
 		try {
@@ -296,6 +271,8 @@ public class EquivalenceMapping {
 			CSVPrinter csv=new CSVPrinter(sbCsv, CSVFormat.DEFAULT);
 			csv.printRecord("EQUIVALENTS FOUND");
 			csv.printRecord("Wikidata URI", "Wikidata label","Schema.org URI","Schema.org URI (generic)");
+			int eqCnt=0;
+			int eqGenCnt=0;
 			for(String uri: sorted) {
 				if(!uri.startsWith("http://www.wikidata.org"))
 					continue;
@@ -303,15 +280,21 @@ public class EquivalenceMapping {
 				boolean eqExists = !(eqUris==null || eqUris.isEmpty());
 				boolean eqGenExists=!eqExists && wdEntPropEquivalencesSuperclasses.containsKey(uri);
 				
-				String wdLabel=getLabel(uri);
+				String wdLabel=metamodelLabels.get(uri);
 
 				if(eqExists) {
+					eqCnt++;
 					for(String eqU: eqUris)
 						csv.printRecord(uri, wdLabel, eqU );
-				} else if(eqGenExists)
+				} else if(eqGenExists) {
+					eqGenCnt++;
 					for(String eqU: wdEntPropEquivalencesSuperclasses.get(uri))
-						csv.printRecord(uri, wdLabel, eqU );
-			}		
+						csv.printRecord(uri, wdLabel, null, eqU );
+				}
+			}	
+			csv.printRecord("Total URIs", "Equivalences","Equivalences (generic)");
+			csv.printRecord(sorted.size(), eqCnt, eqGenCnt);
+			
 			csv.println();
 			csv.printRecord("EQUIVALENTS NOT FOUND");
 			csv.printRecord("Wikidata URI", "Wikidata label");
@@ -319,33 +302,14 @@ public class EquivalenceMapping {
 			for(String uri: equivalencesNotFound) {
 				if(!uri.startsWith("http://www.wikidata.org"))
 					continue;
-				String wdLabel=getLabel(uri);
+				String wdLabel=metamodelLabels.get(uri);
 				csv.printRecord(uri, wdLabel);
 			}		
 			csv.close();
 			return sbCsv.toString();
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage(), e);
-		} catch (AccessException e) {
-			throw new RuntimeException(e.getMessage(), e);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e.getMessage(), e);
 		}
-	}
-
-	private String getLabel(String uri) throws AccessException, InterruptedException, IOException {
-		uri=convertWdPropertyUri(uri);
-		Resource resource = MetadataAnalyzerOfCulturalHeritage.fetchresource(uri, rdfCache);
-		StmtIterator labelProps = resource.listProperties(RdfRegRdfs.label);
-		String label=null;
-		for (Statement st : labelProps.toList()) {
-			String lang = st.getObject().asLiteral().getLanguage();
-			if(lang.equals("en"))
-				return st.getObject().asLiteral().getString();
-			if(label==null) 
-				label=st.getObject().asLiteral().getString();
-		}
-		return label;
 	}
 
 	public void finish() {

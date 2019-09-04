@@ -2,11 +2,9 @@ package inescid.dataaggregation.casestudies.wikidata.iiif;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -30,7 +28,6 @@ import inescid.dataaggregation.data.RdfRegEdm;
 import inescid.dataaggregation.data.RdfRegRdf;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
-import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
 public class EnrichEuropeanaWithIiif {

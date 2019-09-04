@@ -1,18 +1,13 @@
 package inescid.dataaggregation.tests;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
 
-import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
 public class ScriptCreateRdfRegOfNamespace {
@@ -26,10 +21,14 @@ public class ScriptCreateRdfRegOfNamespace {
 			GlobalCore.init_developement();
 //			String name="Rdfs";
 //			String ns = "http://www.w3.org/2000/01/rdf-schema#";
-			String name="Rdf";
-			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+//			String name="Rdf";
+//			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 //			String name="Edm";
 //			String ns = "http://www.europeana.eu/schemas/edm/";
+			String name="Owl";
+			String ns = "http://www.w3.org/2002/07/owl#";
+//			String name="Skos";
+//			String ns = "http://www.w3.org/2004/02/skos/core#";
 			
 //			String makeRequestForContent = HttpUtil.makeRequestForContent(ns);
 			

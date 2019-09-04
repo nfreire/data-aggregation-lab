@@ -3,15 +3,13 @@ package inescid.dataaggregation.dataset.convert.rdfconverter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
-
-import inescid.util.datastruct.MapOfInts;
 
 public  class MappingReport {
 		Map<Resource, Map<Resource,Integer>> usageCounts=new HashMap<>(); 

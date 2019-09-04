@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.jena.sparql.expr.E_DateTimeMinutes;
-import org.w3c.dom.Element;
 
 /**
  * Ranking records by completeness.

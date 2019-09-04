@@ -2,15 +2,12 @@ package inescid.dataaggregation.casestudies.wikidata;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-import java.util.Map.Entry;
 
-import inescid.dataaggregation.casestudies.wikidata.WikidataSparqlClient.UriHandler;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.dataset.GlobalCore;
 import inescid.util.AccessException;
+import inescid.util.SparqlClient.Handler;
 
 public class HarvesterWikidataUris {
 
@@ -37,10 +34,9 @@ public class HarvesterWikidataUris {
 		
 		CachedHttpRequestService rdfCache=new CachedHttpRequestService();
 		
-		WikidataSparqlClient.query("SELECT ?item  WHERE {" + 
+		SparqlClientWikidata.query("SELECT ?item  WHERE {" + 
 //                "  ?item wdt:P6108 ?x ." + 
-                "  ?item wdt:P727 ?r .", new UriHandler() {
-					@Override
+                "  ?item wdt:P727 ?r .", new Handler() {
 					public boolean handleUri(String uri) throws AccessException, InterruptedException, IOException {
 						if(rdfCache.contains(uri)) {
 							System.out.printf("%s already exists. Skipping.\n", uri);
