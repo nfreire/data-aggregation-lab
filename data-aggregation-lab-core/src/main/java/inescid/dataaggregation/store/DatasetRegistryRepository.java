@@ -10,7 +10,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class DatasetRegistryRepository {
 	
@@ -22,18 +22,18 @@ public class DatasetRegistryRepository {
 		if(!requestsLogFile.getParentFile().exists())
 			requestsLogFile.getParentFile().mkdirs();
 		if(!requestsLogFile.exists())
-			FileUtils.write(requestsLogFile, "", GlobalCore.UTF8);
+			FileUtils.write(requestsLogFile, "", Global.UTF8);
 		this.requestsLogArchiveFile = new File(requestsLogFile.getParentFile(), requestsLogFile.getName()+".archive");
 		if(!requestsLogArchiveFile.exists())
-			FileUtils.write(requestsLogArchiveFile, "", GlobalCore.UTF8);
+			FileUtils.write(requestsLogArchiveFile, "", Global.UTF8);
 	}
 
 	public void registerDataset(Dataset dataset) throws IOException {
 		dataset.setLocalId(generateId());
-		FileUtils.write(requestsLogFile, dataset.toCsv(), GlobalCore.UTF8, true);
+		FileUtils.write(requestsLogFile, dataset.toCsv(), Global.UTF8, true);
 	}
 	public void updateDataset(Dataset dataset) throws IOException {
-		FileUtils.write(requestsLogFile, dataset.toCsv(), GlobalCore.UTF8, true);
+		FileUtils.write(requestsLogFile, dataset.toCsv(), Global.UTF8, true);
 	}
 
 	protected static String generateId() {
@@ -41,7 +41,7 @@ public class DatasetRegistryRepository {
 	}
 	
 	public synchronized  Dataset getDataset(String localId) throws IOException {
-		List<String> lines = FileUtils.readLines(requestsLogFile, GlobalCore.UTF8);
+		List<String> lines = FileUtils.readLines(requestsLogFile, Global.UTF8);
 		for(int i=lines.size()-1 ; i>=0 ; i--) {
 			if(lines.get(i).startsWith(localId)) 
 				return Dataset.fromCsv(lines.get(i));
@@ -50,9 +50,9 @@ public class DatasetRegistryRepository {
 	}
 	public synchronized Dataset removeDataset(String localId) throws IOException {
 		Dataset removed=null;
-		List<String> lines = FileUtils.readLines(requestsLogFile, GlobalCore.UTF8);
+		List<String> lines = FileUtils.readLines(requestsLogFile, Global.UTF8);
 		List<String> toArchiveLines = new ArrayList<>(lines.size());
-		FileUtils.write(requestsLogFile, "", GlobalCore.UTF8, false);
+		FileUtils.write(requestsLogFile, "", Global.UTF8, false);
 		HashSet<String> deduplicator=new HashSet<>();
 		for(int i=lines.size()-1 ; i>=0 ; i--) {
 			Dataset ds= Dataset.fromCsv(lines.get(i));
@@ -63,10 +63,10 @@ public class DatasetRegistryRepository {
 					removed=ds;
 				toArchiveLines.add(lines.get(i));
 			} else
-				FileUtils.write(requestsLogFile, lines.get(i)+"\n", GlobalCore.UTF8, true);
+				FileUtils.write(requestsLogFile, lines.get(i)+"\n", Global.UTF8, true);
 		}
 		for(int i=0 ; toArchiveLines.size()>i ; i++) {
-			FileUtils.write(requestsLogArchiveFile, toArchiveLines.get(i)+"\n", GlobalCore.UTF8, true);
+			FileUtils.write(requestsLogArchiveFile, toArchiveLines.get(i)+"\n", Global.UTF8, true);
 		}
 		return removed;
 	}
@@ -74,7 +74,7 @@ public class DatasetRegistryRepository {
 	public synchronized List<Dataset> listDatasets() throws IOException {
 		List<Dataset> datasets=new ArrayList<>();
 		if(requestsLogFile.exists()) {
-			List<String> lines = FileUtils.readLines(requestsLogFile, GlobalCore.UTF8);
+			List<String> lines = FileUtils.readLines(requestsLogFile, Global.UTF8);
 			HashSet<String> deduplicator=new HashSet<>();
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
 				Dataset ds= Dataset.fromCsv(lines.get(i));
@@ -88,7 +88,7 @@ public class DatasetRegistryRepository {
 	}
 
 	public synchronized Dataset getDatasetByUri(String uri) throws IOException {
-		List<String> lines = FileUtils.readLines(requestsLogFile, GlobalCore.UTF8);
+		List<String> lines = FileUtils.readLines(requestsLogFile, Global.UTF8);
 		HashSet<String> deduplicator=new HashSet<>();
 		for(int i=lines.size()-1 ; i>=0 ; i--) {
 			Dataset ds= Dataset.fromCsv(lines.get(i));
@@ -101,19 +101,19 @@ public class DatasetRegistryRepository {
 	}
 	
 	protected void cleanup() throws IOException {
-		List<String> lines = FileUtils.readLines(requestsLogFile, GlobalCore.UTF8);
+		List<String> lines = FileUtils.readLines(requestsLogFile, Global.UTF8);
 		List<String> toArchiveLines = new ArrayList<>(lines.size());
-		FileUtils.write(requestsLogFile, "", GlobalCore.UTF8, false);
+		FileUtils.write(requestsLogFile, "", Global.UTF8, false);
 		HashSet<String> deduplicator=new HashSet<>();
 		for(int i=lines.size()-1 ; i>=0 ; i--) {
 			Dataset ds= Dataset.fromCsv(lines.get(i));
 			if(deduplicator.contains(ds.getLocalId()))
 				toArchiveLines.add(lines.get(i));
 			else
-				FileUtils.write(requestsLogFile, lines.get(i)+"\n", GlobalCore.UTF8, true);
+				FileUtils.write(requestsLogFile, lines.get(i)+"\n", Global.UTF8, true);
 		}
 		for(int i=0 ; toArchiveLines.size()>i ; i++) {
-			FileUtils.write(requestsLogArchiveFile, toArchiveLines.get(i)+"\n", GlobalCore.UTF8, true);
+			FileUtils.write(requestsLogArchiveFile, toArchiveLines.get(i)+"\n", Global.UTF8, true);
 		}
 	}
 }

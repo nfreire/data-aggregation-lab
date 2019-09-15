@@ -13,7 +13,7 @@ import org.apache.http.Header;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class HttpUtil {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(HttpUtil.class);
@@ -66,7 +66,7 @@ public class HttpUtil {
 		while (true) {
 			try {
 				tries++;
-				GlobalCore.getHttpRequestService().fetch(resourceRequest);
+				Global.getHttpRequestService().fetch(resourceRequest);
 				int resStatusCode = resourceRequest.getResponseStatusCode();
 				if (resStatusCode != 200 && resStatusCode!=304/* not modified*/) {
 					if (resStatusCode >= 300 && resStatusCode<400) {

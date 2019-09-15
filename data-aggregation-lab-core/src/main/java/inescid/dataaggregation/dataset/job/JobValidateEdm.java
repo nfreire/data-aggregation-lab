@@ -11,7 +11,7 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.validate.ValidationResult;
 import inescid.dataaggregation.dataset.validate.Validator;
@@ -30,12 +30,12 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 
 	@Override
 	public void runJob()  throws Exception {
-			File profileFolder = GlobalCore.getPublicationRepository().getProfileFolder(dataset);
+			File profileFolder = Global.getPublicationRepository().getProfileFolder(dataset);
 			if(!profileFolder.exists())
 				profileFolder.mkdirs();
-			Validator validator=new Validator(GlobalCore.getValidatorResourceFolder(), validationSchema);
+			Validator validator=new Validator(Global.getValidatorResourceFolder(), validationSchema);
 			File validationCsvFile = new File(profileFolder, "edm-validation.csv");
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(validationCsvFile, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(validationCsvFile, Global.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			String datasetRepoUri=null;
 			if (dataset.getDataProfile().equals(DatasetProfile.EDM)) {
@@ -46,7 +46,7 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 				datasetRepoUri=dataset.getConvertedEdmDatasetUri();
 			}
 			List<Entry<String, File>> allDatasetResourceFiles = 			
-					GlobalCore.getDataRepository().getAllDatasetResourceFiles(datasetRepoUri);
+					Global.getDataRepository().getAllDatasetResourceFiles(datasetRepoUri);
 			int validationFails=0;
 			for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {
 				try {

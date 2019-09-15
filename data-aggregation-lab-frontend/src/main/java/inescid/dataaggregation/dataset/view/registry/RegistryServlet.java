@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 import opennlp.tools.util.StringUtil;
 
@@ -61,14 +61,14 @@ public class RegistryServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		Global.init(getInitParameters(config.getServletContext()));
-		repository=GlobalCore.getDatasetRegistryRepository();
+		GlobalFrontend.init(getInitParameters(config.getServletContext()));
+		repository=Global.getDatasetRegistryRepository();
 	}
 	
 	@Override
 	public void destroy() {
 		super.destroy();
-		Global.shutdown();
+		GlobalFrontend.shutdown();
 	}
 
 	private Properties getInitParameters(ServletContext servletContext) {
@@ -166,7 +166,7 @@ public class RegistryServlet extends HttpServlet {
 		resp.setStatus(httpStatus);
 		if (body != null && !body.isEmpty()) {
 			ServletOutputStream outputStream = resp.getOutputStream();
-			outputStream.write(body.getBytes(GlobalCore.UTF8));
+			outputStream.write(body.getBytes(Global.UTF8));
 			resp.setContentType("text/html; charset=utf-8");
 		}
 	}

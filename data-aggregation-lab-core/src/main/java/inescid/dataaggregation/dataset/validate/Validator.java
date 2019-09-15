@@ -46,7 +46,7 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 /**
  * EDM Validator class
@@ -178,7 +178,7 @@ public class Validator {
 						input.setPublicId(publicId);
 						input.setSystemId(systemId);
 						input.setBaseURI(baseURI);
-						input.setCharacterStream(new InputStreamReader(stream, GlobalCore.UTF8));
+						input.setCharacterStream(new InputStreamReader(stream, Global.UTF8));
 						
 						return input;
 					} catch (FileNotFoundException e) {

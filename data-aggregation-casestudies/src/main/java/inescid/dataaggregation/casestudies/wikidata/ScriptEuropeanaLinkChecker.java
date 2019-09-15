@@ -11,7 +11,7 @@ import org.apache.jena.query.QuerySolution;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
 import inescid.util.SparqlClient.Handler;
@@ -54,8 +54,8 @@ public class ScriptEuropeanaLinkChecker {
 		System.out.printf("Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS);
 
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);

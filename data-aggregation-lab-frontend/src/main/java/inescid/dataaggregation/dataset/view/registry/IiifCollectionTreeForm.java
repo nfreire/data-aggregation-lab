@@ -23,7 +23,7 @@ import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.job.JobLog;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 
 public class IiifCollectionTreeForm extends DatasetForm{
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -97,7 +97,7 @@ public class IiifCollectionTreeForm extends DatasetForm{
 	@Override
 	public String output() throws Exception {
 		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetregistry/"+getClass().getSimpleName()+".html");
+		Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetregistry/"+getClass().getSimpleName()+".html");
 		temp.process(this, w);
 		w.close();
 		return w.toString();

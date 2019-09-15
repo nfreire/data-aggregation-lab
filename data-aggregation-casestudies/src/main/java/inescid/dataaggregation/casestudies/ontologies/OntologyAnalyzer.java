@@ -13,8 +13,8 @@ import org.apache.jena.riot.RiotException;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.data.RdfRegRdfs;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
@@ -104,10 +104,10 @@ public class OntologyAnalyzer {
 					report.profileOfDataElements=profilerOnt.getUsageStats();
 					
 					HashSet<String> dataElementsInOntology=new HashSet<String>();
-					for(Resource dataElement: new Resource[] {RdfRegRdf.Property, RdfRegRdfs.Class, RdfRegRdfs.Datatype,
-							RdfRegRdfs.Resource, RdfReg.OWL_CLASS, RdfReg.OWL_DATA_RANGE, RdfReg.OWL_DATA_TYPE_PROPERTY, 
+					for(Resource dataElement: new Resource[] {RegRdf.Property, RegRdfs.Class, RegRdfs.Datatype,
+							RegRdfs.Resource, RdfReg.OWL_CLASS, RdfReg.OWL_DATA_RANGE, RdfReg.OWL_DATA_TYPE_PROPERTY, 
 							RdfReg.OWL_FUNCTIONAL_PROPERTY, RdfReg.OWL_OBJECT_PROPERTY, RdfReg.OWL_ONTOLOGY_PROPERTY}) {
-						StmtIterator ontStms = modelOnt.listStatements(null, RdfRegRdf.type, dataElement);
+						StmtIterator ontStms = modelOnt.listStatements(null, RegRdf.type, dataElement);
 						while (ontStms.hasNext()) {
 							Statement stm = ontStms.next();
 							if(stm.getSubject().isURIResource()) {
@@ -115,7 +115,7 @@ public class OntologyAnalyzer {
  							}
 						}
 					}
-					StmtIterator ontStms = modelOnt.listStatements(null, RdfRegRdfs.isDefinedBy, ontRes);
+					StmtIterator ontStms = modelOnt.listStatements(null, RegRdfs.isDefinedBy, ontRes);
 					while (ontStms.hasNext()) {
 						Statement stm = ontStms.next();
 						if(stm.getSubject().isURIResource()) 

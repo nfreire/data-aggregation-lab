@@ -43,7 +43,13 @@ public class AccessException extends Exception {
 		this.code = String.valueOf(code);
 		this.response = response;
 	}
-
+	
+	public AccessException(String address, String message, Number code) {
+		super(message);
+		this.address = address;
+		this.code = String.valueOf(code);
+	}
+	
 	public AccessException(String address, String code, String response) {
 		super();
 		this.address = address;

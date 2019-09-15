@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import org.apache.commons.io.FileUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class PublicationRepository {
 //	private static final Pattern uriProtocolSnip=Pattern.compile("^https?://", Pattern.CASE_INSENSITIVE);
@@ -62,21 +62,21 @@ public class PublicationRepository {
 	}
 
 	public File getExportSeeAlsoZipFile(Dataset dataset) {
-		return new File(getDatasetFolder(dataset), GlobalCore.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderName(dataset)+".zip");
+		return new File(getDatasetFolder(dataset), Global.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderName(dataset)+".zip");
 	}
 	public File getIiifDiagnosisForEuropeanaFile(Dataset dataset) {
 		return new File(getDatasetFolder(dataset), FilenameManager.getDatasetFolderName(dataset)+"-iiif_source_diagnosis.html");
 	}
 	
 	public String getExportSeeAlsoZipFileForUrl(Dataset dataset) {
-		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+  GlobalCore.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderNameForUrl(dataset)+".zip";
+		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+  Global.SEE_ALSO_DATASET_PREFIX+FilenameManager.getDatasetFolderNameForUrl(dataset)+".zip";
 	}
 	public File getExportEdmZipFile(Dataset dataset) {
-		return new File(getDatasetFolder(dataset), GlobalCore.CONVERTED_EDM_DATASET_PREFIX+FilenameManager.getDatasetFolderName(dataset)+".zip");
+		return new File(getDatasetFolder(dataset), Global.CONVERTED_EDM_DATASET_PREFIX+FilenameManager.getDatasetFolderName(dataset)+".zip");
 	}
 	
 	public String getExportEdmZipFileForUrl(Dataset dataset) {
-		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+  GlobalCore.CONVERTED_EDM_DATASET_PREFIX+FilenameManager.getDatasetFolderNameForUrl(dataset)+".zip";
+		return homeUrl+FilenameManager.getDatasetFolderNameForUrl(dataset)+"/"+  Global.CONVERTED_EDM_DATASET_PREFIX+FilenameManager.getDatasetFolderNameForUrl(dataset)+".zip";
 	}
 	
 	public boolean isPublished(Dataset dataset) {

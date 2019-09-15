@@ -7,7 +7,7 @@ import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.profile.SeeAlsoProfile;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
@@ -32,7 +32,7 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 
 	@Override
 	public void runJob() throws Exception{
-			TimestampTracker timestampTracker=GlobalCore.getTimestampTracker();
+			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			GregorianCalendar startOfCrawl=new GregorianCalendar();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
 			try {
@@ -40,11 +40,11 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 				String format=ps[0];
 				String profile=ps[1];
 				iiifDataset.setDataFormat(format);
-				ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(GlobalCore.getDataRepository(), timestampTracker, iiifDataset, format, profile);
+				ManifestSeeAlsoHarvester harvester=new ManifestSeeAlsoHarvester(Global.getDataRepository(), timestampTracker, iiifDataset, format, profile);
 				harvester.harvest();
 				DatasetProfile datasetProfileEnum=DatasetProfile.fromString(profile);
 				if(datasetProfileEnum==null || datasetProfileEnum==DatasetProfile.ANY_TRIPLES) {
-					DataTypeResult detected = DataProfileDetector.detect(iiifDataset.getSeeAlsoDatasetUri(), GlobalCore.getDataRepository());
+					DataTypeResult detected = DataProfileDetector.detect(iiifDataset.getSeeAlsoDatasetUri(), Global.getDataRepository());
 					if(detected!=null) {
 						if(detected.format!=null && dataset.getDataFormat()==null) {
 							dataset.setDataFormat(detected.format.toString());
@@ -58,7 +58,7 @@ public class JobHarvestIiifSeeAlso extends JobWorker implements Runnable {
 				} else {
 					dataset.setDataProfile(datasetProfileEnum.toString());				
 				}
-				GlobalCore.getDatasetRegistryRepository().updateDataset(dataset);
+				Global.getDatasetRegistryRepository().updateDataset(dataset);
 				timestampTracker.setDatasetTimestamp(iiifDataset.getSeeAlsoDatasetUri(), startOfCrawl);
 				timestampTracker.commit();
 				finishedSuccsessfuly();

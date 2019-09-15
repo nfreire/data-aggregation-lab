@@ -2,7 +2,7 @@ package inescid.dataaggregation.dataset.job;
 
 import eu.europeana.research.iiif.profile.ManifestMetadataProfiler;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 
 public class JobProfileIiifManifests extends JobWorker {
@@ -14,7 +14,7 @@ public class JobProfileIiifManifests extends JobWorker {
 	@Override
 	public void runJob() throws Exception {
 			ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)
-					, GlobalCore.getDataRepository(), GlobalCore.getPublicationRepository().getProfileFolder(dataset));
+					, Global.getDataRepository(), Global.getPublicationRepository().getProfileFolder(dataset));
 			profiler.process(true);			
 	}
 	

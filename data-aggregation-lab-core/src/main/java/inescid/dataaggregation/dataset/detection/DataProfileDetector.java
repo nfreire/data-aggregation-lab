@@ -13,8 +13,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.XmlUtil;
@@ -61,8 +61,8 @@ public class DataProfileDetector {
 	private DatasetProfile detectProfileFromXml(String inString) {
 		Document dom = XmlUtil.parseDom(new StringReader(inString));
 		String ns = dom.getDocumentElement().getNamespaceURI();
-		if(ns.equals(RdfRegRdf.NS)) {
-			NodeList chos = dom.getDocumentElement().getElementsByTagNameNS(RdfRegEdm.NS, RdfRegEdm.ProvidedCHO.getLocalName());
+		if(ns.equals(RegRdf.NS)) {
+			NodeList chos = dom.getDocumentElement().getElementsByTagNameNS(RegEdm.NS, RegEdm.ProvidedCHO.getLocalName());
 			if(chos!=null && chos.getLength()>0)
 				return DatasetProfile.EDM;
 		}

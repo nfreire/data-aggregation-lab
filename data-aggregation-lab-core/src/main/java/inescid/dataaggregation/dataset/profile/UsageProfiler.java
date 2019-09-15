@@ -9,8 +9,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.data.RdfRegRdfs;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
 
 public class UsageProfiler {
 	int maxWarns=5;
@@ -28,7 +28,7 @@ public class UsageProfiler {
 		if(r==null) return;
 		ArrayList<ClassUsageStats> classesOfSubject=new ArrayList<>(3);
 		ArrayList<String> classesOfSubjectUris=new ArrayList<>(3);
-		for(Statement st : r.listProperties(RdfRegRdf.type).toList()) {
+		for(Statement st : r.listProperties(RegRdf.type).toList()) {
 //			System.out.println(st);
 			String clsUri = st.getObject().asNode().getURI();
 			ClassUsageStats classStats = usageStats.getClassStats(clsUri);
@@ -39,8 +39,8 @@ public class UsageProfiler {
 		}
 		
 		if(classesOfSubject.isEmpty()) {
-			classesOfSubject.add(usageStats.getClassStats(RdfRegRdfs.Resource.getURI()));
-			ClassUsageStats classStats = usageStats.getClassStats(RdfRegRdfs.Resource.getURI());
+			classesOfSubject.add(usageStats.getClassStats(RegRdfs.Resource.getURI()));
+			ClassUsageStats classStats = usageStats.getClassStats(RegRdfs.Resource.getURI());
 			classStats.eventInstanceStart(r);
 		} else if(classesOfSubjectUris.size()>1 && maxWarns>0) {
 //			System.out.print("WARN: resource has multiple types: "+ classesOfSubjectUris);
@@ -52,7 +52,7 @@ public class UsageProfiler {
 //		r.listProperties(RdfRegRdf.type);
 		StmtIterator properties = r.listProperties();
 		for(Statement st : properties.toList()) {
-			if(!optionCountRdfType && st.getPredicate().equals(RdfRegRdf.type)) continue;
+			if(!optionCountRdfType && st.getPredicate().equals(RegRdf.type)) continue;
 			for(ClassUsageStats stat : classesOfSubject)
 				stat.eventProperty(st);
 		}
@@ -61,7 +61,7 @@ public class UsageProfiler {
 		
 		StmtIterator propertiesRangeOf = r.getModel().listStatements(null, null, r);
 		for(Statement st : propertiesRangeOf.toList()) {
-			if(st.getPredicate().equals(RdfRegRdf.type)) continue;
+			if(st.getPredicate().equals(RegRdf.type)) continue;
 			for(ClassUsageStats stat : classesOfSubject)
 				stat.getPropertiesObjectStats().incrementTo(st.getPredicate().getURI());
 		}

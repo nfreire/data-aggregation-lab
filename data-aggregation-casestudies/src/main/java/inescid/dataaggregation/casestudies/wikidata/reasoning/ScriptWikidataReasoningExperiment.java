@@ -18,19 +18,19 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.riot.Lang;
 
-import eu.europeana.commonculture.lod.crawler.rdf.RdfRegRdfs;
 import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
 import inescid.dataaggregation.casestudies.wikidata.ScriptMetadataAnalyzerOfCulturalHeritage;
 import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegOwl;
-import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.data.RdfRegSkos;
+import inescid.dataaggregation.data.RegOwl;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.RegSkos;
 import inescid.dataaggregation.data.reasoning.DataModelReasoner;
 import inescid.dataaggregation.data.reasoning.ReasonerByRulesAndSchemas;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
@@ -40,8 +40,8 @@ public class ScriptWikidataReasoningExperiment {
 	public static void main(String[] args) throws Exception {
 		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepository";
 
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);
@@ -80,19 +80,19 @@ public class ScriptWikidataReasoningExperiment {
 	//		reasoner.loadSchemas("inescid/dataaggregation/data/reasoning/wikibase.owl", "inescid/dataaggregation/data/reasoning/owl_def.owl", "inescid/dataaggregation/data/reasoning/schemaorg.owl", "inescid/dataaggregation/data/reasoning/edm.owl");
 			
 			Model wikidataSchemaAlignments=Jena.createModel();
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Property"), RdfRegRdfs.subClassOf, RdfRegRdf.Property);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Entity"), RdfRegRdfs.subClassOf, RdfRegRdfs.Class);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Entity"), RdfRegRdfs.subClassOf, RdfRegOwl.Thing);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EQUIVALENT_CLASS, RdfRegOwl.equivalentProperty, RdfRegOwl.equivalentClass);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EQUIVALENT_PROPERTY, RdfRegOwl.equivalentProperty, RdfRegOwl.equivalentProperty);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.SUBCLASS_OF, RdfRegOwl.equivalentProperty, RdfRegRdfs.subClassOf);;
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.SUBPROPERTY_OF, RdfRegOwl.equivalentProperty, RdfRegRdfs.subPropertyOf);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.INSTANCE_OF, RdfRegOwl.equivalentProperty, RdfRegRdf.type);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RdfRegOwl.equivalentProperty, RdfRegSkos.narrowMatch);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.BROADER_CONCEPT, RdfRegOwl.equivalentProperty, RdfRegSkos.broadMatch);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.MAPPING_RELATION_TYPE, RdfRegOwl.equivalentProperty, RdfRegSkos.mappingRelation);
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EXTERNAL_SUBPROPERTY, RdfRegOwl.equivalentProperty, RdfRegSkos.broadMatch);//there is no superProperty in rdfs
-			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EXTERNAL_SUPERPROPERTY, RdfRegOwl.equivalentProperty, RdfRegRdfs.subPropertyOf);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Property"), RegRdfs.subClassOf, RegRdf.Property);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Entity"), RegRdfs.subClassOf, RegRdfs.Class);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, wikidataSchemaAlignments.createResource("http://wikiba.se/ontology#Entity"), RegRdfs.subClassOf, RegOwl.Thing);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EQUIVALENT_CLASS, RegOwl.equivalentProperty, RegOwl.equivalentClass);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EQUIVALENT_PROPERTY, RegOwl.equivalentProperty, RegOwl.equivalentProperty);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.SUBCLASS_OF, RegOwl.equivalentProperty, RegRdfs.subClassOf);;
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.SUBPROPERTY_OF, RegOwl.equivalentProperty, RegRdfs.subPropertyOf);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.INSTANCE_OF, RegOwl.equivalentProperty, RegRdf.type);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RegOwl.equivalentProperty, RegSkos.narrowMatch);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.BROADER_CONCEPT, RegOwl.equivalentProperty, RegSkos.broadMatch);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.MAPPING_RELATION_TYPE, RegOwl.equivalentProperty, RegSkos.mappingRelation);
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EXTERNAL_SUBPROPERTY, RegOwl.equivalentProperty, RegSkos.broadMatch);//there is no superProperty in rdfs
+			Jena.createStatementAddToModel(wikidataSchemaAlignments, RdfRegWikidata.EXTERNAL_SUPERPROPERTY, RegOwl.equivalentProperty, RegRdfs.subPropertyOf);
 			reasoner.loadSchemas(wikidataSchemaAlignments);
 			
 			reasoner.initReasoner();

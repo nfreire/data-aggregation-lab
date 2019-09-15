@@ -31,7 +31,7 @@ import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.dataset.view.registry.DatasetView;
 import inescid.dataaggregation.store.PublicationRepository;
 
@@ -117,7 +117,7 @@ public class HarvestIiifSeeAlsoForm extends DatasetView {
 
 	public String output() throws Exception {
 		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
+		Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
 		temp.process(this, w);
 		w.close();
 		return w.toString();

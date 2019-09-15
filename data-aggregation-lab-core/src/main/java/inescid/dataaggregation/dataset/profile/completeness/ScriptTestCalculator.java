@@ -16,8 +16,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 
 public class ScriptTestCalculator {
@@ -45,8 +45,8 @@ public class ScriptTestCalculator {
 			System.out.printf("Settings:\n-URIs: %s\n-Charts:%s\n-Cache:%s\n-Records:%d\n-Collections:%d\n-------------------------\n",
 					urisFolder.getPath(), chartsFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS, SAMPLE_COLLECTIONS);
 			
-			GlobalCore.init_componentHttpRequestService();
-			GlobalCore.init_componentDataRepository(httpCacheFolder);
+			Global.init_componentHttpRequestService();
+			Global.init_componentDataRepository(httpCacheFolder);
 			
 			if(!chartsFolder.exists())
 				chartsFolder.mkdirs();
@@ -105,7 +105,7 @@ public class ScriptTestCalculator {
 				System.out.println(uri);
 //				System.out.println("*** "+uri);
 //				System.out.println(RdfUtil.printStatements(rdf));
-				StmtIterator completenessStms = rdf.listStatements(null, RdfRegEdm.completeness, (RDFNode)null);
+				StmtIterator completenessStms = rdf.listStatements(null, RegEdm.completeness, (RDFNode)null);
 				if(completenessStms.hasNext()) {
 					int completeness = completenessStms.next().getObject().asLiteral().getInt();
 					retOldCompleteness.add(completeness);

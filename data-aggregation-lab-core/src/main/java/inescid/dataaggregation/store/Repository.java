@@ -25,7 +25,7 @@ import org.apache.commons.io.output.FileWriterWithEncoding;
 
 import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.ZipArchiveExporter;
 
 public class Repository {
@@ -168,7 +168,7 @@ public class Repository {
 	
 	public void saveMeta(String datasetUri, String resourceUri, List<Entry<String, String>> meta) throws IOException {
 		File metaFile = getMetaFile(datasetUri, resourceUri);
-		FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(metaFile, GlobalCore.UTF8);
+		FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(metaFile, Global.UTF8);
 		CSVPrinter printer = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 		for (Entry<String, String> field : meta) {
 			printer.printRecord(field.getKey(), field.getValue());
@@ -220,15 +220,18 @@ public class Repository {
 	}
 
 	public void clear(Dataset dataset) {
-		File logFile = getDatasetLogFile(dataset.getUri());
+		
+	}
+	public void clear(String datasetUri) {
+		File logFile = getDatasetLogFile(datasetUri);
 		if (logFile.exists())
 			logFile.delete();
-		List<Entry<String, File>> files = getAllDatasetMetaFiles(dataset.getUri());
+		List<Entry<String, File>> files = getAllDatasetMetaFiles(datasetUri);
 		for (Entry<String, File> manifEntry : files) {
 			if (manifEntry.getValue().exists())
 				manifEntry.getValue().delete();
 		}
-		files = getAllDatasetResourceFiles(dataset.getUri());
+		files = getAllDatasetResourceFiles(datasetUri);
 		for (Entry<String, File> manifEntry : files) {
 			if (manifEntry.getValue().exists())
 				manifEntry.getValue().delete();
@@ -305,7 +308,7 @@ public class Repository {
 
 	public void exportDatasetToZip(String datasetUri, File targetZipFile, ContentTypes format_opt) throws IOException {
 		ZipArchiveExporter ziper=new ZipArchiveExporter(targetZipFile);
-		List<Entry<String, File>> allDatasetManifestFiles = GlobalCore.getDataRepository().getAllDatasetResourceFiles(datasetUri);
+		List<Entry<String, File>> allDatasetManifestFiles = Global.getDataRepository().getAllDatasetResourceFiles(datasetUri);
 
 		String fileExtension=format_opt!=null ? "."+format_opt.getFilenameExtension() : "";
 		for(Entry<String, File> manifEntry: allDatasetManifestFiles) {

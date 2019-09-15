@@ -12,10 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import freemarker.template.Template;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.dataset.view.registry.DatasetView;
 
 public class SetDataProfileForm extends DatasetView{
@@ -69,7 +69,7 @@ public class SetDataProfileForm extends DatasetView{
 	public void executeJob() {
 		try {
 			if(! StringUtils.isEmpty(detectFormOfDataParam)) {
-				DataTypeResult detected = DataProfileDetector.detect(dataset.getUri(), GlobalCore.getDataRepository());
+				DataTypeResult detected = DataProfileDetector.detect(dataset.getUri(), Global.getDataRepository());
 				if (detected!=null && detected.profile!=null) {
 //					Global.getDatasetRegistryRepository().updateDataset(dataset);
 					dataset.setDataProfile(detected.profile.toString());
@@ -78,7 +78,7 @@ public class SetDataProfileForm extends DatasetView{
 					setMessage("Detection of data profile was inconclusive.");					
 			}else if(dataProfileParam!=null) {
 				dataset.setDataProfile(dataProfileParam.equals("") ? null : dataProfileParam);
-				GlobalCore.getDatasetRegistryRepository().updateDataset(dataset);
+				Global.getDatasetRegistryRepository().updateDataset(dataset);
 				setMessage("Dataset format/profile was saved.");					
 			} else {
 					//display the form
@@ -91,7 +91,7 @@ public class SetDataProfileForm extends DatasetView{
 	
 	public String output() throws Exception {
 		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
+		Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
 		temp.process(this, w);
 		w.close();
 		return w.toString();

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RegEdm;
 
 public class RecordCompletenessDqcSpec {
 	public enum Dimension {Descriptiveness,	Searchability,	Contextualisation,	Identification,	Browsing,	Viewing,	ReUsability,	Multilinguality};
@@ -19,7 +19,7 @@ public class RecordCompletenessDqcSpec {
 		maxScoreSpec=new CompletenessSpecResources();
 		minScoreSpec=new CompletenessSpecResources();
 		
-		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(RdfRegEdm.ProvidedCHO);
+		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(RegEdm.ProvidedCHO);
 		CompletenessSpecProperties maxScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
 		maxScoreChoSpec.addProperty(RdfReg.DC_DESCRIPTION);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_TITLE, RdfReg.DCTERMS_ALTERNATIVE);
@@ -35,13 +35,13 @@ public class RecordCompletenessDqcSpec {
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_FORMAT, RdfReg.DCTERMS_MEDIUM);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_SOURCE, RdfReg.DCTERMS_PROVENANCE);
 		maxScoreChoSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfRegEdm.isNextInSequence);
-		maxScoreChoSpec.addProperty(RdfRegEdm.rights);
+		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RegEdm.isNextInSequence);
+		maxScoreChoSpec.addProperty(RegEdm.rights);
 		
 //		maxScoreAggSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreAggSpec.addProperty(RdfRegEdm.rights);
+		maxScoreAggSpec.addProperty(RegEdm.rights);
 		
-		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(RdfRegEdm.ProvidedCHO);
+		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(RegEdm.ProvidedCHO);
 		CompletenessSpecProperties minScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
 		
 		

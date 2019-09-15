@@ -7,7 +7,7 @@ import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.crawl.www.WwwDatasetHarvest;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.WwwDataset.Microformat;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
@@ -30,7 +30,7 @@ public class JobHarvestWww extends JobWorker {
 	
 	@Override
 	public void runJob() throws Exception {
-		File reportsFolder = GlobalCore.getPublicationRepository().getReportsFolder(dataset);
+		File reportsFolder = Global.getPublicationRepository().getReportsFolder(dataset);
 		JobObserverChronometer obsChono=new JobObserverChronometer(new File(reportsFolder, "LogHarvestingTime.txt"));
 		JobObserverErrorMeter obsError=new JobObserverErrorMeter(new File(reportsFolder, "LogHarvestingErrors.txt"));
 		JobObserverProgressLogger obsProgress=new JobObserverProgressLogger(new File(reportsFolder, "LogProgress.txt"),60*5, obsChono, obsError);
@@ -40,14 +40,14 @@ public class JobHarvestWww extends JobWorker {
 //		addObserver(new JobObserverStdout(true));
 		started();
 		
-			TimestampTracker timestampTracker=GlobalCore.getTimestampTracker();
+			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			WwwDataset wwwDataset=(WwwDataset)dataset;
-			WwwDatasetHarvest harvest=new WwwDatasetHarvest(wwwDataset, GlobalCore.getDataRepository(), true/*skip existing*/, this);
+			WwwDatasetHarvest harvest=new WwwDatasetHarvest(wwwDataset, Global.getDataRepository(), true/*skip existing*/, this);
 			harvest.setSampleSize(sampleSize);
 			Calendar startOfCrawl=harvest.startProcess();
 			if(wwwDataset.getMicroformat()==Microformat.SCHEMAORG) 
 				wwwDataset.setDataProfile(DatasetProfile.SCHEMA_ORG.toString());
-			DataTypeResult detected = DataProfileDetector.detect(dataset.getUri(), GlobalCore.getDataRepository());
+			DataTypeResult detected = DataProfileDetector.detect(dataset.getUri(), Global.getDataRepository());
 			if(detected!=null) {
 				if(detected.format!=null && dataset.getDataFormat()==null) {
 					dataset.setDataFormat(detected.format.toString());

@@ -31,7 +31,7 @@ import org.apache.jena.riot.RDFLanguages;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RegRdf;
 
 
 public class RdfUtil {
@@ -58,6 +58,9 @@ public class RdfUtil {
 		}
 		public static Statement createStatement(Resource sub, Property pred, RDFNode obj) {
 			return ResourceFactory.createStatement(sub, pred, obj);
+		}
+		public static Statement createStatement(String subUri, Property pred, RDFNode obj) {
+			return ResourceFactory.createStatement(createResource(subUri), pred, obj);
 		}
 		public static Resource getResourceIfExists(String uri, Model model) {
 			Resource createResource = model.createResource(uri);
@@ -210,11 +213,10 @@ public class RdfUtil {
 		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
 		Model readRdf = readRdf(new HttpResponse(rdfReq));
 		if(readRdf==null)
-			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
-		Resource resource = readRdf.createResource();
-		if(resource==null)
-			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
-		return resource;
+			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
+		if (RdfUtil.contains(resourceUri, readRdf))
+			return readRdf.createResource(resourceUri);
+		throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
 	}
 
 	

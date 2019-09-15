@@ -1,14 +1,14 @@
 package inescid.dataaggregation.crawl.sitemap;
 
 import crawlercommons.sitemaps.SiteMapURL;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.observer.JobObserverStdout;
 
 public class TestCrawlSitemap {
 	
 	public static void main(String[] args) {
 		try {
-			GlobalCore.init_developement();
+			Global.init_developement();
 			
 //			String sitemapUrl="http://dams.llgc.org.uk/iiif/newspapers/sitemap.xml";
 //			String sitemapUrl="https://data.ucd.ie/sitemap_test1.xml";

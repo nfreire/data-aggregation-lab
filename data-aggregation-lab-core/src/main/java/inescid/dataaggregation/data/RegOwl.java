@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public final class RdfRegOwl {
+public final class RegOwl {
 	public static String PREFIX="owl";
 	public static String NS="http://www.w3.org/2002/07/owl#";
 

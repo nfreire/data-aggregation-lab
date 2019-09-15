@@ -10,7 +10,7 @@ import eu.europeana.research.iiif.profile.LicenseProfile;
 import eu.europeana.research.iiif.profile.ManifestMetadataProfiler;
 import eu.europeana.research.iiif.profile.SeeAlsoProfile;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 
 public class JobDiagnoseIiifSourceForEuropeana  extends JobWorker {
@@ -26,7 +26,7 @@ public class JobDiagnoseIiifSourceForEuropeana  extends JobWorker {
 	@Override
 	public void runJob() throws Exception {
 		ManifestMetadataProfiler profiler=new ManifestMetadataProfiler(((IiifDataset)dataset)
-				, GlobalCore.getDataRepository(), GlobalCore.getPublicationRepository().getProfileFolder(dataset));
+				, Global.getDataRepository(), Global.getPublicationRepository().getProfileFolder(dataset));
 		profiler.process(false);
 		LicenseProfile licenseProfile = profiler.getLicenseProfile();
 		licensingCoverage = licenseProfile.getLicensingCoverage();
@@ -37,7 +37,7 @@ public class JobDiagnoseIiifSourceForEuropeana  extends JobWorker {
 		
 		seeAlsoFormats=new ArrayList<String>(seeAlsoProfile.getFormatAndProfile().keySet());	
 		
-		File iiifDiagnosisForEuropeanaFile = GlobalCore.getPublicationRepository().getIiifDiagnosisForEuropeanaFile(dataset);
+		File iiifDiagnosisForEuropeanaFile = Global.getPublicationRepository().getIiifDiagnosisForEuropeanaFile(dataset);
 		if(!iiifDiagnosisForEuropeanaFile.getParentFile().exists())
 			iiifDiagnosisForEuropeanaFile.getParentFile().mkdirs();
 		PrintStream ps = new PrintStream(iiifDiagnosisForEuropeanaFile, "UTF-8");

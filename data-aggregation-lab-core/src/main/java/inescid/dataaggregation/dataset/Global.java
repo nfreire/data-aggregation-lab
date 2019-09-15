@@ -18,7 +18,7 @@ import inescid.dataaggregation.store.PublicationRepository;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.googlesheets.SheetsApi;
 
-public class GlobalCore {
+public class Global {
 	public static Pattern urlPattern=Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 	public static final Charset UTF8 = Charset.forName("UTF8");
 	public static final String SEE_ALSO_DATASET_PREFIX = "seeAlso_"; 
@@ -141,7 +141,7 @@ public class GlobalCore {
 	}
 
 	public static File getValidatorResourceFolder() {
-		URL resource = GlobalCore.class.getClassLoader().getResource("edmschema/EDM.xsd");
+		URL resource = Global.class.getClassLoader().getResource("edmschema/EDM.xsd");
 		try {
 			return Paths.get(resource.toURI()).toFile().getParentFile().getParentFile();
 		} catch (URISyntaxException e) {

@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public final class RdfRegSkos {
+public final class RegSkos {
 	public static String PREFIX="skos";
 	public static String NS="http://www.w3.org/2004/02/skos/core#";
 

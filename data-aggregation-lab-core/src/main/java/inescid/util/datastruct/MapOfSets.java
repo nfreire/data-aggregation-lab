@@ -15,7 +15,6 @@ import java.util.Set;
  *
  */
 public class MapOfSets<K,V> {
-		private static final long serialVersionUID=1;	
 		Hashtable<K,HashSet<V>> hashtable;
 		
 		
@@ -54,6 +53,15 @@ public class MapOfSets<K,V> {
 				hashtable.put(key,recs);
 			}
 			recs.addAll(values);
+		}
+		public void putAll(K key, V... values){
+			HashSet<V> recs=hashtable.get(key);
+			if (recs==null){
+				recs=new HashSet<V>();
+				hashtable.put(key,recs);
+			}
+			for(V v : values)
+				recs.add(v);
 		}
 		
 		public void remove(K key, V value){

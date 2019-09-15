@@ -41,7 +41,7 @@ public class SparqlClient {
 	public int query(String queryString, Handler handler) {
 		int wdCount=0;
 		String fullQuery = queryPrefix + queryString;
-//        System.out.println(fullQuery);
+        System.out.println(fullQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
 		try {
 			ResultSet results = qexec.execSelect();

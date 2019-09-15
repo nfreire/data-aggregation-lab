@@ -14,7 +14,7 @@ import com.google.gson.JsonSyntaxException;
 
 import eu.europeana.research.iiif.profile.model.Manifest;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
@@ -68,11 +68,11 @@ public class ManifestMetadataProfiler {
 			File sheetsIdFile = new File(outputFolder, "google-sheet-id.txt");
 			String spreadsheetId=null;
 			if(sheetsIdFile.exists()) {
-				 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, GlobalCore.UTF8);
+				 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, Global.UTF8);
 			} else {
 				String spreadsheetTitle="Data Profiling - "+ dataset.getTitle();
 				spreadsheetId=GoogleSheetsCsvUploader.create(spreadsheetTitle, manifestMdSheetTitle);
-				FileUtils.write(sheetsIdFile, spreadsheetId, GlobalCore.UTF8);
+				FileUtils.write(sheetsIdFile, spreadsheetId, Global.UTF8);
 			}
 			GoogleSheetsCsvUploader.update(spreadsheetId, manifestMdSheetTitle, manifestMdCsvFile);			
 			GoogleSheetsCsvUploader.update(spreadsheetId, seeAlsoSheetTitle, seeAlsoCsvFile);			

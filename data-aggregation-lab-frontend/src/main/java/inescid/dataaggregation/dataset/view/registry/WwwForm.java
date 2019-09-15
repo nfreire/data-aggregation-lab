@@ -14,14 +14,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.dataset.WwwDataset;
 import inescid.dataaggregation.dataset.WwwDataset.Microformat;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 public class WwwForm extends DatasetForm {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(WwwForm.class);
 	
@@ -67,10 +67,10 @@ public class WwwForm extends DatasetForm {
 		try {
 			if(StringUtils.isEmpty(((WwwDataset)dataset).getUri())) {
 				errors.add("Provide a URI");
-			}else if(!GlobalCore.urlPattern.matcher(((WwwDataset)dataset).getUri()).matches()) 
+			}else if(!Global.urlPattern.matcher(((WwwDataset)dataset).getUri()).matches()) 
 				errors.add("The URI is in an invalid format");
 			else {
-				if(null!=GlobalCore.getDatasetRegistryRepository().getDatasetByUri(dataset.getUri()))
+				if(null!=Global.getDatasetRegistryRepository().getDatasetByUri(dataset.getUri()))
 					errors.add("The URI of this dataset is already registered");
 			}
 			if(StringUtils.isEmpty(dataset.getOrganization())) 

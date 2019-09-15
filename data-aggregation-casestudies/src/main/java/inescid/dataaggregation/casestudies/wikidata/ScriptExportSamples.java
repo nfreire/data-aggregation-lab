@@ -3,7 +3,7 @@ package inescid.dataaggregation.casestudies.wikidata;
 import java.io.File;
 
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 
 public class ScriptExportSamples {
@@ -32,10 +32,10 @@ public class ScriptExportSamples {
 				"Settings:\n-OutpputFolder:%s\n-Cache:%s\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder);
 
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
-		Repository dataRepository = GlobalCore.getDataRepository();
+		Repository dataRepository = Global.getDataRepository();
 
 		
 		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_ONTOLOGY.name(), new File(httpCacheFolder, "wikidata-subdataset-ontology.zip"), ContentTypes.TURTLE);

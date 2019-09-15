@@ -4,7 +4,7 @@ import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
 
@@ -16,7 +16,7 @@ public class ScriptViewRdfUriContent {
 	public static void main(String[] args) {
 		http://www.wikidata.org/entity.json
 		try { 
-			GlobalCore.init_developement();
+			Global.init_developement();
 			HttpRequest req = null;
 //			req = HttpUtil.makeRequest("http://schema.org/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("http://dbpedia.org/ontology/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
@@ -28,7 +28,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/P84", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.cidoc-crm.org/cidoc-crm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest(RdfReg.NsOwl, RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-//			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+			req = HttpUtil.makeRequest("http://www.wikidata.org/entity/Q35120", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://www.wikidata.org/entity/statement/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://data.bibliotheken.nl/doc/dataset/rise-alba", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://hdl.handle.net/10107/3100021", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
@@ -41,6 +41,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/terms/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/title", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://rdaregistry.info/Elements/c.ttl", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest("http://urn.fi/URN:NBN:fi:bib:me:I00000624700", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 			String content = req.getContent().asString();
 			System.out.println(content);
 			System.out.println("HTTP code: "+req.getResponseStatusCode());

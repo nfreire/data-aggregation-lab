@@ -14,7 +14,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 
 import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class HttpRequest {
 	UrlRequest url;
@@ -158,7 +158,7 @@ public class HttpRequest {
 	}
 
 	public void fetch() throws InterruptedException, IOException {
-		GlobalCore.getHttpRequestService().fetch(this);
+		Global.getHttpRequestService().fetch(this);
 	}
 
 	public HttpEntity getRequestContent() {

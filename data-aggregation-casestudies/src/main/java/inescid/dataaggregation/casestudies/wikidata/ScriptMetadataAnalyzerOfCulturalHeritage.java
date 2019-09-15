@@ -30,9 +30,9 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPa
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.data.RdfRegRdfs;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
@@ -110,7 +110,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		}
 
 		public static void init() {
-			GlobalCore.init_componentGoogleApi(credentialspath);
+			Global.init_componentGoogleApi(credentialspath);
 		}
 
 		public static void main(String[] args) throws IOException {
@@ -161,18 +161,18 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 				"Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n-Broken EuropenaIDs:%d\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS, europeanaIdsBroken.size());
 		Files.init(outputFolder);
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 		GoogleSheetsUploads.init();
 
-		Repository dataRepository = GlobalCore.getDataRepository();
+		Repository dataRepository = Global.getDataRepository();
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);
 
 		EdmValidation validation = new EdmValidation(Files.edmValidation);
 		EdmValidation validationForNonPartners = new EdmValidation(	Files.edmValidationNonPartner,
-				new ValidatorForNonPartners(GlobalCore.getValidatorResourceFolder(), Schema.EDM, "edm:dataProvider",
+				new ValidatorForNonPartners(Global.getValidatorResourceFolder(), Schema.EDM, "edm:dataProvider",
 						"edm:provider", "edm:rights and exists(edm:rights/@rdf:resource)"));
 		MapOfInts<String> wikidataCollectionsSampled=new MapOfInts<String>();
 		MapOfInts<String> europeanaCollectionsSampled=new MapOfInts<String>();
@@ -505,7 +505,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_EDM.name(), Files.wdDatasetEdmZip, ContentTypes.TURTLE);
 		dataRepository.exportDatasetToZip(DataDumps.EUROPEANA_EDM.name(),Files.europeanaDatasetEdmZip, ContentTypes.TURTLE);
 		{
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdUnconvertableToSchemaorg, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdUnconvertableToSchemaorg, Global.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			csvPrinter.printRecord("Wikidata URI","Europeana ID");			
 			unconvertableWikidataChos.forEach((uri, europeanaId) -> {
@@ -520,7 +520,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		}
 		
 		{
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdCompletenessEdm, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Files.wdCompletenessEdm, Global.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			csvPrinter.printRecord("Completeness at Wikidata","Completeness at Europeana");	
 			MapOfInts<Float> completenessDistributionWd=new MapOfInts<>();
@@ -559,7 +559,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 	}
 
 	private static String getWdLabel(Resource wdResource) {
-		StmtIterator labelProps = wdResource.listProperties(RdfRegRdfs.label);
+		StmtIterator labelProps = wdResource.listProperties(RegRdfs.label);
 		String label=null;
 		for (Statement st : labelProps.toList()) {
 			String lang = st.getObject().asLiteral().getLanguage();
@@ -610,7 +610,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		for (StmtIterator stmts = rdfWikidata.listStatements(null, RdfRegWikidata.INSTANCE_OF, (RDFNode) null); stmts
 				.hasNext();) {
 			Statement stm = stmts.next();
-			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RdfRegRdf.type, stm.getObject()));
+			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RegRdf.type, stm.getObject()));
 		}
 	}
 

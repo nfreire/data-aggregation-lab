@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.DatasetProfile;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.detection.DataProfileDetector;
 import inescid.dataaggregation.dataset.detection.DataTypeResult;
 import inescid.util.datastruct.MapOfInts;
@@ -22,21 +22,21 @@ public class ScriptValidateSyntax {
 	
 	public static void main(String[] args) {
 		try {
-			GlobalCore.init_developement();
+			Global.init_developement();
 			DataProfileDetector dtc=new DataProfileDetector();
 			
 			Dataset dataset=null;
 //					GlobalCore.getDatasetRegistryRepository().getDatasetByUri("http://192.92.149.69:8983/data-aggregation-lab/static/data-external/europeana-dataset-sitemap/sitemap.xml");
 			
-			File reportFolder = GlobalCore.getPublicationRepository().getReportsFolder(dataset);
+			File reportFolder = Global.getPublicationRepository().getReportsFolder(dataset);
 			if(!reportFolder.exists())
 				reportFolder.mkdirs();
 			File reportFile = new File(reportFolder, "SintaxValidation.txt");
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(reportFile, GlobalCore.UTF8);
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(reportFile, Global.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 			
 			List<Entry<String, File>> allDatasetResourceFiles = 			
-					GlobalCore.getDataRepository().getAllDatasetResourceFiles(dataset.getUri());
+					Global.getDataRepository().getAllDatasetResourceFiles(dataset.getUri());
 			
 			int validationFails=0;
 			int emptyFiles=0;
@@ -47,7 +47,7 @@ public class ScriptValidateSyntax {
 			for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {
 				try {
 					String contentType=null;
-					List<Entry<String, String>> headers = GlobalCore.getDataRepository().getMeta(dataset.getUri(), seeAlsoFile.getKey());
+					List<Entry<String, String>> headers = Global.getDataRepository().getMeta(dataset.getUri(), seeAlsoFile.getKey());
 					for(Entry<String, String> h: headers) {
 						if(h.getKey().equals("Content-Type")) {
 							contentType=h.getValue();

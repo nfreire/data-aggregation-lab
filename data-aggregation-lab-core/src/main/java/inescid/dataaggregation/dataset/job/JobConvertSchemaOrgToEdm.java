@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
@@ -56,7 +56,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 				} 
 			}
 			
-			PublicationRepository repository = GlobalCore.getPublicationRepository();
+			PublicationRepository repository = Global.getPublicationRepository();
 			File targetZipFile = repository.getExportEdmZipFile(dataset);
 			targetZipFile.getParentFile().mkdirs();
 			ZipArchiveExporter ziper = new ZipArchiveExporter(targetZipFile);
@@ -64,9 +64,9 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 			String edmDatasetUri=dataset.getConvertedEdmDatasetUri();
 			
 			List<Entry<String, File>> allDatasetResourceFiles = (dataset.getType()==DatasetType.IIIF ? 					
-					GlobalCore.getDataRepository()
+					Global.getDataRepository()
 					.getAllDatasetResourceFiles(((IiifDataset)dataset).getSeeAlsoDatasetUri())
-					: GlobalCore.getDataRepository()
+					: Global.getDataRepository()
 					.getAllDatasetResourceFiles(dataset.getUri()));
 			for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {
 				try {
@@ -77,7 +77,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 						ByteArrayInputStream fis = new ByteArrayInputStream(edmBytes);
 						IOUtils.copy(fis, ziper.outputStream());
 						fis.close();
-						GlobalCore.getDataRepository().save(edmDatasetUri, seeAlsoFile.getKey(), edmBytes);
+						Global.getDataRepository().save(edmDatasetUri, seeAlsoFile.getKey(), edmBytes);
 					}
 				} catch (Exception e) {
 					Log.warn("Failed to convert resource: "+seeAlsoFile.getKey() , e);
@@ -97,7 +97,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 			EdmRdfToXmlSerializer xmlSerializer = new EdmRdfToXmlSerializer(mainTargetResource);
 			Document edmDom = xmlSerializer.getXmlDom();
 			String domString = XmlUtil.writeDomToString(edmDom);
-			return domString.getBytes(GlobalCore.UTF8);
+			return domString.getBytes(Global.UTF8);
 		} catch (Exception e) {
 			log.warn("on "+resUri, e);
 			return null;

@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.dataset.view.registry.View;
 
 public class JobStatus extends View{
@@ -37,7 +37,7 @@ public class JobStatus extends View{
 
 	public String output() throws Exception {
 			StringWriter w=new StringWriter();
-			Template temp = Global.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
+			Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
 			temp.process(this, w);
 			w.close();
 			return w.toString();

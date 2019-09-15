@@ -4,15 +4,14 @@ import org.apache.jena.rdf.model.InfModel;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Statement;
 
-import eu.europeana.commonculture.lod.crawler.rdf.RdfRegRdfs;
 import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
 import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.data.reasoning.DataModelReasoner;
 import inescid.dataaggregation.data.reasoning.ReasonerByRulesAndSchemas;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
 

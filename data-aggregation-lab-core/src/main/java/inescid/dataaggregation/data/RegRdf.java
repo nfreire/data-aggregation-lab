@@ -4,7 +4,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public final class RdfRegRdf {
+public final class RegRdf {
 	public static String PREFIX="rdf";
 	public static String NS="http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 

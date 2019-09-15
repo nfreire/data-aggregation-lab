@@ -9,8 +9,8 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.data.RdfRegRdf;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.dataset.convert.FilterOfReferencedResource;
 
 public class SchemaOrgToEdmConversionSpecification {
@@ -18,7 +18,7 @@ public class SchemaOrgToEdmConversionSpecification {
 	
 	private static class EdmTypePreferedValueHandler implements ConversionHandler {
 		private static Set<String> propertiesProcessed=new HashSet<String>() {{
-			add(RdfRegEdm.type.getURI());
+			add(RegEdm.type.getURI());
 		}};
 		@Override
 		public Set<String> propertiesProcessed() {
@@ -29,7 +29,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		public void handleConvertedResult(Resource source, Resource target) {
 			Statement firstType=null;
 			ArrayList<Statement> typeCnt=new ArrayList<Statement>();
-			StmtIterator cwStms = target.listProperties(RdfRegEdm.type);
+			StmtIterator cwStms = target.listProperties(RegEdm.type);
 			while (cwStms.hasNext()) {
 				Statement st = cwStms.next();
 				typeCnt.add(st);
@@ -54,16 +54,16 @@ public class SchemaOrgToEdmConversionSpecification {
 	static {
 		spec=new RdfConversionSpecification();
 		
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PAINTING, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_BOOK, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_NEWSPAPER, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PERIODICAL, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PHOTOGRAPH, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK_SERIES, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
-		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_SCULPTURE, RdfRegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PAINTING, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_BOOK, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_NEWSPAPER, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PERIODICAL, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_PHOTOGRAPH, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_CREATIVE_WORK_SERIES, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
+		spec.setRootResourceTypeMapping(RdfReg.SCHEMAORG_SCULPTURE, RegEdm.ProvidedCHO, RdfReg.ORE_AGGREGATION);
 		
 //		Article
 //		Blog 
@@ -108,15 +108,15 @@ public class SchemaOrgToEdmConversionSpecification {
 		
 		spec.setTypeMapping(RdfReg.SCHEMAORG_THING, RdfReg.SKOS_CONCEPT);
 		spec.setTypeMapping(RdfReg.SCHEMAORG_ORGANIZATION, RdfReg.FOAF_ORGANIZATION);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_PERSON, RdfRegEdm.Agent);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_AUDIO_OBJECT, RdfRegEdm.WebResource);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfRegEdm.WebResource);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_WEB_PAGE, RdfRegEdm.WebResource);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_MEDIA_OBJECT, RdfRegEdm.WebResource);
-		spec.setTypeMapping(RdfReg.SCHEMAORG_PLACE, RdfRegEdm.Place);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_PERSON, RegEdm.Agent);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_AUDIO_OBJECT, RegEdm.WebResource);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_IMAGE_OBJECT, RegEdm.WebResource);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_WEB_PAGE, RegEdm.WebResource);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_MEDIA_OBJECT, RegEdm.WebResource);
+		spec.setTypeMapping(RdfReg.SCHEMAORG_PLACE, RegEdm.Place);
 		spec.setTypeMapping(RdfReg.SCHEMAORG_POSTAL_ADDRESS, RdfReg.VCARD_ADDRESS);
 		
-		ResourceTypeConversionSpecification pchoMapping = spec.getTypePropertiesMapping(RdfRegEdm.ProvidedCHO);
+		ResourceTypeConversionSpecification pchoMapping = spec.getTypePropertiesMapping(RegEdm.ProvidedCHO);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ABOUT, RdfReg.DC_SUBJECT);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_KEYWORDS, RdfReg.DC_SUBJECT);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IS_PART_OF, RdfReg.DCTERMS_IS_PART_OF);
@@ -133,7 +133,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_MATERIAL, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION_CREATED, RdfReg.DCTERMS_SPATIAL);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_EXAMPLE_OF_WORK, RdfRegEdm.realizes);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_EXAMPLE_OF_WORK, RegEdm.realizes);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_MAIN_ENTITY_OF_PAGE, RdfReg.DCTERMS_TABLE_OF_CONTENTS);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_COPYRIGHT_HOLDER, RdfReg.DC_RIGHTS);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_GENRE, RdfReg.DC_TYPE);
@@ -144,17 +144,17 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ART_MEDIUM, RdfReg.DC_DESCRIPTION);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTWORK_SURFACE, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTFORM, RdfReg.DC_TYPE);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SPATIAL_COVERAGE, RdfRegEdm.currentLocation);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SPATIAL_COVERAGE, RegEdm.currentLocation);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION, RdfReg.DCTERMS_SPATIAL);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_TEMPORAL_COVERAGE, RdfReg.DCTERMS_TEMPORAL_COVERAGE);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_HEIGHT, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_WIDTH, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
-		pchoMapping.putPropertyMapping(RdfRegRdf.type, RdfRegEdm.hasType);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDITIONAL_TYPE, RdfRegEdm.hasType);
+		pchoMapping.putPropertyMapping(RegRdf.type, RegEdm.hasType);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ADDITIONAL_TYPE, RegEdm.hasType);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_IDENTIFIER, RdfReg.DC_IDENTIFIER, true);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_NUMBER_OF_PAGES, RdfReg.DCTERMS_EXTENT);		
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_PAGINATION, RdfReg.DC_DESCRIPTION);		
-		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RdfRegEdm.type);
+		DerivedPropertyConversionSpecification edmTypeSpec = new DerivedPropertyConversionSpecification(RegEdm.type);
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_CREATIVE_WORK.getURI(), "TEXT");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_VISUAL_ARTWORK.getURI(), "IMAGE");
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_PAINTING.getURI(), "IMAGE");
@@ -169,20 +169,20 @@ public class SchemaOrgToEdmConversionSpecification {
 		edmTypeSpec.putUriMapping(RdfReg.SCHEMAORG_SCULPTURE.getURI(), "IMAGE");
 //		edmTypeSpec.putUriMapping("", "VIDEO");
 //		edmTypeSpec.putUriMapping("", "3D");
-		pchoMapping.putDerivedProperty(RdfRegRdf.type, edmTypeSpec);
+		pchoMapping.putDerivedProperty(RegRdf.type, edmTypeSpec);
 		 
 		ResourceTypeConversionSpecification aggregationMapping = spec.getTypePropertiesMapping(RdfReg.ORE_AGGREGATION);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_PROVIDER, RdfRegEdm.provider);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_ASSOCIATED_MEDIA, RdfRegEdm.isShownBy);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_AUDIO, RdfRegEdm.isShownBy);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_URL, RdfRegEdm.isShownAt);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_IMAGE, RdfRegEdm.isShownBy);
-		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_THUMBNAIL_URL, RdfRegEdm.object);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_PROVIDER, RegEdm.provider);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_ASSOCIATED_MEDIA, RegEdm.isShownBy);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_AUDIO, RegEdm.isShownBy);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_URL, RegEdm.isShownAt);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_IMAGE, RegEdm.isShownBy);
+		aggregationMapping.putPropertyMapping(RdfReg.SCHEMAORG_THUMBNAIL_URL, RegEdm.object);
 		// next one is commented because it is not supported in the rdfConverter at this time
 		//		aggregationMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_IMAGE, RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.SCHEMAORG_CONTENT_URL, RdfRegEdm.HAS_VIEW);
 //		ResourceTypeConversionSpecification aggregationMapping = spec.getTypeMapping(RdfRegEdm.AGENT);
 
-		ResourceTypeConversionSpecification webResourceMapping = spec.getTypePropertiesMapping(RdfRegEdm.WebResource);
+		ResourceTypeConversionSpecification webResourceMapping = spec.getTypePropertiesMapping(RegEdm.WebResource);
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_ENCODING_FORMAT, RdfReg.DC_FORMAT);
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.DC_DESCRIPTION);
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_DESCRIPTION, RdfReg.DC_DESCRIPTION);
@@ -190,7 +190,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_WIDTH, RdfReg.DCTERMS_EXTENT);
 		webResourceMapping.putPropertyMapping(RdfReg.SCHEMAORG_FILE_FORMAT, RdfReg.DC_FORMAT);
 		webResourceMapping.addPropertyMappingToUri(RdfReg.SCHEMAORG_CONTENT_URL );
-		webResourceMapping.putPropertyMapping(RdfRegRdf.type, RdfReg.DC_TYPE);
+		webResourceMapping.putPropertyMapping(RegRdf.type, RdfReg.DC_TYPE);
 
 		ResourceTypeConversionSpecification organizationMapping = spec.getTypePropertiesMapping(RdfReg.FOAF_ORGANIZATION);
 		organizationMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.SKOS_PREF_LABEL);
@@ -198,7 +198,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		organizationMapping.putPropertyMapping(RdfReg.SCHEMAORG_DESCRIPTION, RdfReg.SKOS_NOTE);
 		organizationMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
 		
-		ResourceTypeConversionSpecification agentMapping = spec.getTypePropertiesMapping(RdfRegEdm.Agent);
+		ResourceTypeConversionSpecification agentMapping = spec.getTypePropertiesMapping(RegEdm.Agent);
 		agentMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.SKOS_PREF_LABEL);
 		agentMapping.putPropertyMapping(RdfReg.SCHEMAORG_ALTERNATE_NAME, RdfReg.SKOS_ALT_LABEL);
 		agentMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
@@ -214,7 +214,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		conceptMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
 		
 		
-		ResourceTypeConversionSpecification placeMapping = spec.getTypePropertiesMapping(RdfRegEdm.Place);
+		ResourceTypeConversionSpecification placeMapping = spec.getTypePropertiesMapping(RegEdm.Place);
 		placeMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.SKOS_PREF_LABEL);
 		placeMapping.putPropertyMapping(RdfReg.SCHEMAORG_ALTERNATE_NAME, RdfReg.SKOS_ALT_LABEL);
 		placeMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);

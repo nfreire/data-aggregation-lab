@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import crawlercommons.sitemaps.SiteMapURL;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.observer.JobObserverStdout;
 
 public class ScriptConvertEuropeanaSitemapToSchemaOrgApi {
@@ -15,7 +15,7 @@ public class ScriptConvertEuropeanaSitemapToSchemaOrgApi {
 	
 	public static void main(String[] args) {
 		try {
-			GlobalCore.init_developement();
+			Global.init_developement();
 			
 			String sitemapUrl="https://www.europeana.eu/portal/europeana-sitemap-index-hashed.xml";
 //			String baseUrlForSitemaps="http://localhost:8080/data-aggregation-lab/static/data-external/europeana-dataset-sitemap/";

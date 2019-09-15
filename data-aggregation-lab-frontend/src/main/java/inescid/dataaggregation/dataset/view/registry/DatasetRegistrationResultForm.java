@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 
 public class DatasetRegistrationResultForm extends View {
 	Dataset dataset;
@@ -27,7 +27,7 @@ public class DatasetRegistrationResultForm extends View {
 
 	public String output() throws Exception{
 		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetregistry/"+getClass().getSimpleName()+".html");
+		Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetregistry/"+getClass().getSimpleName()+".html");
 		temp.process(this, w);
 		w.close();
 		return w.toString();

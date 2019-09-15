@@ -24,9 +24,9 @@ import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.data.RdfRegRdf;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.util.RdfUtil;
 
@@ -52,8 +52,8 @@ public class EnrichEuropeanaWithIiif {
 		if(!outputFolder.exists())
 			outputFolder.mkdirs();
 		
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
 		final HashSet<String> europeanaIdsBroken=new HashSet<String>();
 		try {
@@ -172,14 +172,14 @@ public class EnrichEuropeanaWithIiif {
 												Model rdfEdm = RdfUtil.readRdf(europeanaFetched.body, RdfUtil.fromMimeType(europeanaFetched.getHeader("Content-Type")));
 												
 												String europeanaCollection=null;
-												Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RdfRegRdf.type, RdfRegEdm.EuropeanaAggregation, null, null);
+												Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RegRdf.type, RegEdm.EuropeanaAggregation, null, null);
 												if(agg==null) {
 													System.out.printf("No edm:Aggregation for %s\n", europeanaObjectUri);	
 												} else {
-													Statement property = agg.getProperty(RdfRegEdm.datasetName);
+													Statement property = agg.getProperty(RegEdm.datasetName);
 													europeanaCollection=RdfUtil.getUriOrLiteralValue(property.getObject());
 												}
-												Set<Resource> iiifWebResources=RdfUtil.findResourceWithProperties(rdfEdm, RdfRegRdf.type, RdfRegEdm.WebResource, RdfReg.SVCS_HAS_SERVICE, null);
+												Set<Resource> iiifWebResources=RdfUtil.findResourceWithProperties(rdfEdm, RegRdf.type, RegEdm.WebResource, RdfReg.SVCS_HAS_SERVICE, null);
 												if(iiifWebResources.isEmpty()) {
 													rep.enrichements(europeanaCollection, europeanaObjectUri, wdUri, iiifManifests);
 													rep.profileEdm(europeanaCollection, rdfEdm);
@@ -294,14 +294,14 @@ public class EnrichEuropeanaWithIiif {
 											Model rdfEdm = RdfUtil.readRdf(europeanaFetched.body, RdfUtil.fromMimeType(europeanaFetched.getHeader("Content-Type")));
 											
 											String europeanaCollection=null;
-											Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RdfRegRdf.type, RdfRegEdm.EuropeanaAggregation, null, null);
+											Resource agg=RdfUtil.findFirstResourceWithProperties(rdfEdm, RegRdf.type, RegEdm.EuropeanaAggregation, null, null);
 											if(agg==null) {
 												System.out.printf("No edm:Aggregation for %s\n", europeanaObjectUri);	
 											} else {
-												Statement property = agg.getProperty(RdfRegEdm.datasetName);
+												Statement property = agg.getProperty(RegEdm.datasetName);
 												europeanaCollection=RdfUtil.getUriOrLiteralValue(property.getObject());
 											}
-											Set<Resource> iiifWebResources=RdfUtil.findResourceWithProperties(rdfEdm, RdfRegRdf.type, RdfRegEdm.WebResource, RdfReg.SVCS_HAS_SERVICE, null);
+											Set<Resource> iiifWebResources=RdfUtil.findResourceWithProperties(rdfEdm, RegRdf.type, RegEdm.WebResource, RdfReg.SVCS_HAS_SERVICE, null);
 											if(iiifWebResources.isEmpty()) {
 												rep.enrichementsByWikimedia(europeanaCollection, europeanaObjectUri, wdUri);
 												rep.profileEdm(europeanaCollection, rdfEdm);																								

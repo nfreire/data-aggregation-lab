@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.SparqlClient.Handler;
 
@@ -29,8 +29,8 @@ public class HarvesterWikidataUris {
 		System.out.printf("Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS);
 		
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 		
 		CachedHttpRequestService rdfCache=new CachedHttpRequestService();
 		

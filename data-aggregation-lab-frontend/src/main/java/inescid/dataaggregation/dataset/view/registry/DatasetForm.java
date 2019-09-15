@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import freemarker.template.Template;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.LodDataset;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 
 public abstract class DatasetForm extends View {
 
@@ -59,7 +59,7 @@ public abstract class DatasetForm extends View {
 	public String validateUri() throws IOException {
 		if(StringUtils.isEmpty(dataset.getUri())) {
 			return "Provide a URI";
-		}else if(!GlobalCore.urlPattern.matcher(dataset.getUri()).matches()) 
+		}else if(!Global.urlPattern.matcher(dataset.getUri()).matches()) 
 			return("The URI is in an invalid format");
 		else {
 //			if(null!=GlobalCore.getDatasetRegistryRepository().getDatasetByUri(dataset.getUri()))

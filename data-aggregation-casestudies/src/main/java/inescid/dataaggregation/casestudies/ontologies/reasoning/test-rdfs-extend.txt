@@ -1,0 +1,69 @@
+@include <RDFS> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> . 
+
+[rdfs2:  (?x ?p ?y), (?p rdfs:domain ?c) -> (?x rdf:type ?c)]
+[rdfs3:  (?x ?p ?y), (?p rdfs:range ?c) -> (?y rdf:type ?c)]
+[rdfs6:  (?a ?p ?b), (?p rdfs:subPropertyOf ?q) -> (?a ?q ?b)]
+[rdfs9:  (?x rdfs:subClassOf ?y), (?a rdf:type ?x) -> (?a rdf:type ?y)]
+
+-> (owl:Thing rdf:type owl:Class).
+-> (owl:sameAs rdf:type owl:SymmetricProperty).
+
+# These might need to be pre-expanded in the initial rule set
+-> (owl:equivalentProperty rdf:type owl:SymmetricProperty).
+-> (owl:equivalentProperty rdf:type owl:TransitiveProperty).
+-> (owl:equivalentClass rdf:type owl:SymmetricProperty).
+-> (owl:equivalentClass rdf:type owl:TransitiveProperty).
+-> (owl:sameIndividualAs rdf:type owl:SymmetricProperty).
+-> (owl:sameIndividualAs rdf:type owl:TransitiveProperty).
+-> (owl:sameIndividualAs owl:equivalentProperty owl:sameAs).
+-> (owl:differentFrom rdf:type owl:SymmetricProperty).
+
+-> (owl:equivalentClass rdfs:domain owl:Class).
+-> (owl:equivalentClass rdfs:range  owl:Class).
+
+# EquivalentProperty
+
+[equivalentProperty1: (?P owl:equivalentProperty ?Q)
+            -> (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P) ]
+
+[equivalentProperty2: (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P)
+            -> (?P owl:equivalentProperty ?Q) ]
+
+[equivalentProperty3: (?P owl:sameAs ?Q), (?P rdf:type rdf:Property), (?Q rdf:type rdf:Property)
+            -> (?P owl:equivalentProperty ?Q) ]
+
+# equivalentClass
+[equivalentClass1: (?P owl:equivalentClass ?Q)
+            -> (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) ]
+
+[equivalentClass2: (?P owl:equivalentClass ?Q) <-  (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) ]
+
+[equivalentClass3: (?P owl:sameAs ?Q), (?P rdf:type rdfs:Class), (?Q rdf:type rdfs:Class)
+            -> (?P owl:equivalentClass ?Q) ]
+
+# sameAs propagation rules - forward version
+
+[sameAs1: (?A owl:sameAs ?B) -> (?B owl:sameAs ?A) ]
+
+[sameAs2: (?A owl:sameAs ?B) (?B owl:sameAs ?C) -> (?A owl:sameAs ?C) ]
+
+[sameAs6: (?X rdf:type owl:Thing) <- (?X owl:sameAs ?Y) ]
+
+# Was
+# [sameAs7: (?X owl:sameAs ?X) <- bound(?X) (?X rdf:type owl:Thing) ]
+# which is not complete and breaks the find() contract.
+# Investigate why I though this was a useful thing to do in the first place!
+[sameAs7: (?X owl:sameAs ?X) <- (?X rdf:type owl:Thing) ]
+
+# Equality processing rules
+
+[equality1: (?X owl:sameAs ?Y), notEqual(?X,?Y) ->
+    [(?X ?P ?V) <- (?Y ?P ?V)]
+    [(?V ?P ?X) <- (?V ?P ?Y)] ]
+
+[equality2: (?X owl:sameAs ?Y), (?X rdf:type owl:Class) -> (?X owl:equivalentClass ?Y) ]
+
+[equality3: (?X owl:sameAs ?Y), (?X rdf:type rdf:Property) -> (?X owl:equivalentProperty ?Y) ]

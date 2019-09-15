@@ -11,14 +11,14 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.riot.Lang;
 
-import eu.europeana.commonculture.lod.crawler.rdf.RdfRegRdf;
-import eu.europeana.commonculture.lod.crawler.rdf.RdfRegRdfs;
-import eu.europeana.commonculture.lod.crawler.rdf.RdfUtil;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.ld.LdCrawlerGeneric;
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.dataset.Global;
+import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
 
 public class ScriptCrawlEdmOwl {
@@ -34,8 +34,8 @@ public class ScriptCrawlEdmOwl {
 //				"Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n-Broken EuropenaIDs:%d\n------------------------\n",
 //				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS, europeanaIdsBroken.size());
 //		Files.init(outputFolder);
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);
@@ -43,11 +43,11 @@ public class ScriptCrawlEdmOwl {
 		LdCrawlerGeneric c=new LdCrawlerGeneric(rdfCache);
 		c.setFrontier(new LdCrawlerGeneric.Frontier() {
 			public boolean isToCrawl(String sourceUri, String uri, int depth) {
-				return sourceUri.startsWith(RdfRegEdm.NS) && !uri.startsWith(RdfRegRdf.NS) && !uri.startsWith(RdfRegRdfs.NS) && !uri.startsWith(RdfReg.NsOwl);
+				return sourceUri.startsWith(RegEdm.NS) && !uri.startsWith(RegRdf.NS) && !uri.startsWith(RegRdfs.NS) && !uri.startsWith(RdfReg.NsOwl);
 			}
 			
 			public boolean isToCrawl(String sourceUri, Property predicate, int depth) {
-				return sourceUri.startsWith(RdfRegEdm.NS) && !predicate.getURI().startsWith(RdfRegRdf.NS) && !predicate.getURI().startsWith(RdfRegRdfs.NS) && !predicate.getURI().startsWith(RdfReg.NsOwl);
+				return sourceUri.startsWith(RegEdm.NS) && !predicate.getURI().startsWith(RegRdf.NS) && !predicate.getURI().startsWith(RegRdfs.NS) && !predicate.getURI().startsWith(RdfReg.NsOwl);
 			}
 			
 			public boolean isCrawlPredicates() {
@@ -64,7 +64,7 @@ public class ScriptCrawlEdmOwl {
 			}
 		});
 		
-		c.startCrawl(RdfRegEdm.NS);
+		c.startCrawl(RegEdm.NS);
 		System.out.println("Finished. Crawled URIs: "+crawledCount[0]);
 		byte[] rdfOut = RdfUtil.writeRdf(aggregatedModel, Lang.RDFXML);
 		FileUtils.writeByteArrayToFile(new File("src/data/edm_owl_crawled_model.owl"), rdfOut);

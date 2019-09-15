@@ -8,7 +8,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobObserver;
 
 public class JobObserverProgressLogger implements JobObserver {
@@ -82,7 +82,7 @@ public class JobObserverProgressLogger implements JobObserver {
 			for(JobObserver obs: observersToLog) {
 				sb.append(String.format("-- %s --\n%s\n", obs.getClass().getSimpleName(), obs.toString()));
 			}
-			FileUtils.write(reportFile, sb.toString(), GlobalCore.UTF8, true);
+			FileUtils.write(reportFile, sb.toString(), Global.UTF8, true);
 			lastLog=now.getTime();
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);

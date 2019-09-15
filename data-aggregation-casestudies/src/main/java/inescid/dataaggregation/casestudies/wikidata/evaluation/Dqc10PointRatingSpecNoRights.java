@@ -1,7 +1,7 @@
 package inescid.dataaggregation.casestudies.wikidata.evaluation;
 
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
+import inescid.dataaggregation.data.RegEdm;
 import inescid.dataaggregation.dataset.profile.completeness.CompletenessSpecOfProperties;
 import inescid.dataaggregation.dataset.profile.completeness.CompletenessSpecResources;
 
@@ -12,7 +12,7 @@ public class Dqc10PointRatingSpecNoRights {
 	static {
 		spec=new CompletenessSpecResources();
 		
-		CompletenessSpecOfProperties maxScoreChoSpec=spec.addResource(RdfRegEdm.ProvidedCHO);
+		CompletenessSpecOfProperties maxScoreChoSpec=spec.addResource(RegEdm.ProvidedCHO);
 //		CompletenessSpecOfProperties maxScoreAggSpec=spec.addResource(RdfReg.ORE_AGGREGATION);
 		maxScoreChoSpec.addProperty(RdfReg.DC_DESCRIPTION);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_TITLE, RdfReg.DCTERMS_ALTERNATIVE);
@@ -28,7 +28,7 @@ public class Dqc10PointRatingSpecNoRights {
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_FORMAT, RdfReg.DCTERMS_MEDIUM);
 		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_SOURCE, RdfReg.DCTERMS_PROVENANCE);
 		maxScoreChoSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RdfRegEdm.isNextInSequence);
+		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RegEdm.isNextInSequence);
 		
 		CompletenessSpecOfProperties maxScoreProxySpec=spec.addResource(RdfReg.ORE_PROXY);
 		maxScoreProxySpec.copyFrom(maxScoreChoSpec);

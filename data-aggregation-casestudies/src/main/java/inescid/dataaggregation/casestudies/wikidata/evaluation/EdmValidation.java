@@ -9,7 +9,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.jena.rdf.model.Resource;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.validate.ValidationResult;
 import inescid.dataaggregation.dataset.validate.Validator;
 import inescid.dataaggregation.dataset.validate.Validator.Schema;
@@ -32,10 +32,10 @@ public class EdmValidation {
 	
 	public EdmValidation(File validationCsvFile, Validator validator) throws IOException {
 		if(validator==null)
-			this.validator=new Validator(GlobalCore.getValidatorResourceFolder(), Schema.EDM);
+			this.validator=new Validator(Global.getValidatorResourceFolder(), Schema.EDM);
 		else 
 			this.validator=validator;
-		fileWriter = new FileWriterWithEncoding(validationCsvFile, GlobalCore.UTF8);
+		fileWriter = new FileWriterWithEncoding(validationCsvFile, Global.UTF8);
 		csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 	}		
 	

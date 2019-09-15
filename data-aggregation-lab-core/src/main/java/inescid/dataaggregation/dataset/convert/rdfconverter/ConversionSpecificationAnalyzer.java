@@ -19,7 +19,7 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
@@ -28,7 +28,7 @@ public class ConversionSpecificationAnalyzer {
 	MappingReport rpt;
 	public void process(File schemaorgProfileReportFile, File outputReportFile) throws Exception {
 		rpt=new MappingReport();
-		CSVParser csvParser=CSVParser.parse(FileUtils.readFileToString(schemaorgProfileReportFile, GlobalCore.UTF8), CSVFormat.DEFAULT);
+		CSVParser csvParser=CSVParser.parse(FileUtils.readFileToString(schemaorgProfileReportFile, Global.UTF8), CSVFormat.DEFAULT);
 		
 		int csvFileSection=1;
 		Resource currentClass=null;
@@ -91,11 +91,11 @@ public class ConversionSpecificationAnalyzer {
 		
 		processReferencedResourcesMappings();
 		
-		FileUtils.write(outputReportFile, rpt.toCsv(), GlobalCore.UTF8, false);
+		FileUtils.write(outputReportFile, rpt.toCsv(), Global.UTF8, false);
 	}
 	public void process(Dataset dataset) throws Exception {
 		rpt=new MappingReport();
-		File profileFolder=GlobalCore.getPublicationRepository().getProfileFolder(dataset);
+		File profileFolder=Global.getPublicationRepository().getProfileFolder(dataset);
 		File schemaorgFile = new File(profileFolder, "schema.org-profile.csv");
 		File reportFile = new File(profileFolder, "schema.org-mapping-analysis.csv");
 		

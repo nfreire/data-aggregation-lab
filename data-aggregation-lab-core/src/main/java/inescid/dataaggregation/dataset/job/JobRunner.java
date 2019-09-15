@@ -12,7 +12,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.Job.JobStatus;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 
@@ -34,10 +34,10 @@ public class JobRunner implements Runnable {
 	}
 
 	public synchronized void addJob(Job job) throws IOException {
-		FileUtils.write(operationsLogFile, new JobLog(job).toCsv(), GlobalCore.UTF8, true);
+		FileUtils.write(operationsLogFile, new JobLog(job).toCsv(), Global.UTF8, true);
 	}
 	public synchronized void addJob(JobLog job) throws IOException {
-		FileUtils.write(operationsLogFile, job.toCsv(), GlobalCore.UTF8, true);
+		FileUtils.write(operationsLogFile, job.toCsv(), Global.UTF8, true);
 	}
 
 	public void shutdown() {
@@ -47,7 +47,7 @@ public class JobRunner implements Runnable {
 	public synchronized List<JobLog> listJobHistoric(String localId) throws IOException {
 		List<JobLog> jobHistoric=new ArrayList<>();
 		if(operationsLogFile.exists()) {
-			List<String> lines = FileUtils.readLines(operationsLogFile, GlobalCore.UTF8);
+			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
 				JobLog ds;
 				try {
@@ -112,7 +112,7 @@ public class JobRunner implements Runnable {
 
 	private synchronized Job getNextPendingJob() throws IOException {
 		if(operationsLogFile.exists()) {
-			List<String> lines = FileUtils.readLines(operationsLogFile, GlobalCore.UTF8);
+			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			HashSet<String> datasetsListed=new HashSet<>();
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
 				try {
@@ -137,7 +137,7 @@ public class JobRunner implements Runnable {
 		GregorianCalendar nowMinusReportInterval=new GregorianCalendar();
 		nowMinusReportInterval.add(Calendar.HOUR, reportIntervalInHours);
 		if(operationsLogFile.exists()) {
-			List<String> lines = FileUtils.readLines(operationsLogFile, GlobalCore.UTF8);
+			List<String> lines = FileUtils.readLines(operationsLogFile, Global.UTF8);
 			for(int i=lines.size()-1 ; i>=0 ; i--) {
 				try {
 					JobLog ds= JobLog.fromCsv(lines.get(i));

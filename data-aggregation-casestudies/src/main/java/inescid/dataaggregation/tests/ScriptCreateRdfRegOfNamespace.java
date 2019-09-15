@@ -7,7 +7,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 
 public class ScriptCreateRdfRegOfNamespace {
@@ -18,19 +18,23 @@ public class ScriptCreateRdfRegOfNamespace {
 	public static void main(String[] args) {
 		http://www.wikidata.org/entity.json
 		try { 
-			GlobalCore.init_developement();
+			Global.init_developement();
+			String nsLocation = null;
 //			String name="Rdfs";
 //			String ns = "http://www.w3.org/2000/01/rdf-schema#";
 //			String name="Rdf";
 //			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 //			String name="Edm";
 //			String ns = "http://www.europeana.eu/schemas/edm/";
-			String name="Owl";
-			String ns = "http://www.w3.org/2002/07/owl#";
+//			String name="Owl";
+//			String ns = "http://www.w3.org/2002/07/owl#";
 //			String name="Skos";
 //			String ns = "http://www.w3.org/2004/02/skos/core#";
 			
 //			String makeRequestForContent = HttpUtil.makeRequestForContent(ns);
+			String name="Schemaorg";
+			String ns = "http://schema.org/";
+			nsLocation = "http://schema.org/version/latest/schema.rdf";
 			
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -46,7 +50,11 @@ public class ScriptCreateRdfRegOfNamespace {
 					"	public static String PREFIX=\"%s\";\r\n" +
 					"	public static String NS=\"%s\";\r\n\r\n", name, name.toLowerCase(), ns);
 			
-			Model rdf = RdfUtil.readRdfFromUri(ns);
+			Model rdf = null;
+			if(nsLocation==null)
+				rdf = RdfUtil.readRdfFromUri(ns);
+			else
+				rdf = RdfUtil.readRdfFromUri(nsLocation);
 			for (ResIterator listSubjects = rdf.listSubjects() ; listSubjects.hasNext() ; ) {
 				Resource r = listSubjects.nextResource();
 				String uri = r.getURI();
@@ -63,7 +71,7 @@ public class ScriptCreateRdfRegOfNamespace {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		GlobalCore.shutdown();
+		Global.shutdown();
 	}
 
 }

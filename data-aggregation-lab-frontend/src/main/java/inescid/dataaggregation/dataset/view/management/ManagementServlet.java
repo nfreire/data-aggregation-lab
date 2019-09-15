@@ -20,12 +20,12 @@ import eu.europeana.research.iiif.crawl.ManifestRepository;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.job.Job;
 import inescid.dataaggregation.dataset.job.Job.JobType;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.dataset.view.registry.DatasetRegistrationResultForm;
 import inescid.dataaggregation.dataset.view.registry.IiifForm;
 import inescid.dataaggregation.dataset.view.registry.LodForm;
@@ -100,10 +100,10 @@ public class ManagementServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		Global.init(getInitParameters(config.getServletContext()));
+		GlobalFrontend.init(getInitParameters(config.getServletContext()));
 		View.initContext(config.getServletContext().getContextPath());
-		datasetRepository=GlobalCore.getDatasetRegistryRepository();
-		jobRunner=GlobalCore.getJobRunner();
+		datasetRepository=Global.getDatasetRegistryRepository();
+		jobRunner=Global.getJobRunner();
 	}
 	
 	private Properties getInitParameters(ServletContext servletContext) {
@@ -220,7 +220,7 @@ public class ManagementServlet extends HttpServlet {
 				Dataset dataset = datasetRepository.getDataset(req.getParameter("dataset"));				
 				String harvestParam = req.getParameter("harvestSeeAlso");
 				String seeAlsoParam = req.getParameter("seeAlso");
-				HarvestIiifSeeAlsoForm form=new HarvestIiifSeeAlsoForm(dataset, seeAlsoParam, GlobalCore.getPublicationRepository(), harvestParam!=null && harvestParam.equals("Initiate harvest")); 
+				HarvestIiifSeeAlsoForm form=new HarvestIiifSeeAlsoForm(dataset, seeAlsoParam, Global.getPublicationRepository(), harvestParam!=null && harvestParam.equals("Initiate harvest")); 
 				if(form.executeJob()) {
 					jobRunner.addJob(new Job(JobType.HARVEST_SEEALSO, dataset, seeAlsoParam));
 					form.setMessage("Harvesting of the dataset will be executed. The status of the harvesting process can be followed in the page of the dataset.");
@@ -251,13 +251,13 @@ public class ManagementServlet extends HttpServlet {
 	}
 
 	protected void clearDatasetData(Dataset dataset) throws Exception {
-		GlobalCore.getPublicationRepository().clear(dataset);
-		GlobalCore.getDataRepository().clear(dataset);
-		GlobalCore.getTimestampTracker().clear(dataset.getUri());
-		GlobalCore.getTimestampTracker().clear(dataset.getConvertedEdmDatasetUri());
+		Global.getPublicationRepository().clear(dataset);
+		Global.getDataRepository().clear(dataset);
+		Global.getTimestampTracker().clear(dataset.getUri());
+		Global.getTimestampTracker().clear(dataset.getConvertedEdmDatasetUri());
 		if(dataset.getType()==DatasetType.IIIF)
-			GlobalCore.getTimestampTracker().clear(((IiifDataset)dataset).getSeeAlsoDatasetUri());
-		GlobalCore.getTimestampTracker().commit();
+			Global.getTimestampTracker().clear(((IiifDataset)dataset).getSeeAlsoDatasetUri());
+		Global.getTimestampTracker().commit();
 		dataset.setDataFormat(null);
 		dataset.setDataProfile(null);
 	}
@@ -272,7 +272,7 @@ public class ManagementServlet extends HttpServlet {
 		resp.setStatus(httpStatus);
 		if (body != null && !body.isEmpty()) {
 			ServletOutputStream outputStream = resp.getOutputStream();
-			outputStream.write(body.getBytes(GlobalCore.UTF8));
+			outputStream.write(body.getBytes(Global.UTF8));
 			resp.setContentType("text/html; charset=utf-8");
 		}
 	}

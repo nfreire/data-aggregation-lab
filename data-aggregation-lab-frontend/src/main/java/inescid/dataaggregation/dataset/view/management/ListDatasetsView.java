@@ -15,7 +15,7 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.job.Job;
 import inescid.dataaggregation.dataset.job.JobLog;
 import inescid.dataaggregation.dataset.job.JobRunner;
-import inescid.dataaggregation.dataset.view.Global;
+import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.dataset.view.registry.View;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 
@@ -38,7 +38,7 @@ public class ListDatasetsView extends View {
 	
 	public String output() throws Exception {
 		StringWriter w=new StringWriter();
-		Template temp = Global.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
+		Template temp = GlobalFrontend.FREE_MARKER.getTemplate("datasetmanagement/"+getClass().getSimpleName()+".html");
 		temp.process(this, w);
 		w.close();
 		return w.toString();

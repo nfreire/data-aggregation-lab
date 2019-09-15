@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobObserver;
 import inescid.util.StatisticCalcMean;
 
@@ -69,7 +69,7 @@ public class JobObserverChronometer implements JobObserver {
 				return;
 			if(!reportFile.getParentFile().exists())
 				reportFile.getParentFile().mkdirs();
-			FileUtils.write(reportFile, this.toString(), GlobalCore.UTF8);
+			FileUtils.write(reportFile, this.toString(), Global.UTF8);
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}

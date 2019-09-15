@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobObserver;
 import inescid.util.datastruct.MapOfInts;
 
@@ -62,7 +62,7 @@ public class JobObserverErrorMeter implements JobObserver {
 				return;
 			if(!reportFile.getParentFile().exists())
 				reportFile.getParentFile().mkdirs();
-			FileUtils.write(reportFile, this.toString(), GlobalCore.UTF8);
+			FileUtils.write(reportFile, this.toString(), Global.UTF8);
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}

@@ -52,6 +52,6 @@ public class IiifDataset extends Dataset {
 	}
 
 	public String getSeeAlsoDatasetUri() {
-		return GlobalCore.SEE_ALSO_DATASET_PREFIX+localId;
+		return Global.SEE_ALSO_DATASET_PREFIX+localId;
 	}
 }

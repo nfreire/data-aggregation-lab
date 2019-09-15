@@ -23,7 +23,7 @@ import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobRunner;
 import inescid.dataaggregation.dataset.view.registry.RegistryServlet;
 import inescid.dataaggregation.dataset.view.registry.View;
@@ -31,7 +31,7 @@ import inescid.dataaggregation.store.DatasetRegistryRepository;
 import inescid.dataaggregation.store.PublicationRepository;
 import inescid.dataaggregation.store.Repository;
 
-public class Global {
+public class GlobalFrontend {
 //	public static Pattern urlPattern=Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 //	public static final Charset UTF8 = Charset.forName("UTF8");
 	public static final Configuration FREE_MARKER=new Configuration(Configuration.VERSION_2_3_27);
@@ -42,10 +42,10 @@ public class Global {
 	private static File webappRoot=null;
 
 	static {
-		Global.FREE_MARKER.setClassLoaderForTemplateLoading(RegistryServlet.class.getClassLoader(), "inescid/dataaggregation/view/template");
-		Global.FREE_MARKER.setDefaultEncoding(GlobalCore.UTF8.toString());
-		Global.FREE_MARKER.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
-		Global.FREE_MARKER.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);	
+		GlobalFrontend.FREE_MARKER.setClassLoaderForTemplateLoading(RegistryServlet.class.getClassLoader(), "inescid/dataaggregation/view/template");
+		GlobalFrontend.FREE_MARKER.setDefaultEncoding(Global.UTF8.toString());
+		GlobalFrontend.FREE_MARKER.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		GlobalFrontend.FREE_MARKER.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);	
 	}
 	public static synchronized void init(Properties prop) {
 			if(webappRoot==null) {
@@ -54,7 +54,7 @@ public class Global {
 					webAppRoot = prop.getProperty("dataaggregation.publication-repository.folder");
 				webappRoot=new File(webAppRoot);
 			}
-			GlobalCore.init(prop);
+			Global.init(prop);
 	}
 	public static synchronized void shutdown() {
 	}
@@ -63,7 +63,7 @@ public class Global {
 		Properties props=new Properties();
 		props.setProperty("dataaggregation.webapp.root-folder", "C:\\Users\\nfrei\\workspace-eclipse\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\data-aggregation-lab");
 		init(props);
-		GlobalCore.init_developement();
+		Global.init_developement();
 	}
 	
 

@@ -13,7 +13,7 @@ import crawlercommons.sitemaps.SiteMapURL;
 import crawlercommons.sitemaps.UnknownFormatException;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobObserver;
 import inescid.util.DevelopementSingleton;
 
@@ -68,7 +68,7 @@ public class SitemapResourceCrawler {
 	private void fetchSitemap(String sitemapUrl) throws Exception {
 		UrlRequest ldReq=new UrlRequest(sitemapUrl);
 		HttpRequest sitemapRequest = new HttpRequest(ldReq);
-		GlobalCore.getHttpRequestService().fetch(sitemapRequest);
+		Global.getHttpRequestService().fetch(sitemapRequest);
 		if (sitemapRequest.getResponseStatusCode() != 200) 
 			throw new IOException(sitemapUrl);
 		AbstractSiteMap siteMap = parseSiteMap(sitemapRequest.getContent(), sitemapUrl);

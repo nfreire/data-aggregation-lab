@@ -32,7 +32,7 @@ import com.google.api.services.sheets.v4.model.UpdateSheetPropertiesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class GoogleSheetsCsvUploader {
 	public static void update(String spreadsheetId, File csvFile) throws IOException {
@@ -178,14 +178,14 @@ public class GoogleSheetsCsvUploader {
 	}
 
 	public static String getDatasetAnalysisSpreadsheet(Dataset dataset, String sheetTitle) throws IOException {
-		File profileFolder=GlobalCore.getPublicationRepository().getProfileFolder(dataset);
+		File profileFolder=Global.getPublicationRepository().getProfileFolder(dataset);
 		File sheetsIdFile = new File(profileFolder, "google-sheet-id.txt");
 		String spreadsheetId=null;
 		if(sheetsIdFile.exists()) {
-			 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, GlobalCore.UTF8);
+			 spreadsheetId=FileUtils.readFileToString(sheetsIdFile, Global.UTF8);
 		} else {
 			spreadsheetId=GoogleSheetsCsvUploader.create("Schema.org conversion analysis - "+dataset.getTitle(), sheetTitle);
-			FileUtils.write(sheetsIdFile, spreadsheetId, GlobalCore.UTF8);
+			FileUtils.write(sheetsIdFile, spreadsheetId, Global.UTF8);
 		}
 		return spreadsheetId;
 	}

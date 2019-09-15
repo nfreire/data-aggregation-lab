@@ -12,7 +12,7 @@ import org.apache.jena.rdf.model.Resource;
 
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
@@ -43,9 +43,9 @@ public class RdfDataUsageProfilerSchemaorgEdm {
 		int cntProfiled=0;
 		
 		List<Entry<String, File>> allDatasetResourceFiles = (dataset.getType()==DatasetType.IIIF ? 					
-				GlobalCore.getDataRepository()
+				Global.getDataRepository()
 				.getAllDatasetResourceFiles(((IiifDataset)dataset).getSeeAlsoDatasetUri())
-				: GlobalCore.getDataRepository()
+				: Global.getDataRepository()
 				.getAllDatasetResourceFiles(dataset.getUri()));
 		for (Entry<String, File> seeAlsoFile : allDatasetResourceFiles) {
 			try {
@@ -74,10 +74,10 @@ public class RdfDataUsageProfilerSchemaorgEdm {
 		
 		String csvEdm = profilerEdm.getUsageStats().toCsv();
 		File edmFile = new File(profileFolder, "edm-profile.csv");
-		FileUtils.write(edmFile, csvEdm, GlobalCore.UTF8);
+		FileUtils.write(edmFile, csvEdm, Global.UTF8);
 		String csvSchemaOrg = profilerSchemaorg.getUsageStats().toCsv();
 		File schemaorgFile = new File(profileFolder, "schema.org-profile.csv");
-		FileUtils.write(schemaorgFile, csvSchemaOrg, GlobalCore.UTF8);
+		FileUtils.write(schemaorgFile, csvSchemaOrg, Global.UTF8);
 		
 		String spreadsheetId=GoogleSheetsCsvUploader.getDatasetAnalysisSpreadsheet(dataset, GoogleSheetsCsvUploader.sheetTitleFromFileName(edmFile));
 		GoogleSheetsCsvUploader.update(spreadsheetId, edmFile);

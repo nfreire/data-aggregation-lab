@@ -13,7 +13,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.w3c.dom.Document;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.util.HttpUtil;
@@ -46,7 +46,7 @@ public class ScriptTestKbSchemaOrg {
 	String dataProvider;
 
 	public void runJob(List<Entry<String, File>> allDatasetResourceFiles) throws Exception {
-		GlobalCore.init_developement();
+		Global.init_developement();
 		
 			SchemaOrgToEdmDataConverter converter = new SchemaOrgToEdmDataConverter();
 			converter.setDataProvider(dataProvider);
@@ -78,7 +78,7 @@ public class ScriptTestKbSchemaOrg {
 					e.printStackTrace();
 				}
 			}
-			GlobalCore.shutdown();
+			Global.shutdown();
 	}
 
 	private byte[] getEdmRecord(SchemaOrgToEdmDataConverter converter, String resUri, byte[] sourceRdfBytes) {
@@ -100,6 +100,6 @@ public class ScriptTestKbSchemaOrg {
 			
 			System.out.println(domString);
 			
-			return domString.getBytes(GlobalCore.UTF8);
+			return domString.getBytes(Global.UTF8);
 	}
 }

@@ -8,7 +8,7 @@ import eu.europeana.research.iiif.discovery.ProcesssingAlgorithm;
 import eu.europeana.research.iiif.discovery.demo.TimestampCrawlingHandler;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import inescid.dataaggregation.dataset.Dataset;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.IiifDataset.IiifCrawlMethod;
 
@@ -29,7 +29,7 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 
 	@Override
 	public void runJob() throws Exception {
-			TimestampTracker timestampTracker=GlobalCore.getTimestampTracker();
+			TimestampTracker timestampTracker=Global.getTimestampTracker();
 			IiifDataset iiifDataset=(IiifDataset)dataset;
 			Calendar startOfCrawl=null;
 			try {
@@ -42,7 +42,7 @@ public class JobHarvestIiif extends JobWorker implements Runnable {
 					iiifDiscovery.setSampleSize(sampleSize);
 					startOfCrawl=iiifDiscovery.startProcess(iiifDataset.getUri(), false);
 				}
-				ManifestHarvester harvester=new ManifestHarvester(GlobalCore.getDataRepository(), timestampTracker, iiifDataset.getUri());
+				ManifestHarvester harvester=new ManifestHarvester(Global.getDataRepository(), timestampTracker, iiifDataset.getUri());
 				harvester.harvest();
 				timestampTracker.setDatasetTimestamp(iiifDataset.getUri(), startOfCrawl);
 				timestampTracker.commit();

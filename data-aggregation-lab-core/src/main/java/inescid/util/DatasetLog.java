@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class DatasetLog {
 	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(DatasetLog.class);
@@ -17,7 +17,7 @@ public class DatasetLog {
 	private int harvestFailCount;
 	
 	public DatasetLog(String datasetUri) {
-		logFile=GlobalCore.getDataRepository().getDatasetLogFile(datasetUri);
+		logFile=Global.getDataRepository().getDatasetLogFile(datasetUri);
 	}
 	
 	public void logHarvestIssue(String rdfResouceUri, String message) {
@@ -25,7 +25,7 @@ public class DatasetLog {
 		if((harvestSuccessCount + harvestFailCount) % 100 == 0)
 			log.info(String.format("Harvest progress: %d resources, %d failures", harvestSuccessCount, harvestFailCount));
 		try {
-			FileUtils.write(logFile, String.format("[%1$tF %1$tR] %2$s [H] %3$s\n", new Date(), rdfResouceUri, message), GlobalCore.UTF8, true);
+			FileUtils.write(logFile, String.format("[%1$tF %1$tR] %2$s [H] %3$s\n", new Date(), rdfResouceUri, message), Global.UTF8, true);
 		} catch (IOException e) {
 			log.warn(e.getMessage(), e);
 		}
@@ -37,7 +37,7 @@ public class DatasetLog {
 	}
 	public void logValidationIssue(String rdfResouceUri, String message) {
 		try {
-			FileUtils.write(logFile, String.format("[%1$tF %1$tR] %2$s [V] %3$s\n", new Date(), rdfResouceUri, message), GlobalCore.UTF8, true);
+			FileUtils.write(logFile, String.format("[%1$tF %1$tR] %2$s [V] %3$s\n", new Date(), rdfResouceUri, message), Global.UTF8, true);
 		} catch (IOException e) {
 			log.warn(e.getMessage(), e);
 		}

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 
 public class RdfDeserializer {
 
@@ -30,7 +30,7 @@ public class RdfDeserializer {
 	
 	public static Model fromMimeType(byte[] serializedRdf, String baseUri, String mimeType) {
 		if(mimeType.equals("application/ld+json")) 
-			return fromJsonLd(new String(serializedRdf, GlobalCore.UTF8), baseUri);
+			return fromJsonLd(new String(serializedRdf, Global.UTF8), baseUri);
 		if(mimeType.equals("application/rdf+xml")) 
 			return fromRdfXml(serializedRdf,  baseUri);
 		throw new IllegalArgumentException("Unsupported mime: "+mimeType);
@@ -39,7 +39,7 @@ public class RdfDeserializer {
 	static final Pattern XML_DECLARATION_PATTERN=Pattern.compile("^\\s*<\\?xml\\s");
 	static final Pattern JSON_BRACES_PATTERN=Pattern.compile("^\\s*\\{.*\\}\\s*$",Pattern.DOTALL);
 	public static String detectMimeType(byte[] rdfBytes) {
-		String s=new String(rdfBytes, GlobalCore.UTF8);
+		String s=new String(rdfBytes, Global.UTF8);
 		if(XML_DECLARATION_PATTERN.matcher(s).find())
 			return "application/rdf+xml";
 		if(JSON_BRACES_PATTERN.matcher(s).matches())

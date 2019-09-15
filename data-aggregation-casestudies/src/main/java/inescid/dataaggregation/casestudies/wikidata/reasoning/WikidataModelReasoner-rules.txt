@@ -53,11 +53,11 @@
 
 [inverseOf2: (?P owl:inverseOf ?Q), (?X ?P ?Y) -> (?Y ?Q ?X) ]
 
-[inverseOf3: (?P owl:inverseOf ?Q), (?P rdf:type owl:FunctionalProperty) 
-						-> (?Q rdf:type owl:InverseFunctionalProperty) ]
+#[inverseOf3: (?P owl:inverseOf ?Q), (?P rdf:type owl:FunctionalProperty) 
+#						-> (?Q rdf:type owl:InverseFunctionalProperty) ]
 		
-[inverseOf4: (?P owl:inverseOf ?Q), (?P rdf:type owl:InverseFunctionalProperty) 
-						-> (?Q rdf:type owl:FunctionalProperty) ]
+#[inverseOf4: (?P owl:inverseOf ?Q), (?P rdf:type owl:InverseFunctionalProperty) 
+#						-> (?Q rdf:type owl:FunctionalProperty) ]
 
 # symmetric
 [symmetricProperty1: (?P rdf:type owl:SymmetricProperty), (?X ?P ?Y) -> (?Y ?P ?X)]

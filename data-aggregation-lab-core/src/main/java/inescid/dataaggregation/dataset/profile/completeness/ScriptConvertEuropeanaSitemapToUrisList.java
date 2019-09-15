@@ -14,7 +14,7 @@ import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.crawl.sitemap.CrawlResourceHandler;
 import inescid.dataaggregation.crawl.sitemap.SitemapResourceCrawler;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.observer.JobObserverStdout;
 
 public class ScriptConvertEuropeanaSitemapToUrisList {
@@ -22,7 +22,7 @@ public class ScriptConvertEuropeanaSitemapToUrisList {
 
 	public static void main(String[] args) {
 		try {
-			GlobalCore.init_developement();
+			Global.init_developement();
 //			
 			String sitemapUrl="https://sitemap-test.eanadev.org/sitemap/index.xml";
 //			String sitemapUrl="https://www.europeana.eu/portal/europeana-sitemap-index-hashed.xml";
@@ -32,7 +32,7 @@ public class ScriptConvertEuropeanaSitemapToUrisList {
 			String prefetchedSitemap=null;
 			{
 				HttpRequest sitemapRequest = new HttpRequest(new UrlRequest(sitemapUrl));
-				GlobalCore.getHttpRequestService().fetch(sitemapRequest);
+				Global.getHttpRequestService().fetch(sitemapRequest);
 				if (sitemapRequest.getResponseStatusCode() != 200) 
 					throw new IOException(sitemapUrl);
 				prefetchedSitemap=sitemapRequest.getContent().asString();

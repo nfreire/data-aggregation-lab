@@ -12,8 +12,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RdfRegEdm;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.profile.ProfileOfValueDistribution.ValueDistribution;
 import inescid.dataaggregation.dataset.profile.PropertyProfiler;
 
@@ -50,7 +50,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append("    <li><a href=\""+c+".html\">"+c+"</a> ("+
 							rep.enrichements.get(c).size()+" CHOs)\n"); 
 					sb.append("<br />(rights in Europeana: ");
-					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfRegEdm.rights.getURI());
+					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RegEdm.rights.getURI());
 					if (propertyProfiler==null) {
 						sb.append("data unavailable");
 					} else {
@@ -100,7 +100,7 @@ public class IiifResourcesEnrichmentReportViewer {
 				sb.append("    <li><a href=\""+c+"_wikimedia.html\">"+c+"</a> ("+
 						rep.enrichementsByWikimedia.get(c).size()+" CHOs)\n"); 
 				sb.append("<br />(rights in Europeana: ");
-				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RdfRegEdm.rights.getURI());
+				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RegEdm.rights.getURI());
 				if (propertyProfiler==null) {
 					sb.append("data unavailable");
 				} else {
@@ -149,7 +149,7 @@ public class IiifResourcesEnrichmentReportViewer {
 						sb.append("	</ul>\n"+
 						"</body>\n" + 
 				"</html>");
-				FileUtils.write(new File(repFolder, "index.html"), sb, GlobalCore.UTF8);
+				FileUtils.write(new File(repFolder, "index.html"), sb, Global.UTF8);
 		}
 		{
 			for(String col: rep.enrichements.keySet()) {
@@ -174,7 +174,7 @@ public class IiifResourcesEnrichmentReportViewer {
 				sb.append("	</table>\n"+
 						"</body>\n" + 
 						"</html>");
-				FileUtils.write(new File(repFolder, col+".html"), sb, GlobalCore.UTF8);
+				FileUtils.write(new File(repFolder, col+".html"), sb, Global.UTF8);
 			}
 			for(String col: rep.enrichementsByWikimedia.keySet()) {
 				StringBuilder sb=new StringBuilder();
@@ -198,7 +198,7 @@ public class IiifResourcesEnrichmentReportViewer {
 				sb.append("	</table>\n"+
 						"</body>\n" + 
 						"</html>");
-				FileUtils.write(new File(repFolder, col+"_wikimedia.html"), sb, GlobalCore.UTF8);
+				FileUtils.write(new File(repFolder, col+"_wikimedia.html"), sb, Global.UTF8);
 			}
 			{
 				for(String col: rep.existingInEuropeana.keySet()) {
@@ -223,7 +223,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append("	</table>\n"+
 							"</body>\n" + 
 							"</html>");
-					FileUtils.write(new File(repFolder, col+"_in_europeana.html"), sb, GlobalCore.UTF8);
+					FileUtils.write(new File(repFolder, col+"_in_europeana.html"), sb, Global.UTF8);
 				}
 			}
 			{
@@ -249,7 +249,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append("	</table>\n"+
 							"</body>\n" + 
 							"</html>");
-					FileUtils.write(new File(repFolder, col+"_wikimedia_in_europeana.html"), sb, GlobalCore.UTF8);
+					FileUtils.write(new File(repFolder, col+"_wikimedia_in_europeana.html"), sb, Global.UTF8);
 				}
 			}
 		}

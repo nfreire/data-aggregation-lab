@@ -4,7 +4,7 @@ import java.io.File;
 
 import eu.europeana.research.iiif.crawl.IiifCollectionTree;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 
 public class MetadataUsageCrawler {
@@ -30,10 +30,10 @@ public class MetadataUsageCrawler {
 				"Settings:\n-OutpputFolder:%s\n-Cache:%s\n-Records:%d\n------------------------\n",
 				outputFolder.getPath(), httpCacheFolder, SAMPLE_RECORDS);
 
-		GlobalCore.init_componentHttpRequestService();
-		GlobalCore.init_componentDataRepository(httpCacheFolder);
+		Global.init_componentHttpRequestService();
+		Global.init_componentDataRepository(httpCacheFolder);
 
-		Repository dataRepository = GlobalCore.getDataRepository();
+		Repository dataRepository = Global.getDataRepository();
 
 		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
 		rdfCache.setRequestRetryAttempts(1);

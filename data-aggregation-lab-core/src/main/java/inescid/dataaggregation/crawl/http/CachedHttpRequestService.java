@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
@@ -23,8 +23,8 @@ public class CachedHttpRequestService {
 	
 	public CachedHttpRequestService() {
 		super();
-		this.httpService = GlobalCore.getHttpRequestService();
-		this.cache = GlobalCore.getDataRepository();		
+		this.httpService = Global.getHttpRequestService();
+		this.cache = Global.getDataRepository();		
 	}
 	
 	

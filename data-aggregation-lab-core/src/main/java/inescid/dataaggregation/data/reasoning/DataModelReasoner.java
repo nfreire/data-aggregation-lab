@@ -13,10 +13,10 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 
-import eu.europeana.commonculture.lod.crawler.rdf.RdfRegRdf;
-import eu.europeana.commonculture.lod.crawler.rdf.RdfUtil.Jena;
-import inescid.dataaggregation.data.RdfRegRdfs;
-import inescid.dataaggregation.dataset.GlobalCore;
+import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.dataset.Global;
+import inescid.util.RdfUtil.Jena;
 
 public class DataModelReasoner {
 	final protected GenericRuleReasoner reasoner;
@@ -27,7 +27,7 @@ public class DataModelReasoner {
 	
 	public DataModelReasoner(String rulesClasspath) throws IOException {
 		InputStream systemResourceAsStream = ClassLoader.getSystemResourceAsStream(rulesClasspath);
-		BufferedReader br = IOUtils.toBufferedReader(new InputStreamReader(systemResourceAsStream, GlobalCore.UTF8));
+		BufferedReader br = IOUtils.toBufferedReader(new InputStreamReader(systemResourceAsStream, Global.UTF8));
 		List<Rule> rules = Rule.parseRules( Rule.rulesParserFromReader(br) );
 		br.close();
 		reasoner = new GenericRuleReasoner(rules);
@@ -46,8 +46,8 @@ public class DataModelReasoner {
 		Model m = Jena.createModel();
 
 //[rdfs9:  (?x rdfs:subClassOf ?y), (?a rdf:type ?x) -> (?a rdf:type ?y)] 
-		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://n/x"), RdfRegRdfs.subClassOf, m.createResource("http://n/y"));
-		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://n/a"), RdfRegRdf.type,  m.createResource("http://n/x"));
+		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://n/x"), RegRdfs.subClassOf, m.createResource("http://n/y"));
+		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://n/a"), RegRdf.type,  m.createResource("http://n/x"));
 //		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://i/PropInst"), RdfRegRdfs.subClassOf, m.createResource("http://c/Prop"));
 //		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://sc/Prop"), RdfRegRdf.type, RdfRegRdf.Property);
 //		inescid.util.RdfUtil.Jena.createStatementAddToModel(m, m.createResource("http://c/Prop"), RdfRegRdf.type, RdfRegRdf.Property);
