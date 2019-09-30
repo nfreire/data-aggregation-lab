@@ -1,0 +1,77 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> . 
+
+#------------------------------------------------------------------
+# RDFS rule set v0.1.
+# This variant is used in the case where the subclass and subproperty
+# lattices have been precomputed by a transitive graph closure cache.
+# $Id: rdfs-fb-tgc-noresource.rules,v 1.3 2003-08-21 22:06:42 der Exp $
+#------------------------------------------------------------------
+
+#------------------------------------------------------------------
+# Tabling directives
+#------------------------------------------------------------------
+
+#-> table(rdf:type).
+
+#------------------------------------------------------------------
+# RDFS Axioms
+#------------------------------------------------------------------
+
+
+#------------------------------------------------------------------
+# RDFS Closure rules
+#------------------------------------------------------------------
+
+#[rdfs6:  (?p rdfs:subPropertyOf ?q), notEqual(?p,?q) -> table(?p), table(?q), [ (?a ?q ?b) <- (?a ?p ?b)] ] 
+
+#[rdfs9-alt:  (?a rdf:type ?y) <- (?x rdfs:subClassOf ?y), (?a rdf:type ?x) ] 
+
+#------------------------------------------------------------------
+# Nuno: RDFS + OWL rule set v0.1.
+# 
+# 
+# 
+#------------------------------------------------------------------
+
+[rdfs6:  (?a ?p ?b), (?p rdfs:subPropertyOf ?q) -> (?a ?q ?b)]
+[rdfs9:  (?x rdfs:subClassOf ?y), (?a rdf:type ?x) -> (?a rdf:type ?y)]
+
+
+# EquivalentProperty
+
+[equivalentProperty1: (?P owl:equivalentProperty ?Q)
+            -> (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P) ]
+
+[equivalentProperty2: (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P)
+            -> (?P owl:equivalentProperty ?Q) ]
+
+[equivalentProperty3: (?P owl:sameAs ?Q), (?P rdf:type rdf:Property), (?Q rdf:type rdf:Property)
+            -> (?P owl:equivalentProperty ?Q) ]
+
+# equivalentClass
+[equivalentClass1: (?P owl:equivalentClass ?Q)
+            -> (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) ]
+
+#[equivalentClass2: (?P owl:equivalentClass ?Q) <-  (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) ]
+
+[equivalentClass3: (?P owl:sameAs ?Q), (?P rdf:type rdfs:Class), (?Q rdf:type rdfs:Class)
+            -> (?P owl:equivalentClass ?Q) ]
+
+# sameAs propagation rules - forward version
+
+#[sameAs1: (?A owl:sameAs ?B) -> (?B owl:sameAs ?A) ]
+
+[sameAs2: (?A owl:sameAs ?B) (?B owl:sameAs ?C) -> (?A owl:sameAs ?C) ]
+
+#[sameAs6: (?X rdf:type owl:Thing) <- (?X owl:sameAs ?Y) ]
+
+# Equality processing rules
+
+#[equality1: (?X owl:sameAs ?Y), notEqual(?X,?Y) ->
+#    [(?X ?P ?V) <- (?Y ?P ?V)]
+#    [(?V ?P ?X) <- (?V ?P ?Y)] ]
+
+[equality2: (?X owl:sameAs ?Y), (?X rdf:type owl:Class) -> (?X owl:equivalentClass ?Y) ]
+
+[equality3: (?X owl:sameAs ?Y), (?X rdf:type rdf:Property) -> (?X owl:equivalentProperty ?Y) ]

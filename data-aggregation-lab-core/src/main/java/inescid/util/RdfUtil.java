@@ -59,8 +59,8 @@ public class RdfUtil {
 		public static Statement createStatement(Resource sub, Property pred, RDFNode obj) {
 			return ResourceFactory.createStatement(sub, pred, obj);
 		}
-		public static Statement createStatement(String subUri, Property pred, RDFNode obj) {
-			return ResourceFactory.createStatement(createResource(subUri), pred, obj);
+		public static Statement createStatement(String subjectUri, Property pred, RDFNode obj) {
+			return ResourceFactory.createStatement(createResource(subjectUri), pred, obj);
 		}
 		public static Resource getResourceIfExists(String uri, Model model) {
 			Resource createResource = model.createResource(uri);
@@ -73,6 +73,12 @@ public class RdfUtil {
 		public static Statement createStatementAddToModel(Model model, Resource subject, Property pred,
 				RDFNode object) {
 			Statement st = model.createStatement(subject, pred, object);
+			model.add(st);
+			return st;
+		}
+		public static Statement createStatementAddToModel(Model model, String subjectUri, Property pred,
+				RDFNode object) {
+			Statement st = model.createStatement(model.createResource(subjectUri), pred, object);
 			model.add(st);
 			return st;
 		}
@@ -337,5 +343,10 @@ public class RdfUtil {
 		ArrayList<Statement> ret=new ArrayList<Statement>(model.getResource(resourceUri).listProperties().toList()); 
 		ret.addAll(model.listStatements(null, null, resourceUri).toList());
 		return ret;
+	}
+
+	public static void writeRdf(StmtIterator listStatements, Lang l, StringWriter w) {
+		Model m=Jena.createModel().add(listStatements);
+		m.write(w, l.getName());
 	}
 }

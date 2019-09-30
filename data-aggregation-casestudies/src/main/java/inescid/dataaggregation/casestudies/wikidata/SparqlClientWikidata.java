@@ -14,9 +14,18 @@ public class SparqlClientWikidata {
 			"PREFIX wikibase: <http://wikiba.se/ontology#>\n" +
             "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\n" +
             "PREFIX wd: <http://www.wikidata.org/entity/>\n"); 
-
+	
+	public static void setDubug(boolean d) {
+		INSTANCE.setDebug(d);
+	}
+	
+	
 	public static int query(String queryString, final Handler handler) {
 		return INSTANCE.query(queryString, handler);
+	}
+	
+	public static int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) {
+		return INSTANCE.queryWithPaging(queryString, resultsPerPage, orderVariableName, handler);
 	}
 	
 	public static List<String> getAllSubclassesOfCreativeWork (){

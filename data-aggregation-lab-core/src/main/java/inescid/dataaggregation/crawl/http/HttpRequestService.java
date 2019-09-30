@@ -38,7 +38,6 @@ public class HttpRequestService {
 	CloseableHttpClient httpClient;
 	CookieStore httpCookieStore;
 	boolean followRedirects=true;
-
 //	ArrayList<FetchRequest> requestsQueue=new ArrayList<>(50);
 
 	Vector<Long> requestTimeStats = null;

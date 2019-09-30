@@ -1,61 +1,28 @@
 package inescid.dataaggregation.casestudies.schemaorgcrawling;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.jena.riot.Lang;
-import org.apache.poi.hssf.util.HSSFColor.GOLD;
-
-import com.drew.lang.ByteArrayReader;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.ld.DatasetDescription;
-import inescid.dataaggregation.crawl.ld.RulesSchemaorgCrawlGraphOfCho;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.store.Repository;
-import inescid.util.RdfUtil;
 
-public class ScriptTestCrawl {
-	/* 
-	 init componentes
-	get URIs for sample
-		call crawl on each URI
-	write results
-	--
-		report of results:
-		obtained resources #
-		links not followed #
-			links not followed by Class #
-				
-		irrelevant resources that were not mapped later.
-		
-	-- crawl of a URI
-		getCho, 
-			check Resorce class
-			for each prop of cho 
-				if prop is mappable, follow it if mappable to a resource. if just a reference use the URI. if literal, harvest linked resource and keep if schema:name is present
-				    harvest the resource (if not just used as ref)
-				    	if to be used as literal, keep if schema:name is present (may be further elaborated in future work)
-				    	if resource check supported type. 
-				    		if supported continue harvesting and apply resource harvest algorithm
-				    		if not supported type, try to get a schema:name for use as literal, or discard.
-	*/
-	
+public class ScriptTestCrawlForAnalisys {
 	public static void main(String[] args) throws Exception {
 		//experience workflow settings
 		boolean reuseLastTestUris=true;
 		boolean reuseLastCrawling=false;
+		File urisFile = new File("src/data/schemaorgcrawling/uris-NLF.txt");
+		String crawledTestUrisRepositoryDataset = "crawled-NLF";
+		String collectionDescriptionUri=null;
+//		File urisFile = new File("src/data/schemaorgcrawling/uris-KB-alba.txt");
+//		String crawledTestUrisRepositoryDataset = "crawled-KB-alba";
+//		String collectionDescriptionUri="http://data.bibliotheken.nl/id/dataset/rise-alba";
 
 		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepository";
-		File urisFile = new File("target/schemaorg-test-uris.txt");
-		
-		String crawledTestUrisRepositoryDataset = "crawled-test-uris";
 
 		Global.init_componentHttpRequestService();
 		Global.init_componentDataRepository(httpCacheFolder);
@@ -71,11 +38,11 @@ public class ScriptTestCrawl {
 		if(urisFile.exists() && urisFile.length()>0) {
 			testUris = FileUtils.readLines(urisFile, Global.UTF8);
 		} else {
-			String dsKbAlba="http://data.bibliotheken.nl/id/dataset/rise-alba";
-			testUris = DatasetDescription.listRootResources(dsKbAlba);
+			testUris = DatasetDescription.listRootResources(collectionDescriptionUri);
 			FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
 		}			
-		
+		int totalUrisCrawled=0;
+		CrawlResultStats stats=new CrawlResultStats();
 		for(String uri : testUris) {
 			CrawlResult crawlResult;
 			if(reuseLastCrawling && dataRepository.contains(crawledTestUrisRepositoryDataset, uri)) {
@@ -84,7 +51,14 @@ public class ScriptTestCrawl {
 				crawlResult = crawler.crawlSchemaorgForCho(uri);
 				dataRepository.save(crawledTestUrisRepositoryDataset, uri, crawlResult.serialize());
 			}
-			System.out.println(uri+" - "+new String(crawlResult.serialize()));
+			stats.addToStats(crawlResult);
+			totalUrisCrawled++;
+			if(totalUrisCrawled%10 == 0) {
+				System.out.println("Mid stats at "+totalUrisCrawled+" - "+new String(stats.serialize()));
+				FileUtils.writeByteArrayToFile(new File("target/CrawlAnalisys-mid.csv"), stats.serialize());
+			}
 		};
+		System.out.println("Final stats - "+new String(stats.serialize()));
+		FileUtils.writeByteArrayToFile(new File("target/CrawlAnalisys.csv"), stats.serialize());
 	}
 }

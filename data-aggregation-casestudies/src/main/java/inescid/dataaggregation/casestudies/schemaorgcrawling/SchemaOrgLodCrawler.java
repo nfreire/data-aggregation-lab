@@ -33,8 +33,10 @@ public class SchemaOrgLodCrawler {
 	
 	RulesSchemaorgCrawlGraphOfCho rules=new RulesSchemaorgCrawlGraphOfCho();
 	CrawlResult crawl;
-	int maxDepth=1;
+	int maxDepth=2;
 	HashSet<String> alreadyCrawled=new HashSet<>();
+	HashSet<String> alreadyCrawledNonRdf=new HashSet<>();
+	HashSet<String> alreadyCrawledNotFound=new HashSet<>();
 	
 	public CrawlResult crawlSchemaorgForCho(String uri) throws AccessException, InterruptedException, IOException {
 		crawl=new CrawlResult();
@@ -57,20 +59,40 @@ public class SchemaOrgLodCrawler {
 //		crawl.literalsFound++;
 	}
 	protected void crawlResource(String uri, int depth) throws AccessException, InterruptedException, IOException {
-		if(maxDepth<depth || alreadyCrawled.contains(uri)) return;
-		System.out.println(depth+" "+uri);
+		if(maxDepth<depth) { 
+			crawl.urisTooDeep++;
+			return;
+		}
+		if(alreadyCrawled.contains(uri)) 
+			return;
+		if(alreadyCrawledNonRdf.contains(uri)) {
+			crawl.incNotRdf(uri);
+			return;
+		}
+		if(alreadyCrawledNotFound.contains(uri)) {
+			crawl.incNotFound(uri);
+			return;
+		}
+//		System.out.println(depth+" "+uri);
 		Resource r=null;
 		try {
 			r = RdfUtil.readRdfResourceFromUri(uri);
-			if (r==null )
-				crawl.notFound++;
+			if (r==null ) {
+				System.out.println("Not found (depth "+depth+") "+uri);				
+				crawl.incNotFound(uri);
+			}else
+				alreadyCrawled.add(uri);
 		} catch (AccessException e) {
-			if(e.getCode()!=null && e.getCode().equals("200")) 
-				crawl.notRdf++;
-			else
-				crawl.notFound++;
+			if(e.getCode()!=null && e.getCode().equals("200")) {
+				crawl.incNotRdf(uri);
+				alreadyCrawledNonRdf.add(uri);
+				System.out.println("Not rdf (depth "+depth+") "+uri);
+			} else {
+				crawl.incNotFound(uri);
+				alreadyCrawledNotFound.add(uri);
+				System.out.println("Not found (depth "+depth+") "+uri);
+			}
 		}
-		alreadyCrawled.add(uri);
 		if (r==null ) return ;
 		crawl.obtainedResources++;
 		processedCrawledResource(r, depth, true);
@@ -116,6 +138,8 @@ public class SchemaOrgLodCrawler {
 					if(possibleMaps.isEmpty()) {
 						crawl.propsNotFollowed++;
 						crawl.propsNotFollowedByProperty.incrementTo(prop);	
+						if (st.getObject().isResource() && !st.getObject().isAnon()) 
+							crawl.propsNotFollowedWithUri++;
 					}else {
 						if(prop.equals(RegSchemaorg.image))
 							System.out.println(st);

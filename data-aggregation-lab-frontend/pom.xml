@@ -32,10 +32,10 @@
 			<id>europeana-rnd</id>
 			<properties>
 				<default.servlet.class>org.apache.catalina.servlets.DefaultServlet</default.servlet.class>          
-				<dataaggregation.dataset-registry.repository.folder>/data/nfreire/data-aggregation-lab/registry</dataaggregation.dataset-registry.repository.folder>
-				<dataaggregation.data-repository.folder>/data/nfreire/data-aggregation-lab/data-repository</dataaggregation.data-repository.folder>
-				<dataaggregation.timestamp.repository.folder>/data/nfreire/data-aggregation-lab/timestamp-db</dataaggregation.timestamp.repository.folder>				
-				<dataaggregation.log>/data/nfreire/data-aggregation-lab/tomcat-log.txt</dataaggregation.log>
+				<dataaggregation.dataset-registry.repository.folder>/home/nfreire/data/data-aggregation-lab/registry</dataaggregation.dataset-registry.repository.folder>
+				<dataaggregation.data-repository.folder>/home/nfreire/data/data-aggregation-lab/data-repository</dataaggregation.data-repository.folder>
+				<dataaggregation.timestamp.repository.folder>/home/nfreire/data/data-aggregation-lab/timestamp-db</dataaggregation.timestamp.repository.folder>				
+				<dataaggregation.log>/home/nfreire/data/data-aggregation-lab/tomcat-log.txt</dataaggregation.log>
 				<googleapi.credentials>/home/nfreire/.credentials/Data Aggregation Lab-b1ec5c3705fc.json</googleapi.credentials>
 			</properties>
 		</profile>

@@ -1,37 +1,5 @@
 package inescid.dataaggregation.casestudies.wikidata.reasoning;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.function.Consumer;
-
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.jena.rdf.model.InfModel;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.rdf.model.Statement;
-
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.ScriptMetadataAnalyzerOfCulturalHeritage;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegSkos;
-import inescid.dataaggregation.data.reasoning.DataModelReasoner;
-import inescid.dataaggregation.data.reasoning.ReasonerByRulesAndSchemas;
-import inescid.dataaggregation.dataset.Global;
-import inescid.util.AccessException;
-import inescid.util.RdfUtil;
-import inescid.util.RdfUtil.Jena;
-
 public class ScriptWikidataReasoningExperiment_1stTry {
 // 	
 //	public static void main(String[] args) throws Exception {

@@ -21,7 +21,8 @@ public class SparqlClient {
 	
 	protected final String baseUrl; 
 	protected final String queryPrefix;
-
+	protected boolean debug=false;
+	
 	public SparqlClient(String baseUrl, String queryPrefix) {
 		super();
 		this.baseUrl = baseUrl;
@@ -41,7 +42,8 @@ public class SparqlClient {
 	public int query(String queryString, Handler handler) {
 		int wdCount=0;
 		String fullQuery = queryPrefix + queryString;
-        System.out.println(fullQuery);
+		if(debug)
+			System.out.println(fullQuery);
 		QueryExecution qexec = QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
 		try {
 			ResultSet results = qexec.execSelect();
@@ -69,6 +71,47 @@ public class SparqlClient {
 			qexec.close();
 		}
 		return wdCount;
+	}
+	
+	public int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) {
+		int offsett=0;
+		while (true) {
+			String fullQuery = String.format("%s%s\n%s" + 
+					"LIMIT %d\n" + 
+					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett);
+			if(debug)
+				System.out.println(fullQuery);
+			QueryExecution qexec = QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
+			try {
+				ResultSet results = qexec.execSelect();
+	//            ResultSetFormatter.out(System.out, results, query);
+				if(!results.hasNext())
+					break;
+				while(results.hasNext()) {
+					Resource resource = null;
+					QuerySolution hit = results.next();
+					try {
+						if (!handler.handleSolution(hit)) {
+							System.err.println("RECEIVED HANDLER ABORT");
+							break;
+						}
+					} catch (Exception e) {
+						System.err.println("Error on record handler: "+(resource==null ? "?" : resource.getURI()));
+						e.printStackTrace();
+						System.err.println("PROCEEDING TO NEXT URI");
+					}
+					offsett++;
+				}
+				if(debug)
+					System.out.printf("QUERY FINISHED - %d resources\n", offsett);            
+			} catch (Exception ex) {
+				System.err.println("Error on query: "+fullQuery);
+				ex.printStackTrace();
+			} finally {
+				qexec.close();
+			}
+		}
+		return offsett;
 	}
 	
 	public void createAllStatementsAboutAndReferingResource(String resourceUri, Model createInModel) {
@@ -113,4 +156,10 @@ public class SparqlClient {
 		createAllStatementsAboutAndReferingResource(resourceUri, model);
 		return model;
 	}
+
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+	
+	
 }

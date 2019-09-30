@@ -3,6 +3,8 @@ package inescid.dataaggregation.casestudies.schemaorgcrawling;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -23,17 +25,21 @@ class CrawlResult {
 	int obtainedResources=0;
 	int notFound;
 	int urisNotFollowed;
-	MapOfInts<Resource> crawledByObjectClass=new MapOfInts<>();
-	MapOfInts<Resource> urisNotFollowedByObjectClass=new MapOfInts<>();
-	MapOfInts<Resource> anonResourcesByObjectClass=new MapOfInts<>();
 	int propsNotFollowed;
-	MapOfInts<Resource> propsNotFollowedByProperty=new MapOfInts<>();
 	int obtainedResourcesForLiterals=0;
 	int literalsFound=0;
 	int referencesNotFound=0;
 	int referencesFound=0;
 	int inModelResources=0;
-	int notRdf;
+	int notRdf=0;
+	int urisTooDeep=0;
+	int propsNotFollowedWithUri=0;
+	MapOfInts<Resource> crawledByObjectClass=new MapOfInts<>();
+	MapOfInts<Resource> urisNotFollowedByObjectClass=new MapOfInts<>();
+	MapOfInts<Resource> anonResourcesByObjectClass=new MapOfInts<>();
+	MapOfInts<Resource> propsNotFollowedByProperty=new MapOfInts<>();
+	MapOfInts<Resource> domainsWithoutRdf=new MapOfInts<>();
+	MapOfInts<Resource> domainsNotResolvable=new MapOfInts<>();
 	
 	public static CrawlResult deSerialize(byte[] serialized) throws IOException {
 		try {
@@ -77,19 +83,19 @@ class CrawlResult {
 			StringBuilder sb = new StringBuilder();
 			CSVPrinter p=new CSVPrinter(sb, CSVFormat.DEFAULT);
 			
-			for (Field f : getClass().getDeclaredFields()) {
+			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(int.class)) {
 					p.print(f.getName());
 				}
 			}
 			p.println();
-			for (Field f : getClass().getDeclaredFields()) {
+			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(int.class)) {
 					p.print(f.getInt(this));
 				}
 			}
 			p.println();
-			for (Field f : getClass().getDeclaredFields()) {
+			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(MapOfInts.class)) {
 					p.print(f.getName());					
 					for (Entry<Resource, Integer> classEntry : ((MapOfInts<Resource>) f.get(this)).entrySet()) {
@@ -103,6 +109,21 @@ class CrawlResult {
 			return sb.toString().getBytes(Global.UTF8);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	public void incNotRdf(String uri) {
+		notRdf++;
+		domainsWithoutRdf.incrementTo(uriToDomain(uri));
+	}
+	public void incNotFound(String uri) {
+		notFound++;
+		domainsNotResolvable.incrementTo(uriToDomain(uri));
+	}
+	private Resource uriToDomain(String uri) {
+		try {
+			return Jena.createResource("http://"+new URI(uri).getHost());
+		} catch (URISyntaxException e) {
+			return Jena.createResource("http://invalid.uri");
 		}
 	}
 	
