@@ -349,4 +349,18 @@ public class RdfUtil {
 		Model m=Jena.createModel().add(listStatements);
 		m.write(w, l.getName());
 	}
+
+	public static String writeRdf(StmtIterator listStatements) {
+		StringWriter w = new StringWriter();
+		Model m=Jena.createModel().add(listStatements);
+		m.write(w, Lang.TURTLE.getName());
+		return (w.toString());
+	}
+	public static void printOutRdf(StmtIterator listStatements) {
+		System.out.println(writeRdf(listStatements));
+	}
+
+	public static void printOutRdf(Model mdl) {
+		System.out.println(writeRdf(mdl.listStatements()));
+	}
 }

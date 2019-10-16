@@ -93,7 +93,15 @@ public class StatisticCalcMean implements Serializable{
 		return String.format("cnt-%d max-%1.3f min-%1.3f mean-%1.3f", count, max, min, getMean());    
 	}
 	
-	
+	public StatisticCalcMean copy() {
+		StatisticCalcMean copy=new StatisticCalcMean();
+		copy.count=this.count;
+		copy.mean=this.mean;
+		copy.squareSumMean=this.squareSumMean;
+		copy.max=this.max;
+		copy.min=this.min;
+		return copy;
+	}
 	
 
 }

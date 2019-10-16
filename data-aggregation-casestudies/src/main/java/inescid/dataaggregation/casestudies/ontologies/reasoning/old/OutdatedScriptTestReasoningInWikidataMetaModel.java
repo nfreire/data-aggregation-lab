@@ -1,4 +1,4 @@
-package inescid.dataaggregation.casestudies.ontologies.reasoning;
+package inescid.dataaggregation.casestudies.ontologies.reasoning.old;
 
 import java.io.File;
 import java.io.StringWriter;

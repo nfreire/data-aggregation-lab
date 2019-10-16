@@ -19,7 +19,6 @@ import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.view.GlobalFrontend;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
-import opennlp.tools.util.StringUtil;
 
 public class RegistryServlet extends HttpServlet {
 	private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager

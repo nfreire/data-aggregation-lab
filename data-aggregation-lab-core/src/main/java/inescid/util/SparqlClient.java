@@ -53,7 +53,8 @@ public class SparqlClient {
 				try {
 					QuerySolution hit = results.next();
 					if (!handler.handleSolution(hit)) {
-						System.err.println("RECEIVED HANDLER ABORT");
+						if(debug)
+							System.out.println("RECEIVED HANDLER ABORT");
 						break;
 					}
 					wdCount++;
@@ -63,7 +64,8 @@ public class SparqlClient {
 					System.err.println("PROCEEDING TO NEXT URI");
 				}
 			}
-			System.err.printf("QUERY FINISHED - %d resources\n", wdCount);            
+			if(debug)
+				System.out.printf("QUERY FINISHED - %d resources\n", wdCount);            
 		} catch (Exception ex) {
 			System.err.println("Error on query: "+fullQuery);
 			ex.printStackTrace();
@@ -73,45 +75,53 @@ public class SparqlClient {
 		return wdCount;
 	}
 	
-	public int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) {
-		int offsett=0;
-		while (true) {
+	public int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) throws Exception {
+		int[] offsett=new int[] {0};
+		boolean concluded=false;
+		while (!concluded) {
 			String fullQuery = String.format("%s%s\n%s" + 
 					"LIMIT %d\n" + 
-					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett);
+					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett[0]);
 			if(debug)
 				System.out.println(fullQuery);
-			QueryExecution qexec = QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
-			try {
-				ResultSet results = qexec.execSelect();
-	//            ResultSetFormatter.out(System.out, results, query);
-				if(!results.hasNext())
-					break;
-				while(results.hasNext()) {
-					Resource resource = null;
-					QuerySolution hit = results.next();
+			RetryExec<Boolean> exec=new RetryExec<Boolean>(3) {
+				@Override
+				protected Boolean doRun() throws Exception {
+					QueryExecution qexec = QueryExecutionFactory.sparqlService(baseUrl, fullQuery);
 					try {
-						if (!handler.handleSolution(hit)) {
-							System.err.println("RECEIVED HANDLER ABORT");
-							break;
+						ResultSet results = qexec.execSelect();
+			//            ResultSetFormatter.out(System.out, results, query);
+						if(!results.hasNext())
+							return true;
+						while(results.hasNext()) {
+							Resource resource = null;
+							QuerySolution hit = results.next();
+							try {
+								if (!handler.handleSolution(hit)) {
+									System.err.println("RECEIVED HANDLER ABORT");
+									break;
+								}
+							} catch (Exception e) {
+								System.err.println("Error on record handler: "+(resource==null ? "?" : resource.getURI()));
+								e.printStackTrace();
+								System.err.println("PROCEEDING TO NEXT URI");
+							}
+							offsett[0]++;
 						}
-					} catch (Exception e) {
-						System.err.println("Error on record handler: "+(resource==null ? "?" : resource.getURI()));
-						e.printStackTrace();
-						System.err.println("PROCEEDING TO NEXT URI");
+						if(debug)
+							System.out.printf("QUERY FINISHED - %d resources\n", offsett);            
+						return false;
+					} catch (Exception ex) {
+						System.err.println("WARN: Error on query: "+fullQuery);
+						throw ex;
+					} finally {
+						qexec.close();
 					}
-					offsett++;
 				}
-				if(debug)
-					System.out.printf("QUERY FINISHED - %d resources\n", offsett);            
-			} catch (Exception ex) {
-				System.err.println("Error on query: "+fullQuery);
-				ex.printStackTrace();
-			} finally {
-				qexec.close();
-			}
+			};
+			concluded=exec.run();
 		}
-		return offsett;
+		return offsett[0];
 	}
 	
 	public void createAllStatementsAboutAndReferingResource(String resourceUri, Model createInModel) {
@@ -161,5 +171,40 @@ public class SparqlClient {
 		this.debug = debug;
 	}
 	
-	
+	public int queryModel(String queryString, Model mdl, Handler handler) {
+		int wdCount=0;
+		String fullQuery = queryPrefix + queryString;
+		if(debug)
+			System.out.println(fullQuery);
+
+	    QueryExecution qexec = QueryExecutionFactory.create(fullQuery, mdl);
+		try {
+			ResultSet results = qexec.execSelect();
+//            ResultSetFormatter.out(System.out, results, query);
+			while(results.hasNext()) {
+				Resource resource = null;
+				try {
+					QuerySolution hit = results.next();
+					if (!handler.handleSolution(hit)) {
+						if(debug)
+							System.out.println("RECEIVED HANDLER ABORT");
+						break;
+					}
+					wdCount++;
+				} catch (Exception e) {
+					System.err.println("Error on record: "+(resource==null ? "?" : resource.getURI()));
+					e.printStackTrace();
+					System.err.println("PROCEEDING TO NEXT URI");
+				}
+			}
+			if(debug)
+				System.out.printf("QUERY FINISHED - %d resources\n", wdCount);            
+		} catch (Exception ex) {
+			System.err.println("Error on query: "+fullQuery);
+			ex.printStackTrace();
+		} finally {
+			qexec.close();
+		}
+		return wdCount;
+	}
 }

@@ -43,10 +43,13 @@ public class ScriptTestReasoningRulesSimpleTest {
 				.getSystemResourceAsStream("inescid/dataaggregation/data/reasoning/schemaorg.owl");
 		Model schemaorgMdl = RdfUtil.readRdf(systemResourceAsStream);
 		systemResourceAsStream.close();
+		System.out.println("Schema.org.owl triples:"+schemaorgMdl.size());
+		
 		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdfs.subClassOf, (RDFNode) null));
 		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdfs.subPropertyOf, (RDFNode) null));
-		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
-		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdf.Property));
+//		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
+//		metaAlignMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdf.Property));
+		System.out.println("Schema.org.owl hierarchy triples:"+metaAlignMdl.size());
 
 		//		Jena.createStatementAddToModel(metaAlignMdl, "http://wikiba.se/ontology#Property", RegRdfs.subClassOf, RegRdf.Property);
 //		Jena.createStatementAddToModel(metaAlignMdl, "http://wikiba.se/ontology#Entity", RegRdfs.subClassOf, RegRdfs.Class);
@@ -88,13 +91,26 @@ public class ScriptTestReasoningRulesSimpleTest {
 //		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RegRdf.type, RegSchemaorg.VisualArtwork);
 		
 		InfModel infered = ReasonerUtil.infer(reasoner,metaAlignMdl, testMdl);
-		System.out.println("Deduction stms: " + infered.getDeductionsModel().size());
+		Model deductionsModel = infered.getDeductionsModel();
+//		System.out.println("Deduction stms: " + infered.getDeductionsModel().size());
+//		System.out.println("################## infered model #########################");		
+//		StringWriter w;
+//		w = new StringWriter();
+//		RdfUtil.writeRdf(infered, Lang.TURTLE, w);
+//		System.out.println(w.toString());
+//		System.out.println("################## deductions model #########################");		
+//		w = new StringWriter();
+//		RdfUtil.writeRdf(infered.getDeductionsModel(), Lang.TURTLE, w);
+//		System.out.println(w.toString());
+
+		
 		System.out.println("################## infered model #########################");		
 		StringWriter w;
 		w = new StringWriter();
-		RdfUtil.writeRdf(infered, Lang.TURTLE, w);
+		RdfUtil.writeRdf(infered.listStatements(infered.createResource(testSubject.getURI()), null, (RDFNode) null), Lang.TURTLE, w);
+		RdfUtil.writeRdf(deductionsModel.listStatements(deductionsModel.createResource(testSubject.getURI()), null, (RDFNode) null), Lang.TURTLE, w);
 		System.out.println(w.toString());
-
+		
 	}
 
 }

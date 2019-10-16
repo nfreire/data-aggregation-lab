@@ -1,8 +1,3 @@
----
-
-
----
-
 <h1 id="specifying-a-linked-data-dataset-for-aggregation-by-europeana">Specifying a linked data dataset for aggregation by Europeana</h1>
 <p>Cultural heritage institutions typically publish linked data that covers more resources than the cultural heritage digital objects that they provide to Europeana. Therefore, it is necessary that data providers make available linked data descriptions of the datasets for aggregation by Europeana.<br>
 Several vocabularies are available nowadays to describe datasets. Europeana supports three vocabularies which are suitable to fulfill the requirements for aggregation of linked data: <a href="https://www.w3.org/TR/void/">VoID</a>, <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a>, and <a href="http://schema.org/Dataset">Schema.org</a>.</p>

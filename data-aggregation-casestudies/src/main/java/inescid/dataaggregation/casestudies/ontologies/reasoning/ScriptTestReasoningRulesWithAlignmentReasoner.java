@@ -48,23 +48,25 @@ public class ScriptTestReasoningRulesWithAlignmentReasoner {
 		dataset.begin(ReadWrite.READ);
 		
 //		final Model modelMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_DS);
-		final Model modelMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_ALIGN_META_DS);
+		final Model reasoningMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_ALIGN_META_DS);
 		
 		GenericRuleReasoner reasoner = ReasonerUtil
 				.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-owl-ontologies-rules-small.txt");
 //		.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-owl-ontologies-rules.txt");
 		
 		Model testMdl = Jena.createModel();
+
 		Resource testSubject = testMdl.createResource("http://nuno.pt/pintura");
 		Jena.createStatementAddToModel(testMdl, RdfRegWikidata.GLAM, RegRdfs.subClassOf, RdfRegWikidata.INSTITUTION);
 		Jena.createStatementAddToModel(testMdl, testSubject, RegRdf.type, Jena.createResource("http://wikiba.se/ontology#Entity"));
 		Jena.createStatementAddToModel(testMdl, testSubject, RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.GLAM);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.VisualArtwork);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.Person);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.VisualArtwork);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RegRdf.type, RegSchemaorg.VisualArtwork);
+		
+//		Resource testSubject = testMdl.createResource("http://nuno.pt/pintura");
+//		Jena.createStatementAddToModel(testMdl, RdfRegWikidata.GLAM, RegRdfs.subClassOf, RdfRegWikidata.INSTITUTION);
+//		Jena.createStatementAddToModel(testMdl, testSubject, RegRdf.type, Jena.createResource("http://wikiba.se/ontology#Entity"));
+//		Jena.createStatementAddToModel(testMdl, testSubject, RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.GLAM);
 
-		AlignmentReasoner alignReasoner=new AlignmentReasoner(modelMdl, reasoner);
+		AlignmentReasoner alignReasoner=new AlignmentReasoner(reasoningMdl, reasoner);
 		
 		System.out.println("Reasoning...");
 		InfModel infered = alignReasoner.infer(testSubject);
@@ -73,8 +75,8 @@ public class ScriptTestReasoningRulesWithAlignmentReasoner {
 		System.out.println("################## infered model #########################");		
 		StringWriter w;
 		w = new StringWriter();
-		RdfUtil.writeRdf(infered.listStatements(testSubject, null, (RDFNode) null), Lang.TURTLE, w);
-		RdfUtil.writeRdf(deductionsModel.listStatements(testSubject, null, (RDFNode) null), Lang.TURTLE, w);
+		RdfUtil.writeRdf(infered.listStatements(infered.createResource(testSubject.getURI()), null, (RDFNode) null), Lang.TURTLE, w);
+		RdfUtil.writeRdf(deductionsModel.listStatements(deductionsModel.createResource(testSubject.getURI()), null, (RDFNode) null), Lang.TURTLE, w);
 		System.out.println(w.toString());
 //		for(Statement s: deductionsModel.listStatements(testSubject, null, (RDFNode) null).toList()) {	
 //			System.out.println(s);

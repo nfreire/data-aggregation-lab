@@ -1,8 +1,7 @@
-package inescid.dataaggregation.casestudies.ontologies.reasoning;
+package inescid.dataaggregation.casestudies.ontologies.reasoning.old;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.StringWriter;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QuerySolution;
@@ -11,9 +10,9 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
-import org.apache.jena.riot.Lang;
 import org.apache.jena.tdb2.TDB2Factory;
 
+import inescid.dataaggregation.casestudies.ontologies.reasoning.Settings;
 import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
 import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
@@ -28,24 +27,16 @@ import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
 import inescid.util.SparqlClient.Handler;
 
-public class ScriptBuildAndTestReasoningRules {
+public class OutdatedScriptBuildWikidataMetamodelReasoner {
 
 	public static void main(String[] args) throws Exception {
-		final String WD_REASONING_MODEL_DS = "metamodels-model";
-		final String WD_REASONING_ALIGN_META_DS = "wikidata-reasoning-align-meta";
-		
-		final String WD_REASONING_DS = "wikidata-reasoning";//final stable dataset for reasoning
-		final String WD_REASONING_STABLE_REMOVABLE_DS = "wikidata-reasoning-stable-removable";
-
-		final boolean RESET_MODELS = true;
-
 		if(args==null || args.length<1) {
 			System.out.println("Missing parameter: folder for storing data");
 			System.exit(0);
 		}
 		File dataFolder=new File(args[0]);
-		String httpCacheFolder = new File(dataFolder, "HttpRepository").getAbsolutePath();
-		String tripleStoreFolder = new File(dataFolder, "TripleStore").getAbsolutePath();
+		String httpCacheFolder = new File(dataFolder, Settings.HTTP_CHACHE_FOLDER).getAbsolutePath();
+		String tripleStoreFolder = new File(dataFolder, Settings.TRIPLE_STORE_FOLDER).getAbsolutePath();
 
 		Global.init_componentHttpRequestService();
 		Global.init_componentDataRepository(httpCacheFolder);
@@ -56,12 +47,12 @@ public class ScriptBuildAndTestReasoningRules {
 		// Make a TDB-backed dataset
 		final Dataset dataset = TDB2Factory.connectDataset(tripleStoreFolder);
 		dataset.begin(ReadWrite.WRITE);
-		final Model modelMdl = dataset.getNamedModel(WD_REASONING_MODEL_DS);
-		final Model metaAlignMdl = dataset.getNamedModel(WD_REASONING_ALIGN_META_DS);
+		final Model modelMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_DS);
+		final Model metaAlignMdl = dataset.getNamedModel(Settings.WD_REASONING_ALIGN_META_DS);
 		
-		final Model stableMdl = dataset.getNamedModel(WD_REASONING_DS);
-		final Model stableMdlUnstableStatements = dataset.getNamedModel(WD_REASONING_STABLE_REMOVABLE_DS);
-		if (RESET_MODELS) {
+		final Model stableMdl = dataset.getNamedModel(Settings.WD_REASONING_DS);
+		final Model stableMdlUnstableStatements = dataset.getNamedModel(Settings.WD_REASONING_STABLE_REMOVABLE_DS);
+		if (Settings.RESET_MODELS) {
 			modelMdl.removeAll();
 			metaAlignMdl.removeAll();
 			stableMdl.removeAll();
@@ -142,23 +133,22 @@ public class ScriptBuildAndTestReasoningRules {
 		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.EXTERNAL_SUPERPROPERTY, RegOwl.equivalentProperty,
 				RegRdfs.subPropertyOf);
 		
-		
-//		SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <"+RdfRegWikidata.SUBCLASS_OF.getURI()+"> ?o .}"
-//				, 5000, null,
-//				new Handler() {
-//			int cnt=0;
-//			@Override
-//			public boolean handleSolution(QuerySolution solution) throws Exception {
-//				modelMdl.add(Jena.createStatement(solution.getResource("?s"), RdfRegWikidata.SUBCLASS_OF, solution.getResource("?o")));
-//				cnt++;
-//				if(cnt % 10000 == 0) {
-//					dataset.commit();
-//					dataset.begin(ReadWrite.WRITE) ;
-//					System.out.println("Commited "+cnt);
-//				}					
-//				return true;
-//			}
-//		});		
+		SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <"+RdfRegWikidata.SUBCLASS_OF.getURI()+"> ?o .}"
+				, 5000, null,
+				new Handler() {
+			int cnt=0;
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				modelMdl.add(Jena.createStatement(solution.getResource("?s"), RdfRegWikidata.SUBCLASS_OF, solution.getResource("?o")));
+				cnt++;
+				if(cnt % 10000 == 0) {
+					dataset.commit();
+					dataset.begin(ReadWrite.WRITE) ;
+					System.out.println("Commited "+cnt);
+				}					
+				return true;
+			}
+		});		
 		
 		SparqlClientWikidata.queryWithPaging(
 				"SELECT ?s ?o WHERE { ?s <" + RdfRegWikidata.SUBPROPERTY_OF.getURI() + "> ?o .}", 5000, null,
@@ -206,77 +196,15 @@ public class ScriptBuildAndTestReasoningRules {
 			System.out.println("align model sizes: " + modelMdl.size() +" - "+p.getURI());
 		}
 		
-		
 		modelMdl.add(metaAlignMdl);
 		
-		Model testMdl = Jena.createModel();		
-		Jena.createStatementAddToModel(testMdl, RdfRegWikidata.GLAM, RegRdfs.subClassOf, RdfRegWikidata.INSTITUTION);
-		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RegRdf.type, Jena.createResource("http://wikiba.se/ontology#Entity"));
-		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RdfRegWikidata.GLAM);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.VisualArtwork);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.Person);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RdfRegWikidata.INSTANCE_OF, RegSchemaorg.VisualArtwork);
-//		Jena.createStatementAddToModel(testMdl, "http://nuno.pt/pintura", RegRdf.type, RegSchemaorg.VisualArtwork);
-		
-//		Model infered = ReasonerUtil.infer(reasoner,metaModelMdl, testMdl);
-//		Model infered = ReasonerUtil.infer(reasoner,modelMdl, testMdl);
-//		Model infered = ReasonerUtil.infer(reasoner, testMdl);
-
 		stableMdl.removeAll();
 		stableMdlUnstableStatements.removeAll();
 		dataset.commit();
 		dataset.begin(ReadWrite.WRITE);
 		stableMdl.add(modelMdl);
-
-		System.out.println(stableMdl.size());
-//		InfModel infered = ReasonerUtil.infer(reasoner, stableMdl);
-//		infered.getDeductionsModel();
-//		System.out.println(infered.size());
-////		stableMdl.add(infered);
-////		infered.close();
-//		
-////		System.out.println(stableMdl.size());
-////		infered = ReasonerUtil.infer(reasoner, stableMdl);
-////		stableMdl.add(infered);
-////		infered.close();
-//		
-//		System.out.println(stableMdl.size());
-//		infered = ReasonerUtil.infer(reasoner, stableMdl);
-//		System.out.println(infered.size());
-////		stableMdl.add(infered);		
-//
-////		infered.close();
-//		System.out.println(stableMdl.size());
-//		
-		Model infered = ReasonerUtil.infer(reasoner, stableMdl, testMdl);
-		infered=ReasonerStabilizer.cleanDeductions(infered);
-		
-//		ReasonerStabilizer reasonerStbl = new ReasonerStabilizer(reasoner, stableMdl);
-////		reasonerStbl.runSimpleStabelization(3);
-//		reasonerStbl.runElaborateStabelization();
-//		stableMdlUnstableStatements.add(reasonerStbl.getUnstableSatements());
-//		Model infered = reasonerStbl.inferNewDeductions(testMdl);
-
-		System.out.println(stableMdl.size());
-		
-		StringWriter w = new StringWriter();
-//		System.out.println("################## test model #########################");		
-//		w = new StringWriter();
-//		RdfUtil.writeRdf(testMdl, Lang.TURTLE, w);
-//		System.out.println(w.toString());
-		System.out.println("################## infered model #########################");		
-		w = new StringWriter();
-		RdfUtil.writeRdf(infered, Lang.TURTLE, w);
-		System.out.println(w.toString());
-		
-//		System.out.println("################## test model #########################");		
-//		w = new StringWriter();
-//		RdfUtil.writeRdf(infered, Lang.TURTLE, w);
-//		System.out.println(w.toString());
-		
-
-//		System.out.println("Metamodel stms: "+metaModelMdl.size());
-		System.out.println("Deduction stms: " + infered.size());
+		ReasonerStabilizer reasonerStbl = new ReasonerStabilizer(reasoner, stableMdl);
+		stableMdlUnstableStatements.add(reasonerStbl.getUnstableSatements());
 		dataset.commit();
 		dataset.end();
 	}

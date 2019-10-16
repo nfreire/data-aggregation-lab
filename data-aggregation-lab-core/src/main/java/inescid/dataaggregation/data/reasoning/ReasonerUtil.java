@@ -12,6 +12,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+import org.apache.jena.reasoner.rulesys.GenericRuleReasoner.RuleMode;
 import org.apache.jena.reasoner.rulesys.RDFSFBRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
 import org.apache.jena.vocabulary.ReasonerVocabulary;
@@ -21,6 +22,9 @@ import inescid.dataaggregation.dataset.Global;
 public class ReasonerUtil {
 
 		public static GenericRuleReasoner instanciateRuleBased(String rulesClasspath) {
+			return instanciateRuleBased(rulesClasspath, GenericRuleReasoner.HYBRID);
+		}
+		public static GenericRuleReasoner instanciateRuleBased(String rulesClasspath, RuleMode reasonerModel) {
 			GenericRuleReasoner reasoner;
 			InputStream systemResourceAsStream = ClassLoader.getSystemResourceAsStream(rulesClasspath);
 			BufferedReader br = IOUtils.toBufferedReader(new InputStreamReader(systemResourceAsStream, Global.UTF8));
@@ -31,7 +35,7 @@ public class ReasonerUtil {
 				throw new RuntimeException(e.getMessage(), e);
 			}
 			reasoner = new GenericRuleReasoner(rules);
-			reasoner.setMode(GenericRuleReasoner.FORWARD);
+			reasoner.setMode(reasonerModel);
 //			reasoner.setMode(GenericRuleReasoner.HYBRID);
 //			reasoner.setTransitiveClosureCaching(true);
 //			reasoner.setOWLTranslation(true);               // not needed in RDFS case

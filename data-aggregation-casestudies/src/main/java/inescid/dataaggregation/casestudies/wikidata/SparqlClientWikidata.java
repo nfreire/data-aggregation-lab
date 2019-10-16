@@ -11,6 +11,7 @@ import inescid.util.SparqlClient.Handler;
 public class SparqlClientWikidata {
 	public static final SparqlClient INSTANCE=new SparqlClient("https://query.wikidata.org/sparql", 
 			"PREFIX bd: <http://www.bigdata.com/rdf#>\n" +
+			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
 			"PREFIX wikibase: <http://wikiba.se/ontology#>\n" +
             "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\n" +
             "PREFIX wd: <http://www.wikidata.org/entity/>\n"); 
@@ -24,7 +25,7 @@ public class SparqlClientWikidata {
 		return INSTANCE.query(queryString, handler);
 	}
 	
-	public static int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) {
+	public static int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) throws Exception {
 		return INSTANCE.queryWithPaging(queryString, resultsPerPage, orderVariableName, handler);
 	}
 	

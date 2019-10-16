@@ -3,12 +3,14 @@ package inescid.dataaggregation.casestudies.ontologies.reasoning;
 import java.io.File;
 import java.io.InputStream;
 
+import org.apache.commons.collections4.IteratorUtils;
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.tdb2.TDB2Factory;
 
@@ -46,63 +48,65 @@ public class ScriptBuildWikidataMetamodel {
 		final Dataset dataset = TDB2Factory.connectDataset(tripleStoreFolder);
 		dataset.begin(ReadWrite.WRITE);
 		final Model modelMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_DS);
+		final Model modelPropertiesMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_PROPERTIES_DS);
+		final Model modelClassesMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_CLASSES_DS);
 		final Model metaAlignMdl = dataset.getNamedModel(Settings.WD_REASONING_ALIGN_META_DS);
+		final Model schemaorgMdl = dataset.getNamedModel(Settings.WD_REASONING_SCHEMAORG_DS);
+		final Model owlMdl = dataset.getNamedModel(Settings.WD_REASONING_OWL_DS);
 		
 		if (Settings.RESET_MODELS) {
 			modelMdl.removeAll();
+			modelPropertiesMdl.removeAll();
+			modelClassesMdl.removeAll();
 			metaAlignMdl.removeAll();
+			schemaorgMdl.removeAll();
+			owlMdl.removeAll();
 		}
-		
-		GenericRuleReasoner reasoner = ReasonerUtil
-				.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-owl-ontologies-rules.txt");
-//		.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-extend.txt");
-
-//		dataset.begin(ReadWrite.WRITE);
-//		System.out.println("stabelizing");
-//		ReasonerStabilizer reasonerStbl = new ReasonerStabilizer(reasoner, metaModelMdl, stableMdl);
-//		stableMdlUnstableStatements.add(reasonerStbl.getUnstableSatements());
-//		dataset.begin(ReadWrite.READ);
-
-//		System.out.println("Metamodel stms: "+metaModelMdl.size());
-//		System.out.println("Stable Metamodel stms: "+stableMdl.size());
-//	System.out.println( RdfUtil.statementsToString(model));
-		
-		
-//		Model modelMdl = Jena.createModel();		
-//		Model metaAlignMdl = Jena.createModel();		
-////		Model metaAlignMdl = null;		
-////		Jena.createStatementAddToModel(model, model.createResource(propUri), RdfRegRdf.type, RdfRegRdf.Property)
-////		Jena.createStatementAddToModel(model, model.createResource(propUri), RdfRegRdfs.subClassOf, model.createResource("http://wikiba.se/ontology#Property"))
-////		Jena.createStatementAddToModel(model, model.createResource(propUri), RdfRegRdf.type, RdfRegRdfs.Class)
-//		+"\n"+Jena.createStatementAddToModel(model, model.createResource("http://wikiba.se/ontology#Property"), RegRdfs.subClassOf, RegRdf.Property)
-////		+"\n"+Jena.createStatementAddToModel(model, model.createResource("http://wikiba.se/ontology#Property"), RdfRegRdf.type, RdfRegRdf.Property)
-//		+"\n"+Jena.createStatementAddToModel(model, model.createResource("http://wikiba.se/ontology#Entity"), RegRdfs.subClassOf, RegRdfs.Class)
-//		+"\n"+Jena.createStatementAddToModel(model, model.createResource("http://wikiba.se/ontology#Entity"), RegRdfs.subClassOf, RegOwl.Thing)
-//		+"\n"+Jena.createStatementAddToModel(model, RdfRegWikidata.EQUIVALENT_CLASS, RdfReg.OWL_EQUIVALENT_PROPERTY, RegOwl.equivalentClass)
-//		+"\n"+Jena.createStatementAddToModel(model, RdfRegWikidata.EQUIVALENT_PROPERTY, RdfReg.OWL_EQUIVALENT_PROPERTY, RegOwl.equivalentProperty)
-////		+"\n"+Jena.createStatementAddToModel(model, model.createResource("http://wikiba.se/ontology#Entity"), RdfRegRdfs.subClassOf, RdfReg.OWL_Thing)
+		System.out.println("Cleaning: done");
 		
 		InputStream systemResourceAsStream = ClassLoader
 				.getSystemResourceAsStream("inescid/dataaggregation/data/reasoning/schemaorg.owl");
-		Model schemaorgMdl = RdfUtil.readRdf(systemResourceAsStream);
+		Model schemaorgDefMdl = RdfUtil.readRdf(systemResourceAsStream);
 		systemResourceAsStream.close();
-		modelMdl.add(schemaorgMdl.listStatements(null, RegRdfs.subClassOf, (RDFNode) null));
-		modelMdl.add(schemaorgMdl.listStatements(null, RegRdfs.subPropertyOf, (RDFNode) null));
-		modelMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
-		modelMdl.add(schemaorgMdl.listStatements(null, RegRdf.type, RegRdf.Property));
+		schemaorgMdl.add(schemaorgDefMdl.listStatements(null, RegRdfs.subClassOf, (RDFNode) null));
+		schemaorgMdl.add(schemaorgDefMdl.listStatements(null, RegRdfs.subPropertyOf, (RDFNode) null));
+		schemaorgMdl.add(schemaorgDefMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
+		schemaorgMdl.add(schemaorgDefMdl.listStatements(null, RegRdf.type, RegRdf.Property));
+		
+//		 String sparql = "SELECT ?s ?p ?o WHERE { " +
+//                 "?p rdfs:subClassOff <rd" + THING + "> . " +
+//                 "?thing <" + HAS_STRING + "> ?str . " +
+//                 "FILTER (?str = \"" + s + "\") . }";
+//
+//Query qry = QueryFactory.create(sparql);
+//QueryExecution qe = QueryExecutionFactory.create(qry, getModel());
+//ResultSet rs = qe.execSelect();
+//
+//while(rs.hasNext())
+//{
+// QuerySolution sol = rs.nextSolution();
+// RDFNode str = sol.get("str"); 
+// RDFNode thing = sol.get("thing"); 
+//
+// ...
+//}
+//
+//qe.close(); 
+		
+		
+		
 
 		systemResourceAsStream = ClassLoader
 				.getSystemResourceAsStream("inescid/dataaggregation/data/reasoning/owl_def.owl");
-		Model owlMdl = RdfUtil.readRdf(systemResourceAsStream);
+		Model owlDefMdl = RdfUtil.readRdf(systemResourceAsStream);
+		
+		System.out.println("OWL size: "+owlDefMdl.size());
 		systemResourceAsStream.close();
-		modelMdl.add(owlMdl.listStatements(null, RegRdfs.subClassOf, (RDFNode) null));
-		modelMdl.add(owlMdl.listStatements(null, RegRdfs.subPropertyOf, (RDFNode) null));
-		modelMdl.add(owlMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
-		modelMdl.add(owlMdl.listStatements(null, RegRdf.type, RegRdf.Property));
-//		
-//		Jena.createStatementAddToModel(metaAlignMdl, "http://wikiba.se/ontology#Property", RegRdfs.subClassOf, RegRdf.Property);
-//		Jena.createStatementAddToModel(metaAlignMdl, "http://wikiba.se/ontology#Entity", RegRdfs.subClassOf, RegRdfs.Class);
-//		Jena.createStatementAddToModel(metaAlignMdl, "http://wikiba.se/ontology#Entity", RegRdfs.subClassOf, RegOwl.Thing);
+		owlMdl.add(owlDefMdl.listStatements(null, RegRdfs.subClassOf, (RDFNode) null));
+		owlMdl.add(owlDefMdl.listStatements(null, RegRdfs.subPropertyOf, (RDFNode) null));
+		owlMdl.add(owlDefMdl.listStatements(null, RegRdf.type, RegRdfs.Class));
+		owlMdl.add(owlDefMdl.listStatements(null, RegRdf.type, RegRdf.Property));
+		System.out.println("Schema.org and OWL: done");
 
 		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.EQUIVALENT_CLASS, RegOwl.equivalentProperty,
 				RegOwl.equivalentClass);
@@ -115,68 +119,45 @@ public class ScriptBuildWikidataMetamodel {
 				RegRdfs.subPropertyOf);
 		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.INSTANCE_OF, RegOwl.equivalentProperty,
 				RegRdf.type);
-		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RegOwl.equivalentProperty,
-				RegSkos.narrowMatch);
-		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.BROADER_CONCEPT, RegOwl.equivalentProperty,
-				RegSkos.broadMatch);
-		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.MAPPING_RELATION_TYPE, RegOwl.equivalentProperty,
-				RegSkos.mappingRelation);
-		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.EXTERNAL_SUBPROPERTY, RegOwl.equivalentProperty,
-				RegSkos.broadMatch);// there is no superProperty in rdfs
+//		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RegOwl.equivalentProperty,
+//				RegSkos.narrowMatch);
+//		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.BROADER_CONCEPT, RegOwl.equivalentProperty,
+//				RegSkos.broadMatch);
+//		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.MAPPING_RELATION_TYPE, RegOwl.equivalentProperty,
+//				RegSkos.mappingRelation);
+//		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.EXTERNAL_SUBPROPERTY, RegOwl.equivalentProperty,
+//				RegSkos.broadMatch);// there is no superProperty in rdfs
 		Jena.createStatementAddToModel(metaAlignMdl, RdfRegWikidata.EXTERNAL_SUPERPROPERTY, RegOwl.equivalentProperty,
 				RegRdfs.subPropertyOf);
 		
-		SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <"+RdfRegWikidata.SUBCLASS_OF.getURI()+"> ?o .}"
-				, 5000, null,
-				new Handler() {
-			int cnt=0;
-			@Override
-			public boolean handleSolution(QuerySolution solution) throws Exception {
-				modelMdl.add(Jena.createStatement(solution.getResource("?s"), RdfRegWikidata.SUBCLASS_OF, solution.getResource("?o")));
-				cnt++;
-				if(cnt % 10000 == 0) {
-					dataset.commit();
-					dataset.begin(ReadWrite.WRITE) ;
-					System.out.println("Commited "+cnt);
-				}					
-				return true;
-			}
-		});		
+		dataset.commit();
+		System.out.println("Equivalences: done");
+		dataset.begin(ReadWrite.WRITE);
 		
-		SparqlClientWikidata.queryWithPaging(
-				"SELECT ?s ?o WHERE { ?s <" + RdfRegWikidata.SUBPROPERTY_OF.getURI() + "> ?o .}", 5000, null,
-				new Handler() {
-					int cnt = 0;
-
-					@Override
-					public boolean handleSolution(QuerySolution solution) throws Exception {
-						String subjUri=solution.getResource("?s").getNameSpace().equals(RdfRegWikidata.NsWd) ? RdfRegWikidata.NsWdt + solution.getResource("?s").getLocalName() : solution.getResource("?s").getURI(); 
-						modelMdl.add(Jena.createStatement(modelMdl.createResource(subjUri), RdfRegWikidata.SUBPROPERTY_OF,
-								solution.getResource("?o")));
-						cnt++;
-						if (cnt % 10000 == 0) {
-							dataset.commit();
-//					dataset.end();
-							dataset.begin(ReadWrite.WRITE);
-							System.out.println("Commited " + cnt);
-						}
-						return true;
-					}
-				});
-		System.out.println("Meta model sizes: " + modelMdl.size());
-
-		for (Property p : new Property[] { RdfRegWikidata.EQUIVALENT_CLASS, RdfRegWikidata.EQUIVALENT_PROPERTY,
-				RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RdfRegWikidata.BROADER_CONCEPT,
-				RdfRegWikidata.MAPPING_RELATION_TYPE, RdfRegWikidata.EXTERNAL_SUBPROPERTY,
-				RdfRegWikidata.EXTERNAL_SUPERPROPERTY }) {
-			SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <" + p + "> ?o .}", 5000, null,
+		for (Property p : new Property[] { RdfRegWikidata.SUBCLASS_OF, RdfRegWikidata.EQUIVALENT_CLASS, 
+				RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RdfRegWikidata.BROADER_CONCEPT }) {
+			System.out.println("Harvesting: "+p.getURI());
+				SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <" + p + "> ?o .}", 5000, null,
 					new Handler() {
 						int cnt = 0;
 						@Override
 						public boolean handleSolution(QuerySolution solution) throws Exception {
-							String subjUri=solution.getResource("?s").getNameSpace().equals(RdfRegWikidata.NsWd) ? RdfRegWikidata.NsWdt + solution.getResource("?s").getLocalName() : solution.getResource("?s").getURI(); 
-							modelMdl.add(
-									Jena.createStatement(modelMdl.createResource(subjUri), p, solution.getResource("?o")));
+							String subjUri=solution.getResource("?s").getURI(); 
+							Resource subj = modelClassesMdl.createResource(subjUri);
+							modelClassesMdl.add(
+									Jena.createStatement(subj, p, solution.getResource("?o")));
+							
+							//					takes too long to execute, and we always get 0 results 
+//							SparqlClientWikidata.query("SELECT ?o WHERE {  VALUES ?o { rdf:Class rdf:Property }\n <" + subjUri + "> rdf:type ?o .}", new Handler() {
+//								int cnt = 0;
+//								@Override
+//								public boolean handleSolution(QuerySolution solution) throws Exception {
+//									String objUri=solution.getResource("?o").getURI(); 
+//									modelClassesMdl.add(Jena.createStatement(subj, RegRdf.type, modelClassesMdl.createResource(objUri)));
+//									return true;
+//								}
+//							});
+							
 							cnt++;
 							if (cnt % 10000 == 0) {
 								dataset.commit();
@@ -186,13 +167,81 @@ public class ScriptBuildWikidataMetamodel {
 							return true;
 						}
 					});
-			System.out.println("align model sizes: " + modelMdl.size() +" - "+p.getURI());
+				System.out.println(p+": done");
+			System.out.println("align model sizes: " + modelClassesMdl.size() +" - "+p.getURI());
 		}
-		
-		modelMdl.add(metaAlignMdl);
-		
+		System.out.println("classes: done");
+
 		dataset.commit();
+		dataset.begin(ReadWrite.WRITE);
+		
+		for (Property p : new Property[] { RdfRegWikidata.SUBPROPERTY_OF, RdfRegWikidata.EQUIVALENT_PROPERTY,
+				RdfRegWikidata.MAPPING_RELATION_TYPE, RdfRegWikidata.EXTERNAL_SUBPROPERTY,
+				RdfRegWikidata.EXTERNAL_SUPERPROPERTY }) {
+			System.out.println("Harvesting: "+p.getURI());
+			SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <" + p + "> ?o .}", 5000, null,
+					new Handler() {
+				int cnt = 0;
+				@Override
+				public boolean handleSolution(QuerySolution solution) throws Exception {
+					String subjUri=solution.getResource("?s").getNameSpace().equals(RdfRegWikidata.NsWd) ? RdfRegWikidata.NsWdt + solution.getResource("?s").getLocalName() : solution.getResource("?s").getURI(); 
+					Resource subj = modelPropertiesMdl.createResource(subjUri);
+					modelPropertiesMdl.add(
+							Jena.createStatement(subj, p, solution.getResource("?o")));
+
+					//					takes too long to execute, and we always get 0 results 
+//					SparqlClientWikidata.query("SELECT ?o WHERE {  VALUES ?o { rdf:Class rdf:Property }\n <" + subjUri + "> rdf:type ?o .}", new Handler() {
+//						@Override
+//						public boolean handleSolution(QuerySolution solution) throws Exception {
+//							String objUri=solution.getResource("?o").getURI(); 
+//							modelPropertiesMdl.add(Jena.createStatement(subj, RegRdf.type, modelPropertiesMdl.createResource(objUri)));
+//							return true;
+//						}
+//					});
+					
+					cnt++;
+					if (cnt % 10000 == 0) {
+						dataset.commit();
+						dataset.begin(ReadWrite.WRITE);
+						System.out.println("Commited " + cnt);
+					}
+					return true;
+				}
+			});
+			System.out.println("align model sizes: " + modelPropertiesMdl.size() +" - "+p.getURI());
+		}
+
+		dataset.commit();
+		dataset.begin(ReadWrite.READ);
+
+		String tripleStoreJoinedFolder = new File(dataFolder, Settings.TRIPLE_STORE_JOINED_FOLDER).getAbsolutePath();
+		final Dataset datasetJoined = TDB2Factory.connectDataset(tripleStoreJoinedFolder);
+		datasetJoined.begin(ReadWrite.WRITE);
+		final Model joinedMdl = datasetJoined.getNamedModel(Settings.WD_REASONING_MODEL_ALIGN_META_DS);
+		
+		if (Settings.RESET_MODELS) {
+			joinedMdl.removeAll();
+		}
+		System.out.println("Cleaning: done");
+		
+		joinedMdl.add(modelPropertiesMdl);
+		System.out.println("Added properties: "+modelPropertiesMdl.size());
+		joinedMdl.add(modelClassesMdl);
+		System.out.println("Added classes: "+modelClassesMdl.size());
+		joinedMdl.add(schemaorgMdl);
+		System.out.println("Added schema.org: "+schemaorgMdl.size());
+		joinedMdl.add(metaAlignMdl);
+		System.out.println("Added align: "+metaAlignMdl.size());
+		joinedMdl.add(owlMdl);
+		System.out.println("Added owl: "+metaAlignMdl.size());
+		System.out.println("Final Joined: "+joinedMdl.size());
+		
+		datasetJoined.commit();
+		System.out.println("Committed");
+		
 		dataset.end();
+		datasetJoined.end();
+
 	}
 
 }

@@ -115,4 +115,16 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			});
 			return ret;
 		}
+		public List<K> getSortedKeysByInts(){
+			List<K> ret=new ArrayList<K>(size());
+			for(Entry<K, Integer> ns: getSortedEntries()) {
+				ret.add(ns.getKey());
+			}
+			return ret;
+		}
+		public List<K> getSortedKeys(){
+			List<K> ret=new ArrayList<K>(keySet());
+			Collections.sort((List<Comparable>)ret);
+			return ret;
+		}
 }

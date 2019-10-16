@@ -38,18 +38,18 @@ public class ScriptBuildWikidataMetamodelReasoner {
 		dataset.begin(ReadWrite.WRITE);
 		
 		final Model modelMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_DS);
-		final Model modelMetaAlignMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_ALIGN_META_DS);
+		final Model reasoningMdl = dataset.getNamedModel(Settings.WD_REASONING_MODEL_ALIGN_META_DS);
 		
 		System.out.println("Copying "+Settings.WD_REASONING_MODEL_DS+" to "+Settings.WD_REASONING_MODEL_ALIGN_META_DS);
-		modelMetaAlignMdl.removeAll();
-		modelMetaAlignMdl.add(modelMdl);
+		reasoningMdl.removeAll();
+		reasoningMdl.add(modelMdl);
 
 		System.out.println("Stabelizing");
 		GenericRuleReasoner reasoner = ReasonerUtil
 				.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-owl-ontologies-rules-small.txt");
 //		.instanciateRuleBased("inescid/dataaggregation/casestudies/ontologies/reasoning/test-rdfs-owl-ontologies-rules.txt");
 		
-		ReasonerStabilizer stabilizer=new ReasonerStabilizer(reasoner, modelMetaAlignMdl);
+		ReasonerStabilizer stabilizer=new ReasonerStabilizer(reasoner, reasoningMdl);
 		stabilizer.runElaborateStabelization();
 		
 		dataset.commit();

@@ -7,7 +7,7 @@ import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 
 public class ScriptExportSamples {
-	enum DataDumps {
+	public enum DataDumps {
 		WIKIDATA_EDM, EUROPEANA_EDM, WIKIDATA_ONTOLOGY, WIKIDATA_SCHEMAORG
 	};
 
@@ -39,6 +39,7 @@ public class ScriptExportSamples {
 
 		
 		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_ONTOLOGY.name(), new File(httpCacheFolder, "wikidata-subdataset-ontology.zip"), ContentTypes.TURTLE);
+		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_SCHEMAORG.name(), new File(httpCacheFolder, "wikidata-subdataset-schemaorg.zip"), ContentTypes.TURTLE);
 		dataRepository.exportDatasetToZip(DataDumps.WIKIDATA_EDM.name(), new File(httpCacheFolder, "wikidata-subdataset-edm.zip"), ContentTypes.TURTLE);
 		dataRepository.exportDatasetToZip(DataDumps.EUROPEANA_EDM.name(), new File(httpCacheFolder, "europeana-subdataset-edm.zip"), ContentTypes.TURTLE);
 		

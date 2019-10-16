@@ -41,6 +41,16 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		
+		<resources>
+	      <resource>
+	        <directory>../data-aggregation-lab-core/src/main/java</directory>
+	        <includes>
+	          <include>**/*.owl</include>
+	          <include>**/*.txt</include>
+	        </includes>
+	      </resource>
+	    </resources>
 	</build>
 
 	<dependencies>
@@ -65,12 +75,6 @@
 		    <groupId>org.apache.jena</groupId>
 		    <artifactId>jena-tdb2</artifactId>
 		    <version>3.9.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.8</version>
 		</dependency>
 
 		<dependency>
