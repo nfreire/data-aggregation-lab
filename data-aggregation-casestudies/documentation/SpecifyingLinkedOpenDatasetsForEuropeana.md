@@ -1,4 +1,5 @@
 <h1 id="specifying-a-linked-data-dataset-for-aggregation-by-europeana">Specifying a linked data dataset for aggregation by Europeana</h1>
+
 <p>Cultural heritage institutions typically publish linked data that covers more resources than the cultural heritage digital objects that they provide to Europeana. Therefore, it is necessary that data providers make available linked data descriptions of the datasets for aggregation by Europeana.<br>
 Several vocabularies are available nowadays to describe datasets. Europeana supports three vocabularies which are suitable to fulfill the requirements for aggregation of linked data: <a href="https://www.w3.org/TR/void/">VoID</a>, <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a>, and <a href="http://schema.org/Dataset">Schema.org</a>.</p>
 <p>Data providers may use classes and properties from any of the three vocabularies to describe each of their datasets. To enable Europeana to aggregate and ingest a dataset, the linked data resource of the dataset should follow the following points:</p>
@@ -10,15 +11,18 @@ Several vocabularies are available nowadays to describe datasets. Europeana supp
 <li><strong>May</strong> specify a machine readable license that applies to all metadata</li>
 </ul>
 <p>The sections bellow provide details on how of these points can be provided.</p>
-<h1 id="dataset-rdf-resource-accessible-by-its-uri">Dataset RDF resource accessible by its URI</h1>
+
+<h2 id="dataset-rdf-resource-accessible-by-its-uri">Dataset RDF resource accessible by its URI</h2>
+
 <p>The description of the dataset in RDF must itself be published as linked data.<br>
 For ingesting the dataset in Europeana, this URI must be provided to Europeana. It will function as the entry point for the Europeana linked data crawler to reach all RDF descriptions of the the cultural heritage objects that form the dataset.<br>
 The dataset description is used during the first ingestion of the dataset in to Europeana, and later, for its incremental updates.<br>
 The data provider should maintain the dataset description updated over time, if incremental updates of the dataset  are done in the future Europeana.</p>
-<h1 id="dataset-resource-encoded-in-a-supported-rdf-serialization">Dataset resource encoded in a supported RDF serialization</h1>
+
+<h2 id="dataset-resource-encoded-in-a-supported-rdf-serialization">Dataset resource encoded in a supported RDF serialization</h2>
+
 <p>The Europeana LD Harvester accesses the RDF resource of the dataset by sending an HTTP request to the URI that includes the Accept header with the supported mime -types for RDF serialization. The response may use any of the supported mime-types to send the RDF description of the dataset.<br>
 The following are the supported mime-types:</p>
-
 <table>
 <thead>
 <tr>
@@ -54,9 +58,14 @@ The following are the supported mime-types:</p>
 <td><a href="https://www.w3.org/TR/json-ld/">https://www.w3.org/TR/json-ld/</a></td>
 </tr>
 </tbody>
-</table><h1 id="title-of-the-dataset">Title of the dataset</h1>
+</table>
+
+<h2 id="title-of-the-dataset">Title of the dataset</h2>
+
 <p>The RDF resource of the dataset must have a title, and the title may be repeated for other languages. The titles should be provided by one of these properties: dc:title, dcterms:title,  schema:name. The language of the title should be represented in a xml:lang attribute of the title property.</p>
-<h1 id="specifying-the-technical-mechanism-for-ld-harvesting">Specifying the technical mechanism for LD harvesting</h1>
+
+<h2 id="specifying-the-technical-mechanism-for-ld-harvesting">Specifying the technical mechanism for LD harvesting</h2>
+
 <p>A LD dataset for Europeana, is formed, in its core, by RDF resources of the class edm:ProvidedCHO. In addition, a dataset contains all other resources used to describe the cultural object and aggregation metadata, as specified in the EDM (i.e. resources of types such as ore:Aggregation, edm:WebResource, edm:Agent, etc.).<br>
 All these resources will be harvested by Europeana’s LD harvester. The harvester will use the RDF description of the dataset to know which RDF resources to harvest and the mechanism to harvest them.<br>
 Data providers may choose one of the mechanisms, typically used for LD:</p>
@@ -67,10 +76,10 @@ Data providers may choose one of the mechanisms, typically used for LD:</p>
 </ul>
 <p>The mechanism that should be applied to a LD dataset is indicated by the data provider in the properties of the RDF description of the dataset, using any of the supported vocabularies: <a href="https://www.w3.org/TR/void/">VoID</a>, <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a>, and <a href="http://schema.org/Dataset">Schema.org</a>.<br>
 The following subsections provide details on how each of these mechanisms can be specified.</p>
-<h2 id="option-a---specifying-a-downloadable-dataset-distribution">Option A - Specifying a downloadable dataset distribution</h2>
+
+<h3 id="option-a---specifying-a-downloadable-dataset-distribution">Option A - Specifying a downloadable dataset distribution</h3>
 <p>All three vocabularies are capable of representing the required information for allowing Europeana to automatically obtain a dataset by  downloading a distribution containing all data within the dataset.<br>
 The following table points to the most relevant parts of the vocabularies that specify how a dataset distribution can be represented.</p>
-
 <table>
 <thead>
 <tr>
@@ -98,13 +107,21 @@ The following table points to the most relevant parts of the vocabularies that s
 <li>The files may be compressed. Currently, Europeana supports only the GZip compression algorithm.</li>
 <li>When using DCAT or <a href="http://Schema.org">Schema.org</a>, the values of properties dcat:mediaType and schema:encodingFormat should only use mime-types supported by Europeana for RDF encoding: ‘<em>application/rdf+xml</em>’, ‘<em>text/n3</em>’, ‘<em>application/n-triples</em>’, ‘<em>application/x-turtle</em>’, or ‘<em>application/ld+son</em>’.</li>
 </ul>
-<h2 id="option-b---specifying-a-listing-of-uris">Option B - Specifying a listing of URIs</h2>
+
+<h3 id="option-b---specifying-a-listing-of-uris">Option B - Specifying a listing of URIs</h3>
+
 <p>Only the <a href="https://www.w3.org/TR/void/">VoID</a> vocabulary includes a property to indicate a RDF resource that lists all the resources within a dataset.<br>
 VoID defines the property void:rootResource, that may be used by Europeana data providers to provide this information. See section “<a href="https://www.w3.org/TR/void/#root-resource">3.4 Root resources</a>” describing the  void:rootResource property, for the general use of the property.<br>
 For the requirements of Europeana, when using a listing of URIs, data providers must provide void:rootResource properties that contains the URIs of the cultural objects.<br>
 These URIs should point to RDF resources in EDM, and they should have one of the types <a href="http://www.openarchives.org/ore/1.0/datamodel#Aggregation">ore:Aggregation</a> or <a href="http://www.europeana.eu/schemas/edm/ProvidedCHO">edm:ProvidedCHO</a>.<br>
-Europeana R&amp;D  is nowadays piloting with LD using <a href="http://Schema.org">Schema.org</a>. In these particular contexts, these URIs should point to instances of <a href="http://schema.org/CreativeWork">schema:CreativeWork</a> or ones of its subclasses (e.g., <a href="http://schema.org/Painting">schema:Painting</a>, <a href="http://schema.org/Book">schema:Book</a>, <a href="http://schema.org/Sculpture">schema:Sculpture</a>, etc.).</p>
-<h2 id="option-c---specifying-a-sparql-service">Option C - Specifying a SPARQL Service</h2>
+Europeana R&amp;D  is currently piloting with LD using <a href="http://Schema.org">Schema.org</a>. In this particular context, these URIs should point to instances of <a href="http://schema.org/CreativeWork">schema:CreativeWork</a> or ones of its subclasses (e.g., <a href="http://schema.org/Painting">schema:Painting</a>, <a href="http://schema.org/Book">schema:Book</a>, <a href="http://schema.org/Sculpture">schema:Sculpture</a>, etc.).</p>
+<p>Only the <a href="https://www.w3.org/TR/void/">VoID</a> vocabulary includes a property to indicate a RDF resource that lists all the resources within a dataset.<br>
+VoID defines the property void:rootResource, that may be used by Europeana data providers to provide this information. See section “<a href="https://www.w3.org/TR/void/#root-resource">3.4 Root resources</a>” describing the  void:rootResource property, for the general use of the property.<br>
+For the requirements of Europeana, when using a listing of URIs, data providers must provide void:rootResource properties that contains the URIs of the cultural objects.<br>
+These URIs should point to RDF resources in EDM, and they should have one of the types <a href="http://www.openarchives.org/ore/1.0/datamodel#Aggregation">ore:Aggregation</a> or <a href="http://www.europeana.eu/schemas/edm/ProvidedCHO">edm:ProvidedCHO</a>.<br>
+Europeana R&amp;D  is currently piloting with LD using <a href="http://Schema.org">Schema.org</a>. In this particular context, these URIs should point to instances of <a href="http://schema.org/CreativeWork">schema:CreativeWork</a> or ones of its subclasses (e.g., <a href="http://schema.org/Painting">schema:Painting</a>, <a href="http://schema.org/Book">schema:Book</a>, <a href="http://schema.org/Sculpture">schema:Sculpture</a>, etc.).</p>
+
+<h3 id="option-c---specifying-a-sparql-service">Option C - Specifying a SPARQL Service</h3>
 <p><a href="https://www.w3.org/TR/void/">VoID</a> and <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a> provide ways to specify the endpoint URL of a SPARQL service that serves the dataset. <a href="http://Schema.org">Schema.org</a>, however, is not able to accurately express all the required technical details.<br>
 It is important to note that, it may not be possible to use SPARQL as the distribution mechanism in several cases. If the SPARQL endpoint serves more data than the data provider wishes to deliver to Europeana, none of the three vocabularies allows a data provider to specify a named graph or a triple pattern that would allow Europeana to select the subset to be harvested. Investigation is in progress, for ways to specify, in metadata, a subset within a SPARQL endpoint.<br>
 Using VoID, the URL of the SPARQL endpoint is specified using the property <a href="https://www.w3.org/TR/void/#sparql">void:sparqlEndpoint</a> in the dataset RDF resource.<br>
@@ -116,13 +133,18 @@ Regarding the value to be used in the dcterms:conformsTo properties, the Europea
 <li><a href="http://www.w3.org/2005/sparql-results#">http://www.w3.org/2005/sparql-results#</a></li>
 <li><a href="http://www.w3.org/2005/08/sparql-protocol-query/#">http://www.w3.org/2005/08/sparql-protocol-query/#</a></li>
 </ul>
-<h1 id="dataset-level-license">Dataset level license</h1>
+
+<h2 id="dataset-level-license">Dataset level license</h2>
+
 <p>The RDF resource of the dataset may optionally indicate a license that applies to the whole dataset. If the dataset provides the licensing information, individual metadata records may still override it, by specifying a license as defined in EDM.<br>
 The license for a whole dataset should be specified in <a href="http://dublincore.org/documents/dcmi-terms/#terms-license">dcterms:license</a> or <a href="http://schema.org/license">schema:license</a> (with Europeana supported licenses’ URIs). Following the recommendations of DCAT, the property should be applied to the Distribution of the dataset. The property may also be applied in the Dataset resource, since this option may be required when specifying the dataset using VoID, since no Distribution resource exists in such cases.</p>
-<h1 id="examples">Examples</h1>
+
+<h2 id="examples">Examples</h2>
 <p>This section contains illustrative examples of RDF descriptions of datasets, prepared accordingly to the requirements of Europeana.</p>
-<h2 id="example-of-a-dataset-available-via-a-downloadable-distribution">Example of a dataset available via a downloadable distribution</h2>
-<p>The next example contains a RDF description of a dataset available via a downloadable distribution. In this example, the  <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a> vocabulary is used.</p>
+
+<h3 id="example-of-a-dataset-available-via-a-downloadable-distribution">Example of a dataset available via a downloadable distribution</h3>
+
+<p>The next example contains a RDF description of a dataset available via a downloadable distribution, using the <a href="https://www.w3.org/TR/vocab-dcat/">DCAT</a> vocabulary.</p>
 <pre><code>&lt;?xml version="1.0"?&gt;
 &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:dcat="http://www.w3.org/ns/dcat#"
@@ -141,7 +163,7 @@ The license for a whole dataset should be specified in <a href="http://dublincor
   &lt;/rdf:Description&gt;
 &lt;/rdf:RDF&gt;
 </code></pre>
-<p>The next example contains the description the same dataset available via a downloadable distribution. In this example, the <a href="http://schema.org/Dataset">Schema.org</a> vocabulary is used.</p>
+<p>The next example contains the description the same dataset available via a downloadable distribution, using the <a href="http://schema.org/Dataset">Schema.org</a> vocabulary.</p>
 <pre><code>&lt;?xml version="1.0"?&gt;
 &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
          xmlns:schema="http://schema.org/"&gt;
@@ -159,7 +181,7 @@ The license for a whole dataset should be specified in <a href="http://dublincor
   &lt;/rdf:Description&gt;
 &lt;/rdf:RDF&gt;
 </code></pre>
-<p>The next example contains the description the same dataset available via a downloadable distribution. In this example, the <a href="https://www.w3.org/TR/void/">VoID</a> vocabulary is used.</p>
+<p>The next example contains the description the same dataset available via a downloadable distribution, using the <a href="https://www.w3.org/TR/void/">VoID</a> vocabulary.</p>
 <pre><code>&lt;?xml version="1.0"?&gt;
 &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:void="http://rdfs.org/ns/void#"
@@ -172,7 +194,8 @@ The license for a whole dataset should be specified in <a href="http://dublincor
   &lt;/rdf:Description&gt;
 &lt;/rdf:RDF&gt;
 </code></pre>
-<h2 id="example-of-a-dataset-available-via-a-listing-of-uris">Example of a dataset available via a listing of URIs</h2>
+
+<h3 id="example-of-a-dataset-available-via-a-listing-of-uris">Example of a dataset available via a listing of URIs</h3>
 <p>The next example contains a RDF description of a dataset available via a  listing of URIs. In this example, the   <a href="https://www.w3.org/TR/void/">VoID</a> vocabulary is used.</p>
 <pre><code>&lt;?xml version="1.0"?&gt;
 &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
