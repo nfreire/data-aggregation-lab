@@ -42,14 +42,14 @@ public class JobDiagnoseIiifSourceForEuropeana  extends JobWorker {
 			iiifDiagnosisForEuropeanaFile.getParentFile().mkdirs();
 		PrintStream ps = new PrintStream(iiifDiagnosisForEuropeanaFile, "UTF-8");
 		ps.println("<HTML><BODY>");
-		ps.println("<H3>Diagnostic of IIIF Dataset for aggregation by Europeana ("+dataset.getTitle()+")</H3>");
+		ps.println("<H3>Diagnostic of IIIF Dataset for metadata aggregation by Europeana ("+dataset.getTitle()+")</H3>");
 		ps.println("<p>Date: "+new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date())+"</p>");
 		ps.printf("<p>IIIF Manifests containing a license: %.1f%%", licensingCoverage*100);
 		if(!licenses.isEmpty()) {
 			ps.println("<br />Licenses in use:");
 			ps.println("<ul>");			
 			for(String lic: licenses) 
-				ps.println("<li>"+lic+"/li>");
+				ps.println("<li>"+lic+"</li>");
 			ps.println("</ul>");			
 		}
 		ps.println("</p>");
@@ -71,7 +71,7 @@ public class JobDiagnoseIiifSourceForEuropeana  extends JobWorker {
 			}
 			ps.println("</ul>");			
 		} else {
-			ps.println("<BR />Dataset does not provide any format of metadata for aggregation by Europeana");			
+			ps.println("<BR />Dataset does not provide any format of metadata suitable for aggregation by Europeana");			
 		}
 		ps.println("</p>");
 		ps.println("\n</BODY></HTML>");		

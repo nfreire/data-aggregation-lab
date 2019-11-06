@@ -21,7 +21,7 @@ import inescid.dataaggregation.dataset.LodDataset;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.RdfUtil;
 
-public class ScriptTestCrawl {
+public class ScriptGetKbUris {
 	/* 
 	 init componentes
 	get URIs for sample
@@ -53,7 +53,7 @@ public class ScriptTestCrawl {
 		boolean reuseLastCrawling=false;
 
 		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepository";
-		File urisFile = new File("target/schemaorg-test-uris.txt");
+		File urisFile = null;
 		
 		String crawledTestUrisRepositoryDataset = "crawled-test-uris";
 
@@ -68,23 +68,20 @@ public class ScriptTestCrawl {
 			dataRepository.clear(crawledTestUrisRepositoryDataset);
 			
 		List<String> testUris = null;
-		if(urisFile.exists() && urisFile.length()>0) {
-			testUris = FileUtils.readLines(urisFile, Global.UTF8);
-		} else {
-			String dsKbAlba="http://data.bibliotheken.nl/id/dataset/rise-alba";
-			testUris = new DatasetDescription(dsKbAlba).listRootResources();
-			FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
-		}			
+		String dsKbUri="http://data.bibliotheken.nl/id/dataset/rise-alba";
+		urisFile = new File("target/uris-KB-alba.txt");
+		testUris = new DatasetDescription(dsKbUri).listRootResources();
+		FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
+
+		dsKbUri="http://data.bibliotheken.nl/id/dataset/rise-centsprenten";
+		urisFile = new File("target/uris-KB-centsprenten.txt");
+		testUris = new DatasetDescription(dsKbUri).listRootResources();
+		FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
+
+		dsKbUri="http://data.bibliotheken.nl/id/dataset/rise-childrensbooks";
+		urisFile = new File("target/uris-KB-childrensbooks.txt");
+		testUris = new DatasetDescription(dsKbUri).listRootResources();
+		FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
 		
-		for(String uri : testUris) {
-			CrawlResult crawlResult;
-			if(reuseLastCrawling && dataRepository.contains(crawledTestUrisRepositoryDataset, uri)) {
-				crawlResult = CrawlResult.deSerialize(dataRepository.getContent(crawledTestUrisRepositoryDataset, uri));				
-			} else {
-				crawlResult = crawler.crawlSchemaorgForCho(uri);
-				dataRepository.save(crawledTestUrisRepositoryDataset, uri, crawlResult.serialize());
-			}
-			System.out.println(uri+" - "+new String(crawlResult.serialize()));
-		};
 	}
 }

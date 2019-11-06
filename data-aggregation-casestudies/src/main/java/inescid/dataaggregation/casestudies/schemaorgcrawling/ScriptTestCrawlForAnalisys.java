@@ -38,7 +38,7 @@ public class ScriptTestCrawlForAnalisys {
 		if(urisFile.exists() && urisFile.length()>0) {
 			testUris = FileUtils.readLines(urisFile, Global.UTF8);
 		} else {
-			testUris = DatasetDescription.listRootResources(collectionDescriptionUri);
+			testUris = new DatasetDescription(collectionDescriptionUri).listRootResources();
 			FileUtils.writeLines(urisFile, Global.UTF8.toString(), testUris);
 		}			
 		int totalUrisCrawled=0;

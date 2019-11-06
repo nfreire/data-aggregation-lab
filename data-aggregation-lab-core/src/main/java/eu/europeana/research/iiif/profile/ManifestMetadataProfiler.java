@@ -58,12 +58,12 @@ public class ManifestMetadataProfiler {
 			manifestMdProfile.save(manifestMdCsvFile);
 			File seeAlsoCsvFile = new File(outputFolder, "seeAlso-profile.csv");
 			seeAlsoProfile.save(seeAlsoCsvFile);
-			File licenseCsvFile = new File(outputFolder, "license-profile.csv");
-			licenseProfile.save(licenseCsvFile);
+			File rightsCsvFile = new File(outputFolder, "rights-profile.csv");
+			licenseProfile.save(rightsCsvFile);
 			
 			String manifestMdSheetTitle=manifestMdCsvFile.getName().substring(0, manifestMdCsvFile.getName().lastIndexOf('.'));
 			String seeAlsoSheetTitle=seeAlsoCsvFile.getName().substring(0, seeAlsoCsvFile.getName().lastIndexOf('.'));
-			String licenseSheetTitle=licenseCsvFile.getName().substring(0, licenseCsvFile.getName().lastIndexOf('.'));
+			String rightsSheetTitle=rightsCsvFile.getName().substring(0, rightsCsvFile.getName().lastIndexOf('.'));
 	
 			File sheetsIdFile = new File(outputFolder, "google-sheet-id.txt");
 			String spreadsheetId=null;
@@ -76,7 +76,7 @@ public class ManifestMetadataProfiler {
 			}
 			GoogleSheetsCsvUploader.update(spreadsheetId, manifestMdSheetTitle, manifestMdCsvFile);			
 			GoogleSheetsCsvUploader.update(spreadsheetId, seeAlsoSheetTitle, seeAlsoCsvFile);			
-			GoogleSheetsCsvUploader.update(spreadsheetId, licenseSheetTitle, licenseCsvFile);	
+			GoogleSheetsCsvUploader.update(spreadsheetId, rightsSheetTitle, rightsCsvFile);	
 		}
 	}
 

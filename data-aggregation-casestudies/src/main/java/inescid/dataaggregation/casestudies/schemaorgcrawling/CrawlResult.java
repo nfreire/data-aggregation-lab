@@ -26,11 +26,13 @@ class CrawlResult {
 	int notFound;
 	int urisNotFollowed;
 	int propsNotFollowed;
-	int obtainedResourcesForLiterals=0;
+	int obtainedResourcesToGetLiterals=0;
 	int literalsFound=0;
 	int referencesNotFound=0;
 	int referencesFound=0;
-	int inModelResources=0;
+	int inModelResourcesTotal=0;
+	int inModelResourcesAnon=0;
+	int inModelResourcesAnomNot=0;
 	int notRdf=0;
 	int urisTooDeep=0;
 	int propsNotFollowedWithUri=0;

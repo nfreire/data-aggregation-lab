@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -216,7 +217,19 @@ public class RdfUtil {
 		return readRdf(new HttpResponse(rdfReq));
 	}
 	public static Resource readRdfResourceFromUri(String resourceUri) throws AccessException, InterruptedException, IOException {
+		try {
+			URI.create(resourceUri);
+		} catch (Exception e) {
+			try {
+				URI.create(resourceUri.trim());
+				resourceUri=resourceUri.trim();
+			} catch (Exception e2) {
+				throw new AccessException(resourceUri, "Invalid URI "+resourceUri, e);
+			} 
+		}
 		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
+		
+		
 		Model readRdf = readRdf(new HttpResponse(rdfReq));
 		if(readRdf==null)
 			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());

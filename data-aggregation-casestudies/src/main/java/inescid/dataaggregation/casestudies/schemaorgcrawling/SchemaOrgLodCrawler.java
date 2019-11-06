@@ -45,11 +45,11 @@ public class SchemaOrgLodCrawler {
 	}	
 
 	protected void crawlResourceForLiteral(Resource anonOrNamed, int depth) throws AccessException, InterruptedException, IOException {
-		crawl.obtainedResourcesForLiterals++;		
+		crawl.obtainedResourcesToGetLiterals++;		
 		//TODO later
 	}
 	protected void crawlResourceForLiteral(String uri, int depth) throws AccessException, InterruptedException, IOException {
-		crawl.obtainedResourcesForLiterals++;
+		crawl.obtainedResourcesToGetLiterals++;
 		//TODO later
 //		Resource r = RdfUtil.readRdfResourceFromUri(uri);
 //		if (r==null ) {
@@ -92,6 +92,10 @@ public class SchemaOrgLodCrawler {
 				alreadyCrawledNotFound.add(uri);
 				System.out.println("Not found (depth "+depth+") "+uri);
 			}
+		} catch (IOException e) {
+			crawl.incNotFound(uri);
+			alreadyCrawledNotFound.add(uri);
+			System.out.println("Not found (depth "+depth+") "+uri);			
 		}
 		if (r==null ) return ;
 		crawl.obtainedResources++;
@@ -102,10 +106,13 @@ public class SchemaOrgLodCrawler {
 		if(alreadyCrawled.contains(anonOrNamed.isAnon() ? anonOrNamed.getId() : anonOrNamed.getURI())) return;
 		if(anonOrNamed.isAnon()) {
 			alreadyCrawled.add(anonOrNamed.getId().toString()); 
-		} else
+			crawl.inModelResourcesAnon++;			
+		} else {
 			alreadyCrawled.add(anonOrNamed.getURI());
+			crawl.inModelResourcesAnon++;			
+		}
 		
-		crawl.inModelResources++;
+		crawl.inModelResourcesTotal++;
 		if(anonOrNamed.isAnon()) {
 			Statement type = anonOrNamed.getProperty(RegRdf.type);
 			if(type!=null)
@@ -141,8 +148,8 @@ public class SchemaOrgLodCrawler {
 						if (st.getObject().isResource() && !st.getObject().isAnon()) 
 							crawl.propsNotFollowedWithUri++;
 					}else {
-						if(prop.equals(RegSchemaorg.image))
-							System.out.println(st);
+//						if(prop.equals(RegSchemaorg.image))
+//							System.out.println(st);
 						if(st.getObject().isResource()) {
 							if(st.getObject().isAnon()) {
 								if(possibleMaps.contains(AllowedValue.RESOURCE)) 
