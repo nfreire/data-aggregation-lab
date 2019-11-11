@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map.Entry;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
@@ -22,6 +23,7 @@ import inescid.util.RdfUtil.Jena;
 
 class CrawlResult {
 	final Model crawledModel=Jena.createModel();
+	String uri;
 	int obtainedResources=0;
 	int notFound;
 	int urisNotFollowed;
@@ -32,7 +34,7 @@ class CrawlResult {
 	int referencesFound=0;
 	int inModelResourcesTotal=0;
 	int inModelResourcesAnon=0;
-	int inModelResourcesAnomNot=0;
+	int inModelResourcesAnonNot=0;
 	int notRdf=0;
 	int urisTooDeep=0;
 	int propsNotFollowedWithUri=0;
@@ -42,6 +44,8 @@ class CrawlResult {
 	MapOfInts<Resource> propsNotFollowedByProperty=new MapOfInts<>();
 	MapOfInts<Resource> domainsWithoutRdf=new MapOfInts<>();
 	MapOfInts<Resource> domainsNotResolvable=new MapOfInts<>();
+	ArrayList<String> failedUris=new ArrayList<String>();
+	
 	
 	public static CrawlResult deSerialize(byte[] serialized) throws IOException {
 		try {
@@ -70,6 +74,13 @@ class CrawlResult {
 									Integer.parseInt(v));					
 							uri=null;
 						}
+					}
+					r=p.iterator().next();
+				} else if (f.getType().equals(ArrayList.class)) {
+					String uri=null;
+					ArrayList<Object> fldMap=((ArrayList<Object>) f.get(cr));
+					for(String v: r) {
+							fldMap.add(uri);
 					}
 					r=p.iterator().next();
 				}
@@ -105,6 +116,12 @@ class CrawlResult {
 						p.print(classEntry.getValue());
 					}
 					p.println();
+				} else if (f.getType().equals(ArrayList.class)) {
+					p.print(f.getName());					
+					for (String entry : ((ArrayList<String>) f.get(this))) {
+						p.print(entry);
+					}
+					p.println();
 				}
 			}
 			p.close();
@@ -113,13 +130,17 @@ class CrawlResult {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
-	public void incNotRdf(String uri) {
+	public void incNotRdf(String uri, int depth) {
 		notRdf++;
 		domainsWithoutRdf.incrementTo(uriToDomain(uri));
+		if(depth==0)
+			failedUris.add(uri);
 	}
-	public void incNotFound(String uri) {
+	public void incNotFound(String uri, int depth) {
 		notFound++;
 		domainsNotResolvable.incrementTo(uriToDomain(uri));
+		if(depth==0)
+			failedUris.add(uri);
 	}
 	private Resource uriToDomain(String uri) {
 		try {

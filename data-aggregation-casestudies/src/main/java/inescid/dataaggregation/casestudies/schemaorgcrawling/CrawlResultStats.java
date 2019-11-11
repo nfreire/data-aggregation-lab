@@ -3,6 +3,7 @@ package inescid.dataaggregation.casestudies.schemaorgcrawling;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
@@ -14,15 +15,16 @@ import inescid.opaf.data.profile.MapOfInts;
 public class CrawlResultStats extends CrawlResult {
 	int seedsCount=0;
 
+	public CrawlResultStats() {
+		super();
+	}
+
 	public void addToStats(CrawlResult result) {
 		try {
 			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(int.class)) {
 					f.setInt(this, f.getInt(this) + CrawlResult.class.getDeclaredField(f.getName()).getInt(result));
-				}
-			}
-			for (Field f : CrawlResult.class.getDeclaredFields()) {
-				if (f.getType().equals(MapOfInts.class)) {
+				} else if (f.getType().equals(MapOfInts.class)) {
 					MapOfInts<Resource> resultMap=(MapOfInts<Resource>)CrawlResult.class.getDeclaredField(f.getName()).get(result);					
 					MapOfInts<Resource> statsMap = (MapOfInts<Resource>) f.get(this);
 					for (Entry<Resource, Integer> classEntry : resultMap.entrySet()) {
@@ -31,6 +33,10 @@ public class CrawlResultStats extends CrawlResult {
 						statsMap.addTo(uri, resultValue);
 						
 					}
+				} else if (f.getType().equals(ArrayList.class)) {
+					ArrayList<String> resultList=(ArrayList<String>)CrawlResult.class.getDeclaredField(f.getName()).get(result);					
+					ArrayList<String> statsList = (ArrayList<String>) f.get(this);
+					statsList.addAll(resultList);
 				}
 			}
 			seedsCount++;

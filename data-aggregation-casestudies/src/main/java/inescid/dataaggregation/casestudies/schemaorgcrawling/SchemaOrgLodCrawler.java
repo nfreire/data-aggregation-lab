@@ -40,7 +40,7 @@ public class SchemaOrgLodCrawler {
 	
 	public CrawlResult crawlSchemaorgForCho(String uri) throws AccessException, InterruptedException, IOException {
 		crawl=new CrawlResult();
-		crawlResource(uri, 0);
+		crawlResource(uri.trim(), 0);
 		return crawl;
 	}	
 
@@ -66,34 +66,30 @@ public class SchemaOrgLodCrawler {
 		if(alreadyCrawled.contains(uri)) 
 			return;
 		if(alreadyCrawledNonRdf.contains(uri)) {
-			crawl.incNotRdf(uri);
+			crawl.incNotRdf(uri, depth);
 			return;
 		}
 		if(alreadyCrawledNotFound.contains(uri)) {
-			crawl.incNotFound(uri);
+			crawl.incNotFound(uri, depth);
 			return;
 		}
 //		System.out.println(depth+" "+uri);
 		Resource r=null;
 		try {
 			r = RdfUtil.readRdfResourceFromUri(uri);
-			if (r==null ) {
-				System.out.println("Not found (depth "+depth+") "+uri);				
-				crawl.incNotFound(uri);
-			}else
-				alreadyCrawled.add(uri);
+			alreadyCrawled.add(uri);
 		} catch (AccessException e) {
 			if(e.getCode()!=null && e.getCode().equals("200")) {
-				crawl.incNotRdf(uri);
+				crawl.incNotRdf(uri, depth);
 				alreadyCrawledNonRdf.add(uri);
 				System.out.println("Not rdf (depth "+depth+") "+uri);
 			} else {
-				crawl.incNotFound(uri);
+				crawl.incNotFound(uri, depth);
 				alreadyCrawledNotFound.add(uri);
 				System.out.println("Not found (depth "+depth+") "+uri);
 			}
 		} catch (IOException e) {
-			crawl.incNotFound(uri);
+			crawl.incNotFound(uri, depth);
 			alreadyCrawledNotFound.add(uri);
 			System.out.println("Not found (depth "+depth+") "+uri);			
 		}
@@ -109,7 +105,7 @@ public class SchemaOrgLodCrawler {
 			crawl.inModelResourcesAnon++;			
 		} else {
 			alreadyCrawled.add(anonOrNamed.getURI());
-			crawl.inModelResourcesAnon++;			
+			crawl.inModelResourcesAnonNot++;
 		}
 		
 		crawl.inModelResourcesTotal++;

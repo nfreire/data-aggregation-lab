@@ -1,10 +1,17 @@
 package inescid.dataaggregation.crawl.ld;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.io.FileUtils;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
@@ -188,6 +195,9 @@ public class RulesSchemaorgCrawlGraphOfCho {
 		public Set<AllowedValue> getProperty(Property prop) {
 			return map.get(prop);
 		}
+		public Set<Property> keySet() {
+			return map.keySet();
+		}
 	}
 	
 	HashSet<Resource> choClasses;
@@ -212,5 +222,55 @@ public class RulesSchemaorgCrawlGraphOfCho {
 //			System.out.println(map.getKey() +" "+av);
 		}
 		return av;
+	}
+	
+	
+	public String toCsv() throws Exception {
+		StringBuilder sb=new StringBuilder();
+		CSVPrinter csv=new CSVPrinter(sb, CSVFormat.DEFAULT);
+//		HashSet<Resource> choClasses;
+//		HashMap<Resource, MappingAllowedForClass> mappingsByClass;
+		ArrayList<Resource> sortedClasses=new ArrayList(mappingsByClass.keySet());
+		Collections.sort(sortedClasses, new Comparator<Resource>() {
+			public int compare(Resource o1, Resource o2) {
+				return o1.getURI().compareTo(o2.getURI());
+			};
+		});
+		
+		HashSet<Property> dedup=new HashSet<Property>();
+		int totalProps=0;
+		for(Resource r: sortedClasses) {
+			Set<Property> keySet = mappingsByClass.get(r).keySet();
+			csv.printRecord(r, keySet.size());
+			totalProps+=keySet.size();			
+			dedup.addAll(keySet);
+		}
+		csv.printRecord("Total classes",sortedClasses.size(), "Total properties",totalProps, "Distinct properties", dedup.size());
+		
+		for(Resource r: sortedClasses) {
+			csv.println();
+			boolean first=true;
+			for(Property m: mappingsByClass.get(r).keySet()) {
+				if(first) {
+					csv.print(r);
+					first=false;
+				}else
+					csv.print("");			
+				csv.print(m.getURI());			
+				for(AllowedValue v: mappingsByClass.get(r).getProperty(m)) {
+					csv.print(v);			
+				}
+				csv.println();
+			}
+		}
+		csv.close();
+		return sb.toString();
+	}
+	
+	
+	public static void main(String[] args) throws Exception {
+		String csvString = new RulesSchemaorgCrawlGraphOfCho().toCsv();
+		System.out.println(csvString);
+		FileUtils.write(new File("../data-aggregation-casestudies/src/data/schemaorgcrawling/EuropeanaKnownFromSchemaorg.csv"), csvString, "UTF8");
 	}
 }
