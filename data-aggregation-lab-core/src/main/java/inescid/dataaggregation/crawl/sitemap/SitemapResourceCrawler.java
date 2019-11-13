@@ -71,7 +71,7 @@ public class SitemapResourceCrawler {
 		Global.getHttpRequestService().fetch(sitemapRequest);
 		if (sitemapRequest.getResponseStatusCode() != 200) 
 			throw new IOException(sitemapUrl);
-		AbstractSiteMap siteMap = parseSiteMap(sitemapRequest.getContent(), sitemapUrl);
+		AbstractSiteMap siteMap = parseSiteMap(sitemapRequest.getMimeType(), sitemapRequest.getContent(), sitemapUrl);
 		processSitemap(siteMap);
 	}		
 	private void processSitemap(AbstractSiteMap siteMap) throws Exception {	
@@ -103,9 +103,10 @@ public class SitemapResourceCrawler {
 		}
 	}
 
-	private static AbstractSiteMap parseSiteMap(Content content, String url) throws IOException, UnknownFormatException {
+
+	private static AbstractSiteMap parseSiteMap(String mimeType, byte[] bytes, String url) throws IOException, UnknownFormatException {
 		SiteMapParser parser=new SiteMapParser(false);
-		AbstractSiteMap siteMap = parser.parseSiteMap(content.getType().getMimeType(), content.asBytes(), new URL(url));
+		AbstractSiteMap siteMap = parser.parseSiteMap(mimeType, bytes, new URL(url));
 		return siteMap;
 	}
 	

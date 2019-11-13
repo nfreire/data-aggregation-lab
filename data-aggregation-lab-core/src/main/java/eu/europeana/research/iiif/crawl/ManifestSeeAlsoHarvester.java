@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
 import eu.europeana.research.iiif.profile.model.Manifest;
 import eu.europeana.research.iiif.profile.model.SeeAlso;
+import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
@@ -66,8 +67,8 @@ public class ManifestSeeAlsoHarvester {
 				continue;
 			
 			try {
-				List<org.apache.http.Header> headers = HttpUtil.getStoreAndReturnHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
-				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, HttpUtil.convertHeaderStruct(headers));
+				List<Entry<String, String>> headers = HttpUtil.getStoreAndReturnHeaders(targetSeeAlso.id, repository.getFile(repositoryDatasetUri, targetSeeAlso.id));
+				repository.saveMeta(repositoryDatasetUri, targetSeeAlso.id, headers);
 				timestampTracker.setObjectTimestamp(dataset.getSeeAlsoDatasetUri(), targetSeeAlso.id, new GregorianCalendar());
 			} catch (AccessException e) {
 				log.warn(targetSeeAlso.id, e);

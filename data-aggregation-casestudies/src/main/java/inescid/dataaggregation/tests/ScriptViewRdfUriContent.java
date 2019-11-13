@@ -42,7 +42,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/title", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://rdaregistry.info/Elements/c.ttl", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("http://urn.fi/URN:NBN:fi:bib:me:I00000624700", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-			String content = req.getContent().asString();
+			String content = req.getContentAsString();
 			System.out.println(content);
 			System.out.println("HTTP code: "+req.getResponseStatusCode());
 			System.out.println("Content type: "+req.getResponseHeader("Content-Type"));

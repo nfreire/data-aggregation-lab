@@ -2,9 +2,12 @@ package inescid.dataaggregation.crawl.http;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.http.Header;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
@@ -31,6 +34,7 @@ import org.apache.http.ssl.SSLContextBuilder;
 
 import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
 import inescid.util.DevelopementSingleton;
+import inescid.util.RetryExec;
 
 public class HttpRequestService {
 	private static TaskSyncManager taskSyncManager = new TaskSyncManager();
@@ -39,7 +43,10 @@ public class HttpRequestService {
 	CookieStore httpCookieStore;
 	boolean followRedirects=true;
 //	ArrayList<FetchRequest> requestsQueue=new ArrayList<>(50);
+	CachedHttpRequestService requestCache;
 
+	
+	
 	Vector<Long> requestTimeStats = null;
 //	Vector<Long> requestTimeStats=new Vector<>();
 
@@ -108,8 +115,38 @@ public class HttpRequestService {
 	public void fetch(HttpRequest url) throws InterruptedException, IOException {
 		taskSyncManager.acquireHttpFetch();
 		try {
+			if(requestCache!=null) {
+				HttpResponse fetched = requestCache.fetch(url);
+				url.setResponse(fetched);
+			} else  
+				url.setResponse(new HttpResponse(fetchWithoutCache(url, false)));
+		} finally {
+			taskSyncManager.releaseHttpFetch();
+		}
+	}
+
+	public boolean isFollowRedirects() {
+		return followRedirects;
+	}
+
+	public void setFollowRedirects(boolean followRedirects) {
+		this.followRedirects = followRedirects;
+	}
+
+	public void initEnableCache() {
+		requestCache = new CachedHttpRequestService();
+		requestCache.setRequestRetryAttempts(1);
+	}
+
+	public CloseableHttpResponse fetchWithoutCache(HttpRequest url)  throws InterruptedException, IOException {
+		return fetchWithoutCache(url, true);
+	}
+	public CloseableHttpResponse fetchWithoutCache(HttpRequest url, boolean acquireTaskSync)  throws InterruptedException, IOException {
+		if(acquireTaskSync)
+			taskSyncManager.acquireHttpFetch();
+		try {
 			Long startTime = requestTimeStats != null ? System.nanoTime() : null;
-			HttpRequestBase request;
+			final HttpRequestBase request;
 			if (url.getHttpMethod() == null || url.getHttpMethod() == HttpMethod.GET)
 				request = new HttpGet(url.getUrl());
 			else if (url.getHttpMethod() == HttpMethod.HEAD)
@@ -125,8 +162,21 @@ public class HttpRequestService {
 			} else
 				throw new RuntimeException("Not implemented: " + url.getHttpMethod());
 
-			url.addHeaders(request);
-			CloseableHttpResponse response = httpClient.execute(request);
+			url.addHeadersToRequest(request);
+			
+			
+			CloseableHttpResponse response=null; 
+			if(url.getRetryAttempst()<=0) 	
+				response = httpClient.execute(request);
+			else {
+				response = new RetryExec<CloseableHttpResponse, IOException>(url.getRetryAttempst()) {
+					@Override
+					protected CloseableHttpResponse doRun() throws IOException {
+						CloseableHttpResponse ret= httpClient.execute(request);
+						return ret;
+					}
+				}.run();
+			}			
 
 //			if(httpCookieStore.getCookies().size()>50) {
 //				httpCookieStore.clearExpired(new Date());
@@ -152,18 +202,11 @@ public class HttpRequestService {
 					}
 				}
 			}
-			url.setResponse(response);
+			return response;
 		} finally {
-			taskSyncManager.releaseHttpFetch();
+			if(acquireTaskSync)
+				taskSyncManager.releaseHttpFetch();
 		}
-	}
-
-	public boolean isFollowRedirects() {
-		return followRedirects;
-	}
-
-	public void setFollowRedirects(boolean followRedirects) {
-		this.followRedirects = followRedirects;
 	}
 
 //	public String printStatus() {

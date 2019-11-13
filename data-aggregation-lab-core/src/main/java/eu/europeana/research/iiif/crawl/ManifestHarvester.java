@@ -3,6 +3,7 @@ package eu.europeana.research.iiif.crawl;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import eu.europeana.research.iiif.discovery.syncdb.TimestampTracker;
@@ -32,9 +33,9 @@ private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.Lo
 		for(String mUrl: manifestSource.getIterableOfObjects(datasetUri, TimestampTracker.Deleted.EXCLUDE)) {
 			cnt++;
 			try {
-				List<org.apache.http.Header> headers = HttpUtil.getAndStoreWithHeaders(
+				List<Entry<String, String>> headers = HttpUtil.getAndStoreWithHeaders(
 						new UrlRequest(mUrl, "accept", "application/json"), repository.getFile(datasetUri, mUrl));
-				repository.saveMeta(datasetUri, mUrl, HttpUtil.convertHeaderStruct(headers));
+				repository.saveMeta(datasetUri, mUrl, headers);
 
 				manifestSource.setObjectTimestamp(datasetUri, mUrl, new GregorianCalendar());
 			} catch (IOException | AccessException e) {

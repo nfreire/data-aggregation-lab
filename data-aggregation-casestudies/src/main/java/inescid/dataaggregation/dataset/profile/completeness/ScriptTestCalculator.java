@@ -101,7 +101,7 @@ public class ScriptTestCalculator {
 			
 			try {
 				HttpResponse fetched = httpRequestService.fetchRdf(uri); 				
-				Model rdf = RdfUtil.readRdf(fetched.body, RdfUtil.fromMimeType(fetched.getHeader("Content-Type")));
+				Model rdf = RdfUtil.readRdf(fetched.getBody(), RdfUtil.fromMimeType(fetched.getHeader("Content-Type")));
 				System.out.println(uri);
 //				System.out.println("*** "+uri);
 //				System.out.println(RdfUtil.printStatements(rdf));

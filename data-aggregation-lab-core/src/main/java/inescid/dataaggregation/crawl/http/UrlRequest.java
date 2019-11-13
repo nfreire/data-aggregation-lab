@@ -20,6 +20,7 @@ public class UrlRequest {
 	List<AbstractMap.SimpleImmutableEntry<String, String>> headers;
 	HttpEntity requestContent;
 	boolean refresh=false;
+	int retryAttemps=0;
 	
 	public UrlRequest(String url) {
 		super();
@@ -48,10 +49,18 @@ public class UrlRequest {
 		headers=new ArrayList<>(1);
 		headers.add(new AbstractMap.SimpleImmutableEntry<String,String>(httpHeaderName, httpHeaderValue));
 	}
+	public UrlRequest(String url, String httpHeaderName, String httpHeaderValue, int retryAttemps) {
+		this(url, httpHeaderName, httpHeaderValue);
+		setRetryAttemps(retryAttemps);
+	}
 	
 	public UrlRequest(String url, HttpMethod method, String httpHeaderName, String httpHeaderValue) {
 		this(url, httpHeaderName, httpHeaderValue);
 		setMethod(method);
+	}
+	public UrlRequest(String url, HttpMethod method, String httpHeaderName, String httpHeaderValue, int retryAttemps) {
+		this(url, method, httpHeaderName, httpHeaderValue);
+		setRetryAttemps(retryAttemps);
 	}
 	
 	public void addHttpHeader(String httpHeaderName, String httpHeaderValue) {
@@ -104,6 +113,12 @@ public class UrlRequest {
 	}
 	public void setRequestContent(HttpEntity requestContent) {
 		this.requestContent=requestContent;
+	}
+	public int getRetryAttemps() {
+		return retryAttemps;
+	}
+	public void setRetryAttemps(int retryAttemps) {
+		this.retryAttemps = retryAttemps;
 	}
 
 	

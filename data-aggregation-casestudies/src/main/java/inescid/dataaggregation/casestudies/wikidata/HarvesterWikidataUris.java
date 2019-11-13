@@ -46,7 +46,7 @@ public class HarvesterWikidataUris {
 							if(fetched.isSuccess())
 								System.out.printf("Access to %s failed\n", uri);
 							else
-								System.out.printf("Saved %s (%d Kb)\n", uri, fetched.body.length / 1024);
+								System.out.printf("Saved %s (%d Kb)\n", uri, fetched.getBody().length / 1024);
 						}
 						return true;
 					}

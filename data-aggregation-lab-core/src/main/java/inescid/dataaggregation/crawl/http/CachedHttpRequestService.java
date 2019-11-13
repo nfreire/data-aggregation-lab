@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
+import org.apache.http.client.methods.CloseableHttpResponse;
 
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
@@ -54,7 +55,7 @@ public class CachedHttpRequestService {
 	@SuppressWarnings("unchecked")
 	public HttpResponse fetch(HttpRequest req) throws InterruptedException, IOException {
 		try {
-			HttpResponse resourceFetched = new RetryExec<HttpResponse>(retryAttempts) {
+			HttpResponse resourceFetched = new RetryExec<HttpResponse, Exception>(retryAttempts) {
 				@Override
 				protected HttpResponse doRun() throws Exception{
 					HttpResponse ret=null;  
@@ -62,17 +63,27 @@ public class CachedHttpRequestService {
 					if (cache.contains(DATASET_ID, url)) {
 						ret=new HttpResponse(cache.getContent(DATASET_ID, url), cache.getMeta(DATASET_ID, url), 200);
 					} else {
-						httpService.fetch(req);
-						int resStatusCode = req.getResponseStatusCode();
+						CloseableHttpResponse fetched = httpService.fetchWithoutCache(req);
+						int resStatusCode = fetched.getStatusLine().getStatusCode();
 						if (resStatusCode != 200 && resStatusCode!=304/* not modified*/) {
 							if (resStatusCode >= 300 && resStatusCode<400) {
-								String location = req.getResponseHeader("Location");
+								String location = null;
+								List<Header> meta=new ArrayList<>(5);
+								for(Header h : fetched.getHeaders("Location")) {
+									location=h.getValue();
+									break;
+								}
 								if(location!=null) {
 									req.getUrlRequest().setUrl(location);
 									return doRun();
 								}
 							}else if( resStatusCode==429) {
-								String retryAfter = req.getResponseHeader("Retry-After");
+								String retryAfter = null;
+								List<Header> meta=new ArrayList<>(5);
+								for(Header h : fetched.getHeaders("Retry-After")) {
+									retryAfter=h.getValue();
+									break;
+								}
 								if(retryAfter!=null) {
 									try {
 										Thread.sleep(Long.parseLong(retryAfter));
@@ -85,14 +96,9 @@ public class CachedHttpRequestService {
 								return doRun();						
 							}
 						}
-						List<Entry<String, String>> meta=new ArrayList<>(5);
-						for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition"/*, "Content-MD5"*/}) {
-							for(Header h : req.getResponseHeaders(headerName))
-								meta.add(new SimpleEntry<String, String>(h.getName(), h.getValue()));
-						}
-						ret=new HttpResponse(req.getContent().asBytes() ,meta, req.getResponseStatusCode());
-						if(req.getResponseStatusCode()==200) 
-							cache.save(DATASET_ID, url, ret.body, ret.headers);
+						ret=new HttpResponse(fetched);
+						if(ret.getStatus()==200) 
+							cache.save(DATASET_ID, url, ret.getBody(), ret.getHeaders());
 					}
 					return ret;
 				}

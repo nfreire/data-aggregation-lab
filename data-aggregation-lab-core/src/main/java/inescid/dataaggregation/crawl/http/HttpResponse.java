@@ -5,31 +5,41 @@ import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
+import org.apache.http.HeaderIterator;
+import org.apache.http.HttpEntity;
+import org.apache.http.ProtocolVersion;
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
+import org.apache.http.params.HttpParams;
 
 import inescid.util.AccessException;
 
 public class HttpResponse {
+	private byte[] body; 
+	private List<Entry<String, String>> headers;
+	private int status=-1;
 	public HttpResponse(byte[] body, List<Entry<String, String>> headers, int status) {
 		super();
 		this.body = body;
 		this.headers = headers;
 		this.status = status;
 	}
-	public HttpResponse(HttpRequest req) throws IOException {
+	public HttpResponse(CloseableHttpResponse closeableHttpResponse) throws IOException {
 		headers=new ArrayList<>(5);
 		for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition"/*, "Content-MD5"*/}) {
-			for(Header h : req.getResponseHeaders(headerName))
+			for(Header h : closeableHttpResponse.getHeaders(headerName)) 
 				headers.add(new SimpleEntry<String, String>(h.getName(), h.getValue()));
 		}
-		body=req.getContent().asBytes(); 
-		status=req.getResponseStatusCode();
+		body = IOUtils.toByteArray(closeableHttpResponse.getEntity().getContent());
+		closeableHttpResponse.close();
+		status=closeableHttpResponse.getStatusLine().getStatusCode();
 	}
-	public byte[] body; 
-	public List<Entry<String, String>> headers;
-	public int status=-1;
 	public String getHeader(String headerToGet) {
 		for (Entry<String, String> h : headers) {
 			if(h.getKey().equalsIgnoreCase(headerToGet))
@@ -46,6 +56,12 @@ public class HttpResponse {
 	public String getContentType() {
 		return getHeader("Content-Type");
 	}
+	public ContentType getContentTypeParsed() {
+		String header = getHeader("Content-Type");
+		if(header==null)
+			return null;
+		return ContentType.parse(header);
+	}
 	public AccessException throwException(String resourceUrl) {
 		String msg=null;
 		if (hasBody()) {
@@ -57,4 +73,23 @@ public class HttpResponse {
 		}
 		return new AccessException(resourceUrl, status, msg);
 	}
+	public byte[] getBody() {
+		return body;
+	}
+	public void setBody(byte[] body) {
+		this.body = body;
+	}
+	public List<Entry<String, String>> getHeaders() {
+		return headers;
+	}
+	public void setHeaders(List<Entry<String, String>> headers) {
+		this.headers = headers;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 }

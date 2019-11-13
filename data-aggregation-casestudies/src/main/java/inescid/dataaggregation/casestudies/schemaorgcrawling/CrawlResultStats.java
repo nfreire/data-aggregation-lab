@@ -52,4 +52,8 @@ public class CrawlResultStats extends CrawlResult {
 		out.write(super.serialize());
 		return out.toByteArray();
 	}
+
+	public int getCountValidRdf() {
+		return seedsCount-notFound-notRdf;
+	}
 }

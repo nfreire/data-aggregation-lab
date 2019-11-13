@@ -16,8 +16,8 @@ import inescid.util.XPathUtil;
 import inescid.util.XmlNsUtil;
 import inescid.util.XmlUtil;
 
-public class EdmUtil {
-	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EdmUtil.class);
+public class EdmXmlUtil {
+	private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(EdmXmlUtil.class);
 	
 	
 	public static String getIssuedDate(Document edm) {
@@ -187,7 +187,7 @@ public class EdmUtil {
 	}
 
 	public static boolean isIiifAtEuropeana(Document issueEdmDom) {
-		Element edmObject =EdmUtil.getPropertyElementOfAggregation(issueEdmDom, XmlNsUtil.EDM, "object");
+		Element edmObject =EdmXmlUtil.getPropertyElementOfAggregation(issueEdmDom, XmlNsUtil.EDM, "object");
 		if (edmObject==null)
 			return false;
 		String firstIssueWebResUri = edmObject.getAttributeNS(XmlNsUtil.RDF, "resource");
@@ -195,7 +195,7 @@ public class EdmUtil {
 	}
 
 	public static void removeIsShownBy(Document edmDom) {
-		Element isShownBy =EdmUtil.getPropertyElementOfAggregation(edmDom, XmlNsUtil.EDM, "isShownBy");
+		Element isShownBy =EdmXmlUtil.getPropertyElementOfAggregation(edmDom, XmlNsUtil.EDM, "isShownBy");
 		if (isShownBy!=null) {
 			XmlUtil.removeResource(edmDom, isShownBy.getAttributeNS(XmlNsUtil.RDF, "resource"));
 			isShownBy.getParentNode().removeChild(isShownBy);
@@ -203,7 +203,7 @@ public class EdmUtil {
 	}
 	
 	public static void removeIsShownAt(Document edmDom) {
-		Element isShownAt =EdmUtil.getPropertyElementOfAggregation(edmDom, XmlNsUtil.EDM, "isShownAt");
+		Element isShownAt =EdmXmlUtil.getPropertyElementOfAggregation(edmDom, XmlNsUtil.EDM, "isShownAt");
 		if (isShownAt!=null) {
 			XmlUtil.removeResource(edmDom, isShownAt.getAttributeNS(XmlNsUtil.RDF, "resource"));
 			isShownAt.getParentNode().removeChild(isShownAt);

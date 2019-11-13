@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.http.Header;
 import org.apache.jena.rdf.model.RDFNode;
@@ -89,8 +90,8 @@ public class LdDatasetHarvest {
 		int retries=retriesMaxAttempts;
 		while (retries>=0) {
 			try { 
-				List<Header> headers=HttpUtil.getStoreAndReturnHeaders(uriOfRec, rdfResourceFile);
-				repository.saveMeta(datasetUri, uriOfRec, HttpUtil.convertHeaderStruct(headers));
+				List<Entry<String, String>> headers=HttpUtil.getStoreAndReturnHeaders(uriOfRec, rdfResourceFile);
+				repository.saveMeta(datasetUri, uriOfRec, headers);
 				datasetLog.logHarvestSuccess();
 				return true;
 			} catch (InterruptedException e) {

@@ -84,7 +84,7 @@ public class SparqlClient {
 					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett[0]);
 			if(debug)
 				System.out.println(fullQuery);
-			RetryExec<Boolean> exec=new RetryExec<Boolean>(3) {
+			RetryExec<Boolean, Exception> exec=new RetryExec<Boolean, Exception>(3) {
 				@Override
 				protected Boolean doRun() throws Exception {
 					QueryExecution qexec = QueryExecutionFactory.sparqlService(baseUrl, fullQuery);

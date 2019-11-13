@@ -18,7 +18,7 @@ public class WikidataRdfUtil {
 		if (!propFetched.isSuccess()) {
 			throw new AccessException(resourceUri);
 		} else {
-			Model rdfWikidata = RdfUtil.readRdf(propFetched.body,
+			Model rdfWikidata = RdfUtil.readRdf(propFetched.getBody(),
 					RdfUtil.fromMimeType(propFetched.getHeader("Content-Type")));
 			if (rdfWikidata.size() == 0)
 				throw new AccessException(resourceUri, "No data found");

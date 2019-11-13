@@ -8,6 +8,7 @@ public class AccessException extends Exception {
 	String address;
 	String code;
 	String response;
+	boolean interrupted=false;
 
 	public AccessException(String address) {
 		super();
@@ -57,6 +58,12 @@ public class AccessException extends Exception {
 		this.response = response;
 	}
 
+	public AccessException(String address, boolean interrupted) {
+		this.address = address;
+		this.interrupted = interrupted;
+		
+	}
+
 	@Override
 	public String getMessage() {
 		if(StringUtils.isEmpty(super.getMessage()))
@@ -97,13 +104,23 @@ public class AccessException extends Exception {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	
 	public String getExceptionSummary() {
 		String s=getAddress();
 		if(!StringUtils.isEmpty(code))
 			s+=("\n  Code: "+ getCode());
 		if(!StringUtils.isEmpty(response))
 			s+=("\n  Response: "+ getResponse().replace('\n', ' '));
+		if(interrupted)
+			s+=("\n  Interrupted");
 		return s;
+	}
+
+	public boolean isInterrupted() {
+		return interrupted;
+	}
+
+	public void setInterrupted(boolean interrupted) {
+		this.interrupted = interrupted;
 	}
 }

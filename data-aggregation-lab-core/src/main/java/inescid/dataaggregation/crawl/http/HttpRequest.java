@@ -1,6 +1,7 @@
 package inescid.dataaggregation.crawl.http;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class HttpRequest {
 //	String contentTypeToRequest;
 //	CrawlingSession session;
 //	Semaphore fetchingSemaphore=new Semaphore(1);
-	CloseableHttpResponse response;
+	HttpResponse response;
 	Content content;
 	Throwable error;
 
@@ -88,66 +89,73 @@ public class HttpRequest {
 //		fetchingSemaphore.release();
 //	}
 
-	public CloseableHttpResponse getResponse() {
+	public HttpResponse getResponse() {
 		return response;
 	}
 
-	public void setResponse(CloseableHttpResponse response) throws UnsupportedOperationException, IOException {
+	public void setResponse(HttpResponse response) throws UnsupportedOperationException, IOException {
 		this.response = response;
-		if(response.getEntity()!=null) {
-			byte[] byteArray = IOUtils.toByteArray(response.getEntity().getContent());
-			ContentType contentType = ContentType.get(response.getEntity());
-			this.content=new Content(byteArray, contentType);
-		}
-		response.close();
+//		if(response.getEntity()!=null) {
+//			byte[] byteArray = IOUtils.toByteArray(response.getEntity().getContent());
+//			ContentType contentType = ContentType.get(response.getEntity());
+//			this.content=new Content(byteArray, contentType);
+//		}
+//		response.close();
 	}
 		
 //		fetchingSemaphore.release();
 
 	public int getResponseStatusCode() {
-		return response.getStatusLine().getStatusCode();
+		return response.getStatus();
 	}
-	public Content getContent() throws IOException {
-//		byte[] byteArray = IOUtils.toByteArray(response.getEntity().getContent());
-//		ContentType contentType = ContentType.get(response.getEntity());
-//		response.close();
-//		return new Content(byteArray, contentType);
-		return content;
+	public byte[] getContent() throws IOException {
+		return response.getBody();
 	}
-
-//	public String getContentTypeToRequest() {
-//		return contentTypeToRequest;
-//	}
+	public String getContentAsString() throws IOException {
+		ContentType cType=response.getContentTypeParsed();
+		if(cType==null || cType.getCharset()==null)
+			return new String(getContent(), "UTF8");
+		return new String(getContent(), cType.getCharset());
+	}
+	public String getMimeType() {
+		ContentType contentTypeParsed = response.getContentTypeParsed();
+		return contentTypeParsed ==null ? null : contentTypeParsed.getMimeType();
+	}
+	public Charset getCharset() {
+		ContentType contentTypeParsed = response.getContentTypeParsed();
+		return contentTypeParsed ==null ? null : contentTypeParsed.getCharset();
+	}
 //
 //	public void setContentTypeToRequest(String contentTypeToRequest) {
 //		this.contentTypeToRequest = contentTypeToRequest;
 //	}
 
-	public void addHeaders(HttpMessage request) {
+	public void addHeadersToRequest(HttpMessage request) {
 		for(SimpleImmutableEntry<String, String> header : url.getHeaders()) {
 			request.addHeader(header.getKey(), header.getValue());
 		}
 	}
 
-	public List<Header> getResponseHeaders(String... headerNames) {
-		List<Header> meta=new ArrayList<>(5);
-		if(headerNames==null || headerNames.length==0) {
-			for(Header h : getResponse().getAllHeaders())
-				meta.add(h);			
-		}else {
-			for(String headerName: headerNames) {
-	//			for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition", "Link"/*, "Content-MD5"*/}) {
-				for(Header h : getResponse().getHeaders(headerName))
-					meta.add(h);
-			}
-		}
-		return meta;
-	}	
+//	public List<Header> getResponseHeaders(String... headerNames) {
+//		List<Header> meta=new ArrayList<>(5);
+//		if(headerNames==null || headerNames.length==0) {
+//			for(Header h : getResponse().getAllHeaders())
+//				meta.add(h);			
+//		}else {
+//			for(String headerName: headerNames) {
+//	//			for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition", "Link"/*, "Content-MD5"*/}) {
+//				for(Header h : getResponse().getHeaders(headerName))
+//					meta.add(h);
+//			}
+//		}
+//		return meta;
+//	}	
 	public String getResponseHeader(String headerName) {
-		List<Header> meta=new ArrayList<>(5);
-		for(Header h : getResponse().getHeaders(headerName))
-			return h.getValue();
-		return null;
+//		List<Header> meta=new ArrayList<>(5);
+//		for(Header h : getResponse().getHeaders(headerName))
+//			return h.getValue();
+//		return null;
+		return response.getHeader(headerName);
 	}
 
 	public void redirectUrl(String location) {
@@ -163,5 +171,10 @@ public class HttpRequest {
 
 	public HttpEntity getRequestContent() {
 		return url.getRequestContent();
-	}	
+	}
+
+	public int getRetryAttempst() {
+		return url.getRetryAttemps();
+	}
+
 }

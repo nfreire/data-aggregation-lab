@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFLanguages;
+import org.apache.jena.riot.RiotException;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.HttpResponse;
@@ -133,6 +135,7 @@ public class RdfUtil {
 		return readRdf(new StringReader(content));
 	}
 	public static Model readRdf(byte[] content) {
+		RiotException lastException=null;
 		Model model = null;
 		for(Lang l: new Lang[] { Lang.RDFXML, Lang.TURTLE, Lang.JSONLD}) {
 			ByteArrayInputStream in=new ByteArrayInputStream(content);
@@ -141,11 +144,16 @@ public class RdfUtil {
 				RDFReader reader = model.getReader(l.getName());
 				reader.setProperty("allowBadURIs", "true");
 				reader.read(model, in, null);
+				lastException=null;
 				break;
+			} catch (RiotException e){
+				lastException=e;
 			} catch (Exception e){
-				//ignore and try another reader
+				lastException = new RiotException(e);
 			}
 		}
+		if(lastException!=null)
+			throw lastException;
 		return model;
 	}
 	public static Model readRdf(Reader content) {
@@ -183,7 +191,7 @@ public class RdfUtil {
 		reader.read(model, content, null);
 		return model;
 	}
-	public static Model readRdf(InputStream content, Lang l) {
+	public static Model readRdf(InputStream content, Lang l) throws RiotException {
 		try {
 			if(l==null)	return readRdf(IOUtils.toByteArray(content));
 		} catch (IOException e) {
@@ -195,7 +203,7 @@ public class RdfUtil {
 		reader.read(model, content, null);
 		return model;
 	}
-	public static Model readRdf(byte[] content, Lang l) {
+	public static Model readRdf(byte[] content, Lang l) throws RiotException {
 		if(l==null)	return readRdf(content);
 		ByteArrayInputStream in=new ByteArrayInputStream(content);
 		Model model = readRdf(in, l);
@@ -214,7 +222,7 @@ public class RdfUtil {
 //			rdfString = rdfString.substring(1);
 //	    }
 //		System.out.println(rdfString);
-		return readRdf(new HttpResponse(rdfReq));
+		return readRdf(rdfReq.getResponse());
 	}
 	public static Resource readRdfResourceFromUri(String resourceUri) throws AccessException, InterruptedException, IOException {
 		try {
@@ -230,10 +238,13 @@ public class RdfUtil {
 		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
 		
 		
-		Model readRdf = readRdf(new HttpResponse(rdfReq));
-		if(readRdf==null)
+		Model readRdf;
+		try {
+			readRdf = readRdf(rdfReq.getResponse());
+		} catch (RiotException e) {
 			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
-		if (RdfUtil.contains(resourceUri, readRdf))
+		}
+		if (readRdf!=null && RdfUtil.contains(resourceUri, readRdf))
 			return readRdf.createResource(resourceUri);
 		throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
 	}
@@ -339,14 +350,14 @@ public class RdfUtil {
 		return null;
 	}
 
-	public static Model readRdf(HttpResponse rdf) {
-		Model model = readRdf(rdf.body, fromMimeType(rdf.getHeader("Content-Type")));
+	public static Model readRdf(HttpResponse rdf) throws RiotException {
+		Model model = readRdf(rdf.getBody(), fromMimeType(rdf.getHeader("Content-Type")));
 		if (model.size() == 0)
 			return null;
 		return model;
 	}
-	public static Model readRdf(HttpResponse rdf, Lang l) {
-		Model model = readRdf(rdf.body, l);
+	public static Model readRdf(HttpResponse rdf, Lang l) throws RiotException {
+		Model model = readRdf(rdf.getBody(), l);
 		if (model.size() == 0)
 			return null;
 		return model;

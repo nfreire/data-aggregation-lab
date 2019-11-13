@@ -14,7 +14,9 @@ public class ScriptRunFullCrawlForAnalisys {
 	public static void main(String[] args) throws Exception {
 		//experience workflow settings
 		boolean reuseLastCrawling=false;
+		boolean alwaysCountDepth=false;
 		int maxUrisPerSource=0;
+		int maxDepth=2;
 //		int maxUrisPerSource=10;
 		File urisFolder = new File("src/data/schemaorgcrawling");
 		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepository";
@@ -22,25 +24,29 @@ public class ScriptRunFullCrawlForAnalisys {
 		if(args!=null) {
 			if(args.length>=1) {
 				urisFolder = new File(args[0]);
-				if(args.length>=2) {
+				if(args.length>=2) 
 					httpCacheFolder = args[1];
-					if(args.length>=3) {
-						maxUrisPerSource = Integer.parseInt(args[2]);
-						if(args.length>=4) 
-							reuseLastCrawling = Boolean.parseBoolean(args[3]);
-					}
-				}
+				if(args.length>=3) 
+					maxUrisPerSource = Integer.parseInt(args[2]);
+				if(args.length>=4) 
+					reuseLastCrawling = Boolean.parseBoolean(args[3]);
+				if(args.length>=5) 
+					 alwaysCountDepth = Boolean.parseBoolean(args[4]);
+				if(args.length>=6) 
+					maxDepth = Integer.parseInt(args[5]);
 			}
 		}
 		
 		
-		Global.init_componentHttpRequestService();
 		Global.init_componentDataRepository(httpCacheFolder);
-		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
-		rdfCache.setRequestRetryAttempts(1);
+		Global.init_componentHttpRequestService();
+//		CachedHttpRequestService rdfCache = new CachedHttpRequestService();
+//		rdfCache.setRequestRetryAttempts(1);
+		Global.init_enableComponentHttpRequestCache();
 		Repository dataRepository = Global.getDataRepository();
 		SchemaOrgLodCrawler crawler=new SchemaOrgLodCrawler();
-		
+		crawler.setMaxDepth(maxDepth);
+		crawler.setAlwaysCountDepth(alwaysCountDepth);
 		for(File urisFile : urisFolder.listFiles()) {
 			if(!urisFile.getName().startsWith("uris-") || !urisFile.getName().endsWith(".txt")) {
 				System.out.println("Skipping file in uris folder: "+urisFile.getName());
@@ -51,7 +57,6 @@ public class ScriptRunFullCrawlForAnalisys {
 			if(!reuseLastCrawling)
 				dataRepository.clear(crawledTestUrisRepositoryDataset);
 			List<String> testUris = FileUtils.readLines(urisFile, Global.UTF8);
-			int totalUrisCrawled=0;
 			CrawlResultStats stats=new CrawlResultStats();
 			for(String uri : testUris) {
 				CrawlResult crawlResult;
@@ -62,13 +67,13 @@ public class ScriptRunFullCrawlForAnalisys {
 					dataRepository.save(crawledTestUrisRepositoryDataset, uri, crawlResult.serialize());
 				}
 				stats.addToStats(crawlResult);
-				totalUrisCrawled++;
-				if(maxUrisPerSource>0 && totalUrisCrawled==maxUrisPerSource) {
+				int countValidRdf = stats.getCountValidRdf();
+				if(maxUrisPerSource>0 && countValidRdf == maxUrisPerSource) {
 					System.out.println("max uris per source reached.");
 					break;
 				}
-				if(totalUrisCrawled%100 == 0) {
-					System.out.println("Mid stats at "+totalUrisCrawled+" - "+new String(stats.serialize()));
+				if(countValidRdf!=0 && countValidRdf % 100 == 0) {
+					System.out.println("Mid stats at "+countValidRdf +" - "+new String(stats.serialize()));
 //					FileUtils.writeByteArrayToFile(new File("target/CrawlAnalisys-mid.csv"), stats.serialize());
 				}
 			};

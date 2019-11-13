@@ -151,6 +151,13 @@ public class Global {
 	public static void init_componentHttpRequestService() {
 		httpRequestService.init();
 	}
+	public static void init_enableComponentHttpRequestCache() {
+		if((dataRepository==null))
+			throw new IllegalArgumentException("Data repository is not initialized."); 
+		if((httpRequestService==null))
+			throw new IllegalArgumentException("HTTP request service is not initialized."); 
+		httpRequestService.initEnableCache();
+	}
 	public static void init_componentDataRepository(String repositoryFolder) {
 		Properties repoProps=new Properties();
 		repoProps.setProperty("dataaggregation.data-repository.folder", repositoryFolder);

@@ -23,23 +23,18 @@ public class HttpUtil {
 	public static final int RETRIES_ON_HTTP_STATUS=1;
 	public static final int RETRY_SLEEP_MILISECONDS=1;
 
-	public static List<Header> getStoreAndReturnHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
+	public static List<Entry<String, String>> getStoreAndReturnHeaders(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		return getAndStoreWithHeaders(new UrlRequest(resourceUri), storeFile);
 	}
-	public static List<Header> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
+	public static List<Entry<String, String>> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
-		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent().asBytes(), false);		
-		List<Header> meta=new ArrayList<>(5);
-		for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition"/*, "Content-MD5"*/}) {
-			for(Header h : resourceRequest.getResponse().getHeaders(headerName))
-				meta.add(h);
-		}
-		return meta;
+		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent(), false);		
+		return resourceRequest.getResponse().getHeaders();
 	}
 	
 	public static byte[] getAndStore(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
-		byte[] asBytes = resourceRequest.getContent().asBytes();
+		byte[] asBytes = resourceRequest.getContent();
 		FileUtils.writeByteArrayToFile(storeFile, asBytes, false);		
 		return asBytes;
 	}
@@ -120,11 +115,11 @@ public class HttpUtil {
 	
 	private static String makeRequestForContent(UrlRequest url) throws IOException, AccessException, InterruptedException {
 		HttpRequest reqRes = makeRequest(url);
-		int statusCode = reqRes.getResponse().getStatusLine().getStatusCode();
+		int statusCode = reqRes.getResponse().getStatus();
 		if(statusCode==200) 
-			return reqRes.getContent().asString();	
+			return reqRes.getContentAsString();	
 		else {
-			log.info("HTTP error, content: "+url+"\n"+ reqRes.getContent().asString());			
+			log.info("HTTP error, content: "+url+"\n"+ reqRes.getContentAsString());			
 			throw new AccessException(url.getUrl(), "HTTP response status code "+statusCode);
 		}
 	}

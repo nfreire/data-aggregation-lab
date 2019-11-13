@@ -2,7 +2,7 @@ package inescid.util;
 
 import java.util.ArrayList;
 
-public abstract class RetryExec<RET> {
+public abstract class RetryExec<RET, EXCEPTION extends Exception> {
 	private int maxRetries=3;
 	
 	public RetryExec(int maxRetries) {
@@ -13,11 +13,11 @@ public abstract class RetryExec<RET> {
 	public RetryExec() {
 	}
 
-	ArrayList<Exception> retryErrors=null;
+	ArrayList<EXCEPTION> retryErrors=null;
 	
-	protected abstract RET doRun() throws Exception;
+	protected abstract RET doRun() throws EXCEPTION;
 	
-	public RET run() throws Exception {
+	public RET run() throws EXCEPTION {
 		int attempt=0;
 		while (attempt<maxRetries) {
 			try {
@@ -26,9 +26,9 @@ public abstract class RetryExec<RET> {
 			} catch (Exception e) {
 				if (attempt<maxRetries) {
 					if(retryErrors==null) retryErrors=new ArrayList<>();
-					retryErrors.add(e);
+					retryErrors.add((EXCEPTION) e);
 				} else
-					throw e;
+					throw (EXCEPTION) e;
 			}
 		}
 		return null;

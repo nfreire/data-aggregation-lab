@@ -114,23 +114,23 @@ public class WwwDatasetHarvest {
 			try {
 				HttpRequest reqRes=HttpUtil.makeRequest(uriOfRec);
 				
-				int statusCode = reqRes.getResponse().getStatusLine().getStatusCode();
+				int statusCode = reqRes.getResponse().getStatus();
 				if(statusCode==200) {
 					try {
 						String charset = "UTF8";
-						if (reqRes.getContent().getType().getCharset()!=null)
-							charset = reqRes.getContent().getType().getCharset().name();
+						if (reqRes.getCharset()!=null)
+							charset = reqRes.getCharset().name();
 						
-						if (MimeType.isData(reqRes.getContent().getType().getMimeType())){
-							repository.save(datasetUri, reqRes.getUrl(), reqRes.getContent().asBytes(), new ArrayList<Entry<String, String>>() {{
-								add(new SimpleMapEntry("Content-Type", reqRes.getContent().getType()));}});
+						if (MimeType.isData(reqRes.getMimeType())){
+							repository.save(datasetUri, reqRes.getUrl(), reqRes.getContent(), new ArrayList<Entry<String, String>>() {{
+								add(new SimpleMapEntry("Content-Type", reqRes.getMimeType()));}});
 							return true;
 						} else {
 	//						Jsoup.parse(html)
 							ByteArrayOutputStream decodedInput = new ByteArrayOutputStream();
 							TurtleWriter triples=new TurtleWriter(decodedInput);
 	//						NTriplesWriter triples=new NTriplesWriter(decodedInput);
-							any23.extract(reqRes.getContent().asString(), reqRes.getUrl(), reqRes.getContent().getType().getMimeType(), charset, 
+							any23.extract(reqRes.getContentAsString(), reqRes.getUrl(), reqRes.getMimeType(), charset, 
 									triples);			
 	//								new CountingTripleHandler() {
 	//							@Override

@@ -9,7 +9,9 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RiotException;
 
+import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.ld.RulesSchemaorgCrawlGraphOfCho;
 import inescid.dataaggregation.crawl.ld.RulesSchemaorgCrawlGraphOfCho.AllowedValue;
 import inescid.dataaggregation.crawl.ld.RulesSchemaorgCrawlGraphOfCho.MappingAllowedForClass;
@@ -31,13 +33,23 @@ public class SchemaOrgLodCrawler {
 				    		if not supported type, try to get a schema:name for use as literal, or discard.
 	*/
 	
-	RulesSchemaorgCrawlGraphOfCho rules=new RulesSchemaorgCrawlGraphOfCho();
-	CrawlResult crawl;
-	int maxDepth=2;
-	HashSet<String> alreadyCrawled=new HashSet<>();
-	HashSet<String> alreadyCrawledNonRdf=new HashSet<>();
-	HashSet<String> alreadyCrawledNotFound=new HashSet<>();
+	private RulesSchemaorgCrawlGraphOfCho rules=new RulesSchemaorgCrawlGraphOfCho();
+	private CrawlResult crawl;
+	private int maxDepth=10;
+	private boolean alwaysCountDepth=false;
+	private HashSet<String> alreadyCrawled=new HashSet<>();
+	private HashSet<String> alreadyCrawledNonRdf=new HashSet<>();
+	private HashSet<String> alreadyCrawledNotFound=new HashSet<>();
+	private CachedHttpRequestService rdfCache;
 	
+	public SchemaOrgLodCrawler() {
+		rdfCache=null;
+	}
+	
+	public SchemaOrgLodCrawler(CachedHttpRequestService rdfCache) {
+		this.rdfCache = rdfCache;
+	}
+
 	public CrawlResult crawlSchemaorgForCho(String uri) throws AccessException, InterruptedException, IOException {
 		crawl=new CrawlResult();
 		crawlResource(uri.trim(), 0);
@@ -92,6 +104,10 @@ public class SchemaOrgLodCrawler {
 			crawl.incNotFound(uri, depth);
 			alreadyCrawledNotFound.add(uri);
 			System.out.println("Not found (depth "+depth+") "+uri);			
+		} catch (RiotException e) {
+			crawl.incNotRdf(uri, depth);
+			alreadyCrawledNonRdf.add(uri);
+			System.out.println("Not VALID rdf (depth "+depth+") "+uri);			
 		}
 		if (r==null ) return ;
 		crawl.obtainedResources++;
@@ -128,7 +144,7 @@ public class SchemaOrgLodCrawler {
 				crawl.crawledByObjectClass.incrementTo(typeClass);
 			}
 		};
-		if (countForDepth) depth++;
+		if (countForDepth || alwaysCountDepth) depth++;
 		
 		if(!mappableTypes.isEmpty()) {
 			StmtIterator stms = r.listProperties();
@@ -153,7 +169,7 @@ public class SchemaOrgLodCrawler {
 								else if(possibleMaps.contains(AllowedValue.LITERAL))
 									crawlResourceForLiteral(st.getObject().asResource(), depth);
 								else //REFERENCE only
-									crawl.referencesNotFound++;					
+									crawl.referencesNotFound++;
 							} else {// URI resource 
 								if(possibleMaps.contains(AllowedValue.RESOURCE)) {
 									if (RdfUtil.contains(st.getObject().asResource().getURI(), r.getModel())) {
@@ -187,5 +203,13 @@ public class SchemaOrgLodCrawler {
 				crawl.urisNotFollowedByObjectClass.incrementTo(typeClass);				
 			});
 		}
+	}
+
+	public void setMaxDepth(int maxDepth) {
+		this.maxDepth = maxDepth;
+	}
+
+	public void setAlwaysCountDepth(boolean alwaysCountDepth) {
+		this.alwaysCountDepth = alwaysCountDepth;
 	}
 }

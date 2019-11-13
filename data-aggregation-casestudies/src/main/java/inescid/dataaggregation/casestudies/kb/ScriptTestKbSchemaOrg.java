@@ -63,7 +63,7 @@ public class ScriptTestKbSchemaOrg {
 							schemaOrgBytes = FileUtils.readFileToByteArray(schemaFile);
 						else {
 							HttpRequest req = HttpUtil.makeRequest(schemaOrgFile.getKey(), RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-							schemaOrgBytes = req.getContent().asBytes();
+							schemaOrgBytes = req.getContent();
 							FileUtils.writeByteArrayToFile(schemaFile, schemaOrgBytes);
 						}
 					}else 
