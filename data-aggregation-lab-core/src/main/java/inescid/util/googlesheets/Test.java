@@ -4,7 +4,6 @@ import inescid.dataaggregation.dataset.Global;
 
 public class Test {
 
-
 		public static void main(String[] args) {
 			try {
 				Global.init_developement();

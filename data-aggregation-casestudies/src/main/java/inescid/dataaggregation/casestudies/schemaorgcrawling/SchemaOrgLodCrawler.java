@@ -39,8 +39,9 @@ public class SchemaOrgLodCrawler {
 	private boolean alwaysCountDepth=false;
 	private HashSet<String> alreadyCrawled=new HashSet<>();
 	private HashSet<String> alreadyCrawledNonRdf=new HashSet<>();
-	private HashSet<String> alreadyCrawledNotFound=new HashSet<>();
+//	private HashSet<String> alreadyCrawledNotFound=new HashSet<>();
 	private CachedHttpRequestService rdfCache;
+	private NoRdfDomainsManager noRdfDomains=new NoRdfDomainsManager();
 	
 	public SchemaOrgLodCrawler() {
 		rdfCache=null;
@@ -81,32 +82,42 @@ public class SchemaOrgLodCrawler {
 			crawl.incNotRdf(uri, depth);
 			return;
 		}
-		if(alreadyCrawledNotFound.contains(uri)) {
-			crawl.incNotFound(uri, depth);
+//		if(alreadyCrawledNotFound.contains(uri)) {
+//			crawl.incNotFound(uri, depth);
+//			return;
+//		}
+		if(noRdfDomains.isBlackListed(uri)) {
+			crawl.incNotRdf(uri, depth);
 			return;
 		}
+		
 //		System.out.println(depth+" "+uri);
 		Resource r=null;
 		try {
 			r = RdfUtil.readRdfResourceFromUri(uri);
 			alreadyCrawled.add(uri);
+			noRdfDomains.reportSuccess(uri);
 		} catch (AccessException e) {
 			if(e.getCode()!=null && e.getCode().equals("200")) {
 				crawl.incNotRdf(uri, depth);
 				alreadyCrawledNonRdf.add(uri);
+				noRdfDomains.reportFailure(uri);
 				System.out.println("Not rdf (depth "+depth+") "+uri);
 			} else {
-				crawl.incNotFound(uri, depth);
-				alreadyCrawledNotFound.add(uri);
+				crawl.incNotRdf(uri, depth);
+				alreadyCrawledNonRdf.add(uri);
+				noRdfDomains.reportFailure(uri);
 				System.out.println("Not found (depth "+depth+") "+uri);
 			}
 		} catch (IOException e) {
-			crawl.incNotFound(uri, depth);
-			alreadyCrawledNotFound.add(uri);
+			crawl.incNotRdf(uri, depth);
+			alreadyCrawledNonRdf.add(uri);
+			noRdfDomains.reportFailure(uri);
 			System.out.println("Not found (depth "+depth+") "+uri);			
 		} catch (RiotException e) {
 			crawl.incNotRdf(uri, depth);
 			alreadyCrawledNonRdf.add(uri);
+			noRdfDomains.reportFailure(uri);
 			System.out.println("Not VALID rdf (depth "+depth+") "+uri);			
 		}
 		if (r==null ) return ;

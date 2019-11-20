@@ -115,7 +115,7 @@ public class ScriptEvaluateQualityOfIngestedDatasets {
 			System.err.println(e.getResponse());
 			System.err.println(e.getExceptionSummary());
 			e.printStackTrace();
-		} finally {
+		} finally { 
 		}	
 	}
 	

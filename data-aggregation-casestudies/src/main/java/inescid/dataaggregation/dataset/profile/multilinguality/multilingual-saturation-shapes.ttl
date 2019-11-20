@@ -1,0 +1,55 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix edm:   <http://www.europeana.eu/schemas/edm/> .
+@prefix dc:   <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms:   <http://purl.org/dc/terms/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix ore:   <http://www.openarchives.org/ore/terms/> .
+@prefix rdaGr2:   <http://rdvocab.info/ElementsGr2/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix mls:   <http://www.europeana.eu/example/multilingualSaturationShapes#> .
+
+mls:withoutLangTagChoShape a sh:NodeShape ;
+	sh:targetClass edm:ProvidedCHO, ore:Proxy;
+	sh:property [
+		sh:path [ sh:alternativePath ( edm:currentLocation edm:hasMet edm:hasType edm:incorporates edm:isDerivativeOf edm:isNextInSequence edm:isRelatedTo edm:isRepresentationOf edm:isSimilarTo edm:isSuccessorOf edm:realizes dc:contributor dc:coverage dc:creator dc:date dc:description dc:format dc:identifier dc:language dc:publisher dc:relation dc:rights dc:source dc:subject dc:title dc:type dcterms:alternative dcterms:conformsTo dcterms:created dcterms:extent dcterms:hasFormat dcterms:hasPart dcterms:hasVersion dcterms:isFormatOf dcterms:isPartOf dcterms:isReferencedBy dcterms:isReplacedBy dcterms:isRequiredBy dcterms:issued dcterms:isVersionOf dcterms:medium dcterms:provenance dcterms:references dcterms:replaces dcterms:requires dcterms:spatial dcterms:tableOfContents dcterms:temporal edm:userTag edm:year) ] ;
+		sh:severity sh:Info ;
+		sh:not [ sh:languageIn ( "*" ) ]
+	]
+.	
+	
+mls:withoutLangTagConceptShape a sh:NodeShape ;
+	sh:targetClass skos:Concept ;
+	sh:property [
+		sh:path [sh:alternativePath ( skos:prefLabel skos:altLabel skos:note skos:notation ) ] ;		
+		sh:severity sh:Info ;
+		sh:not [ sh:languageIn ( "*" ) ];
+	];
+.
+
+mls:withoutLangTagAgentShape a sh:NodeShape ;
+	sh:targetClass edm:Agent ;
+	sh:property [
+		sh:path [sh:alternativePath ( skos:prefLabel skos:altLabel skos:note dc:date dc:identifier dcterms:hasPart dcterms:isPartOf edm:begin edm:end edm:hasMet edm:isRelatedTo foaf:name rdaGr2:biographicalInformation rdaGr2:dateOfBirth rdaGr2:dateOfDeath rdaGr2:dateOfEstablishment rdaGr2:dateOfTermination rdaGr2:gender rdaGr2:placeOfBirth rdaGr2:placeOfDeath rdaGr2:professionOrOccupation) ] ;		
+		sh:severity sh:Info ;
+		sh:not [ sh:languageIn ( "*" ) ];
+	];
+.
+
+mls:withoutLangTagPlaceShape a sh:NodeShape ;
+	sh:targetClass edm:Place ;
+	sh:property [
+		sh:path [sh:alternativePath ( skos:prefLabel skos:altLabel skos:note edm:begin edm:end dcterms:hasPart dcterms:isPartOf) ] ;	
+		sh:severity sh:Info ;
+		sh:not [ sh:languageIn ( "*" ) ];
+	];
+.
+
+mls:withoutLangTagTimeSpanShape a sh:NodeShape ;
+	sh:targetClass edm:TimeSpan ;
+	sh:property [
+		sh:path [sh:alternativePath ( skos:prefLabel skos:altLabel skos:note edm:begin edm:end dcterms:hasPart dcterms:isPartOf) ] ;		
+		sh:severity sh:Info ;
+		sh:not [ sh:languageIn ( "*" ) ];
+	];
+.

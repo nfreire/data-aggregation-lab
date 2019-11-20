@@ -54,6 +54,7 @@ public class CrawlResultStats extends CrawlResult {
 	}
 
 	public int getCountValidRdf() {
-		return seedsCount-notFound-notRdf;
+//		return seedsCount-notFound-notRdf;
+		return seedsCount-notRdf;
 	}
 }

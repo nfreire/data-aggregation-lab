@@ -25,7 +25,7 @@ class CrawlResult {
 	final Model crawledModel=Jena.createModel();
 	String uri;
 	int obtainedResources=0;
-	int notFound;
+//	int notFound;
 	int urisNotFollowed;
 	int propsNotFollowed;
 	int obtainedResourcesToGetLiterals=0;
@@ -43,7 +43,7 @@ class CrawlResult {
 	MapOfInts<Resource> anonResourcesByObjectClass=new MapOfInts<>();
 	MapOfInts<Resource> propsNotFollowedByProperty=new MapOfInts<>();
 	MapOfInts<Resource> domainsWithoutRdf=new MapOfInts<>();
-	MapOfInts<Resource> domainsNotResolvable=new MapOfInts<>();
+//	MapOfInts<Resource> domainsNotResolvable=new MapOfInts<>();
 	ArrayList<String> failedUris=new ArrayList<String>();
 	
 	
@@ -110,17 +110,23 @@ class CrawlResult {
 			p.println();
 			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(MapOfInts.class)) {
-					p.print(f.getName());					
+					p.print(f.getName());	
+					StringBuilder sbCol = new StringBuilder();
+					CSVPrinter pCol=new CSVPrinter(sbCol, CSVFormat.DEFAULT);
 					for (Entry<Resource, Integer> classEntry : ((MapOfInts<Resource>) f.get(this)).entrySet()) {
-						p.print(classEntry.getKey().getURI());
-						p.print(classEntry.getValue());
+						pCol.print(classEntry.getKey().getURI());
+						pCol.print(classEntry.getValue());
 					}
+					p.print(sbCol.toString());
 					p.println();
 				} else if (f.getType().equals(ArrayList.class)) {
 					p.print(f.getName());					
+					StringBuilder sbCol = new StringBuilder();
+					CSVPrinter pCol=new CSVPrinter(sbCol, CSVFormat.DEFAULT);
 					for (String entry : ((ArrayList<String>) f.get(this))) {
-						p.print(entry);
+						pCol.print(entry);
 					}
+					p.print(sbCol.toString());
 					p.println();
 				}
 			}
@@ -136,12 +142,12 @@ class CrawlResult {
 		if(depth==0)
 			failedUris.add(uri);
 	}
-	public void incNotFound(String uri, int depth) {
-		notFound++;
-		domainsNotResolvable.incrementTo(uriToDomain(uri));
-		if(depth==0)
-			failedUris.add(uri);
-	}
+//	public void incNotFound(String uri, int depth) {
+//		notFound++;
+//		domainsNotResolvable.incrementTo(uriToDomain(uri));
+//		if(depth==0)
+//			failedUris.add(uri);
+//	}
 	private Resource uriToDomain(String uri) {
 		try {
 			return Jena.createResource("http://"+new URI(uri).getHost());

@@ -103,6 +103,7 @@ public class RulesSchemaorgCrawlGraphOfCho {
 		choAggMap.allowAnyForProperty(RegSchemaorg.width);
 		choAggMap.allowProperty(RegSchemaorg.artform, AllowedValue.LITERAL);
 		choAggMap.allowProperty(RegSchemaorg.artMedium, AllowedValue.LITERAL);
+		choAggMap.allowReferenceOrResourceForProperty(RegSchemaorg.license);
 		for(Resource r:choClasses) 
 			mappingsByClass.put(r, choAggMap);
 		

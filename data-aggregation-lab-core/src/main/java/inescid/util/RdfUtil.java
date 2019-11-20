@@ -237,7 +237,6 @@ public class RdfUtil {
 		}
 		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
 		
-		
 		Model readRdf;
 		try {
 			readRdf = readRdf(rdfReq.getResponse());
@@ -248,8 +247,6 @@ public class RdfUtil {
 			return readRdf.createResource(resourceUri);
 		throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
 	}
-
-	
 
 	public static void writeRdf(Model model, Lang l, OutputStream out) {
 		model.write(out, l.getName());
