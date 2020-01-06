@@ -90,7 +90,7 @@ public class StatisticCalcMean implements Serializable{
  
     @Override
 	public String toString() {
-		return String.format("cnt-%d max-%1.3f min-%1.3f mean-%1.3f", count, max, min, getMean());    
+		return String.format("cnt-%.0f max-%1.3f min-%1.3f mean-%1.3f", count, max, min, getMean());    
 	}
 	
 	public StatisticCalcMean copy() {

@@ -167,12 +167,13 @@ public class SchemaOrgLodCrawler {
 					Set<AllowedValue> possibleMaps = RulesSchemaorgCrawlGraphOfCho.getPossibleMaps(prop, mappableTypes);
 					if(possibleMaps.isEmpty()) {
 						crawl.propsNotFollowed++;
-						crawl.propsNotFollowedByProperty.incrementTo(prop);	
-						if (st.getObject().isResource() && !st.getObject().isAnon()) 
+						crawl.propsNotFollowedByProperty.incrementTo(prop);
+						if (st.getObject().isResource() && !st.getObject().isAnon())
 							crawl.propsNotFollowedWithUri++;
-					}else {
+					} else {
 //						if(prop.equals(RegSchemaorg.image))
 //							System.out.println(st);
+						crawl.propsFollowedByProperty.incrementTo(prop);
 						if(st.getObject().isResource()) {
 							if(st.getObject().isAnon()) {
 								if(possibleMaps.contains(AllowedValue.RESOURCE)) 
@@ -198,8 +199,6 @@ public class SchemaOrgLodCrawler {
 							if(possibleMaps.contains(AllowedValue.LITERAL))
 								if(possibleMaps.contains(AllowedValue.LITERAL))
 									crawl.literalsFound++;
-							//						else
-							//							crawl.literalsDiscarded;
 						}
 					}
 				} catch (AccessException | InterruptedException | IOException e) {
@@ -211,7 +210,7 @@ public class SchemaOrgLodCrawler {
 			typeSts = r.listProperties(RegRdf.type);
 			typeSts.forEachRemaining( st -> {
 				Resource typeClass = st.getObject().asResource();
-				crawl.urisNotFollowedByObjectClass.incrementTo(typeClass);				
+				crawl.urisNotFollowedByObjectClass.incrementTo(typeClass);
 			});
 		}
 	}

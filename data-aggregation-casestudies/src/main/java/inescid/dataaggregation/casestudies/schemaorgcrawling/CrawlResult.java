@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map.Entry;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
@@ -42,6 +43,7 @@ class CrawlResult {
 	MapOfInts<Resource> urisNotFollowedByObjectClass=new MapOfInts<>();
 	MapOfInts<Resource> anonResourcesByObjectClass=new MapOfInts<>();
 	MapOfInts<Resource> propsNotFollowedByProperty=new MapOfInts<>();
+	MapOfInts<Resource> propsFollowedByProperty=new MapOfInts<>();
 	MapOfInts<Resource> domainsWithoutRdf=new MapOfInts<>();
 //	MapOfInts<Resource> domainsNotResolvable=new MapOfInts<>();
 	ArrayList<String> failedUris=new ArrayList<String>();
@@ -53,6 +55,7 @@ class CrawlResult {
 			CrawlResult cr=new CrawlResult();
 			int i=0;
 			CSVRecord r=p.iterator().next();
+			r=p.iterator().next();
 			int rIdx=0;
 			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(int.class)) {
@@ -60,29 +63,13 @@ class CrawlResult {
 					rIdx++;
 				}
 			}
-			r=p.iterator().next();
 			for (Field f : CrawlResult.class.getDeclaredFields()) {
 				if (f.getType().equals(MapOfInts.class)) {
-					String uri=null;
-					MapOfInts<Object> fldMap=((MapOfInts<Object>) f.get(cr));
-					for(String v: r) {
-						if (uri==null)
-							uri=v;
-						else {
-							fldMap.put(
-									cr.crawledModel.createResource(uri),
-									Integer.parseInt(v));					
-							uri=null;
-						}
-					}
 					r=p.iterator().next();
+					deserializeMap(r.get(1), cr, ((MapOfInts<Object>) f.get(cr)));
 				} else if (f.getType().equals(ArrayList.class)) {
-					String uri=null;
-					ArrayList<Object> fldMap=((ArrayList<Object>) f.get(cr));
-					for(String v: r) {
-							fldMap.add(uri);
-					}
 					r=p.iterator().next();
+					deserializeList(r.get(1), cr, ((ArrayList<Object>) f.get(cr)));
 				}
 			}
 			p.close();
@@ -91,6 +78,47 @@ class CrawlResult {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
+	
+	private static void deserializeMap(String mapCsv, CrawlResult cr, MapOfInts<Object> fldMap) throws IOException {
+		CSVParser p=new CSVParser(new StringReader(mapCsv), CSVFormat.DEFAULT);
+		Iterator<CSVRecord> iterator = p.iterator();
+		if(!iterator.hasNext()) {
+			p.close();
+			return;
+		}
+		CSVRecord r=iterator.next();
+		String uri=null;
+		for(String v: r) {
+			if (uri==null)
+				uri=v;
+			else {
+				fldMap.put(
+						cr.crawledModel.createResource(uri),
+						Integer.parseInt(v));					
+				uri=null;
+			}
+		}
+		p.close();
+	}
+	
+	private static void deserializeList(String mapCsv, CrawlResult cr, ArrayList<Object> fldMap) throws IOException {
+		CSVParser p=new CSVParser(new StringReader(mapCsv), CSVFormat.DEFAULT);
+		Iterator<CSVRecord> iterator = p.iterator();
+		if(!iterator.hasNext()) {
+			p.close();
+			return;
+		}
+		CSVRecord r=iterator.next();
+		String uri=null;
+		for(String v: r) {
+				fldMap.add(uri);
+		}
+		p.close();
+	}
+	
+	
+	
+	
 	public byte[] serialize() throws IOException {
 		try {
 			StringBuilder sb = new StringBuilder();

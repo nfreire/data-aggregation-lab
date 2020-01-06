@@ -16,11 +16,12 @@ public class ShapesDetectionReport {
 	MapOfLists<String, ShapeInstance> shapes=new MapOfLists<String, ShapeInstance>();
 
 	public void add(ShapeInstance instance) {
-		shapes.put(RdfUtil.getUriOrId((Resource) instance.getShape().getShapeNode()), instance);
+		Node shapeNode = instance.getShape().getShapeNode();
+		shapes.put(shapeNode.toString(), instance);
 	}
 
 	public List<ShapeInstance> getInstancesOfShape(Node shapeNode) {
-		return shapes.get(RdfUtil.getUriOrId((Resource) shapeNode));
+		return shapes.get(shapeNode.toString());
 	}
 
 	public Collection<ShapeInstance> getAllInstances() {

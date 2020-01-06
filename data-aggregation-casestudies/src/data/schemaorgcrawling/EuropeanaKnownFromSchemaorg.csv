@@ -1,24 +1,25 @@
 http://schema.org/AudioObject,18
-http://schema.org/Book,33
-http://schema.org/CreativeWork,33
-http://schema.org/CreativeWorkSeries,33
+http://schema.org/Book,34
+http://schema.org/CreativeWork,34
+http://schema.org/CreativeWorkSeries,34
 http://schema.org/GeoCoordinates,3
 http://schema.org/ImageObject,18
 http://schema.org/MediaObject,18
 http://schema.org/Organization,16
-http://schema.org/Painting,33
-http://schema.org/Periodical,33
+http://schema.org/Painting,34
+http://schema.org/Periodical,34
 http://schema.org/Person,16
-http://schema.org/Photograph,33
+http://schema.org/Photograph,34
 http://schema.org/Place,16
-http://schema.org/Sculpture,33
+http://schema.org/Sculpture,34
 http://schema.org/Thing,3
 http://schema.org/VideoObject,18
-http://schema.org/VisualArtwork,33
+http://schema.org/VisualArtwork,34
 http://schema.org/WebPage,18
-Total classes,18,Total properties,408,Distinct properties,54
+Total classes,18,Total properties,416,Distinct properties,54
 
-http://schema.org/AudioObject,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/AudioObject
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/bitrate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/license,LITERAL,REFERENCE
 "",http://schema.org/encodesCreativeWork,REFERENCE,LITERAL,RESOURCE
@@ -37,7 +38,8 @@ http://schema.org/AudioObject,http://schema.org/creator,REFERENCE,LITERAL,RESOUR
 "",http://schema.org/encodingFormat,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/sameAs,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Book,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/Book
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -45,6 +47,7 @@ http://schema.org/Book,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -71,7 +74,8 @@ http://schema.org/Book,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/CreativeWork,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/CreativeWork
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -79,6 +83,7 @@ http://schema.org/CreativeWork,http://schema.org/creator,REFERENCE,LITERAL,RESOU
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -105,7 +110,8 @@ http://schema.org/CreativeWork,http://schema.org/creator,REFERENCE,LITERAL,RESOU
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/CreativeWorkSeries,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/CreativeWorkSeries
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -113,6 +119,7 @@ http://schema.org/CreativeWorkSeries,http://schema.org/creator,REFERENCE,LITERAL
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -139,11 +146,13 @@ http://schema.org/CreativeWorkSeries,http://schema.org/creator,REFERENCE,LITERAL
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/GeoCoordinates,http://schema.org/elevation,LITERAL
+http://schema.org/GeoCoordinates
+http://schema.org/elevation,LITERAL
 "",http://schema.org/latitude,LITERAL
 "",http://schema.org/longitude,LITERAL
 
-http://schema.org/ImageObject,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/ImageObject
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/bitrate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/license,LITERAL,REFERENCE
 "",http://schema.org/encodesCreativeWork,REFERENCE,LITERAL,RESOURCE
@@ -162,7 +171,8 @@ http://schema.org/ImageObject,http://schema.org/creator,REFERENCE,LITERAL,RESOUR
 "",http://schema.org/encodingFormat,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/sameAs,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/MediaObject,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/MediaObject
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/bitrate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/license,LITERAL,REFERENCE
 "",http://schema.org/encodesCreativeWork,REFERENCE,LITERAL,RESOURCE
@@ -181,7 +191,8 @@ http://schema.org/MediaObject,http://schema.org/creator,REFERENCE,LITERAL,RESOUR
 "",http://schema.org/encodingFormat,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/sameAs,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Organization,http://schema.org/alternateName,LITERAL
+http://schema.org/Organization
+http://schema.org/alternateName,LITERAL
 "",http://schema.org/birthDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/deathDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/image,REFERENCE
@@ -198,7 +209,8 @@ http://schema.org/Organization,http://schema.org/alternateName,LITERAL
 "",http://schema.org/url,REFERENCE
 "",http://schema.org/birthPlace,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Painting,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/Painting
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -206,6 +218,7 @@ http://schema.org/Painting,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -232,7 +245,8 @@ http://schema.org/Painting,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Periodical,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/Periodical
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -240,6 +254,7 @@ http://schema.org/Periodical,http://schema.org/creator,REFERENCE,LITERAL,RESOURC
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -266,7 +281,8 @@ http://schema.org/Periodical,http://schema.org/creator,REFERENCE,LITERAL,RESOURC
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Person,http://schema.org/alternateName,LITERAL
+http://schema.org/Person
+http://schema.org/alternateName,LITERAL
 "",http://schema.org/birthDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/deathDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/image,REFERENCE
@@ -283,7 +299,8 @@ http://schema.org/Person,http://schema.org/alternateName,LITERAL
 "",http://schema.org/url,REFERENCE
 "",http://schema.org/birthPlace,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Photograph,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/Photograph
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -291,6 +308,7 @@ http://schema.org/Photograph,http://schema.org/creator,REFERENCE,LITERAL,RESOURC
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -317,7 +335,8 @@ http://schema.org/Photograph,http://schema.org/creator,REFERENCE,LITERAL,RESOURC
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Place,http://schema.org/alternateName,LITERAL
+http://schema.org/Place
+http://schema.org/alternateName,LITERAL
 "",http://schema.org/birthDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/deathDate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/image,REFERENCE
@@ -334,7 +353,8 @@ http://schema.org/Place,http://schema.org/alternateName,LITERAL
 "",http://schema.org/url,REFERENCE
 "",http://schema.org/birthPlace,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Sculpture,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/Sculpture
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -342,6 +362,7 @@ http://schema.org/Sculpture,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -368,11 +389,13 @@ http://schema.org/Sculpture,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/Thing,http://schema.org/elevation,LITERAL
+http://schema.org/Thing
+http://schema.org/elevation,LITERAL
 "",http://schema.org/latitude,LITERAL
 "",http://schema.org/longitude,LITERAL
 
-http://schema.org/VideoObject,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/VideoObject
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/bitrate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/license,LITERAL,REFERENCE
 "",http://schema.org/encodesCreativeWork,REFERENCE,LITERAL,RESOURCE
@@ -391,7 +414,8 @@ http://schema.org/VideoObject,http://schema.org/creator,REFERENCE,LITERAL,RESOUR
 "",http://schema.org/encodingFormat,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/sameAs,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/VisualArtwork,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/VisualArtwork
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/isBasedOn,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/temporalCoverage,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/artMedium,LITERAL
@@ -399,6 +423,7 @@ http://schema.org/VisualArtwork,http://schema.org/creator,REFERENCE,LITERAL,RESO
 "",http://schema.org/contentLocation,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/identifier,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/mentions,REFERENCE,LITERAL,RESOURCE
+"",http://schema.org/license,REFERENCE,RESOURCE
 "",http://schema.org/artform,LITERAL
 "",http://schema.org/genre,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/associatedMedia,REFERENCE,LITERAL,RESOURCE
@@ -425,7 +450,8 @@ http://schema.org/VisualArtwork,http://schema.org/creator,REFERENCE,LITERAL,RESO
 "",http://schema.org/pagination,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/contributor,REFERENCE,LITERAL,RESOURCE
 
-http://schema.org/WebPage,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
+http://schema.org/WebPage
+http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/bitrate,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/license,LITERAL,REFERENCE
 "",http://schema.org/encodesCreativeWork,REFERENCE,LITERAL,RESOURCE
@@ -443,3 +469,59 @@ http://schema.org/WebPage,http://schema.org/creator,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/name,LITERAL
 "",http://schema.org/encodingFormat,REFERENCE,LITERAL,RESOURCE
 "",http://schema.org/sameAs,REFERENCE,LITERAL,RESOURCE
+
+Distinct properties
+http://schema.org/sameAs
+http://schema.org/encodingFormat
+http://schema.org/material
+http://schema.org/duration
+http://schema.org/temporalCoverage
+http://schema.org/about
+http://schema.org/alternateName
+http://schema.org/gender
+http://schema.org/geo
+http://schema.org/datePublished
+http://schema.org/artform
+http://schema.org/artMedium
+http://schema.org/contentUrl
+http://schema.org/associatedMedia
+http://schema.org/genre
+http://schema.org/foundingDate
+http://schema.org/inLanguage
+http://schema.org/dateCreated
+http://schema.org/numberOfPages
+http://schema.org/contributor
+http://schema.org/latitude
+http://schema.org/thumbnailUrl
+http://schema.org/deathDate
+http://schema.org/hasPart
+http://schema.org/containsPlace
+http://schema.org/birthDate
+http://schema.org/containedInPlace
+http://schema.org/dissolutionDate
+http://schema.org/width
+http://schema.org/contentLocation
+http://schema.org/isBasedOn
+http://schema.org/spatialCoverage
+http://schema.org/height
+http://schema.org/isPartOf
+http://schema.org/license
+http://schema.org/uploadDate
+http://schema.org/exampleOfWork
+http://schema.org/description
+http://schema.org/provider
+http://schema.org/creator
+http://schema.org/elevation
+http://schema.org/author
+http://schema.org/image
+http://schema.org/birthPlace
+http://schema.org/mentions
+http://schema.org/encodesCreativeWork
+http://schema.org/deathPlace
+http://schema.org/bitrate
+http://schema.org/identifier
+http://schema.org/publisher
+http://schema.org/url
+http://schema.org/longitude
+http://schema.org/name
+http://schema.org/pagination

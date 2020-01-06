@@ -21,18 +21,23 @@ import inescid.dataaggregation.data.RegSkos;
 import inescid.util.RdfUtil;
 
 public class MultilingualSaturationShacl {
-	public MultilingualSaturationResult calculate(Model edm) throws Throwable {
-		String SHAPES = IOUtils.toString(MultilingualSaturationShacl.class.getResourceAsStream("multilingual-saturation-shapes.ttl"), "UTF-8");
-	    Graph shapesGraph = RdfUtil.readRdf(SHAPES, Lang.TURTLE).getGraph();
-
+	static Shapes shapes;
+	
+	static {
+		try {
+			String shapesSrfString = IOUtils.toString(MultilingualSaturationShacl.class.getResourceAsStream("multilingual-saturation-shapes.ttl"), "UTF-8");
+			Graph shapesGraph = RdfUtil.readRdf(shapesSrfString, Lang.TURTLE).getGraph();
+			shapes = Shapes.parse(shapesGraph);
+		} catch (IOException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+	
+	public static MultilingualSaturationResult calculate(Model edm) throws Exception {
 	    Graph dataGraph = edm.getGraph();
-
-	    Shapes shapes = Shapes.parse(shapesGraph);
 
 	    ShapesDetectionReport report = ShapeDetectorProc.simpleValidatation(shapes, dataGraph, false);
 	    MultilingualSaturationResult result=new MultilingualSaturationResult(report);
-	    
-	    
 	    
 	    return result;
 	}

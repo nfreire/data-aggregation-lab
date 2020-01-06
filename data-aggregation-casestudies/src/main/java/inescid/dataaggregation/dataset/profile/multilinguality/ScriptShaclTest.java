@@ -20,7 +20,7 @@ import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RegSkos;
 import inescid.util.RdfUtil;
 
-public class ShaclTest {
+public class ScriptShaclTest {
 	public static void main(String ...args) throws Throwable {
 //	    String SHAPES =
 //	    		"@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\r\n" + 
@@ -58,7 +58,7 @@ public class ShaclTest {
 //	    		" .";
 		
 		
-		String SHAPES = IOUtils.toString(ShaclTest.class.getResourceAsStream("multilingual-saturation-shapes.ttl"), "UTF-8");
+		String SHAPES = IOUtils.toString(ScriptShaclTest.class.getResourceAsStream("multilingual-saturation-shapes.ttl"), "UTF-8");
 	    String DATA = 
 	    		"@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\r\n" + 
 	    		"@prefix edm:   <http://www.europeana.eu/schemas/edm/> .\n" +

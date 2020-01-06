@@ -319,4 +319,8 @@ public class Repository {
 		}
 		ziper.close();
 	}
+
+	public int getSize(String datasetUri) {
+		return getAllDatasetResourceUris(datasetUri).size();
+	}
 }

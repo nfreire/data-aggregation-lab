@@ -154,7 +154,11 @@ public class GoogleSheetsCsvUploader {
 			
 			List<Object> recVals=new ArrayList<>();
 			for(String v:rec) {
-				recVals.add(v);
+				if(v.length()>=5000) {
+					recVals.add(v.substring(0, 4998));
+					System.out.println("WARN (GoogleSheetsUploader): cell value too long; value was cut at 5000 chars");
+				}else
+					recVals.add(v);
 			}
 			vals.add(recVals);
 		}	

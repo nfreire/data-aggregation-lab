@@ -2,10 +2,14 @@ package inescid.dataaggregation.casestudies.schemaorgcrawling;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Resource;
 
@@ -52,7 +56,7 @@ public class CrawlResultStats extends CrawlResult {
 		out.write(super.serialize());
 		return out.toByteArray();
 	}
-
+	
 	public int getCountValidRdf() {
 //		return seedsCount-notFound-notRdf;
 		return seedsCount-notRdf;

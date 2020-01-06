@@ -19,6 +19,7 @@ public class ShapeInstance {
 		this.path = path;
 		this.valueNode = valueNode;
 		this.constraint = constraint;
+//		System.out.println(this);
 	}
 
 	public Shape getShape() {
@@ -40,6 +41,13 @@ public class ShapeInstance {
 	public Constraint getConstraint() {
 		return constraint;
 	}
+
+	@Override
+	public String toString() {
+		return "ShapeInstance [shape=" + shape.getShapeNode().toString() + ", focusNode=" + focusNode.toString() + ", path=" + path.toString() + ", valueNode="
+				+ valueNode.toString() + ", constraint=" + constraint.toString() + "]";
+	}
+	
 	
 
 }

@@ -253,7 +253,7 @@ public class RulesSchemaorgCrawlGraphOfCho {
 			boolean first=true;
 			for(Property m: mappingsByClass.get(r).keySet()) {
 				if(first) {
-					csv.print(r);
+					csv.printRecord(r);
 					first=false;
 				}else
 					csv.print("");			
@@ -264,6 +264,13 @@ public class RulesSchemaorgCrawlGraphOfCho {
 				csv.println();
 			}
 		}
+		
+		csv.println();
+		csv.printRecord("Distinct properties");
+		for(Property p:dedup) {
+			csv.printRecord(p.getURI());			
+		}
+		
 		csv.close();
 		return sb.toString();
 	}
