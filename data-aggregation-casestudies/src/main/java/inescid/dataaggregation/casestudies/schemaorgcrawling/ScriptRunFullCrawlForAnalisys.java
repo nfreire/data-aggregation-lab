@@ -8,8 +8,8 @@ import org.apache.commons.io.FileUtils;
 
 import inescid.dataaggregation.casestudies.wikidata.ScriptMetadataAnalyzerOfCulturalHeritage.Files;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.ld.DatasetDescription;
 import inescid.dataaggregation.dataset.Global;
+import inescid.dataaggregation.dataset.metadata.DatasetDescription;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 

@@ -1,11 +1,15 @@
 package inescid.dataaggregation.data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
 public final class RegSchemaorg {
+	public static Set<Resource> creativeWorkClasses=null;
+	
 	public static String PREFIX="schemaorg";
 	public static String NS="http://schema.org/";
 
@@ -1655,4 +1659,18 @@ public final class RegSchemaorg {
 	public static final Property funder = ResourceFactory.createProperty("http://schema.org/funder");
 	public static final Property predecessorOf = ResourceFactory.createProperty("http://schema.org/predecessorOf");
 	public static final Resource AggregateRating = ResourceFactory.createResource("http://schema.org/AggregateRating");
+
+	static {
+		creativeWorkClasses=new HashSet<Resource>();
+		creativeWorkClasses.add(CreativeWork);
+		creativeWorkClasses.add(VisualArtwork); 
+		creativeWorkClasses.add(Painting); 
+		creativeWorkClasses.add(Book); 
+		creativeWorkClasses.add(ImageObject); 
+//		creativeWorkClasses.add(Newspaper); 
+		creativeWorkClasses.add(Periodical); 
+		creativeWorkClasses.add(Photograph); 
+		creativeWorkClasses.add(CreativeWorkSeries); 
+		creativeWorkClasses.add(Sculpture); 
+	};
 }

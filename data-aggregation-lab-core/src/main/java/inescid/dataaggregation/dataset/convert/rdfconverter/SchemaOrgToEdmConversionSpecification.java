@@ -145,7 +145,7 @@ public class SchemaOrgToEdmConversionSpecification {
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTWORK_SURFACE, RdfReg.DCTERMS_MEDIUM);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_ARTFORM, RdfReg.DC_TYPE);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SPATIAL_COVERAGE, RegEdm.currentLocation);
-		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_LOCATION, RdfReg.DCTERMS_SPATIAL);
+		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_SPATIAL, RdfReg.DCTERMS_SPATIAL);
 		pchoMapping.putPropertyMapping(RdfReg.SCHEMAORG_TEMPORAL_COVERAGE, RdfReg.DCTERMS_TEMPORAL_COVERAGE);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_HEIGHT, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
 		pchoMapping.putPropertyMappingFromReferencedResource(RdfReg.SCHEMAORG_WIDTH, RdfReg.SCHEMAORG_DISTANCE, RdfReg.SCHEMAORG_NAME, RdfReg.DCTERMS_EXTENT);
@@ -212,7 +212,6 @@ public class SchemaOrgToEdmConversionSpecification {
 		conceptMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.SKOS_PREF_LABEL);
 		conceptMapping.putPropertyMapping(RdfReg.SCHEMAORG_ALTERNATE_NAME, RdfReg.SKOS_ALT_LABEL);
 		conceptMapping.putPropertyMapping(RdfReg.SCHEMAORG_SAME_AS, RdfReg.OWL_SAME_AS);
-		
 		
 		ResourceTypeConversionSpecification placeMapping = spec.getTypePropertiesMapping(RegEdm.Place);
 		placeMapping.putPropertyMapping(RdfReg.SCHEMAORG_NAME, RdfReg.SKOS_PREF_LABEL);

@@ -153,7 +153,7 @@ public class DataProfileDetector {
 		
 			DataProfileDetector detector = new DataProfileDetector();
 			int idx=0;
-			for(String recUri: repo.getIteratorOfAllDatasetResourceUris(datasetUri)) {
+			for(String recUri: repo.getIterableOfResourceUris(datasetUri)) {
 				DataTypeResult detected = detector.detect(repo.getFile(datasetUri, recUri));
 				if (detected!=null && detected.profile!=null) 
 					return detected;

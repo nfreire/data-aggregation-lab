@@ -98,7 +98,7 @@ public class AllOntologiesAnalyser {
 		prt.printRecord("withDataElements", withDataElements, "dataElementsCount", dataElementsCount, String.format("%.2f", withDataElements / ontologies.size()));
 		prt.printRecord("#Ontologies' classes");
 		prt.printRecord("URI", "usage count");
-		ArrayList<Entry<String, HashSet<String>>> sorted=new ArrayList<>(classesUsage.entrySet());
+		ArrayList<Entry<String, HashSet<String>>> sorted=new ArrayList(classesUsage.entrySet());
 		Comparator<Entry<String, HashSet<String>>> comparator = new Comparator<Entry<String, HashSet<String>>>() {
 			@Override
 			public int compare(Entry<String, HashSet<String>> o1, Entry<String, HashSet<String>> o2) {
@@ -110,19 +110,19 @@ public class AllOntologiesAnalyser {
 			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("# Ontologies' properties");
 		prt.printRecord("URI", "usage count");
-		sorted=new ArrayList<>(propertiesUsage.entrySet());
+		sorted=new ArrayList(propertiesUsage.entrySet());
 		Collections.sort(sorted, comparator);
 		for(Entry<String, HashSet<String>> uri: sorted) 
 			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("#Data elements' classes");
 		prt.printRecord("URI", "usage count");
-		sorted=new ArrayList<>(dataElementClassUsage.entrySet());
+		sorted=new ArrayList(dataElementClassUsage.entrySet());
 		Collections.sort(sorted, comparator);
 		for(Entry<String, HashSet<String>> uri: sorted) 
 			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));
 		prt.printRecord("#Data elements' properties");
 		prt.printRecord("URI", "usage count");
-		sorted=new ArrayList<>(dataElementPropertyUsage.entrySet());
+		sorted=new ArrayList(dataElementPropertyUsage.entrySet());
 		Collections.sort(sorted, comparator);
 		for(Entry<String, HashSet<String>> uri: sorted) 
 			prt.printRecord(uri.getKey(), uri.getValue().size() , String.format("%.2f", (float)uri.getValue().size() / ontologies.size()), "("+uri.getValue().size()+") "+String.format("%.0f%%", (float)uri.getValue().size() / ontologies.size()*100));

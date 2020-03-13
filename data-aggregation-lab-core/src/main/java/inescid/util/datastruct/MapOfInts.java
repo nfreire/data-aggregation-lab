@@ -4,13 +4,20 @@
  */
 package inescid.util.datastruct;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 /**
  * @param <K>
@@ -127,4 +134,23 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			Collections.sort((List<Comparable>)ret);
 			return ret;
 		}
+
+		public void incrementToAll(Iterable<K> addToThese) {
+			for(K k: addToThese) 
+				incrementTo(k);
+		}
+		
+		public static void writeCsv(MapOfInts<?> sets, Writer csvWrite) throws IOException {
+			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
+			for(Entry<?, Integer>  r: sets.entrySet()) {
+				printer.printRecord(r.getKey().toString(), r.getValue().toString());
+			}
+			printer.close();
+		}
+
+		public void addToAll(MapOfInts<K> otherMap) {
+			for(java.util.Map.Entry<K, Integer> e: otherMap.entrySet()) 
+				addTo(e.getKey(), e.getValue());
+		}
+
 }

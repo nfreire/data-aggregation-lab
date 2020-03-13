@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<!-- General description of your web application -->
+
+	<display-name>Europeana Metadata Testing Tool Prototype</display-name>
+	<description>
+	    A website to allow Europeana data providers to test their implementation of IIIF, Sitemaps and Schema.org 
+    </description>
+	<context-param>
+		<description>Credentials for google api</description>
+		<param-name>googleapi.credentials</param-name>
+		<param-value>${googleapi.credentials}</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>default</servlet-name>
+		<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>listings</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>MetadataTesterHandler</servlet-name>
+		<servlet-class>inescid.dataaggregation.metadatatester.view.MetadataTesterServlet</servlet-class>
+		<load-on-startup>5</load-on-startup>
+	</servlet>
+
+		<servlet-mapping>
+			<servlet-name>default</servlet-name>
+			<url-pattern>/static/*</url-pattern>
+		</servlet-mapping>
+
+		<servlet-mapping>
+			<servlet-name>MetadataTesterHandler</servlet-name>
+			<url-pattern>/*</url-pattern>
+		</servlet-mapping>
+
+		<session-config>
+			<session-timeout>1</session-timeout>
+		</session-config>
+
+</web-app>

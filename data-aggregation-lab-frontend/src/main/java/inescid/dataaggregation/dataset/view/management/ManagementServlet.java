@@ -11,7 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest; 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
@@ -252,7 +252,7 @@ public class ManagementServlet extends HttpServlet {
 
 	protected void clearDatasetData(Dataset dataset) throws Exception {
 		Global.getPublicationRepository().clear(dataset);
-		Global.getDataRepository().clear(dataset);
+		Global.getDataRepository().clear(dataset.getUri());
 		Global.getTimestampTracker().clear(dataset.getUri());
 		Global.getTimestampTracker().clear(dataset.getConvertedEdmDatasetUri());
 		if(dataset.getType()==DatasetType.IIIF)

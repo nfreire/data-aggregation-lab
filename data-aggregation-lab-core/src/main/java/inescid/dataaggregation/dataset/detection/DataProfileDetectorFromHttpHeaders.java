@@ -20,7 +20,7 @@ public class DataProfileDetectorFromHttpHeaders {
 	
 	public static DataTypeResult detect(String datasetUri, Repository repo) throws IOException{
 		int idx=0;
-		for(String recUri: repo.getIteratorOfAllDatasetResourceUris(datasetUri)) {
+		for(String recUri: repo.getIterableOfResourceUris(datasetUri)) {
 			List<Entry<String, String>> meta = repo.getMeta(datasetUri, recUri);
 			DataTypeResult detect = detect(meta);
 			if (detect!=null)

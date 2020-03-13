@@ -9,31 +9,32 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ThreadedRunner {
-	Semaphore semaphore;
 	ExecutorService threadPool;
-//	Vector<Thread> threads;
-	
+	Semaphore submitionQueue;
 	
 	public ThreadedRunner(int numberOfThreads) {
-		semaphore=new Semaphore(numberOfThreads);
 		threadPool = Executors.newFixedThreadPool(numberOfThreads);
-//		threads=new Vector<Thread>();
-//		for(int i=0 ; i<numberOfThreads ; i++)
-//			threads.add(new Thread());
+		submitionQueue=new Semaphore(numberOfThreads*10);
 	}
 	
 	public void run(Runnable task) throws InterruptedException, ExecutionException {
-//		Future<?> f = 
+		submitionQueue.acquire();
 		threadPool.submit(task).get();
+		submitionQueue.release();
 	}
 	
-	public void shutdown() throws InterruptedException{
+	public void awaitTermination(int minutesToWaitBeforeForcingTermination) throws InterruptedException{
 		threadPool.shutdown();
-		if(!threadPool.awaitTermination(5, TimeUnit.MINUTES)){
-			threadPool.shutdownNow();
+		if(minutesToWaitBeforeForcingTermination>0) {
+			if(!threadPool.awaitTermination(minutesToWaitBeforeForcingTermination, TimeUnit.MINUTES))
+				threadPool.shutdownNow();
+		} else {
+			while (! threadPool.awaitTermination(30, TimeUnit.MINUTES)) {
+			}
 		}
 	}
 	public void shutdownNow(){
 		threadPool.shutdownNow();
 	}
+
 }

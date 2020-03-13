@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana Metadata Testing Tool - R&D Prototype</title>
+	</head>
+<body>
+<#include "../banner.include.html">
+
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Check for Schema.org data in a IIIF Manifest</h2>
+
+<form action="${context}/check_iiif_manifest" method="get">
+
+<p>IIIF Manifest URL: 
+	<input type="text" name="manifestURI" value="${uri!}" style="width:650px"/> <input type="submit" name="operation" value="Check IIIF Manifest"/>
+<br />
+(enter the URI, or ID, of a IIIF manifest with structured metadata in Schema.org or EDM, in <i>seeAlso</i> links)
+</p>
+<br/>
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Results <#if uriChecked>for ${uri!}</#if></td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="800" class="field_value">
+	
+	<#if uriChecked>
+	
+	<b><i>seeAlso</i> links in IIIF manifest</b>
+	<#if seeAlsos?has_content>
+		<ul>
+		<#list seeAlsos as seeAlso>
+			<li>URL: ${seeAlso.uri}<br />Format: ${seeAlso.format}<br />Profile: ${seeAlso.profile}<br /><br /></li>
+		</#list>
+		</ul>
+		<b>Metadata in EDM or Schema.org in the <i>seeAlso(s)</i></b>
+		<#list seeAlsos as seeAlso>
+		<table width="100%">
+			<tr><td class="field_value" colspan="2"><i>seeAlso</i> URL: ${seeAlso.uri}<#if seeAlso.creativeWorks?has_content> [<a href="${context}/check_for_europeana">detailed analysis</a>]</#if></td></tr>
+			<#if seeAlso.creativeWorks?has_content>
+				<tr><td class="field_value" colspan="2"><b>CreativeWork resources in this <i>seeAlso</i></b></td></tr>
+			    <#list seeAlso.creativeWorks as res>
+					<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
+						<#list res.types as type>
+					<tr><td class="field_value"> &nbsp;&nbsp; a </td><td class="field_value">${type.object}</td></tr>
+						</#list>
+						<#list res.statements as st>
+					<tr><td class="field_value"> &nbsp;&nbsp; ${st.predicate} </td><td class="field_value">${st.object}</td></tr>
+						</#list>
+				</#list>			
+			<#else>
+				<tr><td class="field_value" colspan="2">No CreativeWork resources exist  in this <i>seeAlso</i></td></tr>
+			</#if>
+			<#if seeAlso.otherResourcess?has_content>
+				<tr><td class="field_value" colspan="2"><b>Other resources in this <i>seeAlso</i></b></td></tr>
+			    <#list seeAlso.seeAlso.otherResourcess as res>
+					<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
+						<#list res.types as type>
+					<tr><td class="field_value"> &nbsp;&nbsp; a </td><td class="field_value">${type.object}</td></tr>
+						</#list>
+						<#list res.statements as st>
+					<tr><td class="field_value"> &nbsp;&nbsp; ${st.predicate} </td><td class="field_value">${st.object}</td></tr>
+						</#list>
+				</#list>
+			</#if>
+			<#if seeAlso?has_next> 			
+			<tr><td colspan="2">&nbsp;</td></tr>
+			</#if>
+		</table>	
+		</#list>
+	<#else>
+		No links were found 
+	</#if>
+	
+	
+	<#else>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+	</#if>
+	</td></tr>
+</table>
+
+</form>
+
+
+<#include "../footer.include.html">
+</body>
+</html>

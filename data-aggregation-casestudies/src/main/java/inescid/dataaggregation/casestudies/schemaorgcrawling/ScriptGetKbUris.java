@@ -14,10 +14,10 @@ import org.apache.poi.hssf.util.HSSFColor.GOLD;
 import com.drew.lang.ByteArrayReader;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.ld.DatasetDescription;
 import inescid.dataaggregation.crawl.ld.RulesSchemaorgCrawlGraphOfCho;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.LodDataset;
+import inescid.dataaggregation.dataset.metadata.DatasetDescription;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.RdfUtil;
 

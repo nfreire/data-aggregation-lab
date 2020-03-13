@@ -1,0 +1,226 @@
+body {  font-family: Verdana, Arial ; font-size: 14px ; background-color : #ffffff ; color : #000000 ; }
+
+td {  font-family: Verdana, Arial  ; font-size: 14px}
+
+table { empty-cells: show }
+
+.banner {
+	background: url("bg.jpg") repeat-x; 
+	 color:#fff;
+	 font-weight: bold;
+	 font-size: 22px;
+	 padding-top: 18px;
+	 line-height: 0.9;
+}
+
+.footer_left {
+	margin-top: 10px;
+	width: 50%;
+	float:left;
+    border-top: double;
+    text-align: center;
+}
+
+.footer_right {
+	margin-top: 10px;
+	width: 50%;
+    text-align: center;
+	float:right;
+    border-top: double;
+}
+
+.field_title {
+/*	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN: -8px -8px 0px; PADDING-TOP: 4px;
+	BORDER-RIGHT: #aaa 1px solid; BACKGROUND: #eee; BORDER-BOTTOM: #aaa 1px solid;
+	BORDER-TOP: #fff 1px solid*/
+	BACKGROUND: #c0c0c0; COLOR: #000;
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
+	white-space: nowrap;
+    vertical-align: top;
+}
+
+.field_title a{
+	COLOR: #363;
+}
+
+
+.field_value_odd {
+	BORDER-BOTTOM: #c0c0c0 1px solid;
+	BACKGROUND: #ddd;
+    vertical-align: top;
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
+	white-space: nowrap;
+}
+
+.field_value {
+	BORDER-BOTTOM: #c0c0c0 1px solid;
+	BACKGROUND: #fafafa;
+    vertical-align: top;
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
+	white-space: nowrap;
+}
+
+.unavailableLink{
+	color : #999 ;
+}
+
+.field_operations {
+	BORDER-BOTTOM: #c0c0c0 1px solid;
+	BORDER-LEFT: #c0c0c0 1px solid;
+	BACKGROUND: #fafafa;
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
+	text-align:center; 
+    vertical-align: top;
+}
+
+
+.form_title { 
+	font-size: 16px; 	
+	font-weight: bold ;
+	white-space: nowrap;
+	color: #fff; 
+	BACKGROUND: #777;}
+
+.form_title_2 { 
+	font-size: 16px; 	
+	font-weight: bold ;
+	white-space: nowrap;
+	color: #fff; 
+	BACKGROUND: #ac7873;}
+.validation_message {
+	BORDER-BOTTOM: #c0c0c0 1px solid;
+	BACKGROUND: #cc9893;
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px;
+}
+
+.breadcrumbs {
+	color: #000;
+}
+.breadcrumbs a {
+	color: #cc9893;
+}
+
+.main_heading {
+	BACKGROUND: #c5ee63; COLOR: #000; 
+	font-size: 12px; font-weight:bold
+}
+/*
+.field_row_light {
+	BACKGROUND: #eee; BORDER-BOTTOM: #aaa 1px solid;PADDING-BOTTOM: 15px;  PADDING-TOP: 5px;
+}
+
+.field_row_dark {
+	BACKGROUND: #ddd; BORDER-BOTTOM: #aaa 1px solid; PADDING-BOTTOM: 15px; PADDING-TOP: 5px;
+}
+*/
+.main_heading_small_link {
+	font-size: 10px ; 
+}
+
+
+
+
+
+.menu  {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #FFFFFF; text-decoration: none}
+.menu  a {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #FFFFFF; text-decoration: none}
+
+.section_title {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 15px; font-style: normal; font-weight: bold;}
+
+
+.results_navigation {text-align:center; BACKGROUND: #ddd; }
+
+.letter_index {text-align:center; BACKGROUND: #E78122; }
+.letter_index.letter_index_selected {color:#c5ee63 ; font-size: 14px; font-style: normal; font-weight: bold; }
+.letter_index.letter_index_title {color:#fff ; font-size: 14px; font-style: normal; font-weight: bold; }
+.letter_index a {color: #fff; }
+
+
+
+
+.texto {font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 12px; font-style: normal; font-weight: normal; color: #000000; text-align: justify;}
+.texto:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #3333ff; text-align: justify;}
+.texto:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #3333ff; text-align: justify;}
+.texto:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #cc3333; text-align: justify;}
+.texto:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ff9900; text-align: justify;}
+
+.texto-pt {font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 12px; font-style: normal; font-weight: normal; color: #000000}
+.texto-pt:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #000000}
+.texto-pt:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #000000}
+.texto-pt:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #cc3333}
+.texto-pt:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ff9900}
+
+
+.texto-br {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ffffff}
+.texto-br:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ffffff}
+.texto-br:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ffffff}
+.texto-br:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #cc3333}
+.texto-br:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-style: normal; font-weight: normal; color: #ff9900}
+
+.texto-menu {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-menu:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-menu:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-menu:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #cc3333; text-decoration: none}
+.texto-menu:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #3399FF; text-decoration: none}
+
+.texto-m1 {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-m1:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-m1:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #000000; text-decoration: none}
+.texto-m1:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #cc3333; text-decoration: none}
+.texto-m1:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #ff9900; text-decoration: none}
+
+.texto-m2 {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; font-style: normal; font-weight: normal; color: #FF9900; text-decoration: none}
+.texto-m2:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #FF9900; text-decoration: none}
+.texto-m2:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #FF9900; text-decoration: none}
+.texto-m2:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #cc3333; text-decoration: none}
+.texto-m2:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #ff9900; text-decoration: none}
+
+.texto-m3 {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 11px; font-style: normal; font-weight: normal; color: #33cc66; text-decoration: none}
+.texto-m3:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #33cc66; text-decoration: none}
+.texto-m3:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #33cc66; text-decoration: none}
+.texto-m3:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #cc3333; text-decoration: none}
+.texto-m3:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #ff9900; text-decoration: none}
+
+.t1 {  font-family: Arial, Helvetica, sans-serif; font-size: 14pt; font-style: normal; font-weight: bold; color: #000000}
+
+.t2 {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-style: normal; font-weight: normal; color: #000000}
+a.t2:link { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #000000; text-decoration: none}
+a.t2:visited { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #000000; text-decoration: none}
+a.t2:active  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #cc3333; text-decoration: none}
+a.t2:hover   { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #ff9900; text-decoration: none}
+
+.rodape {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #666666; font-weight: normal}
+
+.menu {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #ffffff; text-decoration: none}
+a.menu:link { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #ffffff; text-decoration: none}
+a.menu:visited { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #ffffff; text-decoration: none}
+a.menu:active  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #cc3333; text-decoration: none}
+a.menu:hover   { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: normal; color: #ff9900; text-decoration: none}
+
+.texto {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 12px; color: #000000}
+
+.data {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 9px; color: #000000}
+
+.t3 {	font-family: Verdana, Arial, Helvetica, sans-serif;	font-size: 14px; color: #ffffff}
+a.t3:link { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #ffffff; text-decoration: none}
+a.t3:visited { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #ffffff; text-decoration: none}
+a.t3:active  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #000000; text-decoration: none}
+a.t3:hover   { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: normal; color: #000000; text-decoration: none}
+
+
+.vm {font-size: 11px; font-style: normal; font-weight: bold; text-decoration: none; font-family: Verdana, Arial, Helvetica, sans-serif;color: #CC0000}
+
+.pt {font-size: 11px; font-style: normal; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif;color: #000000}
+
+.rx {font-size: 11px; font-style: normal; font-weight: normal; font-family: Verdana, Arial, Helvetica, sans-serif; color: #DE871B}
+.rx:link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #DE871B; text-decoration: none}
+.rx:visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #DE871B; text-decoration: none}
+.rx:active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #3399ff; text-decoration: none}
+.rx:hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; font-style: normal; font-weight: normal; color: #3399ff; text-decoration: none}
+
+.az {font-size: 11px; font-style: normal; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #3399cc}
+
+.titulo-sum { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; 	font-weight: bold ;color: #000000}
+.titulo-sum :link {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #000000}
+.titulo-sum :visited {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #000000}
+.titulo-sum :active {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #cc3333}
+.titulo-sum :hover {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #ff9900}

@@ -1,8 +1,12 @@
 package inescid.dataaggregation.store;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -167,6 +171,8 @@ public class Repository {
 	
 	
 	public void saveMeta(String datasetUri, String resourceUri, List<Entry<String, String>> meta) throws IOException {
+		if(meta==null) return;
+		
 		File metaFile = getMetaFile(datasetUri, resourceUri);
 		FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(metaFile, Global.UTF8);
 		CSVPrinter printer = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
@@ -219,9 +225,7 @@ public class Repository {
 			manifestFile.getParentFile().delete();
 	}
 
-	public void clear(Dataset dataset) {
-		
-	}
+	
 	public void clear(String datasetUri) {
 		File logFile = getDatasetLogFile(datasetUri);
 		if (logFile.exists())
@@ -241,69 +245,128 @@ public class Repository {
 				manifEntry.getValue().getParentFile().delete();
 		}
 	}
+	
+	public class IteratorOfResourceFiles implements Iterator<File> {
+		File next = null;
+		int idx1 = -1;
+		int idx2 = 0;
+		File[] col1;
+		File[] col2;
+		
+		public IteratorOfResourceFiles (String datasetUri){
+			File datasetFolder = getDatasetFolder(datasetUri);
+			if (datasetFolder.exists()) {
+				col1 = datasetFolder.listFiles();
+				prepareNext();
+			}
+		}
 
-	public Iterable<String> getIteratorOfAllDatasetResourceUris(String datasetUri) {
+		@Override
+		public boolean hasNext() {
+			return next != null;
+		}
+
+		@Override
+		public File next() {
+			File ret = next;
+			prepareNext();
+			return ret;
+		}
+
+		private void prepareNext() {
+			if (col2!=null && idx2 < col2.length) {
+				idx2++;
+				while (idx2 < col2.length) {
+					if (!col2[idx2].isFile()) {
+						idx2++;
+						continue;
+					}
+					if (!col2[idx2].getName().endsWith(".meta.xml")) {
+						next = col2[idx2];
+	//								next = FilenameManager.getResourcetUri(col2[idx2]);
+						return;
+					}
+					idx2++;
+				}
+			}
+			next = null;
+			OUT: while (next == null && idx1 < col1.length - 1) {
+				idx1++;
+				idx2 = 0;
+				while (true) {
+					if (!col1[idx1].isDirectory() || col1[idx1].getName().equals("seealso"))
+						idx1++;
+					else
+						break;
+					if (idx1 >= col1.length)
+						break OUT;
+				}
+				col2 = col1[idx1].listFiles();
+				while (idx2 <= col2.length) {
+					if (!col2[idx2].isFile()) {
+						idx2++;
+						continue;
+					}
+					if (!col2[idx2].getName().endsWith(".meta.xml")) {
+						next = col2[idx2];
+//									next = FilenameManager.getResourcetUri(col2[idx2]);
+						break OUT;
+					}
+					idx2++;
+				}
+			}
+		};
+	};
+		
+	public Iterable<String> getIterableOfResourceUris(String datasetUri) {
 		return new Iterable<String>() {
 			@Override
 			public Iterator<String> iterator() {
+				IteratorOfResourceFiles it=new IteratorOfResourceFiles(datasetUri);
 				return new Iterator<String>() {
-					String next = null;
-					int idx1 = -1;
-					int idx2 = 0;
-					File[] col1;
-					File[] col2;
-					{
-						File datasetFolder = getDatasetFolder(datasetUri);
-						if (datasetFolder.exists()) {
-							col1 = datasetFolder.listFiles();
-							prepareNext();
-						}
-					}
-
 					@Override
 					public boolean hasNext() {
-						return next != null;
+						return it.hasNext();
 					}
 
 					@Override
 					public String next() {
-						String ret = next;
-						prepareNext();
-						return ret;
+						File next = it.next();
+						return next==null ? null :FilenameManager.getResourcetUri(next) ;
 					}
-
-					private void prepareNext() {
-						next = null;
-						OUT: while (next == null && idx1 < col1.length - 1) {
-							idx1++;
-							idx2 = 0;
-							while (true) {
-								if (!col1[idx1].isDirectory() || col1[idx1].getName().equals("seealso"))
-									idx1++;
-								else
-									break;
-								if (idx1 >= col1.length)
-									break OUT;
-							}
-							col2 = col1[idx1].listFiles();
-							while (idx2 <= col2.length) {
-								if (!col2[idx2].isFile())
-									continue;
-								if (!col2[idx2].getName().endsWith(".meta.xml")) {
-									next = FilenameManager.getResourcetUri(col2[idx2]);
-									break OUT;
-								}
-							}
-						}
-					}
-				};
+				};				
 			}
 		};
 	}
+		
+	public Iterable<RepositoryResource> getIterableOfResources(String datasetUri) {
+		return new Iterable<RepositoryResource>() {
+			@Override
+			public Iterator<RepositoryResource> iterator() {
+				IteratorOfResourceFiles it=new IteratorOfResourceFiles(datasetUri);
+				return new Iterator<RepositoryResource>() {
+					@Override
+					public boolean hasNext() {
+						return it.hasNext();
+					}
 
+					@Override
+					public RepositoryResource next() {
+						File next = it.next();
+						return next==null ? null : new RepositoryResource(FilenameManager.getResourcetUri(next), next) ;
+					}
+				};				
+			}
+		};
+	}
+		
 	public byte[] getContent(String datasetId, String url) throws IOException {
 		File file = getFile(datasetId, url);
 		return FileUtils.readFileToByteArray(file);
+	}
+	public InputStream getContentStream(String datasetId, String url) throws IOException {
+		File file = getFile(datasetId, url);
+		return new BufferedInputStream(FileUtils.openInputStream(file));
 	}
 
 	public void exportDatasetToZip(String datasetUri, File targetZipFile, ContentTypes format_opt) throws IOException {
@@ -323,4 +386,29 @@ public class Repository {
 	public int getSize(String datasetUri) {
 		return getAllDatasetResourceUris(datasetUri).size();
 	}
+
+	public void save(String datasetId, String resourceUri, InputStream bodyStream, List<Entry<String, String>> headers) {
+		File cacheFile = getFile(datasetId, resourceUri);
+		if(!cacheFile.getParentFile().exists())
+			cacheFile.getParentFile().mkdirs();
+		try {
+			FileOutputStream output = new FileOutputStream(cacheFile);
+			IOUtils.copy(bodyStream, output);
+			output.close();
+			saveMeta(datasetId, resourceUri, headers);
+		} catch (IOException e) {
+			remove(datasetId, resourceUri);
+		}
+	}
+
+	public String getContentType(String datasetId, String resourceUri) throws IOException {
+		List<Entry<String, String>> meta = getMeta(datasetId, resourceUri);
+		if (meta==null)	return null;
+		for(Entry<String, String> e:meta) {
+			if (e.getKey().equalsIgnoreCase("content-type"))
+				return e.getValue();
+		}
+		return null;
+	}
+
 }

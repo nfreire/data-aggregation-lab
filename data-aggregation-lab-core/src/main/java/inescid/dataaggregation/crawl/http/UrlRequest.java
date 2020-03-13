@@ -21,6 +21,8 @@ public class UrlRequest {
 	HttpEntity requestContent;
 	boolean refresh=false;
 	int retryAttemps=0;
+	Integer connectionTimeout;
+	Integer socketTimeout;
 	
 	public UrlRequest(String url) {
 		super();
@@ -119,6 +121,18 @@ public class UrlRequest {
 	}
 	public void setRetryAttemps(int retryAttemps) {
 		this.retryAttemps = retryAttemps;
+	}
+	public Integer getConnectionTimeout() {
+		return connectionTimeout;
+	}
+	public void setConnectionTimeout(Integer connectionTimeout) {
+		this.connectionTimeout = connectionTimeout;
+	}
+	public Integer getSocketTimeout() {
+		return socketTimeout;
+	}
+	public void setSocketTimeout(Integer socketTimeout) {
+		this.socketTimeout = socketTimeout;
 	}
 
 	

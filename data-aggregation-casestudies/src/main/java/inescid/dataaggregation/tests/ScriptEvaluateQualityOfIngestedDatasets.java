@@ -20,8 +20,8 @@ import eu.europeana.indexing.tiers.model.MetadataTier;
 import eu.europeana.indexing.tiers.model.Tier;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.profile.tiers.EpsTiersCalculator;
-import inescid.dataaggregation.dataset.profile.tiers.EpsTiersCalculator.TiersCalculation;
+import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
+import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
 import inescid.europeanaapi.AccessException;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.MapOfInts;
@@ -86,7 +86,7 @@ public class ScriptEvaluateQualityOfIngestedDatasets {
 						public void run() {
 							try {
 								String recordRdfXml = EdmRdfUtil.getRecordRdfXml(rId);
-								TiersCalculation tiers = EpsTiersCalculator.calculate(recordRdfXml);
+								TiersCalculation tiers = EpfTiersCalculator.calculate(recordRdfXml);
 								contentTierStats.incrementTo(tiers.getContent());
 								metadataTierStats.incrementTo(tiers.getMetadata());
 								languageTierStats.incrementTo(tiers.getLanguage());
@@ -100,7 +100,7 @@ public class ScriptEvaluateQualityOfIngestedDatasets {
 					});
 				}
 			}
-			threadedRunner.shutdown();
+			threadedRunner.awaitTermination(5);
 			for(Entry<String, MapOfInts<Tier>[]> dsResult: pfResults.entrySet()) {
 				System.out.println(dsResult.getKey()+"\n");
 				for(MapOfInts<Tier> stat: dsResult.getValue()) {

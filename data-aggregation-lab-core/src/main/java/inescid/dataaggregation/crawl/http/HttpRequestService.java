@@ -12,6 +12,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -19,6 +20,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -112,14 +114,37 @@ public class HttpRequestService {
 
 	}
 
-	public void fetch(HttpRequest url) throws InterruptedException, IOException {
+	public HttpRequest fetch(HttpRequest url) throws InterruptedException, IOException {
 		taskSyncManager.acquireHttpFetch();
 		try {
 			if(requestCache!=null) {
-				HttpResponse fetched = requestCache.fetch(url);
+				HttpResponse fetched = requestCache.fetch(url, false);
 				url.setResponse(fetched);
 			} else  
-				url.setResponse(new HttpResponse(fetchWithoutCache(url, false)));
+				url.setResponse(new HttpResponse(fetchWithoutCache(url, false), false));
+			return url;
+		} finally {
+			taskSyncManager.releaseHttpFetch();
+		}
+	}
+	public HttpRequest fetchStreamedWithoutCache(HttpRequest url) throws InterruptedException, IOException {
+		taskSyncManager.acquireHttpFetch();
+		try {
+			url.setResponse(new HttpResponse(fetchWithoutCache(url, false), true));
+			return url;
+		} finally {
+			taskSyncManager.releaseHttpFetch();
+		}
+	}
+	public HttpRequest fetchStreamed(HttpRequest url) throws InterruptedException, IOException {
+		taskSyncManager.acquireHttpFetch();
+		try {
+			if(requestCache!=null) {
+				HttpResponse fetched = requestCache.fetch(url, true);
+				url.setResponse(fetched);
+			} else  
+				url.setResponse(new HttpResponse(fetchWithoutCache(url, false), true));
+			return url;
 		} finally {
 			taskSyncManager.releaseHttpFetch();
 		}
@@ -164,6 +189,21 @@ public class HttpRequestService {
 
 			url.addHeadersToRequest(request);
 			
+			if(url.getUrlRequest().getConnectionTimeout()!=null || url.getUrlRequest().getSocketTimeout()!=null) {
+				RequestConfig cfg=null;
+				if(url.getUrlRequest().getConnectionTimeout()!=null && url.getUrlRequest().getSocketTimeout()!=null) {
+					cfg=RequestConfig.custom()
+					  .setConnectTimeout(url.getUrlRequest().getConnectionTimeout())
+					  .setSocketTimeout(url.getUrlRequest().getSocketTimeout()).build();
+				} else if(url.getUrlRequest().getConnectionTimeout()!=null) {
+					cfg=RequestConfig.custom()
+							.setConnectTimeout(url.getUrlRequest().getConnectionTimeout()).build();					
+				} else {
+					cfg=RequestConfig.custom()
+							.setSocketTimeout(url.getUrlRequest().getSocketTimeout()).build();					
+				}
+				request.setConfig(cfg);
+			}
 			
 			CloseableHttpResponse response=null; 
 			if(url.getRetryAttempst()<=0) 	

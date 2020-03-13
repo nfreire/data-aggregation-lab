@@ -40,7 +40,7 @@ public class GoogleSheetsCsvUploader {
 	}
 	
 	public static void update(String spreadsheetId, String sheetTitle, File csvFile) throws IOException {
-		Sheets service = SheetsApi.getSheetsService();
+		Sheets service = GoogleApi.getSheetsService();
 
 		Get get = service.spreadsheets().get(spreadsheetId);
 		get.setFields("sheets.properties");
@@ -96,7 +96,7 @@ public class GoogleSheetsCsvUploader {
 //		return spreadsheet.getSpreadsheetId();
 //	}
 	public static String create(String spreadsheetTitle, String sheetTitle) throws IOException {
-		Sheets sheetsService = SheetsApi.getSheetsService();
+		Sheets sheetsService = GoogleApi.getSheetsService();
 		Spreadsheet spreadsheet = null;
 		{
 			Spreadsheet requestBody = new Spreadsheet();
@@ -107,7 +107,7 @@ public class GoogleSheetsCsvUploader {
 			spreadsheet = request.execute();
 		}
 		{
-			Drive driveService = SheetsApi.getDriveService();
+			Drive driveService = GoogleApi.getDriveService();
 	        Permission permission = new Permission();
 	        permission.setType("anyone");
 	        permission.setRole("commenter");
@@ -130,7 +130,7 @@ public class GoogleSheetsCsvUploader {
 		return spreadsheet.getSpreadsheetId();
 	}
 	public static void addSheet(String spreadsheetId, String sheetTitle) throws IOException {
-		Sheets sheetsService = SheetsApi.getSheetsService();
+		Sheets sheetsService = GoogleApi.getSheetsService();
 		List<Request> requests = new ArrayList<>();
 		// Change the spreadsheet's title.
 		AddSheetRequest addSheetRequest = new AddSheetRequest();

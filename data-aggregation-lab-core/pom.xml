@@ -173,6 +173,16 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>1.23.0</version>
 		</dependency>
+	<dependency>    
+	      <groupId>com.google.apis</groupId>
+  <artifactId>google-api-services-analyticsreporting</artifactId>
+  <version>v4-rev20200210-1.30.8</version>
+	</dependency>
+<dependency>
+    <groupId>com.google.api-client</groupId>
+    <artifactId>google-api-client-gson</artifactId>
+    <version>1.30.9</version>
+</dependency>
 
 		<dependency>
 			<groupId>com.google.apis</groupId>
@@ -185,12 +195,16 @@
 			<artifactId>crawler-commons</artifactId>
 			<version>0.6</version>
 		</dependency>
-
+	
 		<dependency>
 			<groupId>org.apache.any23</groupId>
 			<artifactId>apache-any23-core</artifactId>
 			<version>2.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.20</version>
+		</dependency>
 	</dependencies>
 </project>

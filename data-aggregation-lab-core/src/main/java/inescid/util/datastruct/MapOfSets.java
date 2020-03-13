@@ -4,41 +4,56 @@
  */
 package inescid.util.datastruct;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map.Entry;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
 import java.util.Set;
 
 /**
  * @author Nuno Freire
  *
  */
-public class MapOfSets<K,V> {
-		Hashtable<K,HashSet<V>> hashtable;
+public class MapOfSets<K,V> implements Serializable {
+		Hashtable<K,Set<V>> hashtable;
 		
 		
 		public MapOfSets(){
-			hashtable=new Hashtable<K, HashSet<V>>();
+			hashtable=new Hashtable<K, Set<V>>();
 		}
 
 		public MapOfSets(int initialCapacity){
-			hashtable=new Hashtable<K, HashSet<V>>(initialCapacity);
+			hashtable=new Hashtable<K, Set<V>>(initialCapacity);
 		}
 
 		public MapOfSets(int initialCapacity, int loadFactor){
-			hashtable=new Hashtable<K, HashSet<V>>(initialCapacity,loadFactor);
+			hashtable=new Hashtable<K, Set<V>>(initialCapacity,loadFactor);
 		}
 		
 		public boolean contains(K k,V v) {
-			HashSet<V> vs=get(k);
+			Set<V> vs=get(k);
 			if(vs==null)
 				return false;
 			return vs.contains(v); 
 		}
 		
 		public void put(K key, V value){
-			HashSet<V> recs=hashtable.get(key);
+			Set<V> recs=hashtable.get(key);
 			if (recs==null){
 				recs=new HashSet<V>();
 				hashtable.put(key,recs);
@@ -47,7 +62,7 @@ public class MapOfSets<K,V> {
 		}
 
 		public void putAll(K key, Collection<V> values){
-			HashSet<V> recs=hashtable.get(key);
+			Set<V> recs=hashtable.get(key);
 			if (recs==null){
 				recs=new HashSet<V>();
 				hashtable.put(key,recs);
@@ -55,7 +70,7 @@ public class MapOfSets<K,V> {
 			recs.addAll(values);
 		}
 		public void putAll(K key, V... values){
-			HashSet<V> recs=hashtable.get(key);
+			Set<V> recs=hashtable.get(key);
 			if (recs==null){
 				recs=new HashSet<V>();
 				hashtable.put(key,recs);
@@ -75,7 +90,7 @@ public class MapOfSets<K,V> {
 			hashtable.remove(key);
 		}
 		
-		public HashSet<V> get(K key){
+		public Set<V> get(K key){
 			return hashtable.get(key);
 		}
 		
@@ -110,8 +125,48 @@ public class MapOfSets<K,V> {
 			return buffer.toString();
 		}
 
-		public Set<Entry<K, HashSet<V>>> entrySet() {
+		public Set<Entry<K, Set<V>>> entrySet() {
 			return hashtable.entrySet();
 		}
 
+		public boolean containsKey(K key) {
+			return hashtable.containsKey(key);
+		}
+
+		public void set(K key, Set<V> valuesSet) {
+			hashtable.put(key, valuesSet);
+		}
+
+		public void clear() {
+			hashtable.clear();
+		}
+
+		public static MapOfSets<String, String> readCsv(Reader csvReader) throws IOException {
+			MapOfSets<String, String> ret=new MapOfSets<String, String>();
+			CSVParser parser=new CSVParser(csvReader, CSVFormat.DEFAULT);
+			for(CSVRecord r: parser) {
+				String key=r.get(0);
+				for(int i=1; i<r.size(); i++) 
+					ret.put(key, r.get(i));
+			}
+			parser.close();
+			return ret;
+		}
+
+		
+		public static void writeCsv(MapOfSets<?,?> sets, Writer csvWrite) throws IOException {
+			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
+			for(Entry<?, ?>  r: sets.entrySet()) {
+				printer.print(r.getKey().toString());
+				for(Object v: (Set)r.getValue()) {
+					printer.print(v.toString());
+				}
+				printer.println();
+			}
+			printer.close();
+		}
+
+		public Collection<Set<V>> values() {
+			return hashtable.values();
+		}
 }

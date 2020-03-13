@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana Metadata Testing Tool - R&D Prototype</title>
+	</head>
+<body>
+<#include "../banner.include.html">
+
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Check for Schema.org data in a webpage</h2>
+
+<form action="${context}/check_schemaorg" method="get">
+
+<p>Webpage URL: 
+	<input type="text" name="webpageURL" value="${uri!}" style="width:650px"/> <input type="submit" name="operation" value="Check webpage"/>
+<br />
+(enter the URL of a webpage containing Schema.org data about a cultural heritage object)
+</p>
+<br />
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Results <#if uriChecked>for ${uri!}</#if></td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="800" class="field_value">
+	
+	<#if uriChecked>
+	<#if creativeWorks?has_content>
+	<b>CreativeWork resources in webpage</b> [<a href="${context}/check_for_europeana">detailed analysis</a>]
+	<#list creativeWorks as res>
+		    <table style="margin-top:0px">
+	<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
+		<#list res.types as type>
+	<tr><td class="field_value"> &nbsp;&nbsp; a </td><td class="field_value">${type.object}</td></tr>
+		</#list>
+		<#list res.statements as st>
+	<tr><td class="field_value"> &nbsp;&nbsp; ${st.predicate} </td><td class="field_value">${st.object}</td></tr>
+		</#list>
+		</table>	
+	</#list>
+	<#else>
+		No CreativeWork resources exist in the webpage<br />
+	</#if>
+	<br />
+	<#if otherResources?has_content>
+	<b>Other resources</b><br />
+	<#list otherResources as res>
+	    URI: ${res.uri}<br />
+		<#list res.types as type>
+		 	&nbsp;&nbsp; a ${type.object}<br />
+		</#list>
+		Properties:<br />
+		<#list res.statements as st>
+			&nbsp;&nbsp; ${st.predicate} ${st.object}<br />
+		</#list>
+		<#if res?has_next>
+			<br />
+		</#if>		
+	</#list>	
+	</#if>
+
+	<#else>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+	</#if>
+	</td></tr>
+</table>
+
+</form>
+
+
+<#include "../footer.include.html">
+</body>
+</html>

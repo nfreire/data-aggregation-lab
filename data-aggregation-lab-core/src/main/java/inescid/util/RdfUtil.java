@@ -35,7 +35,10 @@ import org.apache.jena.riot.RiotException;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.HttpResponse;
+import inescid.dataaggregation.crawl.http.UrlRequest;
+import inescid.dataaggregation.data.RegOwl;
 import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegSkos;
 
 
 public class RdfUtil {
@@ -100,6 +103,18 @@ public class RdfUtil {
 			curRes=(Resource) propStm.getObject();
 		}
 		return curRes;
+	}
+
+	public static List<Resource> findResources(Resource startResource, Property... propertiesToFollow) {
+		Resource curRes=startResource;
+		List<Resource> ret=new ArrayList<Resource>();
+		for(int i=0; i<propertiesToFollow.length; i++) {
+			Statement propStm = curRes.getProperty(propertiesToFollow[i]);
+			if(propStm==null)
+				return null;
+			ret.add((Resource) propStm.getObject());
+		}
+		return ret;
 	}
 
 	public static String getUriOrId(Resource srcResource) {
@@ -225,6 +240,28 @@ public class RdfUtil {
 //		System.out.println(rdfString);
 		return readRdf(rdfReq.getResponse());
 	}
+	public static Model readRdfFromUriLowTimeout(String uri) throws AccessException, InterruptedException, IOException {
+		UrlRequest urlReq=new UrlRequest(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
+		urlReq.setConnectionTimeout(3000);
+		urlReq.setSocketTimeout(5000);
+		HttpRequest rdfReq = HttpUtil.makeRequest(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
+//		if(rdfString.startsWith(UTF8_BOM)) {
+//			rdfString = rdfString.substring(1);
+//	    }
+//		System.out.println(rdfString);
+		return readRdf(rdfReq.getResponse());
+	}
+	public static boolean isUriResolvable(String uri) throws AccessException, InterruptedException, IOException {
+		Model readRdfFromUri=null;
+		try {
+			readRdfFromUri = RdfUtil.readRdfFromUriLowTimeout(uri);
+			return RdfUtil.contains(uri, readRdfFromUri);
+		} catch (InterruptedException e) {
+			throw e;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	public static Resource readRdfResourceFromUri(String resourceUri) throws AccessException, InterruptedException, IOException {
 		try {
 			URI.create(resourceUri);
@@ -236,17 +273,10 @@ public class RdfUtil {
 				throw new AccessException(resourceUri, "Invalid URI "+resourceUri, e);
 			} 
 		}
-		HttpRequest rdfReq = HttpUtil.makeRequest(resourceUri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
-		
-		Model readRdf;
-		try {
-			readRdf = readRdf(rdfReq.getResponse());
-		} catch (RiotException e) {
-			throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
-		}
+		Model readRdf=readRdfFromUriLowTimeout(resourceUri);
 		if (readRdf!=null && RdfUtil.contains(resourceUri, readRdf))
 			return readRdf.createResource(resourceUri);
-		throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource", rdfReq.getResponseStatusCode());
+		throw new AccessException(resourceUri, "Response to dataset RDF resource did not contain a RDF description of the resource");
 	}
 
 	public static void writeRdf(Model model, Lang l, OutputStream out) {
@@ -384,5 +414,15 @@ public class RdfUtil {
 
 	public static void printOutRdf(Model mdl) {
 		System.out.println(writeRdf(mdl.listStatements()));
+	}
+
+	public static List<Statement> listProperties(Resource ent, Property... properties) {
+		List<Statement> stms=new ArrayList<Statement>();
+		for(Property p : properties) {
+			StmtIterator sameAsStms = ent.listProperties(p);
+			for(Statement s: sameAsStms.toList()) 
+				stms.add(s);
+		}
+		return stms;
 	}
 }

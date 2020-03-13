@@ -1,6 +1,8 @@
 package inescid.dataaggregation.crawl.http;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import inescid.util.AccessException;
 
 public class HttpResponse {
 	private byte[] body; 
+	private InputStream bodyStream; 
+	CloseableHttpResponse closeableHttpResponse;
 	private List<Entry<String, String>> headers;
 	private int status=-1;
 	public HttpResponse(byte[] body, List<Entry<String, String>> headers, int status) {
@@ -30,14 +34,26 @@ public class HttpResponse {
 		this.headers = headers;
 		this.status = status;
 	}
-	public HttpResponse(CloseableHttpResponse closeableHttpResponse) throws IOException {
+	public HttpResponse(InputStream body, List<Entry<String, String>> headers, int status) {
+		super();
+		this.bodyStream = body;
+		this.headers = headers;
+		this.status = status;
+	}
+	public HttpResponse(CloseableHttpResponse closeableHttpResponse, boolean stream) throws IOException {
 		headers=new ArrayList<>(5);
 		for(String headerName: new String[] { "Content-Type", "Content-Encoding", "Content-Disposition"/*, "Content-MD5"*/}) {
 			for(Header h : closeableHttpResponse.getHeaders(headerName)) 
 				headers.add(new SimpleEntry<String, String>(h.getName(), h.getValue()));
 		}
-		body = IOUtils.toByteArray(closeableHttpResponse.getEntity().getContent());
-		closeableHttpResponse.close();
+		if(!stream) {
+			body = IOUtils.toByteArray(closeableHttpResponse.getEntity().getContent());
+			closeableHttpResponse.close();
+			bodyStream=null;
+		}else {
+			this.closeableHttpResponse=closeableHttpResponse;
+			bodyStream=closeableHttpResponse.getEntity().getContent();
+		}
 		status=closeableHttpResponse.getStatusLine().getStatusCode();
 	}
 	public String getHeader(String headerToGet) {
@@ -79,6 +95,7 @@ public class HttpResponse {
 	public void setBody(byte[] body) {
 		this.body = body;
 	}
+	
 	public List<Entry<String, String>> getHeaders() {
 		return headers;
 	}
@@ -91,5 +108,14 @@ public class HttpResponse {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
+	public void close() throws IOException {
+		if(closeableHttpResponse!=null)
+			closeableHttpResponse.close();
+	}
+	public InputStream getBodyStream() {
+		return bodyStream == null ? (body==null ? null : new ByteArrayInputStream(body)) : bodyStream;
+	}
+	public void setBodyStream(InputStream bodyStream) {
+		this.bodyStream = bodyStream;
+	}
 }

@@ -16,7 +16,7 @@ import inescid.dataaggregation.dataset.job.JobRunner;
 import inescid.dataaggregation.store.DatasetRegistryRepository;
 import inescid.dataaggregation.store.PublicationRepository;
 import inescid.dataaggregation.store.Repository;
-import inescid.util.googlesheets.SheetsApi;
+import inescid.util.googlesheets.GoogleApi;
 
 public class Global {
 	public static Pattern urlPattern=Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
@@ -164,7 +164,7 @@ public class Global {
 		initDataRepository(repoProps);
 	}
 	public static void init_componentGoogleApi(String credentialsFilePath) {
-		SheetsApi.init(credentialsFilePath);
+		GoogleApi.init(credentialsFilePath);
 	}
 //	private static void initLogging() {
 //        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);

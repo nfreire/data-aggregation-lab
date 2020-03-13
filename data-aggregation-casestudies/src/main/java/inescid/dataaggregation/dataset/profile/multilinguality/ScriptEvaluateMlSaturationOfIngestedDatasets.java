@@ -22,8 +22,8 @@ import eu.europeana.indexing.tiers.model.MetadataTier;
 import eu.europeana.indexing.tiers.model.Tier;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.profile.tiers.EpsTiersCalculator;
-import inescid.dataaggregation.dataset.profile.tiers.EpsTiersCalculator.TiersCalculation;
+import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
+import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
 import inescid.europeanaapi.AccessException;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.MapOfInts;
@@ -96,7 +96,7 @@ public class ScriptEvaluateMlSaturationOfIngestedDatasets {
 					});
 				}
 			}
-			threadedRunner.shutdown();
+			threadedRunner.awaitTermination(5);
 			for(Entry<String, Entry<StatisticCalcMean, StatisticCalcMean>> dsResult: pfResults.entrySet()) {
 				System.out.println(dsResult.getKey()+"\n");
 				System.out.println("lang tag stats: "+dsResult.getValue().getKey().toString());

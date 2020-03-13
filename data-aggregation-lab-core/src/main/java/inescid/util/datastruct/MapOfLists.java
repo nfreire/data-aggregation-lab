@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -173,4 +174,7 @@ public class MapOfLists<K,O> implements Serializable{
 			return buffer.toString();
 		}
 
+		public Set<Entry<K, ArrayList<O>>> entrySet() {
+			return hashtable.entrySet();
+		}
 }

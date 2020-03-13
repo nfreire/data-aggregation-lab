@@ -1,10 +1,8 @@
 package inescid.dataaggregation.crawl.http;
 
 import java.io.IOException;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -40,10 +38,10 @@ public class CachedHttpRequestService {
 	}
 	public HttpResponse fetch(String resourceUrl, String oneHheader, String headerValue) throws AccessException, InterruptedException, IOException {
 		UrlRequest r=new UrlRequest(resourceUrl, oneHheader, headerValue);
-		return fetch(new HttpRequest(r));
+		return fetch(new HttpRequest(r), false);
 	}
 	public HttpResponse fetch(String resourceUrl) throws AccessException, InterruptedException, IOException {
-		return fetch(new HttpRequest(resourceUrl));
+		return fetch(new HttpRequest(resourceUrl), false);
 	}
 		
 	public HttpResponse fetchRdf(String resourceUri) throws AccessException, InterruptedException, IOException {
@@ -53,7 +51,7 @@ public class CachedHttpRequestService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public HttpResponse fetch(HttpRequest req) throws InterruptedException, IOException {
+	public HttpResponse fetch(HttpRequest req, boolean streamed) throws InterruptedException, IOException {
 		try {
 			HttpResponse resourceFetched = new RetryExec<HttpResponse, Exception>(retryAttempts) {
 				@Override
@@ -61,7 +59,10 @@ public class CachedHttpRequestService {
 					HttpResponse ret=null;  
 					String url = req.getUrl();
 					if (cache.contains(DATASET_ID, url)) {
-						ret=new HttpResponse(cache.getContent(DATASET_ID, url), cache.getMeta(DATASET_ID, url), 200);
+						if (streamed)
+							ret=new HttpResponse(cache.getContentStream(DATASET_ID, url), cache.getMeta(DATASET_ID, url), 200);
+						else
+							ret=new HttpResponse(cache.getContent(DATASET_ID, url), cache.getMeta(DATASET_ID, url), 200);
 					} else {
 						CloseableHttpResponse fetched = httpService.fetchWithoutCache(req);
 						int resStatusCode = fetched.getStatusLine().getStatusCode();
@@ -96,9 +97,11 @@ public class CachedHttpRequestService {
 								return doRun();						
 							}
 						}
-						ret=new HttpResponse(fetched);
-						if(ret.getStatus()==200) 
-							cache.save(DATASET_ID, url, ret.getBody(), ret.getHeaders());
+						ret=new HttpResponse(fetched, streamed);
+						if(ret.getStatus()==200) {
+							cache.save(DATASET_ID, url, ret.getBodyStream(), ret.getHeaders());
+							cache.saveMeta(DATASET_ID, url, ret.getHeaders());
+						}
 					}
 					return ret;
 				}

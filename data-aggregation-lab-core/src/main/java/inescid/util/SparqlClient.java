@@ -79,7 +79,7 @@ public class SparqlClient {
 		int[] offsett=new int[] {0};
 		boolean concluded=false;
 		while (!concluded) {
-			String fullQuery = String.format("%s%s\n%s" + 
+			String fullQuery = String.format("%s %s\n%s" + 
 					"LIMIT %d\n" + 
 					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett[0]);
 			if(debug)
@@ -99,7 +99,8 @@ public class SparqlClient {
 							try {
 								if (!handler.handleSolution(hit)) {
 									System.err.println("RECEIVED HANDLER ABORT");
-									break;
+									return true;
+//									break;
 								}
 							} catch (Exception e) {
 								System.err.println("Error on record handler: "+(resource==null ? "?" : resource.getURI()));
