@@ -128,7 +128,7 @@ public class ConversionSpecificationAnalyzer {
 					getMappedClassesAndSpecs(currentClassSpec, currentClass);
 			for(Resource currentProp: rpt.usageCounts.get(currentClass).keySet()) {
 				if(currentProp.equals(currentClass) || rpt.usageCounts.get(currentClass).get(currentProp)==0) continue;
-				System.out.println("RefRes in:"+currentClass+" - "+currentProp);
+//				System.out.println("RefRes in:"+currentClass+" - "+currentProp);
 				
 //				if(currentClass.getURI().equals("http://schema.org/GeoCoordinates")) {
 //				if(currentClass.getURI().equals("http://schema.org/Place")) {
@@ -252,19 +252,13 @@ public class ConversionSpecificationAnalyzer {
 		return mappedProps;
 	}
 	private static Set<Entry<Property, PropertyMappingSpecification>> getAllMappedPropertiesInReferencedResources(Property prop, Resource currentClass, List<ResourceTypeConversionSpecification> currentClassSpec){
-		System.out.println("RefRes in:"+currentClass+" - "+prop);
-		
-		if(
-//				currentClass.getURI().equals("http://schema.org/GeoCoordinates") ||
-				currentClass.getURI().equals("http://schema.org/Place")) {
-			System.out.println("Debug here");
-		}
+//		System.out.println("RefRes in:"+currentClass+" - "+prop);
 		
 		Set<Entry<Property, PropertyMappingSpecification>> mappedProps = new HashSet<>();
 		for(ResourceTypeConversionSpecification spec: currentClassSpec) {
 			for(Entry<Property, PropertyMappingSpecification> mapping : spec.getPropertiesMapping().entrySet()) {
 				if(mapping.getKey().equals(prop)) continue;
-				System.out.println("RefRes inner spec: "+mapping.getKey()+" - "+mapping.getValue());
+//				System.out.println("RefRes inner spec: "+mapping.getKey()+" - "+mapping.getValue());
 				
 				List<ResourceTypeConversionSpecification> propertiesMappingFromReferencedResource = spec.searchPropertyMappingFromReferencedResource(mapping.getKey());
 				for(ResourceTypeConversionSpecification propertyMappingFromReferencedResource: propertiesMappingFromReferencedResource) {

@@ -26,7 +26,8 @@ public class MetadataTesterServlet extends HttpServlet {
 	public enum RequestOperation {
 		DISPLAY_START_PAGE, 
 		DISPLAY_IIIF_FORM, ANALYSE_IIIF,
-		DISPLAY_SCHEMAORG_FORM, ANALYSE_SCHEMAORG;
+		DISPLAY_SCHEMAORG_FORM, ANALYSE_SCHEMAORG, VALIDATE_SCHEMAORG,
+		DISPLAY_SITEMAP_FORM, ANALYSE_SITEMAP;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
 //			System.out.println("req.getPathInfo() " + req.getPathInfo());
@@ -40,6 +41,12 @@ public class MetadataTesterServlet extends HttpServlet {
 					if(!StringUtils.isEmpty(req.getParameter("webpageURL")))
 						return RequestOperation.ANALYSE_SCHEMAORG;
 					return RequestOperation.DISPLAY_SCHEMAORG_FORM;
+				} else if (req.getPathInfo().endsWith("/check_sitemap")) {
+					if(!StringUtils.isEmpty(req.getParameter("sitemapURL")))
+						return RequestOperation.ANALYSE_SITEMAP;
+					return RequestOperation.DISPLAY_SITEMAP_FORM;
+				} else if (req.getPathInfo().endsWith("/validate_schemaorg")) {
+					return RequestOperation.VALIDATE_SCHEMAORG;
 				}
 			}
 			return RequestOperation.DISPLAY_START_PAGE;
@@ -87,12 +94,26 @@ public class MetadataTesterServlet extends HttpServlet {
 				form.checkUri();
 				sendResponse(resp, 200, form.output());
 				break;
+			}case ANALYSE_SITEMAP:{
+				SitemapForm form = new SitemapForm(req);
+				form.check();
+				sendResponse(resp, 200, form.output());
+				break;
 			}case DISPLAY_IIIF_FORM: {
 				IiifForm form = new IiifForm();
 				sendResponse(resp, 200, form.output());
 				break;
 			} case DISPLAY_SCHEMAORG_FORM: {
 				SchemaorgForm form = new SchemaorgForm();
+				sendResponse(resp, 200, form.output());
+				break;
+			} case DISPLAY_SITEMAP_FORM: {
+				SitemapForm form = new SitemapForm();
+				sendResponse(resp, 200, form.output());
+				break;
+			} case VALIDATE_SCHEMAORG: {
+				SchemaorgForm form = new SchemaorgForm(req);
+				form.validateSchemaorgUri();
 				sendResponse(resp, 200, form.output());
 				break;
 			} case DISPLAY_START_PAGE:

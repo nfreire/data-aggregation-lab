@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.jena.rdf.model.Resource;
 
 import inescid.dataaggregation.dataset.profile.completeness.TiersDqcCompletenessCalculator;
-import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationBase;
+import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
@@ -58,7 +58,7 @@ public class EdmMeasurementSet implements Iterable<EdmMeasurementSet.EdmMeasurem
 			public String[] getCsvResult(Resource edmCho, String edmRdfXml) {
 				MultilingualSaturationResult score;
 				try {
-					score = MultilingualSaturationBase.calculate(edmCho.getModel());
+					score = MultilingualSaturation.calculate(edmCho.getModel());
 //					score = MultilingualSaturationShacl.calculate(edmCho.getModel());
 				} catch (Exception e) {
 					throw new RuntimeException(e.getMessage(), e);

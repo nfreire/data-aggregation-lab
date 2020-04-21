@@ -1,0 +1,103 @@
+class,class count
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,62
+http://www.w3.org/2000/01/rdf-schema#Class,13
+http://www.w3.org/2002/07/owl#AnnotationProperty,1
+http://www.w3.org/2002/07/owl#Class,13
+http://www.w3.org/2002/07/owl#DatatypeProperty,27
+http://www.w3.org/2002/07/owl#FunctionalProperty,4
+http://www.w3.org/2002/07/owl#InverseFunctionalProperty,12
+http://www.w3.org/2002/07/owl#ObjectProperty,33
+"",
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,139,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,62,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,62,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,62,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,13,12,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentProperty,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,8,8,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,62,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2000/01/rdf-schema#Class
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,26,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,0,44
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,20
+http://www.w3.org/2000/01/rdf-schema#subClassOf,11,8,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#disjointWith,8,8,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentClass,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,13,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#AnnotationProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,1,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#Class
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,26,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,0,44
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,13,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,20
+http://www.w3.org/2000/01/rdf-schema#subClassOf,11,8,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#disjointWith,8,8,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentClass,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,13,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#DatatypeProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,63,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,27,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,22,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,27,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,27,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,22,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,6,5,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,27,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#FunctionalProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,1,1,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,4,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#InverseFunctionalProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,35,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,9,2,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,1,1,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,12,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#ObjectProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,72,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,33,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,32,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,33,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,33,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,32,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,6,5,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentProperty,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,7,7,0.0,0.0,0.0,0.0
+http://www.w3.org/2003/06/sw-vocab-status/ns#term_status,33,0,0.0,0.0,0.0,0.0

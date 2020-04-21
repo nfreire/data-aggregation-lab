@@ -1,7 +1,9 @@
 package inescid.dataaggregation.casestudies.wikidata;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.jena.query.QuerySolution;
 
@@ -9,14 +11,16 @@ import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;
 
 public class SparqlClientWikidata {
-	public static final SparqlClient INSTANCE=new SparqlClient("https://query.wikidata.org/sparql", 
-			"PREFIX bd: <http://www.bigdata.com/rdf#>\n" +
+	
+	public static final String ENDPOINT_URL="https://query.wikidata.org/sparql"; 
+	public static final String PREFFIXES="PREFIX bd: <http://www.bigdata.com/rdf#>\n" +
 			"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
 			"PREFIX wikibase: <http://wikiba.se/ontology#>\n" +
             "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\n" +
-            "PREFIX wd: <http://www.wikidata.org/entity/>\n"); 
+            "PREFIX wd: <http://www.wikidata.org/entity/>\n"; 
+	public static final SparqlClient INSTANCE=new SparqlClient(ENDPOINT_URL, PREFFIXES); 
 	
-	public static void setDubug(boolean d) {
+	public static void setDebug(boolean d) {
 		INSTANCE.setDebug(d);
 	}
 	
@@ -41,7 +45,71 @@ public class SparqlClientWikidata {
 		return uris;
 	}
 	
-//	
+	public static Set<String> getAllSubClasses(String wdEntityUri){
+		final HashSet<String> uris=new HashSet<String>();
+		final HashSet<String> newUris=new HashSet<String>();
+		newUris.add(wdEntityUri);
+		while (!newUris.isEmpty()) {	
+			ArrayList<String> tmp = new ArrayList<>(newUris);
+			newUris.clear();
+			for(String uri: tmp) {
+//				if(uris.contains(uri)) continue;
+				System.out.println(uri);
+				query("SELECT ?subClass WHERE { ?subClass wdt:P279 <"+ WikidataUtil.convertWdUriToQueryableUri(uri)+"> .}", new Handler() {
+					@Override
+					public boolean handleSolution(QuerySolution solution) throws Exception {
+						boolean exists=uris.add(solution.getResource("subClass").getURI());
+						if(exists)
+							newUris.add(solution.getResource("subClass").getURI());
+						return true;
+					}
+				});
+			}
+		}
+		return uris;
+	}
+	
+	
+	
+	
+	
+	public static List<String> getAllSuperclasses(String wdEntityUri){
+		final List<String> uris=new ArrayList<String>(1);
+		query("SELECT ?superClass WHERE { <"+wdEntityUri+"> wdt:P279+ ?superClass .}", new Handler() {
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				uris.add(solution.getResource("superClass").getURI());
+				return true;
+			}
+		});
+		return uris;
+	}
+	
+	public static List<String> getAllSubProperties(String wdPropertyUri){
+		final List<String> uris=new ArrayList<String>();
+		query("SELECT ?subClass WHERE { ?subClass wdt:P1647+ <"+WikidataUtil.convertWdUriToQueryableUri(wdPropertyUri)+"> .}", new Handler() {
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				uris.add(solution.getResource("subClass").getURI());
+				return true;
+			}
+		});
+		return uris;
+	}
+	
+	public static List<String> getAllSuperProperties(String wdPropertyUri){
+		final List<String> uris=new ArrayList<String>();
+		query("SELECT ?superClass WHERE { <"+WikidataUtil.convertWdUriToQueryableUri(wdPropertyUri)+"> wdt:P1647+ ?superClass .}", new Handler() {
+			@Override
+			public boolean handleSolution(QuerySolution solution) throws Exception {
+				uris.add(solution.getResource("superClass").getURI());
+				return true;
+			}
+		});
+		return uris;
+	}
+	
+	
 //	public static abstract class UriHandler {
 //		//return true to continue to next URI, false to abort
 //		public boolean handleUri(String uri) throws Exception { return true; };

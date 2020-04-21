@@ -55,7 +55,6 @@ public class ScriptEvaluateQualityOfIngestedDatasets {
 							"2064501_Ag_IRE_UCD_IIIF",//UDC
 							"9200579_Ag_UK_WellcomeCollection_IIIF" // Wellcome libraries 
 							};	
-					
 		
 		ThreadedRunner threadedRunner=new ThreadedRunner(3);			
 		try {

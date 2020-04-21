@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -144,6 +145,16 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
 			for(Entry<?, Integer>  r: sets.entrySet()) {
 				printer.printRecord(r.getKey().toString(), r.getValue().toString());
+			}
+			printer.close();
+		}
+		
+		public static void writeCsv(MapOfInts<?> sets, Map<?, ?> labels, Writer csvWrite) throws IOException {
+			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
+			for(Entry<?, Integer>  r: sets.entrySet()) {
+				Object label = labels.get(r.getKey());
+				printer.printRecord(r.getKey().toString(), r.getValue().toString(), 
+						label==null ? "" : label.toString());
 			}
 			printer.close();
 		}

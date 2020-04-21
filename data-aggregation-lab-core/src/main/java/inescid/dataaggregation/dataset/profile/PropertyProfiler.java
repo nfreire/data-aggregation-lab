@@ -2,6 +2,7 @@ package inescid.dataaggregation.dataset.profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -15,8 +16,9 @@ import org.apache.jena.rdf.model.Statement;
 
 import inescid.dataaggregation.dataset.profile.ProfileOfValueDistribution.ValueDistribution;
 
-public class PropertyProfiler  implements ProfileOfInterface {
-	
+public class PropertyProfiler  implements ProfileOfInterface, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	ProfileOfUniqueness profileOfUniqueness;
 	ProfileOfExternalLinks profileOfExternalLinks;
 	ProfileOfValueDistribution profileOfValueDistribution;

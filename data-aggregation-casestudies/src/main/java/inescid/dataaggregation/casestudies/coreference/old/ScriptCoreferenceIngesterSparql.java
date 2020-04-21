@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.h2.mvstore.MVMap;
 
 import inescid.dataaggregation.casestudies.coreference.Consts;
 import inescid.dataaggregation.casestudies.coreference.RepositoryOfSameAs;

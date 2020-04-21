@@ -1,5 +1,6 @@
 package inescid.dataaggregation.dataset.convert;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,10 +14,12 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.RdfsClassHierarchy;
 import inescid.dataaggregation.data.RegEdm;
 import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.SchemaOrgToEdmConversionSpecification;
+import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 
 /**
@@ -26,13 +29,11 @@ import inescid.util.RdfUtil;
  *
  */
 public class SchemaOrgToEdmDataConverter {
-	
-	private static final Charset UTF8=Charset.forName("UTF8");
-	
 	Map<Resource, Resource> blankNodesMapped=new HashMap<Resource, Resource>();
 	
-	RdfConverter conv=new RdfConverter(SchemaOrgToEdmConversionSpecification.spec);
-	
+//	RdfConverter conv=new RdfConverter(SchemaOrgToEdmConversionSpecification.spec, new RdfsClassHierarchy(RdfUtil.readRdfFromUri("https://schema.org/docs/schemaorg.owl")));
+	RdfConverter conv=null;
+		
 	protected String provider;
 	protected String dataProvider;
 	protected String datasetRights;
@@ -44,7 +45,8 @@ public class SchemaOrgToEdmDataConverter {
 			mainTargetResource.getModel().add( additionalStatements.listStatements());
 	}
 	
-	public SchemaOrgToEdmDataConverter() {
+	public SchemaOrgToEdmDataConverter() throws AccessException, InterruptedException, IOException {
+		conv=new RdfConverter(SchemaOrgToEdmConversionSpecification.spec, new RdfsClassHierarchy(RdfUtil.readRdfFromUri("https://schema.org/docs/schemaorg.owl")));
 	}
 
 	public SchemaOrgToEdmDataConverter(String dataProvider) {

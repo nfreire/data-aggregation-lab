@@ -1,5 +1,6 @@
 package inescid.dataaggregation.dataset.profile;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 import org.apache.jena.rdf.model.Resource;
@@ -7,11 +8,13 @@ import org.apache.jena.rdf.model.Statement;
 
 import opennlp.tools.util.StringUtil;
 
-public class ProfileOfUniqueness implements ProfileOfInterface{
+public class ProfileOfUniqueness implements ProfileOfInterface, Serializable{
+	private static final long serialVersionUID = 1L;
 	private Calc calc=null;
 	double uniqueness;
 	
-	public class Calc{
+	public class Calc implements Serializable {
+		private static final long serialVersionUID = 1L;
 		HashSet<String> distinctValues=new HashSet<>();
 		int duplicateCount;
 		int emptyCount;

@@ -141,6 +141,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-tdb2</artifactId>
+			<version>3.11.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
 			<version>9.7.0-8</version>

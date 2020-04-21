@@ -1,0 +1,70 @@
+class,class count
+http://purl.org/dc/dcam/VocabularyEncodingScheme,9
+http://purl.org/dc/terms/AgentClass,1
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,55
+http://www.w3.org/2000/01/rdf-schema#Class,22
+http://www.w3.org/2000/01/rdf-schema#Datatype,12
+"",
+http://purl.org/dc/dcam/VocabularyEncodingScheme
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/hasVersion,9,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,9,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#seeAlso,8,0,0.0,0.0,0.0,0.0
+"",
+http://purl.org/dc/terms/AgentClass
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/hasVersion,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,4
+"",
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/description,23,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/hasVersion,55,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,55,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,5,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,55,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,37,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,81,35,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentProperty,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#note,15,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2000/01/rdf-schema#Class
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/description,6,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/hasVersion,22,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,22,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,23,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,22,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,0,2
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,22,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,22,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,23
+http://www.w3.org/2000/01/rdf-schema#subClassOf,9,8,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2000/01/rdf-schema#Datatype
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/description,3,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/hasVersion,12,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,12,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,9,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,12,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#seeAlso,12,0,0.0,0.0,0.0,0.0

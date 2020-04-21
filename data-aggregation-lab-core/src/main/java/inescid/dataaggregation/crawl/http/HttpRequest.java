@@ -108,14 +108,14 @@ public class HttpRequest {
 	public int getResponseStatusCode() {
 		return response.getStatus();
 	}
-	public byte[] getContent() throws IOException {
+	public byte[] getResponseContent() throws IOException {
 		return response.getBody();
 	}
-	public String getContentAsString() throws IOException {
+	public String getResponseContentAsString() throws IOException {
 		ContentType cType=response.getContentTypeParsed();
 		if(cType==null || cType.getCharset()==null)
-			return new String(getContent(), "UTF8");
-		return new String(getContent(), cType.getCharset());
+			return new String(getResponseContent(), "UTF8");
+		return new String(getResponseContent(), cType.getCharset());
 	}
 	public String getMimeType() {
 		ContentType contentTypeParsed = response.getContentTypeParsed();

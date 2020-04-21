@@ -98,6 +98,7 @@ public class ProvidersUrisInterlinkingStudy {
 				System.out.println("no file "+vocab.sameAsStatements.getName());
 				continue;
 			}
+			System.out.println(vocab.sameAsStatements.getName());
 			final MapOfInts<String> targetUriCount=new MapOfInts<String>();
 			FileInputStream fis=new FileInputStream(vocab.sameAsStatements);
 			RDFDataMgr.parse(new StreamRDFBase() {
@@ -124,6 +125,7 @@ public class ProvidersUrisInterlinkingStudy {
 		}
 
 		System.out.println("Bad links detected: "+badUris);
+//		System.exit(0);
 		
 		for(int batch=startAt==null ? 0 : startAt ; batch<urisList.size(); batch+=urisPerBatch) {
 			for(boolean incluseCloseMatch : new boolean[] { true, false }) {

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana Metadata Testing Tool - R&D Prototype</title>
+	</head>
+<body>
+<#include "../banner.include.html">
+
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Check for sitemap.xml in a website</h2>
+
+<form action="${context}/check_sitemap" method="get">
+<p>Website domain name: 
+	<input type="text" name="sitemapURL" value="${uri!}" style="width:650px"/> <input type="submit" name="operation" value="Check sitemap.xml"/>
+<br />
+(enter the URL of a sitemor the domain name of the website)</p>
+<br />
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Results <#if uriChecked>for ${uri!}</#if></td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="800" class="field_value">
+	
+	<#if uriChecked>
+	    <#if validatedDomain>	
+		    <#if robotsCheckHasRobotsTxt>
+					 &nbsp; - robots.txt found
+			<#else>
+					 &nbsp; - robots.txt not found
+			</#if>
+		    <#if robotsChecksitemaps?has_content>
+				<#list robotsChecksitemaps as msg>
+					 <br /> &nbsp; - ${msg}
+				</#list>
+			</#if>
+			</table>
+		<#else>
+			<table style="margin-top:0px">	
+				<#list sitemapCheck as msg>
+					<tr><td class="field_value"> &nbsp;&nbsp; - </td><td class="field_value">${msg}</td></tr>
+				</#list>
+			</table>
+		</#if>
+	<#else>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+	</#if>
+	</td></tr>
+</table>
+
+</form>
+
+
+<#include "../footer.include.html">
+</body>
+</html>

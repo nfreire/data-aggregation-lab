@@ -1,6 +1,8 @@
 package inescid.dataaggregation.data;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Property;
@@ -11,28 +13,34 @@ public final class RegEdm {
 	public static String NS="http://www.europeana.eu/schemas/edm/";
 	public static String PREFIX="edm";
 	
-	public static Set<String> NS_EXTERNAL=new HashSet<String>() {{
-		add("http://www.europeana.eu/schemas/edm/");
-		add("http://www.w3.org/2001/XMLSchema#");
-		add("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-		add("http://www.w3.org/2000/01/rdf-schema#");
-		add("http://www.w3.org/2002/07/owl#");
-		add("http://www.w3.org/2004/02/skos/core#");
-		add("http://purl.org/vocommons/voaf#");
-		add("http://purl.org/vocab/vann/");
-		add("http://www.w3.org/ns/adms#");
-		add("http://www.w3.org/ns/radion#");
-		add("http://purl.org/dc/elements/1.1/");
-		add("http://purl.org/dc/terms/");
-		add("http://www.openarchives.org/ore/terms/");
-		add("http://xmlns.com/foaf/0.1/");
-		add("http://www.w3.org/2003/01/geo/wgs84_pos#");
-		add("http://purl.org/dc/dcmitype/");
-		add("http://www.cidoc-crm.org/cidoc-crm/");
-		add("http://purl.org/vocab/frbr/core#");
-		add("http://iflastandards.info/ns/fr/frbr/frbroo/");
-		add("http://metadata.net/harmony/abc#");
-		add("http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#");
+	public static Map<String, String> NS_EXTERNAL_PREFERRED_BY_NS=new HashMap<String, String>() {{
+		put("http://www.europeana.eu/schemas/edm/", "edm");
+		put("http://www.w3.org/2001/XMLSchema#", "xsd");
+		put("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
+		put("http://www.w3.org/2000/01/rdf-schema#", "rdfs");
+		put("http://www.w3.org/2002/07/owl#", "owl");
+		put("http://www.w3.org/2004/02/skos/core#", "skos");
+		put("http://purl.org/vocommons/voaf#", "voaf");
+		put("http://purl.org/vocab/vann/", "vann");
+		put("http://www.w3.org/ns/adms#", "adms");
+		put("http://www.w3.org/ns/radion#", "radion");
+		put("http://rdvocab.info/ElementsGr2/", "rdaGr2");
+		put("http://purl.org/dc/elements/1.1/", "dc");
+		put("http://purl.org/dc/terms/", "dcterms");
+		put("http://www.openarchives.org/ore/terms/", "ore");
+		put("http://xmlns.com/foaf/0.1/", "foaf");
+		put("http://www.w3.org/2003/01/geo/wgs84_pos#", "wgs84_pos");
+		put("http://purl.org/dc/dcmitype/", "dcmitype");
+		put("http://www.cidoc-crm.org/cidoc-crm/", "cidoc-crm");
+		put("http://purl.org/vocab/frbr/core#", "frbr");
+		put("http://iflastandards.info/ns/fr/frbr/frbroo/", "frbroo");
+		put("http://metadata.net/harmony/abc#", "abc");
+		put("http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#", "ebucore");
+		put("http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#", "dolce-lite");
+	}};
+	public static Map<String, String> NS_EXTERNAL_PREFERRED_BY_PREFIXES=new HashMap<String, String>() {{
+		for(Entry<String, String> e : NS_EXTERNAL_PREFERRED_BY_NS.entrySet()) 
+			put(e.getValue(), e.getKey());
 	}};
 
 	public static final Property completeness = ResourceFactory.createProperty("http://www.europeana.eu/schemas/edm/completeness");

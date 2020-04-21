@@ -1,0 +1,5 @@
+ScriptRunFullCrawlForAnaysis is ready to run the complete experiment.
+
+Next steps:
+- Check if stats in CSV are good for a paper
+- Run the experiment in 1000 recs per source, at rnd-2.

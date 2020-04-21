@@ -1,0 +1,26 @@
+class,class count
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,1134
+http://www.w3.org/2000/01/rdf-schema#Resource,7
+"",
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://metadataregistry.org/uri/profile/rdakit/seeAlso,37,37,0.0,0.0,0.0,0.0
+http://metadataregistry.org/uri/profile/regap/hasSubproperty,2472,841,0.0,0.0,0.0,0.0
+http://metadataregistry.org/uri/profile/regap/lexicalAlias,2000,0,0.0,0.0,0.0,0.0
+http://metadataregistry.org/uri/profile/regap/name,1998,0,0.0,0.0,0.0,0.0
+http://metadataregistry.org/uri/profile/regap/status,1134,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,1134,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,1134,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,1983,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,832,827,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,822,822,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#altLabel,14,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#definition,1994,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#scopeNote,142,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2000/01/rdf-schema#Resource
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://metadataregistry.org/uri/profile/regap/hasSubproperty,5,1,0.0,0.0,0.0,0.0
+http://metadataregistry.org/uri/profile/regap/status,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,7,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,0,5

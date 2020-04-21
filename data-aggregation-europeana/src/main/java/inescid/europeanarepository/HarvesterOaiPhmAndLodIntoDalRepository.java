@@ -98,7 +98,7 @@ public class HarvesterOaiPhmAndLodIntoDalRepository {
     		return;
 		HttpRequest req = new HttpRequest(r.getIdentifier());
 		Global.getHttpRequestService().fetch(req);
-		dataRepository.save(datasetId, r.getIdentifier(), req.getContent());
+		dataRepository.save(datasetId, r.getIdentifier(), req.getResponseContent());
     }
     
     /**

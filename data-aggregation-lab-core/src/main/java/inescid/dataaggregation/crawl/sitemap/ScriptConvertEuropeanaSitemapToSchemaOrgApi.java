@@ -15,8 +15,6 @@ public class ScriptConvertEuropeanaSitemapToSchemaOrgApi {
 	
 	public static void main(String[] args) {
 		try {
-			Global.init_developement();
-			
 			String sitemapUrl="https://www.europeana.eu/portal/europeana-sitemap-index-hashed.xml";
 //			String baseUrlForSitemaps="http://localhost:8080/data-aggregation-lab/static/data-external/europeana-dataset-sitemap/";
 			String baseUrlForSitemaps="http://192.92.149.69:8983//data-aggregation-lab/static/data-external/europeana-dataset-sitemap/";

@@ -1,11 +1,18 @@
 package inescid.dataaggregation.dataset.convert.rdfconverter;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -16,6 +23,8 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
+import inescid.dataaggregation.data.DataModelRdfOwl;
+import inescid.dataaggregation.data.RdfsClassHierarchy;
 import inescid.dataaggregation.data.RegRdf;
 import inescid.util.RdfUtil;
 
@@ -32,13 +41,19 @@ public class RdfConverter {
 	Map<String, Map<ResourceTypeConversionSpecification, Resource>> nodesMapped=new HashMap<String, Map<ResourceTypeConversionSpecification, Resource>>();
 	
 	RdfConversionSpecification spec;
-
+	RdfsClassHierarchy classHierarcgy;
+	
 	Resource mainTargetResource=null;
 	
 	HashSet<String> reportedMappingMissing=new HashSet<String>();
 	
 	public RdfConverter(RdfConversionSpecification spec) {
 		this.spec=spec;
+	}
+	
+	public RdfConverter(RdfConversionSpecification spec, RdfsClassHierarchy classHierarcgy) {
+		this.spec=spec;
+		this.classHierarcgy=classHierarcgy;
 	}
 	
 	public Resource convert(Resource srcRoot) {
@@ -60,8 +75,20 @@ public class RdfConverter {
 			rootResourceTypeMapping = spec.getRootResourceTypeMapping(resType);
 			if (rootResourceTypeMapping!=null)
 				break;
-		} 
-		
+		}
+		if (rootResourceTypeMapping==null && classHierarcgy!=null) {
+			propTypesStms = source.listStatements(srcRoot, RegRdf.type, (RDFNode) null);
+			TYPES: while (propTypesStms.hasNext()) {
+				Statement typeStm = propTypesStms.next();
+				resType=typeStm.getObject().asResource();
+				for (String sc:classHierarcgy.getSuperClassesOf(resType.getURI())) {
+					rootResourceTypeMapping = spec.getRootResourceTypeMapping(sc);
+					if (rootResourceTypeMapping!=null) {
+						break TYPES;					
+					}
+				}
+			}
+		}
 		if (rootResourceTypeMapping==null) {
 			String msg="No mapping found for Entity(ies)";
 			propTypesStms = source.listStatements(srcRoot, RegRdf.type, (RDFNode) null);
@@ -76,7 +103,8 @@ public class RdfConverter {
 			return null;
 //			return convert(source);
 		}		
-		for (Resource trgType: spec.getRootResourceTypeMapping(resType)) {
+		
+		for (Resource trgType: rootResourceTypeMapping) {
 			String uri=srcRoot.getURI();
 			if(firstType)
 				firstType=false;

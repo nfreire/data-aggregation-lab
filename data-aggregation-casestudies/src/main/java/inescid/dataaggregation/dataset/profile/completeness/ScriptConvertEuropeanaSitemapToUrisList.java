@@ -35,7 +35,7 @@ public class ScriptConvertEuropeanaSitemapToUrisList {
 				Global.getHttpRequestService().fetch(sitemapRequest);
 				if (sitemapRequest.getResponseStatusCode() != 200) 
 					throw new IOException(sitemapUrl);
-				prefetchedSitemap=sitemapRequest.getContentAsString();
+				prefetchedSitemap=sitemapRequest.getResponseContentAsString();
 				
 				prefetchedSitemap=prefetchedSitemap.replace("https://www.europeana.eu/portal",
 						"https://sitemap-test.eanadev.org/sitemap");

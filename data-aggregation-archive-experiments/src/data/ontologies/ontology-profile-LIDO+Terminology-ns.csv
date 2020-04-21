@@ -1,0 +1,37 @@
+class,class count
+http://rdfs.org/ns/void#Dataset,1
+http://www.w3.org/2004/02/skos/core#ConceptScheme,1
+"",
+http://rdfs.org/ns/void#Dataset
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://creativecommons.org/ns#licence,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/contributor,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/created,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/identifier,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/relation,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/title,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/type,2,0,0.0,0.0,0.0,0.0
+http://rdfs.org/ns/void#inDataset,1,0,0.0,0.0,0.0,0.0
+http://rdfs.org/ns/void#sparqlEndpoint,1,0,0.0,0.0,0.0,0.0
+http://w3id.org/nkos#sizeNote,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2004/02/skos/core#ConceptScheme
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://creativecommons.org/ns#licence,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/contributor,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/created,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/identifier,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/relation,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/title,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/type,2,0,0.0,0.0,0.0,0.0
+http://rdfs.org/ns/void#inDataset,1,0,0.0,0.0,0.0,0.0
+http://rdfs.org/ns/void#sparqlEndpoint,1,0,0.0,0.0,0.0,0.0
+http://w3id.org/nkos#sizeNote,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,2,0,0.0,0.0,0.0,0.0

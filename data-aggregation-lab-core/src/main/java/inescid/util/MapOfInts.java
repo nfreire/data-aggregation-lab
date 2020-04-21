@@ -10,9 +10,12 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -121,19 +124,22 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			return ret;
 		}
 
-		public String toCsv() {
+		public String toCsv(Map<K, String> labels) {
 			try {
 				StringBuilder sbCsv=new StringBuilder();
 				CSVPrinter csv=new CSVPrinter(sbCsv, CSVFormat.DEFAULT);
 //				csv.printRecord("key","value");
 				for(java.util.Map.Entry<K, Integer> cls: getSortedEntries()) {
-					csv.printRecord(cls.getKey().toString(), cls.getValue());
+					csv.printRecord(cls.getKey().toString(), cls.getValue(), labels==null? null : labels.get(cls.getKey().toString()));
 				}		
 				csv.close();
 				return sbCsv.toString();
 			} catch (IOException e) {
 				throw new RuntimeException(e.getMessage(), e);
 			}
+		}
+		public String toCsv() {
+			return toCsv(null);
 		}
 
 		public List<SimpleEntry<K, SimpleEntry<Integer, Double>>> getSortedEntriesWithPercent() {
@@ -145,5 +151,17 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 						, new SimpleEntry<>(entry.getValue(), (double) entry.getValue() / total)));
 			}
 			return ret;
+		}
+
+		public StatisticCalcMean getStatistics() {
+			StatisticCalcMean stats=new StatisticCalcMean();
+			for(K k: keySet()) {
+				if(!(k instanceof Number))
+					throw new IllegalArgumentException("Keys must be numbers to support this method");
+				int cnt=get(k);
+				for(int i=0 ; i<cnt; i++) 
+					stats.enter(((Number)k).doubleValue());
+			}
+			return stats;
 		}
 }

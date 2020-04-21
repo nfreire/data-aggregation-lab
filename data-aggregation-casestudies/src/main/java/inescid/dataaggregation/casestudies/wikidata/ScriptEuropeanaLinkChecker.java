@@ -3,6 +3,8 @@ package inescid.dataaggregation.casestudies.wikidata;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class ScriptEuropeanaLinkChecker {
 //			SAMPLE_RECORDS = 3;
 			SAMPLE_RECORDS = -1;
 
-		final File reportFile = new File(outputFolder, "wikidata_broken_links_to_europeana.csv");
+		final File reportFile = new File(outputFolder, "wikidata_broken_links_to_europeana_"+new SimpleDateFormat("dd-MM-yyyy").format(new Date())+".csv");
 		if (!outputFolder.exists())
 			outputFolder.mkdirs();
 		
@@ -62,7 +64,7 @@ public class ScriptEuropeanaLinkChecker {
 
 		SparqlClientWikidata.query("SELECT ?item ?europeana  WHERE {" +
 //                "  ?item wdt:"+RdfRegWikidata.IIIF_MANIFEST+" ?x ." + 
-				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana .", new Handler() {
+				"  ?item wdt:" + RdfRegWikidata.EUROPEANAID.getLocalName() + " ?europeana . }", new Handler() {
 					int stop = SAMPLE_RECORDS+1;
 					public boolean handleSolution(QuerySolution solution) throws AccessException, InterruptedException, IOException {
 						String wdId=solution.getResource("item").getLocalName();

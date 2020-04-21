@@ -22,7 +22,9 @@ import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values.Clear;
 import com.google.api.services.sheets.v4.Sheets.Spreadsheets.Values.Update;
 import com.google.api.services.sheets.v4.model.AddSheetRequest;
 import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
+import com.google.api.services.sheets.v4.model.CellData;
 import com.google.api.services.sheets.v4.model.ClearValuesRequest;
+import com.google.api.services.sheets.v4.model.ExtendedValue;
 import com.google.api.services.sheets.v4.model.Request;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.SheetProperties;
@@ -56,6 +58,7 @@ public class GoogleSheetsCsvUploader {
 			ClearValuesRequest requestBody = new ClearValuesRequest();
 			Clear clear = service.spreadsheets().values().clear(spreadsheetId, range, requestBody);
 			clear.execute();
+			break;
 //			System.out.println("Cleared: "+ executeClear.getClearedRange()/*row with blanks*/+" range");
 		}
 		if(!sheetExists) {
@@ -157,8 +160,19 @@ public class GoogleSheetsCsvUploader {
 				if(v.length()>=5000) {
 					recVals.add(v.substring(0, 4998));
 					System.out.println("WARN (GoogleSheetsUploader): cell value too long; value was cut at 5000 chars");
-				}else
+				}else {
+//					if(v.startsWith("http://") || v.startsWith("https://")) {
+//						recVals.add("=HYPERLINK(\"http://stackoverflow.com\",\"SO label\")"
+//								
+////								new CellData().setHyperlink(v)
+////								.setUserEnteredValue(new ExtendedValue().setStringValue(v))
+////								.setUserEnteredValue(new ExtendedValue()
+////			                    .setFormulaValue("=HYPERLINK(\"http://stackoverflow.com\",\"SO label\")"))
+////								.setFormulaValue("=HYPERLINK(\""+v+"\",\"link\")"))
+//						);
+//					}
 					recVals.add(v);
+				}
 			}
 			vals.add(recVals);
 		}	

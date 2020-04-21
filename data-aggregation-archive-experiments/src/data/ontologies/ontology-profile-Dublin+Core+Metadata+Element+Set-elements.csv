@@ -1,0 +1,15 @@
+class,class count
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,15
+"",
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://purl.org/dc/terms/description,14,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/hasVersion,15,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,15,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,15,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,15,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,15,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,15,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,15,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#seeAlso,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#note,15,0,0.0,0.0,0.0,0.0

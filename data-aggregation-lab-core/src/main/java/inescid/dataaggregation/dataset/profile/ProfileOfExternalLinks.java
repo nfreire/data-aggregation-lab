@@ -1,6 +1,7 @@
 package inescid.dataaggregation.dataset.profile;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -16,7 +17,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.util.datastruct.MapOfMapsOfInts;
 
-public class ProfileOfExternalLinks implements ProfileOfInterface{
+public class ProfileOfExternalLinks implements ProfileOfInterface, Serializable{
+	private static final long serialVersionUID = 1L;
 	double linkageToInternalRatio;
 	double linkageToExternalRatio;
 	double literalRatio;
@@ -24,8 +26,9 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 	
 	Calc calc;
 
-	public class ProfileOfLinkedDomains { 
-		MapOfMapsOfInts<String, Property> stats=new MapOfMapsOfInts<String, Property>();
+	public class ProfileOfLinkedDomains implements Serializable{ 
+		private static final long serialVersionUID = 1L;
+		MapOfMapsOfInts<String, String> stats=new MapOfMapsOfInts<String, String>();
 		
 		public void addLink(String uri, Property prop) {
 			if(StringUtils.isEmpty(uri) || !uri.startsWith("http") || prop==null)
@@ -36,10 +39,10 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 			} catch (URISyntaxException e) {
 				return;
 			}
-			stats.incrementTo(uriObj.getHost(), prop);
+			stats.incrementTo(uriObj.getHost(), prop.getURI());
 		}
 
-		public List<Entry<String,List<Entry<Property,Integer>>>> getSortedEntries() {
+		public List<Entry<String,List<Entry<String,Integer>>>> getSortedEntries() {
 			return stats.getSortedEntries();
 		}
 		
@@ -116,11 +119,11 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 		csv.print(linkageToInternalRatio*100);		
 		csv.print(linkageToExternalRatio*100);
 		int domainsCnt=0;
-		for(Entry<String, List<Entry<Property, Integer>>> e : domains.getSortedEntries()) {
+		for(Entry<String, List<Entry<String, Integer>>> e : domains.getSortedEntries()) {
 			String value=String.format("%s [", e.getKey());
-			for(Entry<Property, Integer> e2 : e.getValue()) {
+			for(Entry<String, Integer> e2 : e.getValue()) {
 				if(domainsCnt!=0)  value += ", ";
-				value += String.format("%s - %d", e2.getKey().getURI(), e2.getValue());
+				value += String.format("%s - %d", e2.getKey(), e2.getValue());
 			}
 			value += "]";
 			csv.print(value);
@@ -129,6 +132,4 @@ public class ProfileOfExternalLinks implements ProfileOfInterface{
 				break;
 		}
 	}
-
-
 }

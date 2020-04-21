@@ -35,8 +35,8 @@ public class HarvesterWikidataUris {
 		CachedHttpRequestService rdfCache=new CachedHttpRequestService();
 		
 		SparqlClientWikidata.query("SELECT ?item  WHERE {" + 
-//                "  ?item wdt:P6108 ?x ." + 
-                "  ?item wdt:P727 ?r .", new Handler() {
+//                "  ?item wdt:P6108 ?x . " + 
+                "  ?item wdt:P727 ?r .}", new Handler() {
 					public boolean handleUri(String uri) throws AccessException, InterruptedException, IOException {
 						if(rdfCache.contains(uri)) {
 							System.out.printf("%s already exists. Skipping.\n", uri);

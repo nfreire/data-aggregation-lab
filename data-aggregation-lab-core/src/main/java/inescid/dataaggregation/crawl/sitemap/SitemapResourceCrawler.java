@@ -12,6 +12,7 @@ import crawlercommons.sitemaps.SiteMapParser;
 import crawlercommons.sitemaps.SiteMapURL;
 import crawlercommons.sitemaps.UnknownFormatException;
 import inescid.dataaggregation.crawl.http.HttpRequest;
+import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.job.JobObserver;
@@ -54,9 +55,10 @@ public class SitemapResourceCrawler {
 
 	public void run(String sitemapContent) {
 		try {
+			Global.init_componentHttpRequestService();
 //			if(robotsTxtUrl!=null)
 //				session.setRobotsTxtRules(robotsTxtUrl);
-			AbstractSiteMap siteMap = parseSiteMap(sitemapContent, rootSitemapUrl);
+			AbstractSiteMap siteMap = SitemapUtil.parseSiteMap(sitemapContent, rootSitemapUrl);
 			processSitemap(siteMap);
 			handler.close();
 		} catch (Exception e) {
@@ -71,7 +73,7 @@ public class SitemapResourceCrawler {
 		Global.getHttpRequestService().fetch(sitemapRequest);
 		if (sitemapRequest.getResponseStatusCode() != 200) 
 			throw new IOException(sitemapUrl);
-		AbstractSiteMap siteMap = parseSiteMap(sitemapRequest.getMimeType(), sitemapRequest.getContent(), sitemapUrl);
+		AbstractSiteMap siteMap = SitemapUtil.parseSiteMap(sitemapRequest.getMimeType(), sitemapRequest.getResponseContent(), sitemapUrl);
 		processSitemap(siteMap);
 	}		
 	private void processSitemap(AbstractSiteMap siteMap) throws Exception {	
@@ -103,18 +105,6 @@ public class SitemapResourceCrawler {
 		}
 	}
 
-
-	private static AbstractSiteMap parseSiteMap(String mimeType, byte[] bytes, String url) throws IOException, UnknownFormatException {
-		SiteMapParser parser=new SiteMapParser(false);
-		AbstractSiteMap siteMap = parser.parseSiteMap(mimeType, bytes, new URL(url));
-		return siteMap;
-	}
-	
-	private static AbstractSiteMap parseSiteMap(String content, String url) throws IOException, UnknownFormatException {
-		SiteMapParser parser=new SiteMapParser(false);
-		AbstractSiteMap siteMap = parser.parseSiteMap("application/xml", content.getBytes("UTF-8"), new URL(url));
-		return siteMap;
-	}
 
 	public void setSampleSize(Integer sampleSize) {
 		this.sampleSize = sampleSize;

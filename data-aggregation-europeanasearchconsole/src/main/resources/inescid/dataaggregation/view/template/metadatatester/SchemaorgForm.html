@@ -28,19 +28,36 @@
 	<tr><td width="800" class="field_value">
 	
 	<#if uriChecked>
-	<#if creativeWorks?has_content>
-	<b>CreativeWork resources in webpage</b> [<a href="${context}/check_for_europeana">detailed analysis</a>]
-	<#list creativeWorks as res>
-		    <table style="margin-top:0px">
-	<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
-		<#list res.types as type>
-	<tr><td class="field_value"> &nbsp;&nbsp; a </td><td class="field_value">${type.object}</td></tr>
+	<#if creativeWorks?has_content>	
+	  <#if uriValidated>
+		<b>CreativeWork resources in webpage</b> &nbsp;&nbsp; [<a href="${context}/check_schemaorg?webpageURL=${uri?url('UTF-8')}">View Schema.org metadata</a>]
+	    <#list creativeWorks as res>
+			    <table style="margin-top:0px">
+				<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
+	    	<#if res.validation.errors?has_content>
+					<tr><td class="field_value" colspan="2">&nbsp;&nbsp;Validation messages</td></tr>
+				<#list res.validation.errors as msg>
+					<tr><td class="field_value"> &nbsp;&nbsp; - </td><td class="field_value">${msg}</td></tr>
+				</#list>
+			<#else>
+ 					<tr><td class="field_value"> &nbsp;&nbsp; The resource is valid</td><td class="field_value"></td></tr>
+			</#if>
+			</table>	
 		</#list>
-		<#list res.statements as st>
-	<tr><td class="field_value"> &nbsp;&nbsp; ${st.predicate} </td><td class="field_value">${st.object}</td></tr>
+  	  <#else>
+		<b>CreativeWork resources in webpage</b> &nbsp;&nbsp; [<a href="${context}/validate_schemaorg?webpageURL=${uri?url('UTF-8')}">Validate for Europeana</a>]
+		<#list creativeWorks as res>
+			    <table style="margin-top:0px">
+				<tr><td class="field_value" colspan="2">URI: ${res.uri}</td></tr>
+			<#list res.types as type>
+				<tr><td class="field_value"> &nbsp;&nbsp; a </td><td class="field_value">${type.object}</td></tr>
+			</#list>
+			<#list res.statements as st>
+				<tr><td class="field_value"> &nbsp;&nbsp; ${st.predicate} </td><td class="field_value">${st.object}</td></tr>
+			</#list>
+			</table>	
 		</#list>
-		</table>	
-	</#list>
+  	  </#if>
 	<#else>
 		No CreativeWork resources exist in the webpage<br />
 	</#if>

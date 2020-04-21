@@ -48,7 +48,8 @@ public class GoogleAnalyticsRecordViewsApi {
 
 			String VIEW_ID="93301281";
 			try {
-				GoogleApi.init("C:\\Users\\nfrei\\.credentials\\europeana-analytics_google.json");
+//				GoogleApi.init("C:\\Users\\nfrei\\.credentials\\europeana-analytics_google.json");
+				GoogleApi.init("C:\\Users\\nfrei\\.credentials\\research_and_developement.json");
 				AnalyticsReporting analyticsService = GoogleApi.getAnalyticsReportingService();
 				
 			    // Create the DateRange object.

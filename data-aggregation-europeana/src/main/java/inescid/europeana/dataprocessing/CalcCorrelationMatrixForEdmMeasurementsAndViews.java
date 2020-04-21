@@ -23,8 +23,16 @@ public class CalcCorrelationMatrixForEdmMeasurementsAndViews {
 
 	public static void main(String[] args) throws Exception {
 		String storeCsvPath="C:\\Users\\nfrei\\Desktop\\data\\edm-measurements.mvstore.bin";
-		String pageViewsCsvPath="src\\data\\Analytics Filtered view (to use) Pages 20190101-20191231_combined.csv";
-
+		String pageViewsCsvPath="src\\data\\europeana_record_uviews_2019.csv";
+		if (args != null) {
+			if (args.length >= 1) {
+				storeCsvPath = args[0];
+				if (args.length >= 2) {
+					pageViewsCsvPath = args[1];
+				}
+			}
+		}
+		
 		File mapsFile = new File(storeCsvPath);
 		if(!mapsFile.getParentFile().exists())
 			mapsFile.getParentFile().mkdirs();

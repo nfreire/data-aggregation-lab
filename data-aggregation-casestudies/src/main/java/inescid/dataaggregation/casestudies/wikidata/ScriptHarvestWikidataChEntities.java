@@ -2,20 +2,12 @@ package inescid.dataaggregation.casestudies.wikidata;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.output.FileWriterWithEncoding;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Triple;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.RDFNode;
@@ -25,28 +17,13 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.casestudies.wikidata.ScriptExportSamples.DataDumps;
-import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingCalculatorNoRights;
-import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
-import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.ContentTypes;
 import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
-import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
-import inescid.dataaggregation.dataset.profile.ClassUsageStats;
-import inescid.dataaggregation.dataset.profile.UsageProfiler;
-import inescid.dataaggregation.dataset.profile.completeness.Dqc10PointRatingCalculator;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
-import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.AccessException;
-import inescid.util.MapOfInts;
 import inescid.util.RdfUtil;
 import inescid.util.SparqlClient.Handler;
-import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
 public class ScriptHarvestWikidataChEntities {
 	public static void main(String[] args) throws Exception {
@@ -119,7 +96,7 @@ public class ScriptHarvestWikidataChEntities {
 		final AtomicInteger cnt = new AtomicInteger(0);
 		wikidataEuropeanaIdsMap.keySet().forEach((uri) -> {
 			try {
-				Resource resource = WikidataRdfUtil.fetchresource(uri, rdfCache);
+				Resource resource = RdfUtil.readRdfResourceFromUri(uri);
 
 				removeOtherResources(resource.getModel(), uri);
 				removeNonTruthyStatements(resource.getModel());

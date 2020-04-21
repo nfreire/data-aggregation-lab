@@ -154,7 +154,7 @@ public class MapOfSets<K,V> implements Serializable {
 		}
 
 		
-		public static void writeCsv(MapOfSets<?,?> sets, Writer csvWrite) throws IOException {
+		public static void writeCsv(MapOfSets<?,?> sets, Appendable csvWrite) throws IOException {
 			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
 			for(Entry<?, ?>  r: sets.entrySet()) {
 				printer.print(r.getKey().toString());
@@ -169,4 +169,5 @@ public class MapOfSets<K,V> implements Serializable {
 		public Collection<Set<V>> values() {
 			return hashtable.values();
 		}
+
 }

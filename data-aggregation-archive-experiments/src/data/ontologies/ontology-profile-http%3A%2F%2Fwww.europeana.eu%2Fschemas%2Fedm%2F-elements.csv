@@ -1,0 +1,40 @@
+class,class count
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property,11
+http://www.w3.org/2002/07/owl#Class,14
+http://www.w3.org/2002/07/owl#DatatypeProperty,4
+"",
+http://www.w3.org/1999/02/22-rdf-syntax-ns#Property
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,11,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,11,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,8,19,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentProperty,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#inverseOf,0,3
+http://www.w3.org/2004/02/skos/core#definition,10,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#Class
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#first,0,15
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,14,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,0,8
+http://www.w3.org/2000/01/rdf-schema#label,11,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,0,15
+http://www.w3.org/2000/01/rdf-schema#subClassOf,13,10,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#complementOf,1,1,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#equivalentClass,18,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#someValuesFrom,0,4
+http://www.w3.org/2004/02/skos/core#definition,11,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#example,11,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#note,3,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#scopeNote,6,0,0.0,0.0,0.0,0.0
+"",
+http://www.w3.org/2002/07/owl#DatatypeProperty
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#domain,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#label,4,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#range,2,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#subPropertyOf,3,2,0.0,0.0,0.0,0.0
+http://www.w3.org/2004/02/skos/core#definition,4,0,0.0,0.0,0.0,0.0

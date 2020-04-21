@@ -90,7 +90,7 @@ public class ScriptCheckSchemaOrgOfEuropeanaProviders {
 						if (request.getCharset()!=null)
 							charset = request.getCharset().name();
 						Model model=Jena.createModel();
-						any23.extract(request.getContentAsString(), request.getUrl(), request.getMimeType(), charset, 
+						any23.extract(request.getResponseContentAsString(), request.getUrl(), request.getMimeType(), charset, 
 								new JenaTripleHandler(model));
 						
 						for(Statement st : model.listStatements().toList()) {

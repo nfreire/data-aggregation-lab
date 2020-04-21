@@ -1,6 +1,7 @@
 package inescid.dataaggregation.casestudies.wikidata;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,23 +21,25 @@ import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RegRdf;
 import inescid.util.AccessException;
+import inescid.util.RdfUtil;
 import inescid.util.SparqlClient.Handler;
 import inescid.util.datastruct.MapOfLists;
 
-public class EquivalenceMapping {
-	final CachedHttpRequestService rdfCache;
-	final HashSet<String> alreadyChecked=new HashSet<String>();
+public class EquivalenceMapping  implements Serializable{
+	private static final long serialVersionUID=1;	
+	
+	final transient HashSet<String> alreadyChecked=new HashSet<String>();
 	final ArrayList<String> equivalencesNotFound=new ArrayList<String>();
 	final boolean acceptNonSchemaOrg;
-	public EquivalenceMapping(CachedHttpRequestService rdfCache, boolean acceptNonSchemaOrg) {
-		this.rdfCache = rdfCache;
-		this.acceptNonSchemaOrg= acceptNonSchemaOrg;
-	}
 	
 	final MapOfLists<String, String> wdEntPropEquivalences = new MapOfLists<String, String>();
 	final MapOfLists<String, String> wdEntPropEquivalencesSuperclasses = new MapOfLists<String, String>();
 	final MapOfLists<String, String> wdEntPropEquivalencesSuperclassesNonSchemaOrg = new MapOfLists<String, String>();
 	final MapOfLists<String, String> wdEntPropEquivalencesNonSchemaOrg = new MapOfLists<String, String>();
+
+	public EquivalenceMapping(boolean acceptNonSchemaOrg) {
+		this.acceptNonSchemaOrg= acceptNonSchemaOrg;
+	}
 	
 	public void analyzeEntity(Resource wdResource, Resource leafResource) throws AccessException, InterruptedException, IOException {
 		if (alreadyChecked.contains(wdResource.getURI())) {
@@ -82,7 +85,7 @@ public class EquivalenceMapping {
 			for (Statement st : propStms.toList()) {
 //				System.out.println(st);
 				String objUri = st.getObject().asNode().getURI();
-				Resource wdScResource = WikidataRdfUtil.fetchresource(objUri, rdfCache);
+				Resource wdScResource = RdfUtil.readRdfResourceFromUri(objUri);
 					analyzeEntity(wdScResource, leafResource);
 				if(! wdResource.getURI().equals(leafResource.getURI())) {
 					ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
@@ -125,9 +128,9 @@ public class EquivalenceMapping {
 //		public void analyzeProperty(String propUri, String entityResourceUri) {
 		if(!propUriParam.startsWith("http://www.wikidata.org/")) {
 			String[] wdEqUri=new String[1];
-			SparqlClientWikidata.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+propUriParam+"> .", new Handler()
+			SparqlClientWikidata.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+propUriParam+"> . }", new Handler()
 			{
-//				WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+entityResourceUri+"> .", new UriHandler() {
+//				WikidataSparqlClient.query("SELECT ?item WHERE { ?item wdt:"+RdfRegWikidata.EQUIVALENT_PROPERTY.getLocalName()+" <"+entityResourceUri+"> .}", new UriHandler() {
 				public boolean handleUri(String uri) throws Exception {
 					wdEqUri[0]=uri;
 					return false;
@@ -137,7 +140,7 @@ public class EquivalenceMapping {
 			if(propUriParam==null)
 				return wdPropResource;
 		}
-		String propUri=convertWdPropertyUri(propUriParam);
+		String propUri=WikidataUtil.convertWdUriToCanonical(propUriParam);
 
 		if (alreadyChecked.contains(propUri)) {	
 //			ArrayList<String> propEquivalence = getEquivalence(leafPropertyUri, true);
@@ -165,7 +168,7 @@ public class EquivalenceMapping {
 //		System.out.println("Analyzing "+propUri);
 		
 		try {
-			wdPropResource = WikidataRdfUtil.fetchresource(propUri, rdfCache);
+			wdPropResource = RdfUtil.readRdfResourceFromUri(propUri);
 				boolean foundEquivalent=false;
 				StmtIterator typeProperties = wdPropResource.listProperties(RdfRegWikidata.EQUIVALENT_PROPERTY);
 				for (Statement st : typeProperties.toList()) {
@@ -208,8 +211,8 @@ public class EquivalenceMapping {
 //						analyzeProperty(objUri, leafPropertyUri);
 //						foundEquivalent=true;
 						
-						Resource wdScResource = WikidataRdfUtil.fetchresource(objUri, rdfCache);
-						analyzeProperty(toDirectProp(objUri), leafPropertyUri);
+						Resource wdScResource = RdfUtil.readRdfResourceFromUri(objUri);
+						analyzeProperty(objUri, leafPropertyUri);
 					if(! propUriParam.equals(leafPropertyUri)) {
 						ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
 						if(eqs!=null) 
@@ -233,19 +236,21 @@ public class EquivalenceMapping {
 		return wdPropResource;
 	}
 
-	private String toDirectProp(String objUri) {
-		if(!objUri.startsWith(RdfRegWikidata.NsWdt))
-			return RdfRegWikidata.NsWdt+objUri.substring(objUri.lastIndexOf('/')+1);
-		return objUri;
-	}
+//	private String toDirectProp(String objUri) {
+//		if(!objUri.startsWith(RdfRegWikidata.NsWdt))
+//			return RdfRegWikidata.NsWdt+objUri.substring(objUri.lastIndexOf('/')+1);
+//		return objUri;
+//	}
 
-	public static String convertWdPropertyUri(String propUri) {
-		if(propUri.startsWith("http://www.wikidata.org") && !propUri.startsWith(RdfRegWikidata.NsWd)) 
-			propUri="http://www.wikidata.org/entity/"+propUri.substring(propUri.lastIndexOf('/')+1);
-		return propUri;
-	}
+//	public static String convertWdPropertyUri(String propUri) {
+//		if(propUri.startsWith("http://www.wikidata.org") && !propUri.startsWith(RdfRegWikidata.NsWd)) 
+//			propUri="http://www.wikidata.org/entity/"+propUri.substring(propUri.lastIndexOf('/')+1);
+//		return propUri;
+//	}
 
+	
 	public ArrayList<String> getEquivalence(String objUri, boolean acceptSuperEquivalences) {
+		objUri=WikidataUtil.convertWdUriToCanonical(objUri);
 		ArrayList<String> ret=wdEntPropEquivalences.get(objUri);
 		if(ret==null && acceptSuperEquivalences)
 			ret=wdEntPropEquivalencesSuperclasses.get(objUri);

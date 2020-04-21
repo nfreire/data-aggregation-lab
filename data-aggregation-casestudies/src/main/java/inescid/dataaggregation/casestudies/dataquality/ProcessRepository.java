@@ -20,8 +20,8 @@ import org.apache.jena.riot.RiotException;
 
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.profile.completeness.TiersDqcCompletenessCalculator;
+import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
-import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationShacl;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
 import inescid.dataaggregation.store.Repository;
@@ -125,7 +125,7 @@ public interface EdmMeasurement {
 			public String[] getCsvResult(Resource edmCho, String edmRdfXml) {
 				MultilingualSaturationResult score;
 				try {
-					score = MultilingualSaturationShacl.calculate(edmCho.getModel());
+					score = MultilingualSaturation.calculate(edmCho.getModel());
 				} catch (Exception e) {
 					throw new RuntimeException(e.getMessage(), e);
 				}

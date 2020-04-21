@@ -9,11 +9,13 @@ import org.apache.jena.rdf.model.Statement;
 import inescid.dataaggregation.data.RegEdm;
 import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.data.RegSchemaorg;
+import inescid.dataaggregation.metadatatester.view.SchemaorgChoValidator.ValidationReport;
 import inescid.util.RdfUtil;
 
 public class ResourceView{
 	Resource res;
 	boolean includeEdm;
+	ValidationReport validation;
 	
 	public ResourceView(Resource st, boolean includeEdm) {
 		super();
@@ -25,6 +27,7 @@ public class ResourceView{
 		return RdfUtil.getUriOrId(res);
 	}
 	
+	
 	public List<StatementView> getTypes() {
 		List<StatementView> sts=new ArrayList<StatementView>();
 		for(Statement st: res.listProperties(RegRdf.type).toList()) {
@@ -35,7 +38,7 @@ public class ResourceView{
 					sts.add(new StatementView(st));
 					continue;
 				}					
-				for(String ns: RegEdm.NS_EXTERNAL)
+				for(String ns: RegEdm.NS_EXTERNAL_PREFERRED_BY_NS.keySet())
 					if(st.getObject().asResource().getURI().startsWith(ns) ) {
 						sts.add(new StatementView(st));
 						continue;
@@ -70,5 +73,27 @@ public class ResourceView{
 				return true;
 		}
 		return false;
+	}
+
+	public boolean hasProperties() {
+		for(Statement st: res.listProperties().toList()) {
+			if(st.getPredicate().equals(RegRdf.type)) return true;
+			if(!st.getPredicate().getURI().startsWith(RegSchemaorg.NS) &&
+					!st.getPredicate().getURI().startsWith(RegRdf.NS)) continue;
+			return true;
+		}
+		return false;
+	}
+
+	public Resource getResource() {
+		return res;
+	}
+
+	public ValidationReport getValidation() {
+		return validation;
+	}
+
+	public void setValidation(ValidationReport validation) {
+		this.validation = validation;
 	}
 }

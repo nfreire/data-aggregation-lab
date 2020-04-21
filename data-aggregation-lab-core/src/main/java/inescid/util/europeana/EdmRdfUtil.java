@@ -109,7 +109,7 @@ public class EdmRdfUtil {
 		HttpRequest req = new HttpRequest(new UrlRequest(uriOfCho, HttpMethod.GET, "Accept", "application/rdf+xml", 2));
 		try {
 			Global.getHttpRequestService().fetch(req);
-			return req.getContentAsString();
+			return req.getResponseContentAsString();
 		} catch (IOException | InterruptedException e) {
 			throw buildAccessException(req, e);	
 		}
@@ -127,8 +127,8 @@ public class EdmRdfUtil {
 			return new AccessException(con.getUrl(), e);
 		String body = null;
 		try {
-			if(con.getContent()!=null)
-				body=con.getContentAsString();
+			if(con.getResponseContent()!=null)
+				body=con.getResponseContentAsString();
 		} catch (IOException e2) { /*ignore*/ }
 		return new AccessException("HTTP-status:"+con.getResponseStatusCode() +" ; "+con.getUrl(), String.valueOf(con.getResponseStatusCode()), body);
 	}

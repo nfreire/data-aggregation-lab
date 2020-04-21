@@ -86,7 +86,7 @@ public class IiifForm extends DatasetForm {
 					ContentTypes detectedType = null;
 					DataProfileDetector dpd=new DataProfileDetector();
 					if(StringUtils.isEmpty(contentType) || contentType.startsWith("text/plain")) {
-						 DataTypeResult detect = dpd.detect(req.getContentAsString());
+						 DataTypeResult detect = dpd.detect(req.getResponseContentAsString());
 						if(detect!=null)
 							detectedType=detect.format;
 					} else 
@@ -98,7 +98,7 @@ public class IiifForm extends DatasetForm {
 						((IiifDataset)dataset).setCrawlMethod(IiifCrawlMethod.SITEMAP);
 					} else if(detectedType==ContentTypes.JSON_LD) {
 						try {
-							String collectionJson = req.getContentAsString();
+							String collectionJson = req.getResponseContentAsString();
 							JsonReader jr=new JsonReader(new StringReader(collectionJson));
 							try {
 								jr.beginObject();

@@ -96,5 +96,19 @@ public  class MappingReport {
 					propsAtTrg.add(trgEdm);
 			}
 		}
+
+		public Map<Resource, Resource[]> getRdfTypeMaps() {
+			return rdfTypeMaps;
+		}
+
+		public Map<Resource, Map<Resource, Integer>> getUsageCounts() {
+			return usageCounts;
+		}
+
+		public Map<Resource, Map<Property, Set<Property>>> getPropertiesMaps() {
+			return propertiesMaps;
+		}
+		
+		
 	
 	}

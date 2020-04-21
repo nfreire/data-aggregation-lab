@@ -1,0 +1,22 @@
+class,class count
+http://www.w3.org/2002/07/owl#Ontology,1
+"",
+http://www.w3.org/2002/07/owl#Ontology
+property,property count,as range of property count,Uniqueness(%),Literal(%),Dataset resource(%),External resource(%)
+http://creativecommons.org/ns#license,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/contributor,3,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/creator,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/description,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/issued,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/modified,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/publisher,1,0,0.0,0.0,0.0,0.0
+http://purl.org/dc/terms/title,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespacePrefix,1,0,0.0,0.0,0.0,0.0
+http://purl.org/vocab/vann/preferredNamespaceUri,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#comment,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#priorVersion,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/2002/07/owl#versionInfo,1,0,0.0,0.0,0.0,0.0
+http://www.w3.org/ns/adms#relatedDocumentation,1,0,0.0,0.0,0.0,0.0
+http://xmlns.com/foaf/0.1/homepage,1,0,0.0,0.0,0.0,0.0

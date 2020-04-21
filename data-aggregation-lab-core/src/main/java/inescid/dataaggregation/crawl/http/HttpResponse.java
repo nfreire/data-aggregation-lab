@@ -47,7 +47,8 @@ public class HttpResponse {
 				headers.add(new SimpleEntry<String, String>(h.getName(), h.getValue()));
 		}
 		if(!stream) {
-			body = IOUtils.toByteArray(closeableHttpResponse.getEntity().getContent());
+			if(closeableHttpResponse.getEntity()!=null)
+				body = IOUtils.toByteArray(closeableHttpResponse.getEntity().getContent());
 			closeableHttpResponse.close();
 			bodyStream=null;
 		}else {

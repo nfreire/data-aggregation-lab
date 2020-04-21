@@ -30,7 +30,7 @@ public class IiifManifestTester {
 	
 		HttpRequest httpReq=new HttpRequest(manifestUri);
 		httpReq.fetch();
-		String fileData = httpReq.getContentAsString();
+		String fileData = httpReq.getResponseContentAsString();
 //		try {
 			Manifest m = gson.fromJson(fileData, Manifest.class);
 			if(m==null)

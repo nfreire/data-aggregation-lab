@@ -28,13 +28,13 @@ public class HttpUtil {
 	}
 	public static List<Entry<String, String>> getAndStoreWithHeaders(UrlRequest resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
-		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getContent(), false);		
+		FileUtils.writeByteArrayToFile(storeFile, resourceRequest.getResponseContent(), false);		
 		return resourceRequest.getResponse().getHeaders();
 	}
 	
 	public static byte[] getAndStore(String resourceUri, File storeFile) throws IOException, InterruptedException, AccessException {
 		HttpRequest resourceRequest = makeRequest(resourceUri);
-		byte[] asBytes = resourceRequest.getContent();
+		byte[] asBytes = resourceRequest.getResponseContent();
 		FileUtils.writeByteArrayToFile(storeFile, asBytes, false);		
 		return asBytes;
 	}
@@ -117,9 +117,9 @@ public class HttpUtil {
 		HttpRequest reqRes = makeRequest(url);
 		int statusCode = reqRes.getResponse().getStatus();
 		if(statusCode==200) 
-			return reqRes.getContentAsString();	
+			return reqRes.getResponseContentAsString();	
 		else {
-			log.info("HTTP error, content: "+url+"\n"+ reqRes.getContentAsString());			
+			log.info("HTTP error, content: "+url+"\n"+ reqRes.getResponseContentAsString());			
 			throw new AccessException(url.getUrl(), "HTTP response status code "+statusCode);
 		}
 	}

@@ -122,7 +122,7 @@ public class WwwDatasetHarvest {
 							charset = reqRes.getCharset().name();
 						
 						if (MimeType.isData(reqRes.getMimeType())){
-							repository.save(datasetUri, reqRes.getUrl(), reqRes.getContent(), new ArrayList<Entry<String, String>>() {{
+							repository.save(datasetUri, reqRes.getUrl(), reqRes.getResponseContent(), new ArrayList<Entry<String, String>>() {{
 								add(new SimpleMapEntry("Content-Type", reqRes.getMimeType()));}});
 							return true;
 						} else {
@@ -130,7 +130,7 @@ public class WwwDatasetHarvest {
 							ByteArrayOutputStream decodedInput = new ByteArrayOutputStream();
 							TurtleWriter triples=new TurtleWriter(decodedInput);
 	//						NTriplesWriter triples=new NTriplesWriter(decodedInput);
-							any23.extract(reqRes.getContentAsString(), reqRes.getUrl(), reqRes.getMimeType(), charset, 
+							any23.extract(reqRes.getResponseContentAsString(), reqRes.getUrl(), reqRes.getMimeType(), charset, 
 									triples);			
 	//								new CountingTripleHandler() {
 	//							@Override

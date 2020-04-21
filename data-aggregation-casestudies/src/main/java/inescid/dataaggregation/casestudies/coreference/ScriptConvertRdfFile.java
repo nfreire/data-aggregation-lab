@@ -24,7 +24,7 @@ public class ScriptConvertRdfFile {
 		Lang to = Lang.NTRIPLES;
 		
 		FileOutputStream fos=new FileOutputStream(new File(f.getParentFile(), f.getName()+"."+to.getFileExtensions().get(0)));
-		StreamRDF writer=StreamRDFWriter.getWriterStream(fos, to) ;	;		
+		StreamRDF writer=StreamRDFWriter.getWriterStream(fos, to) ;			
 		
 		FileInputStream fis=new FileInputStream(f);
 		RDFDataMgr.parse(new StreamRDFBase() {

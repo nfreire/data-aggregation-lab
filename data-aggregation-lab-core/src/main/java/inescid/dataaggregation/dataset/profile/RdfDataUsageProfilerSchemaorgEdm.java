@@ -17,6 +17,7 @@ import inescid.dataaggregation.dataset.IiifDataset;
 import inescid.dataaggregation.dataset.convert.RdfDeserializer;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.store.Repository;
+import inescid.util.AccessException;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
 public class RdfDataUsageProfilerSchemaorgEdm {
@@ -31,7 +32,7 @@ public class RdfDataUsageProfilerSchemaorgEdm {
 		this.dataRepository = dataRepository;
 	}
 
-	public void process(Dataset dataset, File profileFolder, final int maxProfiledRecords) throws IOException {
+	public void process(Dataset dataset, File profileFolder, final int maxProfiledRecords) throws IOException, AccessException, InterruptedException {
 //	public void run(File repositoryFolder, String dataProvider) throws Exception {
 		SchemaOrgToEdmDataConverter converter = new SchemaOrgToEdmDataConverter();
 		converter.setDataProvider(dataset.getOrganization());

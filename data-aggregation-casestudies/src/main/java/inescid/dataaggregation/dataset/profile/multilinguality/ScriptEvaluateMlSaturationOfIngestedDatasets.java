@@ -85,7 +85,7 @@ public class ScriptEvaluateMlSaturationOfIngestedDatasets {
 						public void run() {
 							try {
 								Model recordMdl = EdmRdfUtil.getRecord(rId);
-								MultilingualSaturationResult result = MultilingualSaturationShacl.calculate(recordMdl);
+								MultilingualSaturationResult result = MultilingualSaturation.calculate(recordMdl);
 								langTagCountStats.enter(result.getLangTagCount());
 								languagesCountStats.enter(result.getLanguagesCount());
 							} catch (Exception e) {

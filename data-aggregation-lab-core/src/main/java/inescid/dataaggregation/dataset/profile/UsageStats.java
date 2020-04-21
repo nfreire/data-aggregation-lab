@@ -2,6 +2,10 @@ package inescid.dataaggregation.dataset.profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,14 +15,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
-public class UsageStats {
+public class UsageStats implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Map of Class URIs -> Property URIs -> #uses
 	 */
 	Map<String, ClassUsageStats> stats=new HashMap<>();
+	public UsageStats() {
+	}
 
 	public ClassUsageStats getClassStats(String classURI) {
 		ClassUsageStats ret=stats.get(classURI);
@@ -32,7 +41,6 @@ public class UsageStats {
 	public Map<String, ClassUsageStats> getClassesStats() {
 		return stats;
 	}
-	
 
 	public void finish() {
 		for(ClassUsageStats cls: stats.values()) 

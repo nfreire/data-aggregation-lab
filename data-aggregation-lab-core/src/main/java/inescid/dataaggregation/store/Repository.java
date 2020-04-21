@@ -215,14 +215,15 @@ public class Repository {
 		return uris;
 	}
 
-	public void remove(String datasetUri, String resourceUri) {
+	public boolean remove(String datasetUri, String resourceUri) {
 		File manifestFile = getFile(datasetUri, resourceUri);
-		manifestFile.delete();
+		boolean exists=manifestFile.delete();
 		File metaFile = getMetaFile(datasetUri, resourceUri);
 		if (metaFile.exists())
 			metaFile.delete();
-		if (manifestFile.getParentFile().list().length == 0)
+		if (manifestFile.getParentFile().exists() && manifestFile.getParentFile().list().length == 0)
 			manifestFile.getParentFile().delete();
+		return exists;
 	}
 
 	

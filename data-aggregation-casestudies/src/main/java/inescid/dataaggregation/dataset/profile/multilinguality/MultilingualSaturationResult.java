@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RegEdm;
 import inescid.dataaggregation.data.RegSkos;
-import inescid.util.datastruct.MapOfInts;
 
 public class MultilingualSaturationResult {
 	public static final Set<String> CHO_TYPES=new HashSet<String>() {{
@@ -31,16 +30,7 @@ public class MultilingualSaturationResult {
 	HashSet<String> languages=new HashSet<String>();
 	Map<String, MultilingualSaturationResult> byProperty=new HashMap<String, MultilingualSaturationResult>();
 	Map<String, MultilingualSaturationResult> byClass=new HashMap<String, MultilingualSaturationResult>();
-	
-	public MultilingualSaturationResult(ShapesDetectionReport report) {
-		Collection<ShapeInstance> allInstances = report.getAllInstances();
-		langTagCount=allInstances.size();
-		for(ShapeInstance inst: allInstances) {
-			if(inst.getValueNode().isLiteral())
-				languages.add(inst.getValueNode().getLiteralLanguage());
-		}
-	}
-	
+		
 	public MultilingualSaturationResult() {
 	}
 	

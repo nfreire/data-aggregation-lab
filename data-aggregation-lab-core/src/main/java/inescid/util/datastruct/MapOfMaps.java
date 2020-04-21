@@ -7,6 +7,7 @@ package inescid.util.datastruct;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -118,6 +119,13 @@ public class MapOfMaps<K1, K2, V> implements Serializable{
 			buffer.append(super.toString());
 			buffer.append("]");
 			return buffer.toString();
+		}
+
+		public Set<K2> key2ndSet() {
+			HashSet<K2> set=new HashSet<>();
+			for(K1 k: keySet()) 
+				set.addAll(get(k).keySet());
+			return set;
 		}
 
 }

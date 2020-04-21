@@ -2,6 +2,8 @@ package inescid.dataaggregation.dataset.profile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +25,9 @@ import inescid.dataaggregation.data.RegRdfs;
 import inescid.util.StatisticCalcMean;
 import inescid.util.datastruct.MapOfInts;
 
-public class ClassUsageStats implements ProfileOfInterface {
+public class ClassUsageStats implements ProfileOfInterface, Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public enum Sort { COUNT, URI };
 		MapOfInts<String> namespacesStats=new MapOfInts<String>();
 		MapOfInts<String> propertiesStats=new MapOfInts<String>();

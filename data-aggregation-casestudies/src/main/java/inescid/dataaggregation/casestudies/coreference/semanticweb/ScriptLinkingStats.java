@@ -69,8 +69,6 @@ public class ScriptLinkingStats {
 			MapOfInts.writeCsv(statsByStepAllMatches[i], 
 					Files.newBufferedWriter(saveTo.toPath()	, StandardCharsets.UTF_8));
 		}
-		
-		
 
 		Map<String, AgentVocabulary> studiedVocabs = AgentVocabsIntelinkingStudy.getStudiedVocabs(new File(repoFolder));
 		ArrayList<String> sortedVocabs=new ArrayList<String>(studiedVocabs.keySet());

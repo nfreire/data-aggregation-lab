@@ -1,0 +1,101 @@
+#@include <RDFS>.
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> . 
+
+[rdfs2:  (?x ?p ?y), (?p rdfs:domain ?c) -> (?x rdf:type ?c)] 
+[rdfs3:  (?x ?p ?y), (?p rdfs:range ?c) -> (?y rdf:type ?c)] 
+[rdfs5a: (?a rdfs:subPropertyOf ?b), (?b rdfs:subPropertyOf ?c) -> (?a rdfs:subPropertyOf ?c)] 
+#[rdfs5b: (?a rdf:type rdf:Property) -> (?a rdfs:subPropertyOf ?a)] 
+[rdfs6:  (?a ?p ?b), (?p rdfs:subPropertyOf ?q) -> (?a ?q ?b)] 
+#[rdfs7:  (?a rdf:type rdfs:Class) -> (?a rdfs:subClassOf ?a)]
+[rdfs8:  (?a rdfs:subClassOf ?b), (?b rdfs:subClassOf ?c) -> (?a rdfs:subClassOf ?c)] 
+[rdfs9:  (?x rdfs:subClassOf ?y), (?a rdf:type ?x) -> (?a rdf:type ?y)] 
+[rdfs10: (?x rdf:type rdfs:ContainerMembershipProperty) -> (?x rdfs:subPropertyOf rdfs:member)] 
+
+
+-> (owl:Thing rdf:type owl:Class).
+
+# These might need to be pre-expanded in the initial rule set
+-> (owl:equivalentProperty rdf:type owl:SymmetricProperty).
+-> (owl:equivalentProperty rdf:type owl:TransitiveProperty).
+-> (owl:equivalentClass rdf:type owl:SymmetricProperty).
+-> (owl:equivalentClass rdf:type owl:TransitiveProperty).
+-> (owl:sameIndividualAs rdf:type owl:SymmetricProperty).
+-> (owl:sameIndividualAs rdf:type owl:TransitiveProperty).
+-> (owl:sameIndividualAs owl:equivalentProperty owl:sameAs).
+-> (owl:differentFrom rdf:type owl:SymmetricProperty).
+
+
+# equivalentProperty 
+
+[equivalentProperty1: (?P owl:equivalentProperty ?Q) 
+						-> (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P) ]
+						
+[equivalentProperty2: (?P rdfs:subPropertyOf ?Q), (?Q rdfs:subPropertyOf ?P) 
+						-> (?P owl:equivalentProperty ?Q) ]
+						
+[equivalentProperty3: (?P owl:sameAs ?Q), (?P rdf:type rdf:Property), (?Q rdf:type rdf:Property) 
+						-> (?P owl:equivalentProperty ?Q) ]
+
+# equivalentClass
+[equivalentClass1: (?P owl:equivalentClass ?Q) 
+						-> (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) ]
+						
+[equivalentClass2: (?P rdfs:subClassOf ?Q), (?Q rdfs:subClassOf ?P) 
+						-> (?P owl:equivalentClass ?Q) ]
+						
+[equivalentClass3: (?P owl:sameAs ?Q), (?P rdf:type rdfs:Class), (?Q rdf:type rdfs:Class) 
+						-> (?P owl:equivalentClass ?Q) ]
+
+# inverseOf
+[inverseOf1: (?P owl:inverseOf ?Q) -> (?Q owl:inverseOf ?P) ]
+
+[inverseOf2: (?P owl:inverseOf ?Q), (?X ?P ?Y) -> (?Y ?Q ?X) ]
+
+#[inverseOf3: (?P owl:inverseOf ?Q), (?P rdf:type owl:FunctionalProperty) 
+#						-> (?Q rdf:type owl:InverseFunctionalProperty) ]
+		
+#[inverseOf4: (?P owl:inverseOf ?Q), (?P rdf:type owl:InverseFunctionalProperty) 
+#						-> (?Q rdf:type owl:FunctionalProperty) ]
+
+# symmetric
+[symmetricProperty1: (?P rdf:type owl:SymmetricProperty), (?X ?P ?Y) -> (?Y ?P ?X)]
+
+
+# Transitive
+[transitivePropery1: (?P rdf:type owl:TransitiveProperty), (?A ?P ?B), (?B ?P ?C) -> (?A ?P ?C)]
+
+# sameIndividualAs
+[sameIndividualAs1: (?P rdf:type owl:FunctionalProperty), (?A ?P ?B), (?A ?P ?C) 
+                    -> (?B owl:sameIndividualAs ?C) ]
+                    
+[sameIndividualAs2: (?P rdf:type owl:InverseFunctionalProperty), (?A ?P ?B), (?C ?P ?B) 
+                    -> (?A owl:sameIndividualAs ?C) ]
+                    
+[sameIndividualAs3: (?X owl:sameAs ?Y), (?X rdf:type owl:Thing), (?Y rdf:type owl:Thing) 
+                    -> (?X owl:sameIndividualAs ?Y) ]
+                    
+
+[sameIndividualAs4: (?X owl:sameIndividualAs ?Y), (?X ?P ?V) -> (?Y ?P ?V) ]
+
+[sameIndividualAs5: (?X owl:sameIndividualAs ?Y), (?V ?P ?X) -> (?V ?P ?Y) ]
+
+[sameIndividualAs6: (?X owl:sameIndividualAs ?Y) -> (?X rdf:type owl:Thing) ]
+
+
+#### NUNO: MAPPING RULES
+[eqProperty: (?X ?P ?V), (?P owl:equivalentProperty ?Y) -> (?X ?Y ?V) ]
+[eqProperty: (?X ?P ?V), (?P owl:equivalentClass ?Y) -> (?X ?Y ?V) ]
+[eqClass: (?X ?P ?V), (?V owl:equivalentClass ?Y) -> (?X ?P ?Y) ]
+
+[eqIndividualClass: (?X ?P ?V), (?V owl:sameIndividualAs ?Y) -> (?X ?P ?Y) ]
+[eqSameAsClass: (?X ?P ?V), (?V owl:sameAs ?Y) -> (?X ?P ?Y) ]
+[eqIndividualProperty: (?X ?P ?V), (?P owl:sameIndividualAs ?Y) -> (?X ?Y ?V) ]
+[eqSameAsProperty: (?X ?P ?V), (?P owl:sameAs ?Y) -> (?X ?Y ?V) ]
+
+#			RdfRegWikidata.NARROWER_EXTERNAL_CLASS, RdfRegOwl.equivalentProperty, RdfRegSkos.narrowMatch);
+#			RdfRegWikidata.BROADER_CONCEPT, RdfRegOwl.equivalentProperty, RdfRegSkos.broadMatch);
+#			RdfRegWikidata.MAPPING_RELATION_TYPE, RdfRegOwl.equivalentProperty, RdfRegSkos.mappingRelation);
+#			RdfRegWikidata.EXTERNAL_SUBPROPERTY, RdfRegOwl.equivalentProperty, RdfRegSkos.broadMatch);//there is no superProperty in rdfs
+#			RdfRegWikidata.EXTERNAL_SUPERPROPERTY, RdfRegOwl.equivalentProperty, RdfRegRdfs.subPropertyOf);

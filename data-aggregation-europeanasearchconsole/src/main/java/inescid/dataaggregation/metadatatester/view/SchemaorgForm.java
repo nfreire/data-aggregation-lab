@@ -40,6 +40,7 @@ public class SchemaorgForm extends UriForm {
 
 	String operation=null;
 	boolean uriChecked=false;
+	boolean uriValidated=false;
 	
 	List<ResourceView> creativeWorks;
 	List<ResourceView> otherResources;
@@ -65,7 +66,10 @@ public class SchemaorgForm extends UriForm {
 		message=validateUri();
 		if(message!=null)
 			return;
+		loadAndExtractDataFromUri();
+	}
 
+	private void loadAndExtractDataFromUri() {
 		creativeWorks=new ArrayList<ResourceView>();
 		otherResources=new ArrayList<ResourceView>();		
 		
@@ -80,14 +84,15 @@ public class SchemaorgForm extends UriForm {
 			request.fetch();
 			if(request.getResponseStatusCode()==200) {
 				Model model=Jena.createModel();
-				any23.extract(request.getContentAsString(), request.getUrl(), request.getMimeType(), 
+				any23.extract(request.getResponseContentAsString(), request.getUrl(), request.getMimeType(), 
 						request.getCharset()!=null ? request.getCharset().name() : StandardCharsets.UTF_8.name(),
-						new JenaTripleHandler(model));
-
+								new JenaTripleHandler(model));
+				
 				checkForLinkedResources(model);
 				
 				for(Resource res: model.listSubjects().toList()) {
 					ResourceView resView=new ResourceView(res, false);
+					if(!resView.hasProperties()) continue;
 					if(resView.isCreativeWork())
 						creativeWorks.add(resView);
 					else
@@ -143,5 +148,21 @@ public class SchemaorgForm extends UriForm {
 
 	public List<ResourceView> getOtherResources() {
 		return otherResources;
+	}
+
+	public void validateSchemaorgUri() {
+		uriChecked=true;
+		uriValidated=true;
+		message=validateUri();
+		if(message!=null)
+			return;
+		loadAndExtractDataFromUri();
+		for(ResourceView res: creativeWorks) {
+			res.setValidation(SchemaorgChoValidator.validate(res.getResource()));
+		}
+	}
+
+	public boolean isUriValidated() {
+		return uriValidated;
 	}
 }

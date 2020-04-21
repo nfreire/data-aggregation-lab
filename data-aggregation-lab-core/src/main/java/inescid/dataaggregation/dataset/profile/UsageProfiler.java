@@ -1,8 +1,12 @@
 package inescid.dataaggregation.dataset.profile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
@@ -12,7 +16,9 @@ import org.apache.jena.rdf.model.StmtIterator;
 import inescid.dataaggregation.data.RegRdf;
 import inescid.dataaggregation.data.RegRdfs;
 
-public class UsageProfiler {
+public class UsageProfiler implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+
 	int maxWarns=5;
 	
 //	boolean optionProfileObjectsOfTriples=true;
@@ -99,10 +105,12 @@ public class UsageProfiler {
 		//harvest all wd entities and properties used, and profile them
 		sb.append("["+collectedCount+" resources - Usage profile: "+ usageStats.getClassesStats().size()).append(" classes, ");
 		int propCnt=0;
+		HashSet<String> uniqueProps=new HashSet<String>();
 		for (Entry<String, ClassUsageStats> entry : getUsageStats().getClassesStats().entrySet() ) {
 			propCnt+=entry.getValue().getPropertiesStats().size();
-		}		
-		sb.append(propCnt).append(" properties]");
+			uniqueProps.addAll(entry.getValue().getPropertiesStats().keySet());
+		}
+		sb.append(propCnt).append(" properties. ").append(uniqueProps.size()).append(" unique properties]");
 		return sb.toString();
 	}
 	public String printShort() {
@@ -118,6 +126,8 @@ public class UsageProfiler {
 //	public void setOptionProfileObjectsOfTriples(boolean b) {
 //		optionProfileObjectsOfTriples=b;
 //	}
-
-
+	public void persist(File csvFile ) throws IOException {
+		FileUtils.write(csvFile , getUsageStats().toCsv(),
+				"UTF-8");
+	}
 }

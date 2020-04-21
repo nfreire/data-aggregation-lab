@@ -1,6 +1,7 @@
 package inescid.dataaggregation.dataset.profile;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,13 +15,15 @@ import org.apache.jena.rdf.model.Statement;
 
 import opennlp.tools.util.StringUtil;
 
-public class ProfileOfValueDistribution  implements ProfileOfInterface{
+public class ProfileOfValueDistribution  implements ProfileOfInterface, Serializable{
+	private static final long serialVersionUID = 1L;
 	List<ValueDistribution> distribution=null;
 	int discardValuesUnderCount=2;
 	float discardValuesUnderPercentage=0.01f;
 	Calc calc;
 	
-	public class ValueDistribution implements Comparable<ValueDistribution>{
+	public class ValueDistribution implements Comparable<ValueDistribution>, Serializable{
+		private static final long serialVersionUID = 1L;
 		public String value;
 		public double distribution;
 		public ValueDistribution(String value, double distribution) {
@@ -44,7 +47,8 @@ public class ProfileOfValueDistribution  implements ProfileOfInterface{
 			csv.printRecord(value, distribution*100);
 		}
 	}
-	public class Calc{
+	public class Calc implements Serializable{
+		private static final long serialVersionUID = 1L;
 		SortedMap<String, Integer> valueCounts=new TreeMap<>();
 		int totalCount;
 		

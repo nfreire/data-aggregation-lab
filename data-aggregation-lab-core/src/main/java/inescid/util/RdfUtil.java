@@ -2,6 +2,7 @@ package inescid.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,16 +11,22 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
-import java.text.ParseException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.graph.Node;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -38,6 +45,8 @@ import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.data.RegOwl;
 import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.RegSchemaorg;
 import inescid.dataaggregation.data.RegSkos;
 
 
@@ -88,6 +97,38 @@ public class RdfUtil {
 			Statement st = model.createStatement(model.createResource(subjectUri), pred, object);
 			model.add(st);
 			return st;
+		}
+		public static Statement createStatement(Triple triple) {
+			if(triple.getObject().isBlank())
+				return createStatement(createResource(triple.getSubject().getURI() ), 
+						createProperty(triple.getPredicate().getURI()),  
+						createResource(triple.getObject().getBlankNodeId().getLabelString()) );
+			if(triple.getObject().isURI())
+				return createStatement(createResource(triple.getSubject().getURI() ), 
+						createProperty(triple.getPredicate().getURI()),  
+						createResource(triple.getObject().getURI()) );
+			if(triple.getObject().isLiteral())
+				return createStatement(createResource(triple.getSubject().getURI() ), 
+						createProperty(triple.getPredicate().getURI()),  
+						createLiteral(triple.getObject())
+						);
+			return null;
+		}
+		private static RDFNode createLiteral(Node n) {
+			if(n.getLiteralLanguage()!=null)
+				return createLiteral(n.getLiteralValue(), n.getLiteralLanguage());
+			if(n.getLiteralDatatype()!=null)
+				return createLiteral(n.getLiteralValue(), n.getLiteralDatatype());
+			return createLiteral(n.getLiteralValue()); 
+		}
+		private static RDFNode createLiteral(Object literalValue, String literalLanguage) {
+			return ResourceFactory.createLangLiteral(literalValue.toString(), literalLanguage);
+		}
+		private static RDFNode createLiteral(Object literalValue, RDFDatatype rdfDatatype) {
+			return ResourceFactory.createTypedLiteral(literalValue.toString(), rdfDatatype);
+		}
+		private static RDFNode createLiteral(Object literalValue) {
+			return ResourceFactory.createPlainLiteral(literalValue.toString());
 		}
 	}
 	
@@ -207,18 +248,104 @@ public class RdfUtil {
 		reader.read(model, content, null);
 		return model;
 	}
+
+	final static String patternCharInIriPre="((resource|about)\\s*=\\s*\"[^\"]*)";
+	final static String patternCharInIriSuf="([^\"]*\")";
+	final static String patternCharInIriPreTtl="(<[^>]*)(";
+	final static String patternCharInIriSufTtl=")([^>]*>)";
+	final static Pattern patternSpaceInIri=Pattern.compile(patternCharInIriPre+"\\s"+patternCharInIriSuf);
+	final static Pattern patternSpaceInIriTtl=Pattern.compile(patternCharInIriPreTtl+" "+patternCharInIriSufTtl);
+	final static Pattern patternIllegalChar=Pattern.compile("Illegal character in IRI \\([^\\)]*'(.)'");
+	
+	
 	public static Model readRdf(InputStream content, Lang l) throws RiotException {
 		try {
-			if(l==null)	return readRdf(IOUtils.toByteArray(content));
+			byte[] byteArray = IOUtils.toByteArray(content);			
+			if(l==null)	return readRdf(byteArray);
+			
+			Model model = ModelFactory.createDefaultModel();
+			RDFReader reader = model.getReader(l.getName());
+			try {
+				reader.read(model, new ByteArrayInputStream(byteArray), null);
+				return model;
+			} catch (RiotException e) {
+				if(e.getMessage().startsWith("Bad character in IRI (space)")) {
+						String asStringRdf=new String(byteArray, StandardCharsets.UTF_8);
+//						System.err.println(asStringRdf);
+						for(boolean found=true; found; ) {
+							Matcher m=(l.equals(Lang.RDFXML) ? patternSpaceInIri : patternSpaceInIriTtl).matcher(asStringRdf);
+							if(m.find()) {
+								asStringRdf=m.replaceAll("$1%20$3");
+								found=true;
+							}else
+								found=false;
+						}
+//						System.err.println(asStringRdf);
+						reader.read(model, new StringReader(asStringRdf), null);
+						return model;
+				}else if(e.getMessage().contains("] Illegal character in IRI")) {
+//						 (codepoint 0x7C, '|'): 
+					Matcher m1 = patternIllegalChar.matcher(e.getMessage());
+					if(m1.find()) {
+						String asStringRdf=new String(byteArray, StandardCharsets.UTF_8);
+//						System.err.println(asStringRdf);
+						for(boolean found=true; found; ) {
+							String charPattern= l.equals(Lang.RDFXML) ?
+									patternCharInIriPre+"\\"+m1.group(1)+patternCharInIriSuf :
+										patternCharInIriPreTtl+"\\"+m1.group(1)+patternCharInIriSufTtl;
+							Pattern patternCharInIri=Pattern.compile(charPattern);
+							Matcher m=patternCharInIri.matcher(asStringRdf);
+							if(m.find()) {
+								asStringRdf=m.replaceAll("$1%20$3");
+								found=true;
+							}else
+								found=false;
+						}
+//						System.err.println(asStringRdf);
+						reader.read(model, new StringReader(asStringRdf), null);
+						return model;
+					}
+					throw e;
+				} else
+					throw e;
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
-		Model model = ModelFactory.createDefaultModel();
-		RDFReader reader = model.getReader(l.getName());
-		reader.setProperty("allowBadURIs", "true");
-		reader.read(model, content, null);
-		return model;
 	}
+//	public static Model readRdf(InputStream content, Lang l) throws RiotException {
+//		try {
+//			if(l==null)	return readRdf(IOUtils.toByteArray(content));
+//		} catch (IOException e) {
+//			throw new RuntimeException(e.getMessage(), e);
+//		}
+//		try {
+//			Model model = ModelFactory.createDefaultModel();
+//			RDFReader reader = model.getReader(l.getName());
+//			reader.setProperty("allowBadURIs", "true");
+//			reader.read(model, content, null);
+//			return model;
+//		} catch (RiotException e) {
+//			if(e.getMessage().startsWith("Bad character in IRI (space)")) {
+//				System.err.println("Bad IRI: ");
+//				System.err.println(e.getMessage());
+//				try {
+//					Pattern patternSpaceInIri=Pattern.compile("((resource|about)\\s*=\\s*\"[^\"]+)\\s([^\"]*\")");
+//					String asStringRdf=new String(IOUtils.toByteArray(content), StandardCharsets.UTF_8);
+//					Matcher m=patternSpaceInIri.matcher(asStringRdf);
+//					System.err.println(m.replaceAll("$1%20$2"));
+//					
+//					throw e;
+//				} catch (IOException e2) {
+//					throw new RuntimeException(e.getMessage(), e2);
+//				}
+//			} else
+//				throw e;
+//		}
+//	}
+	
+	
+	
 	public static Model readRdf(byte[] content, Lang l) throws RiotException {
 		if(l==null)	return readRdf(content);
 		ByteArrayInputStream in=new ByteArrayInputStream(content);
@@ -238,7 +365,11 @@ public class RdfUtil {
 //			rdfString = rdfString.substring(1);
 //	    }
 //		System.out.println(rdfString);
-		return readRdf(rdfReq.getResponse());
+		try {
+			return readRdf(rdfReq.getResponse());
+		} catch (RiotException e) {
+			throw new AccessException(uri, e);
+		}
 	}
 	public static Model readRdfFromUriLowTimeout(String uri) throws AccessException, InterruptedException, IOException {
 		UrlRequest urlReq=new UrlRequest(uri, "Accept", CONTENT_TYPES_ACCEPT_HEADER);
@@ -425,4 +556,63 @@ public class RdfUtil {
 		}
 		return stms;
 	}
+
+	public static List<Resource> getTypes(Resource r) {
+		List<Resource> ret=new ArrayList<Resource>();
+		for(Statement st: r.listProperties(RegRdf.type).toList()) {
+			if(st.getObject().isURIResource())
+				ret.add(st.getObject().asResource());
+		}
+		return ret;
+	}
+	
+	public static Literal getLabelForResource(Resource from) {
+		return getLabelForResource(from, null);
+	}
+	public static Literal getLabelForResource(Resource from, String language) {
+		Literal bestChoice=null;
+		for(Statement st : from.listProperties(RegRdfs.label).toList()){
+			if(!st.getObject().isLiteral()) continue;
+			Literal lit = st.getObject().asLiteral();
+			if(language==null) {
+				return lit;
+			} else {
+				if(lit.getLanguage().equals(language))
+					return lit;
+				bestChoice= bestChoice == null ? lit : bestChoice; 
+			}
+		}
+		if(bestChoice!=null)
+			return bestChoice;
+		for(Statement st : from.listProperties(RegSkos.prefLabel).toList()){
+			if(!st.getObject().isLiteral()) continue;
+			Literal lit = st.getObject().asLiteral();
+			if(language==null) {
+				return lit;
+			} else {
+				if(lit.getLanguage().equals(language))
+					return lit;
+				bestChoice= bestChoice == null ? lit : bestChoice; 
+			}
+		}
+		if(bestChoice!=null)
+			return bestChoice;
+		for(Statement st : from.listProperties(RegSchemaorg.name).toList()){
+			if(!st.getObject().isLiteral()) continue;
+			Literal lit = st.getObject().asLiteral();
+			if(language==null) {
+				return lit;
+			} else {
+				if(lit.getLanguage().equals(language))
+					return lit;
+				bestChoice= bestChoice == null ? lit : bestChoice; 
+			}
+		}
+		return bestChoice;
+	}
+
+	public static Model readRdf(File rdfFile, Lang lang) throws RiotException, IOException {
+		return readRdf(FileUtils.readFileToByteArray(rdfFile), lang);
+	}
+	
 }

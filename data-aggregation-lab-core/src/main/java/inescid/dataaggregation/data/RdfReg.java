@@ -50,9 +50,12 @@ public final class RdfReg {
 	public static final Property DCTERMS_PROVENANCE = ResourceFactory.createProperty(NsDcterms+"provenance");
 	public static final Property DCTERMS_ALTERNATIVE = ResourceFactory.createProperty(NsDcterms+"alternative");
 	public static final Property DC_CREATOR = ResourceFactory.createProperty(NsDc+"creator");
+	public static final Property DCTERMS_CREATOR = ResourceFactory.createProperty(NsDcterms+"creator");
 	public static final Property DC_CONTRIBUTOR = ResourceFactory.createProperty(NsDc+"contributor");
+	public static final Property DCTERMS_CONTRIBUTOR = ResourceFactory.createProperty(NsDcterms+"contributor");
 	public static final Property DCTERMS_PUBLISHER = ResourceFactory.createProperty(NsDcterms+"publisher");
 	public static final Property DC_SUBJECT = ResourceFactory.createProperty(NsDc+"subject");
+	public static final Property DCTERMS_SUBJECT = ResourceFactory.createProperty(NsDcterms+"subject");
 	public static final Property DC_LANGUAGE = ResourceFactory.createProperty(NsDc+"language");
 	public static final Property DC_DESCRIPTION = ResourceFactory.createProperty(NsDc+"description");
 	public static final Property IIIF_NAV_DATE = ResourceFactory.createProperty("http://iiif.io/api/presentation/2#presentationDate");
@@ -72,6 +75,7 @@ public final class RdfReg {
 	public static final Property DCTERMS_TEMPORAL_COVERAGE = ResourceFactory.createProperty(NsDcterms+"temporalCoverage");
 	public static final Property DCTERMS_TEMPORAL = ResourceFactory.createProperty(NsDcterms+"temporal");
 	public static final Property DC_COVERAGE = ResourceFactory.createProperty(NsDc+"coverage");
+	public static final Property DCTERMS_COVERAGE = ResourceFactory.createProperty(NsDcterms+"coverage");
 	public static final Property DCTERMS_SPATIAL = ResourceFactory.createProperty(NsDcterms+"spatial");
 	public static final Resource SKOS_CONCEPT = ResourceFactory.createResource("http://www.w3.org/2004/02/skos/core#Concept");
 	public static final Resource SKOS_CONCEPT_SCHEME = ResourceFactory.createResource("http://www.w3.org/2004/02/skos/core#ConceptScheme");
@@ -201,12 +205,14 @@ public final class RdfReg {
 	public static final Property SCHEMAORG_QUERY = ResourceFactory.createProperty(NsSchemaOrg+"query");
 	public static final Property DCAT_ACCESS_SERVICE = ResourceFactory.createProperty(NsDcat+"accessService");
 	public static final Property DCAT_DISTRIBUTION = ResourceFactory.createProperty(NsDcat+"distribution");
+	public static final Property DCAT_ACCESS_URL = ResourceFactory.createProperty(NsDcat+"accessUrl");
 	public static final Property DCAT_DOWNLOAD_URL = ResourceFactory.createProperty(NsDcat+"downloadURL");
 	public static final Property DCAT_MEDIA_TYPE = ResourceFactory.createProperty(NsDcat+"mediaType");
 	public static final Property DCAT_ENDPOINT_URL = ResourceFactory.createProperty(NsDcat+"endpointURL");
 	public static final Resource DCAT_DATA_SERVICE  = ResourceFactory.createResource(NsDcat+"DataService");
 	public static final Resource DCAT_DISTRIBUTION_CLASS  = ResourceFactory.createResource(NsDcat+"Distribution");
 	public static final Property PROV_WAS_GENERATED_BY = ResourceFactory.createProperty(NsProv+"wasGeneratedBy");
+	public static final Property VOID_SPARQL_ENDPOINT = ResourceFactory.createProperty(NsVoid+"sparqlEndpoint");
 	
 	
 	

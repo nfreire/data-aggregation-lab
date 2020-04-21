@@ -3,6 +3,7 @@ package inescid.util;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.jena.query.Dataset;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QuerySolution;
@@ -20,18 +21,39 @@ public class SparqlClient {
 	}
 	
 	protected final String baseUrl; 
-	protected final String queryPrefix;
+	protected final Dataset dataset; 
+	protected String queryPrefix;
 	protected boolean debug=false;
+	protected int retries=3;
 	
 	public SparqlClient(String baseUrl, String queryPrefix) {
 		super();
 		this.baseUrl = baseUrl;
-		this.queryPrefix = queryPrefix;
+		this.dataset = null;
+		this.queryPrefix = queryPrefix ==null? "" : queryPrefix;
 	}
 	
 	public SparqlClient(String baseUrl, Map<String, String> queryPrefixes) {
 		super();
 		this.baseUrl = baseUrl;
+		this.dataset = null;
+		String tmp="";		
+		for(Entry<String, String> ns : queryPrefixes.entrySet()) {
+			tmp+=String.format("PREFIX %s: <%s>\n", ns.getKey(), ns.getValue());
+		}
+		queryPrefix=tmp;
+	}
+	public SparqlClient(Dataset dataset, String queryPrefix) {
+		super();
+		this.dataset = dataset;
+		this.baseUrl = null;
+		this.queryPrefix = queryPrefix;
+	}
+	
+	public SparqlClient(Dataset dataset, Map<String, String> queryPrefixes) {
+		super();
+		this.baseUrl = null;
+		this.dataset = dataset;
 		String tmp="";		
 		for(Entry<String, String> ns : queryPrefixes.entrySet()) {
 			tmp+=String.format("PREFIX %s: <%s>\n", ns.getKey(), ns.getValue());
@@ -44,7 +66,7 @@ public class SparqlClient {
 		String fullQuery = queryPrefix + queryString;
 		if(debug)
 			System.out.println(fullQuery);
-		QueryExecution qexec = QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
+		QueryExecution qexec = createQueryExecution(fullQuery);
 		try {
 			ResultSet results = qexec.execSelect();
 //            ResultSetFormatter.out(System.out, results, query);
@@ -75,6 +97,12 @@ public class SparqlClient {
 		return wdCount;
 	}
 	
+	private QueryExecution createQueryExecution(String fullQuery) {
+		if(baseUrl!=null)
+			return QueryExecutionFactory.sparqlService(this.baseUrl, fullQuery);
+		return QueryExecutionFactory.create(fullQuery, dataset);
+	}
+
 	public int queryWithPaging(String queryString, int resultsPerPage, String orderVariableName, Handler handler) throws Exception {
 		int[] offsett=new int[] {0};
 		boolean concluded=false;
@@ -84,10 +112,10 @@ public class SparqlClient {
 					"OFFSET %d ", queryPrefix, queryString, (orderVariableName ==null ? "" : "ORDER BY ("+orderVariableName+")\n"), resultsPerPage, offsett[0]);
 			if(debug)
 				System.out.println(fullQuery);
-			RetryExec<Boolean, Exception> exec=new RetryExec<Boolean, Exception>(3) {
+			RetryExec<Boolean, Exception> exec=new RetryExec<Boolean, Exception>(retries) {
 				@Override
 				protected Boolean doRun() throws Exception {
-					QueryExecution qexec = QueryExecutionFactory.sparqlService(baseUrl, fullQuery);
+					QueryExecution qexec = createQueryExecution(fullQuery);
 					try {
 						ResultSet results = qexec.execSelect();
 			//            ResultSetFormatter.out(System.out, results, query);
@@ -113,7 +141,7 @@ public class SparqlClient {
 							System.out.printf("QUERY FINISHED - %d resources\n", offsett);            
 						return false;
 					} catch (Exception ex) {
-						System.err.println("WARN: Error on query: "+fullQuery);
+						System.err.println("WARN: (will retry 3x) Error on query: "+fullQuery);
 						throw ex;
 					} finally {
 						qexec.close();
@@ -207,5 +235,9 @@ public class SparqlClient {
 			qexec.close();
 		}
 		return wdCount;
+	}
+
+	public void setRetries(int i) {
+		this.retries=i;
 	}
 }

@@ -17,7 +17,6 @@ import org.h2.mvstore.MVStore;
 
 import eu.europeana.corelib.edm.utils.EdmUtils;
 import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
-import inescid.dataaggregation.casestudies.coreference.SameAsSets;
 import inescid.europeanarepository.EdmMongoServer;
 import inescid.europeanarepository.EdmMongoServer.FullBeanHandler;
 import inescid.util.RdfUtil;
@@ -105,6 +104,9 @@ public class ProcessRepositoryForEdmMeasurements {
 							System.err.println("Error reading from repository: " + uri);
 							System.err.println(e.getMessage());
 	//					e.printStackTrace();
+						} catch (Exception e) {
+							System.err.println("Error: " + uri);
+							System.err.println(e.getMessage());							
 						}
 					}finally {
 						try {
