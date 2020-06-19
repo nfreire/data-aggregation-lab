@@ -8,14 +8,14 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 
+import inescid.dataaggregation.data.validation.ValidationResult;
+import inescid.dataaggregation.data.validation.EdmXmlValidator;
+import inescid.dataaggregation.data.validation.EdmXmlValidator.Schema;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.DatasetProfile;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.IiifDataset;
-import inescid.dataaggregation.dataset.validate.ValidationResult;
-import inescid.dataaggregation.dataset.validate.Validator;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.util.XmlUtil;
 import inescid.util.googlesheets.GoogleSheetsCsvUploader;
 
@@ -33,7 +33,7 @@ public class JobValidateEdm extends JobWorker implements Runnable {
 			File profileFolder = Global.getPublicationRepository().getProfileFolder(dataset);
 			if(!profileFolder.exists())
 				profileFolder.mkdirs();
-			Validator validator=new Validator(Global.getValidatorResourceFolder(), validationSchema);
+			EdmXmlValidator validator=new EdmXmlValidator(Global.getValidatorResourceFolder(), validationSchema);
 			File validationCsvFile = new File(profileFolder, "edm-validation.csv");
 			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(validationCsvFile, Global.UTF8);
 			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);

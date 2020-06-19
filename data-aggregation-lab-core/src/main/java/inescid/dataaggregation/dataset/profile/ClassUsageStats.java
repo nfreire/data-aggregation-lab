@@ -20,8 +20,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
 import inescid.util.StatisticCalcMean;
 import inescid.util.datastruct.MapOfInts;
 
@@ -202,7 +202,7 @@ public class ClassUsageStats implements ProfileOfInterface, Serializable {
 			
 			StmtIterator propertiesRangeOf = r.getModel().listStatements(null, null, r);
 			for(Statement st : propertiesRangeOf.toList()) {
-				if(st.getPredicate().equals(RegRdf.type)) continue;
+				if(st.getPredicate().equals(Rdf.type)) continue;
 					getPropertiesObjectStats().incrementTo(st.getPredicate().getURI());
 			}
 		}

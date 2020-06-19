@@ -17,6 +17,11 @@ import org.apache.jena.query.ReadWrite;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.ResIterator;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.system.Txn;
@@ -25,64 +30,63 @@ import org.apache.jena.tdb2.TDB2Factory;
 import inescid.util.SparqlClient;
 
 public class TriplestoreJenaTbd2 extends SparqlClient implements Closeable {
-	public TriplestoreJenaTbd2(File dbFolder) {
-		this(TDB2Factory.connectDataset(dbFolder.getAbsolutePath()));
+	public TriplestoreJenaTbd2(File dbFolder, ReadWrite openFor) {
+		this(TDB2Factory.connectDataset(dbFolder.getAbsolutePath()), openFor);
 	}
 	
-	private TriplestoreJenaTbd2(Dataset dataset) {
+	private TriplestoreJenaTbd2(Dataset dataset, ReadWrite openFor) {
 		super(dataset, "");
-		dataset.begin(ReadWrite.READ);
+		dataset.begin(openFor);
 	}
 	
-	public TriplestoreJenaTbd2(File dbFolder, String preffixes) {
-		this(dbFolder);
+	public TriplestoreJenaTbd2(File dbFolder, String preffixes, ReadWrite openFor) {
+		this(dbFolder, openFor);
 		this.queryPrefix=preffixes;
 	}
-
+ 	
 	public void close() {
+		dataset.commit();
 		dataset.end();
 		dataset.close();
+		File lockFile=new File(TDB2Factory.location(dataset).getDirectoryPath(), "tdb.lock");
+		if(lockFile.exists())
+			lockFile.delete();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		// Make a TDB-backed dataset
-		  String directory = "C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\triplestore-wikidata" ;
-		  Dataset ds = TDB2Factory.connectDataset(directory) ;
-	       Txn.executeWrite(ds, ()->{
-	    	   try {
-//				InputStream r = Files.newInputStream(new File("C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\wikidata.rt").toPath());
-//				    RDFDataMgr.read(ds, r, Lang.RDFTHRIFT);
-//				    r.close();
-				    InputStream r = Files.newInputStream(new File("C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\wikidata2.rt").toPath());
-				    RDFDataMgr.read(ds, r, Lang.RDFTHRIFT);
-				    r.close();
+	public void importTriples(File rdfFile, Lang lang) {
+			try {
+				InputStream r = Files.newInputStream(rdfFile.toPath());
+				RDFDataMgr.read(dataset, r, lang);
+				r.close();
 			} catch (IOException e) {
 				throw new RuntimeException(e.getMessage(), e);
 			}
-	       }) ;
-	       
-//		  Txn.executeRead(ds, ()->{
-//			  
-//			  try {
-//				FileOutputStream fos = new FileOutputStream(new File("C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\wikidata.trig"));
-//				   RDFDataMgr.write(fos, ds, Lang.TRIG) ;
-//				   fos.close();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//	       }) ;		 
-		  
-//		  Dataset dsW = DatasetFactory.wrap(ds.getDefaultModel()) ;
-		  
-//		  Txn.executeRead(ds, ()->{
-//			  try (QueryExecution qExec = QueryExecutionFactory.create("select ?s (<http://www.wikidata.org/prop/direct/P1268> AS ?p) ?o WHERE { ?s <http://www.wikidata.org/prop/direct/P2888> ?o. FILTER regex(str(?o), \"http://schema.org\")}", ds) ) {
-//				  ResultSet rs = qExec.execSelect() ;
-//				  ResultSetFormatter.out(rs) ;
-//			  }
-//		  }) ;		 
-//		  ds.close();
-		  
-		  
-		  
 	}
+	
+	public static void main(String[] args) throws Exception {
+//		String directory = "C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\triplestore-wikidata" ;
+//		File importFile=new File("C:\\Users\\nfrei\\Desktop\\data\\wikidata-to-edm\\wikidata2.rt");
+
+		String directory = "C:\\Users\\nfrei\\Desktop\\data\\entity-collection-enrich\\triplestore-viaf";
+		File importFile=new File("C:\\Users\\nfrei\\Desktop\\data\\coreference-semanticweb\\viaf.rt");
+		
+		Lang importFileLang=Lang.RDFTHRIFT;
+		
+		TriplestoreJenaTbd2 ts=new TriplestoreJenaTbd2(new File(directory), ReadWrite.WRITE);
+		ts.importTriples(importFile, importFileLang);
+		ts.close();
+	}
+
+	public StmtIterator listStatements(Resource s, Property p, RDFNode o) {
+		return dataset.getDefaultModel().listStatements(s, p, o);
+	}
+	
+	public ResIterator listSubjectsWithProperty(Property p, RDFNode o) {
+		return dataset.getDefaultModel().listSubjectsWithProperty(p, o);
+	}
+	
+	public Model getModel() {
+		return dataset.getDefaultModel();
+	}
+	
 }

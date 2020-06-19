@@ -13,10 +13,12 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RdfReg;
 import inescid.dataaggregation.data.RdfsClassHierarchy;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.dataaggregation.dataset.convert.rdfconverter.RdfConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.SchemaOrgToEdmConversionSpecification;
 import inescid.util.AccessException;
@@ -76,48 +78,48 @@ public class SchemaOrgToEdmDataConverter {
 		Resource mainTargetResource=conv.convert(source);
 		if(mainTargetResource==null)
 			return null;
-		ResIterator aggregations = mainTargetResource.getModel().listResourcesWithProperty(RegRdf.type, RdfReg.ORE_AGGREGATION);
+		ResIterator aggregations = mainTargetResource.getModel().listResourcesWithProperty(Rdf.type, Ore.Aggregation);
 		Resource ag = aggregations.next();
-		mainTargetResource.getModel().add(ag, RegEdm.aggregatedCHO, mainTargetResource);
+		mainTargetResource.getModel().add(ag, Edm.aggregatedCHO, mainTargetResource);
 		
 		if(dataProvider!=null) {
-			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RegEdm.dataProvider, (String) null);
+			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, Edm.dataProvider, (String) null);
 			if(!provs.hasNext())
-				mainTargetResource.getModel().add(ag, RegEdm.dataProvider, dataProvider);
+				mainTargetResource.getModel().add(ag, Edm.dataProvider, dataProvider);
 			if(provider==null) {
-				provs = mainTargetResource.getModel().listStatements(ag, RegEdm.provider, (String) null);
+				provs = mainTargetResource.getModel().listStatements(ag, Edm.provider, (String) null);
 				if(!provs.hasNext())
-					mainTargetResource.getModel().add(ag, RegEdm.provider, dataProvider);
+					mainTargetResource.getModel().add(ag, Edm.provider, dataProvider);
 			}
 		}
 		
 		if(provider!=null) {
-			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, RegEdm.provider, (String) null);
+			StmtIterator provs = mainTargetResource.getModel().listStatements(ag, Edm.provider, (String) null);
 			if(!provs.hasNext())
-				mainTargetResource.getModel().add(ag, RegEdm.provider, provider);
+				mainTargetResource.getModel().add(ag, Edm.provider, provider);
 		}
 		if(datasetRights!=null) {
-			StmtIterator rights = mainTargetResource.getModel().listStatements(ag, RegEdm.rights, (String) null);
+			StmtIterator rights = mainTargetResource.getModel().listStatements(ag, Edm.rights, (String) null);
 			if(!rights.hasNext())
-				mainTargetResource.getModel().add(ag, RegEdm.rights, mainTargetResource.getModel().createResource(datasetRights));
+				mainTargetResource.getModel().add(ag, Edm.rights, mainTargetResource.getModel().createResource(datasetRights));
 		}
 		
 		// logic to calculate hasViews would be to complex to implement in the RdfConverter. So we do like this:
 		HashSet<String> wrUris=new HashSet<>();
-		StmtIterator provs = mainTargetResource.getModel().listStatements(null, RegRdf.type, RegEdm.WebResource);
+		StmtIterator provs = mainTargetResource.getModel().listStatements(null, Rdf.type, Edm.WebResource);
 		while(provs.hasNext()) {
 			Statement stm = provs.next();
 			wrUris.add(stm.getSubject().getURI());
 		}
-		for(Resource schemaWebResourceType: new Resource[] {RdfReg.SCHEMAORG_IMAGE_OBJECT, RdfReg.SCHEMAORG_MEDIA_OBJECT, RdfReg.SCHEMAORG_AUDIO_OBJECT}) {
-			StmtIterator mediaStms = source.getModel().listStatements(null, RegRdf.type, schemaWebResourceType);
+		for(Resource schemaWebResourceType: new Resource[] {Schemaorg.ImageObject, Schemaorg.MediaObject, Schemaorg.AudioObject}) {
+			StmtIterator mediaStms = source.getModel().listStatements(null, Rdf.type, schemaWebResourceType);
 			while(mediaStms.hasNext()) {
 				Statement medStm = mediaStms.next();				
-				StmtIterator contStms = source.getModel().listStatements(medStm.getSubject(), RdfReg.SCHEMAORG_CONTENT_URL, (RDFNode) null);
+				StmtIterator contStms = source.getModel().listStatements(medStm.getSubject(), Schemaorg.contentUrl, (RDFNode) null);
 				while(contStms.hasNext()) {
 					Statement stm = contStms.next();		
 					if(!wrUris.contains(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())))
-						mainTargetResource.getModel().add(ag, RegEdm.hasView, mainTargetResource.getModel().createResource(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())));
+						mainTargetResource.getModel().add(ag, Edm.hasView, mainTargetResource.getModel().createResource(RdfUtil.getUriOrLiteralValue(stm.getObject().asResource())));
 				}
 			}
 		}

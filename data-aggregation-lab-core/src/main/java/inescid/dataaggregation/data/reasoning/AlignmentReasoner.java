@@ -10,8 +10,8 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
 import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
 

@@ -40,10 +40,14 @@ import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPa
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Dc;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
+import inescid.dataaggregation.data.validation.EdmXmlValidator.Schema;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
@@ -52,7 +56,6 @@ import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.dataaggregation.dataset.profile.completeness.Dqc10PointRatingCalculator;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.util.AccessException;
@@ -192,11 +195,10 @@ public class ScriptCompareResultingEdm {
 
 	
 	private static final Property[] entitiesProperties=new Property[] {
-			RdfReg.DC_CONTRIBUTOR, RdfReg.DC_CREATOR, RdfReg.DC_COVERAGE, RdfReg.DC_SUBJECT,
-			RdfReg.DCTERMS_CONTRIBUTOR, RdfReg.DCTERMS_CREATOR, RdfReg.DCTERMS_COVERAGE, RdfReg.DCTERMS_SUBJECT,
-			RdfReg.DCTERMS_PROVENANCE, RdfReg.DCTERMS_PUBLISHER, RdfReg.DCTERMS_SPATIAL, RdfReg.DCTERMS_TEMPORAL,
-			RdfReg.DCTERMS_TEMPORAL_COVERAGE,
-			RegEdm.currentLocation
+			Dc.contributor, Dc.creator, Dc.coverage, Dc.subject,
+			DcTerms.contributor, DcTerms.creator, DcTerms.coverage, DcTerms.subject,
+			DcTerms.provenance, DcTerms.publisher, DcTerms.spatial, DcTerms.temporal,
+			Edm.currentLocation
 	};
 	
 	private static int countContextEntitiesWd(String wdUri, Model model) {
@@ -213,8 +215,8 @@ public class ScriptCompareResultingEdm {
 
 	private static int countContextEntitiesEuropeana(Model model) {
 		int cnt=0;
-		List<Resource> chos = model.listResourcesWithProperty(RegRdf.type, RegEdm.ProvidedCHO).toList();
-		chos.addAll(model.listResourcesWithProperty(RegRdf.type, RdfReg.ORE_PROXY).toList());
+		List<Resource> chos = model.listResourcesWithProperty(Rdf.type, Edm.ProvidedCHO).toList();
+		chos.addAll(model.listResourcesWithProperty(Rdf.type, Ore.Proxy).toList());
 //		chos.addAll(model.listResourcesWithProperty(RegRdf.type, RdfReg.ORE_AGGREGATION).toList());
 		for(Resource choRes: chos) {
 			for(Statement st: RdfUtil.listProperties(choRes, entitiesProperties)) {

@@ -9,15 +9,15 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.dataaggregation.data.validation.ValidationResult;
+import inescid.dataaggregation.data.validation.EdmXmlValidator;
+import inescid.dataaggregation.data.validation.EdmXmlValidator.Schema;
 import inescid.dataaggregation.dataset.Global;
-import inescid.dataaggregation.dataset.validate.ValidationResult;
-import inescid.dataaggregation.dataset.validate.Validator;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
-import inescid.opaf.data.profile.MapOfInts;
+import inescid.util.datastruct.MapOfInts;
 import inescid.util.europeana.EdmRdfToXmlSerializer;
 
 public class EdmValidation {
-	final  Validator validator;
+	final  EdmXmlValidator validator;
 	final FileWriterWithEncoding fileWriter;
 	final CSVPrinter csvPrinter;
 	int cntProcessed=0;
@@ -30,9 +30,9 @@ public class EdmValidation {
 		this(outputFolder, null);
 	}
 	
-	public EdmValidation(File validationCsvFile, Validator validator) throws IOException {
+	public EdmValidation(File validationCsvFile, EdmXmlValidator validator) throws IOException {
 		if(validator==null)
-			this.validator=new Validator(Global.getValidatorResourceFolder(), Schema.EDM);
+			this.validator=new EdmXmlValidator(Global.getValidatorResourceFolder(), Schema.EDM);
 		else 
 			this.validator=validator;
 		fileWriter = new FileWriterWithEncoding(validationCsvFile, Global.UTF8);

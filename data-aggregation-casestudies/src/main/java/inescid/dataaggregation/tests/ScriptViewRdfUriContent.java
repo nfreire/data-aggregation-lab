@@ -3,7 +3,7 @@ package inescid.dataaggregation.tests;
 import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.HttpUtil;
 import inescid.util.RdfUtil;
@@ -38,6 +38,7 @@ public class ScriptViewRdfUriContent {
 //			HttpRequest req = HttpUtil.makeRequest("http://id.bnportugal.gov.pt/bib/catbnp/1", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://terminology.lido-schema.org/lido00007", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("http://www.europeana.eu/schemas/edm/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("http://repo.elte-dh.hu:8080/fcrepo/rest/58/42/ae/1e/5842ae1e-e7f1-411a-a6a2-a2dbb4ea2f80/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/elements/1.1/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			HttpRequest req = HttpUtil.makeRequest("http://purl.org/dc/terms/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
@@ -51,11 +52,13 @@ public class ScriptViewRdfUriContent {
 //			req = HttpUtil.makeRequest("https://www.searchculture.gr/aggregator/edm/parthenonfrieze/000077-10442_nxli", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("https://www.semantics.gr/authorities/vocabularies/ecc-books-dataset", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("http://semantics.gr/authorities/ecc-books-dataset/22369282", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-
+//			req = HttpUtil.makeRequest("http://data.europeana.eu/item/2022608/AFM_EB_06264", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+			System.out.println(RdfUtil.isUriResolvable("http://sws.geonames.org/3020251/"));
+			req = HttpUtil.makeRequest("http://sws.geonames.org/3020251/", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 //			req = HttpUtil.makeRequest("https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/id.acdh.oeaw.ac.at/uuid/479793f9-9e6b-c5f4-debf-f929d6860966", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 			
 //			req = HttpUtil.makeRequest("https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/id.acdh.oeaw.ac.at/uuid/3380a45c-3c81-d9a7-e258-737ff9e7d4c0", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
-			req = HttpUtil.makeRequest("https://arche.acdh.oeaw.ac.at/rest/b1/02/7d/f6/b1027df6-90b6-4fd2-a878-3921c9897618/fcr:metadata", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
+//			req = HttpUtil.makeRequest("https://arche.acdh.oeaw.ac.at/rest/b1/02/7d/f6/b1027df6-90b6-4fd2-a878-3921c9897618/fcr:metadata", RdfUtil.CONTENT_TYPES_ACCEPT_HEADER);
 			
 			String content = req.getResponseContentAsString();
 			System.out.println(content);

@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ReadWrite;
 
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.casestudies.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 import inescid.dataaggregation.data.RdfsClassHierarchy;
 import inescid.util.SparqlClient;
 import inescid.util.TriplestoreJenaTbd2;
@@ -21,7 +23,7 @@ public class TestGetWikidataHierarchy {
 		RdfsClassHierarchy hierarchy=new RdfsClassHierarchy();
 		
 		SparqlClient sparqlCl= wikidataTbd2Folder==null ? SparqlClientWikidata.INSTANCE : 
-			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES);
+			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES, ReadWrite.READ);
 		
 //		String r="http://www.wikidata.org/entity/Q68295960";
 		String r="http://www.wikidata.org/entity/Q327333";

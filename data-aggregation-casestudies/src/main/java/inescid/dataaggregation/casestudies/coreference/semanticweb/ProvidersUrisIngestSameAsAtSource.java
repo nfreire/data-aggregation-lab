@@ -36,11 +36,12 @@ import org.h2.mvstore.MVStore;
 import org.springframework.web.client.ResourceAccessException;
 
 import inescid.dataaggregation.casestudies.coreference.Consts;
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
@@ -125,7 +126,7 @@ public class ProvidersUrisIngestSameAsAtSource {
 			for(Statement s: sameAsStms) {
 				if(s.getObject().isURIResource()) {
 					if(isWikidata) {
-						if(!(s.getPredicate().equals(RegSkos.exactMatch) || s.getPredicate().equals(RegSkos.exactMatch) || s.getPredicate().equals(RegOwl.sameAs) || s.getPredicate().equals(RegSchemaorg.sameAs))) {
+						if(!(s.getPredicate().equals(Skos.exactMatch) || s.getPredicate().equals(Skos.exactMatch) || s.getPredicate().equals(Owl.sameAs) || s.getPredicate().equals(Schemaorg.sameAs))) {
 							String prop = s.getPredicate().getURI();
 							prop=prop.substring(prop.lastIndexOf('/')+1);
 							String pattern=WikidataIngest.idsToUris.get(prop);
@@ -171,7 +172,7 @@ System.out.println(t);
 		if(isWikidata) 
 			sameAsStms = RdfUtil.listProperties(ent, WikidataIngest.idsAndAlignsProperties);
 		else
-			sameAsStms = RdfUtil.listProperties(ent, RegOwl.sameAs, RegSkos.exactMatch, RegSkos.closeMatch, RegSchemaorg.sameAs);
+			sameAsStms = RdfUtil.listProperties(ent, Owl.sameAs, Skos.exactMatch, Skos.closeMatch, Schemaorg.sameAs);
 		return sameAsStms;
 	}
 

@@ -11,8 +11,12 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
+import eu.europeana.ld.edm.ORE;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.profile.ProfileOfValueDistribution.ValueDistribution;
 import inescid.dataaggregation.dataset.profile.PropertyProfiler;
@@ -50,7 +54,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append("    <li><a href=\""+c+".html\">"+c+"</a> ("+
 							rep.enrichements.get(c).size()+" CHOs)\n"); 
 					sb.append("<br />(rights in Europeana: ");
-					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RegEdm.rights.getURI());
+					PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(Ore.Aggregation.getURI()).getPropertiesProfiles().get(Edm.rights.getURI());
 					if (propertyProfiler==null) {
 						sb.append("data unavailable");
 					} else {
@@ -69,7 +73,7 @@ public class IiifResourcesEnrichmentReportViewer {
 					sb.append(")");
 
 					sb.append("<br />(rights in IIIF manifests: ");
-					propertyProfiler = rep.iiifUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.IIIF_MANIFEST.getURI()).getPropertiesProfiles().get(RdfReg.DCTERMS_RIGHTS.getURI());
+					propertyProfiler = rep.iiifUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.IIIF_MANIFEST.getURI()).getPropertiesProfiles().get(DcTerms.rights.getURI());
 					if (propertyProfiler==null) {
 						sb.append("data unavailable");
 					} else {
@@ -100,7 +104,7 @@ public class IiifResourcesEnrichmentReportViewer {
 				sb.append("    <li><a href=\""+c+"_wikimedia.html\">"+c+"</a> ("+
 						rep.enrichementsByWikimedia.get(c).size()+" CHOs)\n"); 
 				sb.append("<br />(rights in Europeana: ");
-				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(RdfReg.ORE_AGGREGATION.getURI()).getPropertiesProfiles().get(RegEdm.rights.getURI());
+				PropertyProfiler propertyProfiler = rep.edmUsageProfilers.get(c).getUsageStats().getClassStats(ORE.Aggregation.getURI()).getPropertiesProfiles().get(Edm.rights.getURI());
 				if (propertyProfiler==null) {
 					sb.append("data unavailable");
 				} else {

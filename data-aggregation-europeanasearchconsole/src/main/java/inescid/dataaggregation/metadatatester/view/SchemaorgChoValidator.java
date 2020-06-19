@@ -1,32 +1,12 @@
 package inescid.dataaggregation.metadatatester.view;
 
-import java.util.ArrayList;
-
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.dataaggregation.data.RegSchemaorg;
+import inescid.dataaggregation.data.model.Schemaorg;
 
 public class SchemaorgChoValidator {
 
-	public static class ValidationReport{
-		java.util.List<String> messages=new ArrayList<>();
-		
-		public boolean isClean() {
-			return messages.isEmpty();
-		}
-
-		public void addError(String message) {
-			messages.add(message);
-		}
-
-		public java.util.List<String> getErrors() {
-			return messages;
-		}
-		
-		
-	}
-	
 	public static ValidationReport validate(Resource choRes){
 		ValidationReport report=new ValidationReport();
 		
@@ -38,34 +18,34 @@ public class SchemaorgChoValidator {
 		boolean hasDigital=false;
 		
 		for(Statement st: choRes.listProperties().toList()) {
-			if (st.getPredicate().equals(RegSchemaorg.spatial) 
-					|| st.getPredicate().equals(RegSchemaorg.spatialCoverage)
-					|| st.getPredicate().equals(RegSchemaorg.locationCreated)
-					|| st.getPredicate().equals(RegSchemaorg.temporal)
-					|| st.getPredicate().equals(RegSchemaorg.temporalCoverage)
-					|| st.getPredicate().equals(RegSchemaorg.keywords)
-					|| st.getPredicate().equals(RegSchemaorg.about)
-					|| st.getPredicate().equals(RegSchemaorg.contentLocation)
+			if (st.getPredicate().equals(Schemaorg.spatial) 
+					|| st.getPredicate().equals(Schemaorg.spatialCoverage)
+					|| st.getPredicate().equals(Schemaorg.locationCreated)
+					|| st.getPredicate().equals(Schemaorg.temporal)
+					|| st.getPredicate().equals(Schemaorg.temporalCoverage)
+					|| st.getPredicate().equals(Schemaorg.keywords)
+					|| st.getPredicate().equals(Schemaorg.about)
+					|| st.getPredicate().equals(Schemaorg.contentLocation)
 					) 
 				hasAboutness=true;
 
-			if (st.getPredicate().equals(RegSchemaorg.name) 
-					|| st.getPredicate().equals(RegSchemaorg.description)
-					|| st.getPredicate().equals(RegSchemaorg.artMedium)
-					|| st.getPredicate().equals(RegSchemaorg.pagination)
+			if (st.getPredicate().equals(Schemaorg.name) 
+					|| st.getPredicate().equals(Schemaorg.description)
+					|| st.getPredicate().equals(Schemaorg.artMedium)
+					|| st.getPredicate().equals(Schemaorg.pagination)
 					) 
 				hasName=true;
 
-			if (st.getPredicate().equals(RegSchemaorg.provider) 
+			if (st.getPredicate().equals(Schemaorg.provider) 
 					) hasProvider=true;
 			
-			if (st.getPredicate().equals(RegSchemaorg.license) 
+			if (st.getPredicate().equals(Schemaorg.license) 
 					) hasLicense=true;
 					
-			if (st.getPredicate().equals(RegSchemaorg.url) 
-				|| st.getPredicate().equals(RegSchemaorg.associatedMedia)
-				|| st.getPredicate().equals(RegSchemaorg.audio)
-				|| st.getPredicate().equals(RegSchemaorg.image)
+			if (st.getPredicate().equals(Schemaorg.url) 
+				|| st.getPredicate().equals(Schemaorg.associatedMedia)
+				|| st.getPredicate().equals(Schemaorg.audio)
+				|| st.getPredicate().equals(Schemaorg.image)
 				) hasDigital=true;
 		}
 		

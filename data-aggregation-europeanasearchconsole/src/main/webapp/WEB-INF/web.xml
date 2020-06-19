@@ -13,6 +13,11 @@
 		<param-name>googleapi.credentials</param-name>
 		<param-value>${googleapi.credentials}</param-value>
 	</context-param>
+	<context-param>
+		<description></description>
+		<param-name>wikidata-triple-store</param-name>
+		<param-value>${wikidata.triple.store}</param-value>
+	</context-param>
 
 	<servlet>
 		<servlet-name>default</servlet-name>

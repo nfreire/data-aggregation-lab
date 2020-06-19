@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -17,17 +18,18 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jena.query.QuerySolution;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.shacl.sys.C;
+import org.apache.jena.query.ReadWrite;
+import org.apache.jena.riot.Lang;
 
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.casestudies.wikidata.WikidataUtil;
-import inescid.dataaggregation.data.DataModelRdfOwl;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.WikidataLabels;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
 import inescid.dataaggregation.data.RdfsClassHierarchy;
-import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.model.Edm;
 import inescid.dataaggregation.dataset.convert.ClassMappings;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmClassMappings;
+import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 import inescid.util.SparqlClient;
@@ -36,10 +38,9 @@ import inescid.util.datastruct.MapOfMaps;
 import inescid.util.SparqlClient.Handler;
 
 public class WikidataEdmMappings {
-	
 	ClassMappings edmClassMappings=new ClassMappings();
 	RdfsClassHierarchy hierarchy=new RdfsClassHierarchy();
-		
+	
 	public WikidataEdmMappings(File csvFileClasses, File csvFileProperties, File csvClassHierarchy, File wikidataTbd2Folder) throws IOException, AccessException, InterruptedException {
 		init(csvFileClasses, csvFileProperties);
 		boolean hierachyExists=csvClassHierarchy.exists();
@@ -54,10 +55,13 @@ public class WikidataEdmMappings {
 //		validator=new RdfDomainRangeValidatorWithOwl(RdfUtil.readRdfFromUri(RegEdm.NS));
 		
 		SchemaOrgToEdmClassMappings schemaOrgToEdmClassMappings=new SchemaOrgToEdmClassMappings();
-		RdfsClassHierarchy schemaClassHierarchy = new RdfsClassHierarchy(RdfUtil.readRdfFromUri("https://schema.org/docs/schemaorg.owl"));
-			
+		
+		InputStream schemaorgOwlIs = WikidataEdmMappings.class.getClassLoader().getResourceAsStream("owl/schemaorg.owl");
+		RdfsClassHierarchy schemaClassHierarchy = new RdfsClassHierarchy(RdfUtil.readRdf(schemaorgOwlIs, Lang.RDFXML));
+		schemaorgOwlIs.close();
+		
 		SparqlClient sparqlCl= wikidataTbd2Folder==null ? SparqlClientWikidata.INSTANCE : 
-			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES);
+			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES, ReadWrite.READ);
 		
 		//Equivalent Classes
 		sparqlCl.query("select ?s (<http://www.wikidata.org/prop/direct/P1709> AS ?p) ?o WHERE { ?s <http://www.wikidata.org/prop/direct/P1709> ?o. }", new Handler() {
@@ -112,6 +116,17 @@ public class WikidataEdmMappings {
 		init(csvFileClasses, csvFileProperties);
 	}
 	
+	
+	public List<String> getMappingsTo(String trgType, String trgProp) {
+		ArrayList<String> mappings=new ArrayList<String>();
+		Map<String, String> allPropertiesMappedFor = edmClassMappings.getAllPropertiesMappedFor(trgType);
+		for(String wdProp: allPropertiesMappedFor.keySet()) {
+			if(trgProp.equals(allPropertiesMappedFor.get(wdProp)))
+				mappings.add(wdProp);
+		}
+		return mappings;
+	}
+	
 	private void init(File csvFileClasses, File csvFileProperties) throws IOException {
 		hierarchy=new RdfsClassHierarchy();
 		Reader csvReader=new InputStreamReader(new FileInputStream(csvFileProperties), "UTF-8");
@@ -157,7 +172,7 @@ public class WikidataEdmMappings {
 						if(!StringUtils.startsWithIgnoreCase(edmCls, "http")) {
 							int idx = edmCls.indexOf(':');
 							if(idx>0) {
-								String ns=RegEdm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.get(edmCls.substring(0, idx));
+								String ns=Edm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.get(edmCls.substring(0, idx));
 								if(ns==null)
 									throw new RuntimeException("unknown prefix "+edmCls.substring(0, idx)+" in "+edmCls);
 								edmCls=ns+edmCls.substring(idx+1);
@@ -183,7 +198,7 @@ public class WikidataEdmMappings {
 			int idx = edmProp.indexOf(':');
 			if(idx>0) {
 				String pref = edmProp.substring(0, idx);
-				String ns=RegEdm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.get(pref);
+				String ns=Edm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.get(pref);
 				if(ns==null) {
 					if(pref.equals("schema"))
 						ns="http://schema.org/";
@@ -201,7 +216,7 @@ public class WikidataEdmMappings {
 
 	public void loadSubClassesAndSubProperties(File wikidataTbd2Folder) {
 		SparqlClient sparqlCl= wikidataTbd2Folder==null ? SparqlClientWikidata.INSTANCE : 
-			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES);
+			new TriplestoreJenaTbd2(wikidataTbd2Folder, SparqlClientWikidata.PREFFIXES, ReadWrite.READ);
 //		sparqlCl.setDebug(true);
 		for(String r: edmClassMappings.GetClassMappping().keySet()) {
 			for(String scUri : getAllSubClasses(r, sparqlCl)) {
@@ -299,6 +314,10 @@ public class WikidataEdmMappings {
 		return edmProp;
 	}
 	
+	public List<String> getClassesMappedTo(String edmClass) {
+		return edmClassMappings.getClassesMappedTo(edmClass);
+	}
+		
 //	public String getFromWdId(String id) {
 //		String edmProp=wikidataToEdmPropertyMap.get("https://www.wikidata.org/wiki/Property:"+id);
 //		if(edmProp==null) //try http instead of https

@@ -24,13 +24,13 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 
-import inescid.dataaggregation.dataset.validate.ValidationResult;
-import inescid.dataaggregation.dataset.validate.Validator;
+import inescid.dataaggregation.data.validation.ValidationResult;
+import inescid.dataaggregation.data.validation.EdmXmlValidator;
 
 /**
  * EDM Validator class
  */
-public class ValidatorForNonPartners extends Validator {
+public class ValidatorForNonPartners extends EdmXmlValidator {
     private static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager.getLogger(ValidatorForNonPartners.class);
     final HashSet<String> ignoredValidations;
     

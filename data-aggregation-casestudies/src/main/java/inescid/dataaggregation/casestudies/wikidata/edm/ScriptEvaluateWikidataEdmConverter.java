@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -23,12 +24,14 @@ import org.apache.jena.riot.Lang;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingCalculatorNoRights;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
-import inescid.dataaggregation.casestudies.wikidata.WikidataUtil;
+import inescid.dataaggregation.data.validation.EdmXmlValidator.Schema;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.profile.completeness.Dqc10PointRatingCalculator;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
+import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationStats;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
 import inescid.util.MapOfInts;
@@ -45,6 +48,7 @@ public class ScriptEvaluateWikidataEdmConverter {
 		public static File edmValidation;
 		public static File edmValidationNonPartner;
 		public static File unmappedReport;
+		public static File wdLanguaguaSaturationEdm;
 		public static String repoDatasetEdmEuropeana="wikidata-edm-at-europeana";
 		public static String repoDatasetWikidata="wikidata-resource";
 		
@@ -55,6 +59,7 @@ public class ScriptEvaluateWikidataEdmConverter {
 			edmValidation= new File(outputFolder, "edm-validation.csv");
 			edmValidationNonPartner=new File(outputFolder, "edm-validation-nonpartner.csv");
 			unmappedReport=new File(outputFolder, "unmapped-report.csv");
+			wdLanguaguaSaturationEdm=new File(outputFolder, "wikidata-multilingual-saturation-edm.csv");
 		}
 	}
 
@@ -65,6 +70,7 @@ public class ScriptEvaluateWikidataEdmConverter {
 			static void updateCsvsAtGoogle() throws IOException {
 				System.out.println("Uploading to Google spreadsheet at:\nhttps://docs.google.com/spreadsheets/d/"+spreadsheetId);
 				GoogleSheetsCsvUploader.update(spreadsheetId, "WD-Europeana - Completeness", Const.wdCompletenessEdm);
+				GoogleSheetsCsvUploader.update(spreadsheetId, "WD-Europeana - Multilingual Saturation", Const.wdLanguaguaSaturationEdm);
 				GoogleSheetsCsvUploader.update(spreadsheetId, "WD - Validation", Const.edmValidation);
 				GoogleSheetsCsvUploader.update(spreadsheetId, "WD - Validation Ext.", Const.edmValidationNonPartner);
 				GoogleSheetsCsvUploader.update(spreadsheetId, "WD - Unmappable", Const.unmappedReport);
@@ -85,7 +91,7 @@ public class ScriptEvaluateWikidataEdmConverter {
 		if (args.length > 1)
 			SAMPLE_RECORDS = Integer.parseInt(args[1]);
 		else
-			SAMPLE_RECORDS = -10;
+			SAMPLE_RECORDS = 3;
 //		SAMPLE_RECORDS = 10;
 
 		System.out.printf(
@@ -115,7 +121,9 @@ public class ScriptEvaluateWikidataEdmConverter {
 		conv.enableUnmappedLogging();
 		
 		ArrayList<Triple<String, Double, Double>> completnesses = new ArrayList<>();
-		ArrayList<Triple<String, MultilingualSaturationResult, MultilingualSaturationResult>> langSaturation = new ArrayList<>();
+//		ArrayList<Triple<String, MultilingualSaturationResult, MultilingualSaturationResult>> langSaturation = new ArrayList<>();
+		MultilingualSaturationStats langSaturationWd=new MultilingualSaturationStats();
+		MultilingualSaturationStats langSaturationEuropeana=new MultilingualSaturationStats();
 		EdmValidation validation = new EdmValidation(Const.edmValidation);
 		EdmValidation validationForNonPartners = new EdmValidation(	Const.edmValidationNonPartner,
 				new ValidatorForNonPartners(Global.getValidatorResourceFolder(), Schema.EDM, "edm:dataProvider",
@@ -128,7 +136,6 @@ public class ScriptEvaluateWikidataEdmConverter {
 			try {
 				Resource wdResource = WikidataUtil.fetchResource(wdResourceUri);
 //				System.out.println(wdResource);
-				conv.reset();
 				Resource edmWd = conv.convert(wdResource);
 								
 				Model rdfEdmAtEuropeana;
@@ -148,9 +155,8 @@ public class ScriptEvaluateWikidataEdmConverter {
 				validation.evaluateValidation(wdResourceUri, edmWd);
 				validationForNonPartners.evaluateValidation(wdResourceUri, edmWd);
 				
-				MultilingualSaturationResult wdLangSat=MultilingualSaturation.calculate(edmWd.getModel());
-				MultilingualSaturationResult europeanaLangSat=MultilingualSaturation.calculate(rdfEdmAtEuropeana);
-				langSaturation.add(new ImmutableTriple<>(wdResourceUri, wdLangSat, europeanaLangSat));
+				langSaturationWd.add(MultilingualSaturation.calculate(edmWd.getModel()));
+				langSaturationEuropeana.add(MultilingualSaturation.calculate(rdfEdmAtEuropeana));
 				
 				if(SAMPLE_RECORDS>0) 
 					FileUtils.write(new File(outputFolder, URLEncoder.encode(wdResourceUri, StandardCharsets.UTF_8.toString())+".ttl"),  
@@ -193,47 +199,29 @@ public class ScriptEvaluateWikidataEdmConverter {
 				csvPrinter.printRecord(msg.getKey(), msg.getValue());			
 			}
 			
-			fileWriter.close();	
 			csvPrinter.close();
+			fileWriter.close();	
 		}
-		
-		
+
 		{
-			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Const.wdLanguageSaturationEdm, Global.UTF8);
-			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
-			csvPrinter.printRecord("URI","Completeness at Wikidata","Completeness at Europeana");	
-			MapOfInts<Float> completenessDistributionWd=new MapOfInts<>();
-			MapOfInts<Float> completenessDistributionEuropeana=new MapOfInts<>();
-			for (Triple<String, Double, Double> recComp : completnesses) {
-				csvPrinter.printRecord(recComp.getLeft(), recComp.getMiddle(),
-						recComp.getRight());
-				BigDecimal bd = new BigDecimal(recComp.getMiddle()).setScale(2, BigDecimal.ROUND_HALF_UP);
-				completenessDistributionWd.incrementTo(bd.floatValue());
-				bd = new BigDecimal(recComp.getRight()).setScale(2, BigDecimal.ROUND_HALF_UP);
-				completenessDistributionEuropeana.incrementTo(bd.floatValue());
-			}
-			csvPrinter.println();			
-			csvPrinter.printRecord("COMPLETENESS SCORE DISTRIBUTION AT WIKIDATA");			
-			csvPrinter.printRecord("COMPLETENESS SCORE","RECORD COUNT");			
-			for(Entry<Float, Integer> msg :  completenessDistributionWd.entrySet()) {
-				csvPrinter.printRecord(msg.getKey(), msg.getValue());			
-			}
-			csvPrinter.println();			
-			csvPrinter.printRecord("COMPLETENESS SCORE DISTRIBUTION AT EUROPEANA");			
-			csvPrinter.printRecord("COMPLETENESS SCORE","RECORD COUNT");			
-			for(Entry<Float, Integer> msg :  completenessDistributionEuropeana.entrySet()) {
-				csvPrinter.printRecord(msg.getKey(), msg.getValue());			
-			}
+			NumberFormat fmt=NumberFormat.getInstance();
+			fmt.setMaximumFractionDigits(2);
 			
-			fileWriter.close();	
+			FileWriterWithEncoding fileWriter = new FileWriterWithEncoding(Const.wdLanguaguaSaturationEdm, Global.UTF8);
+			CSVPrinter csvPrinter=new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
+			csvPrinter.printRecord("","Wikidata","Europeana");	
+			csvPrinter.printRecord("Languages",fmt.format(langSaturationWd.getStatsLangs().getMean()),fmt.format(langSaturationEuropeana.getStatsLangs().getMean()));	
+			csvPrinter.printRecord("Lang Tags",fmt.format(langSaturationWd.getStatsTags().getMean()),fmt.format(langSaturationEuropeana.getStatsTags().getMean()));	
+			csvPrinter.printRecord("Languages (in CHO)",fmt.format(langSaturationWd.getStatsChoLangs().getMean()),fmt.format(langSaturationEuropeana.getStatsChoLangs().getMean()));	
+			csvPrinter.printRecord("Lang Tags (in CHO)",fmt.format(langSaturationWd.getStatsChoTags().getMean()),fmt.format(langSaturationEuropeana.getStatsChoTags().getMean()));	
+			csvPrinter.printRecord("Languages (in contexts)",fmt.format(langSaturationWd.getStatsContextLangs().getMean()),fmt.format(langSaturationEuropeana.getStatsContextLangs().getMean()));	
+			csvPrinter.printRecord("Lang Tags (in contexts)",fmt.format(langSaturationWd.getStatsContextTags().getMean()),fmt.format(langSaturationEuropeana.getStatsContextTags().getMean()));	
 			csvPrinter.close();
+			fileWriter.close();	
 		}
-		
 		
 		validation.finalize();
 		validationForNonPartners.finalize();
-		
-		
 		
 		FileUtils.write(Const.unmappedReport, conv.unmappedToCsv(), StandardCharsets.UTF_8);
 		

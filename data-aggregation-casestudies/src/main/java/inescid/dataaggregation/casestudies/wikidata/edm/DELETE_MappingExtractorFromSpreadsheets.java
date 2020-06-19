@@ -9,7 +9,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.model.Edm;
 
 public class DELETE_MappingExtractorFromSpreadsheets {
 

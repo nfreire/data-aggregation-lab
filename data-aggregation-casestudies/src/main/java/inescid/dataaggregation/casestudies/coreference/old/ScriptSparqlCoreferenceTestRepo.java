@@ -14,9 +14,10 @@ import org.h2.mvstore.MVStore;
 
 import inescid.dataaggregation.casestudies.coreference.RepositoryOfSameAs;
 import inescid.dataaggregation.casestudies.coreference.SameAsSets;
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;

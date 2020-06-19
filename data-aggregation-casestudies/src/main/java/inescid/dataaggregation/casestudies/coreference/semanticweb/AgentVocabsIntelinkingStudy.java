@@ -20,9 +20,9 @@ import org.apache.jena.riot.system.StreamRDFBase;
 import org.mozilla.universalchardet.prober.SBCSGroupProber;
 
 import inescid.dataaggregation.casestudies.coreference.Consts;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.datastruct.MapOfMapsOfInts;
 
 public class AgentVocabsIntelinkingStudy {
@@ -97,7 +97,7 @@ public class AgentVocabsIntelinkingStudy {
 		LinkPredicateCounts allMatchesCounts= new LinkPredicateCounts("all_matches");
 		LinkPredicateCounts noCloseMatchCounts= new LinkPredicateCounts("no_close_match");
 		for(String linkTypeUri : linkCounts.keySet()) {
-			boolean isCloseMatch=linkTypeUri.equals(RegSkos.closeMatch.getURI());
+			boolean isCloseMatch=linkTypeUri.equals(Skos.closeMatch.getURI());
 			LinkPredicateCounts linkType = linkCounts.get(linkTypeUri);
 			for(Entry<AgentVocabulary, List<Entry<AgentVocabulary, Integer>>> src : linkType.vocabFromToCounts.getSortedEntries()) {
 				for(Entry<AgentVocabulary, Integer> count : src.getValue()) {

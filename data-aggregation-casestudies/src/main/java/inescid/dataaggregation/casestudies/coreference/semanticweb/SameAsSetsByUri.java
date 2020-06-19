@@ -29,7 +29,7 @@ import org.mapdb.DBException.GetVoid;
 import inescid.dataaggregation.casestudies.coreference.Consts;
 import inescid.dataaggregation.casestudies.coreference.semanticweb.AgentVocabsIntelinkingStudy.AgentVocabulary;
 import inescid.dataaggregation.casestudies.coreference.semanticweb.AgentVocabsIntelinkingStudy.LinkPredicateCounts;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.datastruct.MapOfInts;
 import inescid.util.datastruct.MapOfSets;
 
@@ -68,7 +68,7 @@ public class SameAsSetsByUri {
 			FileInputStream fis=new FileInputStream(vocab.sameAsStatements);
 			RDFDataMgr.parse(new StreamRDFBase() {
 				public void triple(Triple triple) {
-					if(!includeCloseMatches && triple.getPredicate().getURI().equals(RegSkos.closeMatch.getURI()))
+					if(!includeCloseMatches && triple.getPredicate().getURI().equals(Skos.closeMatch.getURI()))
 						return;
 					if(disregardedUris!=null && 
 							(disregardedUris.contains(triple.getSubject().getURI()) || disregardedUris.contains(triple.getObject().getURI())))

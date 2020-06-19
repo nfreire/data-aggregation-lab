@@ -1,17 +1,31 @@
 package inescid.europeanarepository;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.mapping.MappingException;
 import org.mongodb.morphia.query.FindOptions;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCursor;
 
+import eu.europeana.corelib.definitions.edm.entity.WebResource;
 import eu.europeana.corelib.edm.exceptions.MongoDBException;
 import eu.europeana.corelib.edm.exceptions.MongoRuntimeException;
 import eu.europeana.corelib.edm.model.metainfo.WebResourceMetaInfoImpl;
@@ -33,14 +47,30 @@ import eu.europeana.corelib.solr.entity.TimespanImpl;
 import eu.europeana.corelib.solr.entity.WebResourceImpl;
 import eu.europeana.corelib.web.exception.EuropeanaException;
 import eu.europeana.corelib.web.exception.ProblemType;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.util.RdfUtil;
+import inescid.util.europeana.EdmRdfUtil;
 
 public class EdmMongoServer {
-	public interface FullBeanHandler{
-		public void handle(FullBeanImpl fb); 
+	public interface Handler<T>{
+		public boolean handle(T fb); 
 	}
 	
-	public interface AggregationHandler{
-		public void handle(AggregationImpl fb); 
+	public class HandlerChained<T> implements Handler<T> {
+		Handler[] handlers;
+
+		public HandlerChained(Handler<T>... handlers) {
+			super();
+			this.handlers = handlers;
+		}
+		
+		@Override
+		public boolean handle(T fb) {
+			boolean proceedToNext=true;
+			for(Handler<T> h: handlers)
+				proceedToNext= proceedToNext && h.handle(fb);
+			return proceedToNext;
+		}
 	}
 	
 	
@@ -112,23 +142,25 @@ public class EdmMongoServer {
 			return datastore.find(clazz).filter("about", about).get();
 		}
 		
-		public void forEachFullBean(FullBeanHandler handler) {
-			Iterator<FullBeanImpl> cursor = datastore.find(FullBeanImpl.class).iterator();
+		public <T> void forEach(Class<T> type, Handler<T> handler) {
+			Iterator<T> cursor = datastore.find(type).iterator();
 		    while (cursor.hasNext()) {
-		    	handler.handle(cursor.next());
+		    	if(!handler.handle(cursor.next()))
+		    		break;
 		    }
 		}
 		
-		public void forEachFullBean(FullBeanHandler handler, int offset) {
+		public <T> void forEach(Class<T> type, Handler<T> handler, int offset) {
 			int lastOfset=offset;
 			boolean finished=false;
 			while (!finished) {
 				try {
 					FindOptions fo=new org.mongodb.morphia.query.FindOptions();
 					fo.skip(lastOfset);
-					Iterator<FullBeanImpl> cursor = datastore.find(FullBeanImpl.class).fetch(fo).iterator();
+					Iterator<T> cursor = datastore.find(type).fetch(fo).iterator();
 					while (cursor.hasNext()) {
-						handler.handle(cursor.next());
+						if (!handler.handle(cursor.next())) 
+							break;
 						lastOfset++;
 					}
 					finished=true;
@@ -145,27 +177,42 @@ public class EdmMongoServer {
 			}
 		}
 		
-		public void forEachAggregation(AggregationHandler handler) {
-			Iterator<AggregationImpl> cursor = datastore.find(AggregationImpl.class).iterator();
-			while (cursor.hasNext()) {
-				handler.handle(cursor.next());
-			}
-		}
-		
-		public void forEachAggregation(AggregationHandler handler, int offset) {
-			FindOptions fo=new org.mongodb.morphia.query.FindOptions();
-			fo.skip(offset);
-			Iterator<AggregationImpl> cursor = datastore.find(AggregationImpl.class).fetch(fo).iterator();
-			while (cursor.hasNext()) {
-				handler.handle(cursor.next());
-			}
-		}
 		
 		public void close() {
 			if (mongoClient != null) 
 				mongoClient.close();
 		}
+		
+		public Map<String, WebResourceMetaInfoImpl> retrieveWebMetaInfos(List<String> hashCodes) {
+	        Map<String, WebResourceMetaInfoImpl> metaInfos = new HashMap<>();
+	        final BasicDBObject basicObject = new BasicDBObject("$in", hashCodes);   // e.g. {"$in":["1","2","3"]}
+	        List<WebResourceMetaInfoImpl> metaInfoList = getDatastore().find(WebResourceMetaInfoImpl.class)
+	                .disableValidation()
+	                .field("_id").equal(basicObject).asList();
 
+	        metaInfoList.forEach(cursor -> {
+	            String id= cursor.getId();
+	            metaInfos.put(id, cursor);
+	        });
+	        return metaInfos;
+	    }
+		public Map<String, WebResourceMetaInfoImpl> retrieveWebMetaInfosByAbout(List<String> abouts) {
+	        Map<String, WebResourceMetaInfoImpl> metaInfos = new HashMap<>();
+	        final BasicDBObject basicObject = new BasicDBObject("$in", abouts);   // e.g. {"$in":["1","2","3"]}
+	        List<WebResourceMetaInfoImpl> metaInfoList = getDatastore().find(WebResourceMetaInfoImpl.class)
+	                .disableValidation()
+	                .field("about").equal(basicObject).asList();
+
+	        
+	        
+	        metaInfoList.forEach(cursor -> {
+	            String id= cursor.getId();
+	            metaInfos.put(id, cursor);
+	        });
+	        return metaInfos;
+	    }
+		
+		
 	public static void main(String[] args) throws Exception {
 		EdmMongoServer edmMongo=new EdmMongoServer("mongodb://rnd-2.eanadev.org:27017/admin", "metis-preview-production-2");
 		
@@ -173,10 +220,48 @@ public class EdmMongoServer {
 //		String edm = EdmUtils.toEDM(fullBean);
 //		System.out.println(edm);
 		
-		edmMongo.forEachFullBean(new FullBeanHandler() {
-			public void handle(FullBeanImpl fb) {
+		edmMongo.forEach(FullBeanImpl.class, new Handler<FullBeanImpl>() {
+			public boolean handle(FullBeanImpl fb) {
+				String edmRdfXml = EdmUtils.toEDM(fb);
+				edmRdfXml=Normalizer.normalize(edmRdfXml, Form.NFC);
+				Model edmCho = RdfUtil.readRdf(edmRdfXml, org.apache.jena.riot.Lang.RDFXML);
+				
+
+				String contentTier="0";
+				Model recMdl = edmCho;
+				Resource agg = EdmRdfUtil.getEuropeanaAggregationResource(recMdl);
+				for (StmtIterator qAnnStms=agg.listProperties(RdfReg.DQV_HAS_QUALITY_ANNOTATION) ; qAnnStms.hasNext() ; ) {
+					Statement stm = qAnnStms.next();
+					Resource qAnnotRes = stm.getObject().asResource();
+					contentTier = RdfUtil.getUriOrLiteralValue(qAnnotRes.getProperty(RdfReg.OA_HAS_BODY).getObject());
+					if(contentTier.contains("contentTier")) 
+						break;
+				}
+
+				System.out.println(contentTier.substring("http://www.europeana.eu/schemas/epf/contentTier".length()));
+				
+				
+				
+				
+
+				ArrayList<String> webResourcesIds=new ArrayList<String>();
+				for (WebResource wr : fb.getAggregations().get(0).getWebResources()) {
+//					System.out.println(wr.getClass().getCanonicalName());
+					webResourcesIds.add(wr.getAbout());
+					System.out.println((wr.getEbucoreFileByteSize()));
+//					webResourcesIds.add(wr.getId().toString());
+//					System.out.println(wr.getId());
+//					System.out.println(wr.getAbout());
+				}
+//				Map<String, WebResourceMetaInfoImpl> retrieveWebMetaInfos = edmMongo.retrieveWebMetaInfos(webResourcesIds);
+//				Map<String, WebResourceMetaInfoImpl> retrieveWebMetaInfos = edmMongo.retrieveWebMetaInfosByAbout(webResourcesIds);
+//				System.out.println(retrieveWebMetaInfos);
+				
+				
+				
 				String edm = EdmUtils.toEDM(fb);
 				System.out.println(edm);				
+				return false;
 			}
 		});
 		edmMongo.close();

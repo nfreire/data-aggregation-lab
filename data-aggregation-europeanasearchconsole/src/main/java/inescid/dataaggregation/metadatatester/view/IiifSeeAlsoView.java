@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.dataaggregation.metadatatester.view.ResourceView.DataModel;
+
 public class IiifSeeAlsoView {
 	String uri;
 	String format;
@@ -16,7 +18,7 @@ public class IiifSeeAlsoView {
 	
 	public void readData(Model model) {
 		for(Resource res: model.listSubjects().toList()) {
-			ResourceView resView=new ResourceView(res, true);
+			ResourceView resView=new ResourceView(res, DataModel.SchemaorgPlusEdm);
 			if(resView.isCreativeWork())
 				creativeWorks.add(resView);
 			else

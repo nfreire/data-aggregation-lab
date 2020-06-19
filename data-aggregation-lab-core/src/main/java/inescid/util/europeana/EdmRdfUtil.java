@@ -20,16 +20,17 @@ import crawlercommons.fetcher.FetchedResult;
 import inescid.dataaggregation.crawl.http.HttpRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest;
 import inescid.dataaggregation.crawl.http.UrlRequest.HttpMethod;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 
 public class EdmRdfUtil {
 
 	public static Resource getEuropeanaAggregationResource(Model cho) {
-		ResIterator aggregations = cho.listResourcesWithProperty(RegRdf.type, RegEdm.EuropeanaAggregation);
+		ResIterator aggregations = cho.listResourcesWithProperty(Rdf.type, Edm.EuropeanaAggregation);
 		if (aggregations.hasNext()) {
 			return aggregations.next();
 		} else
@@ -37,7 +38,7 @@ public class EdmRdfUtil {
 	}
 
 	public static Resource getAggregationResource(Model cho) {
-		ResIterator aggregations = cho.listResourcesWithProperty(RegRdf.type, RdfReg.ORE_AGGREGATION);
+		ResIterator aggregations = cho.listResourcesWithProperty(Rdf.type, Ore.Aggregation);
 		if (aggregations.hasNext()) {
 			return aggregations.next();
 		} else
@@ -45,7 +46,7 @@ public class EdmRdfUtil {
 	}
 	
 	public static Resource getProvidedChoResource(Model cho) {
-		ResIterator aggregations = cho.listResourcesWithProperty(RegRdf.type, RegEdm.ProvidedCHO);
+		ResIterator aggregations = cho.listResourcesWithProperty(Rdf.type, Edm.ProvidedCHO);
 		if (aggregations.hasNext()) {
 			return aggregations.next();
 		} else
@@ -73,7 +74,7 @@ public class EdmRdfUtil {
     	}
     	return null;
     }
-//	ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfRegRdf.type, RdfReg.ORE_AGGREGATION);
+//	ResIterator aggregations = cho.getModel().listResourcesWithProperty(RdfRegRdf.type, RdfReg.Ore.Aggregation);
 //	while(aggregations.hasNext()) {
 //		Element resourceToXml = resourceToXml(aggregations.next());
 //		if(resourceToXml!=null)

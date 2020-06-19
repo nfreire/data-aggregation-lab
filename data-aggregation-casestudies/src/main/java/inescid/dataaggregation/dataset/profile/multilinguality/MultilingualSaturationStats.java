@@ -18,6 +18,32 @@ public class MultilingualSaturationStats {
 		statsChoTags.enter(result.getChoResult().getLangTagCount());
 		statsContextTags.enter(result.getContextResult().getLangTagCount());
 	}
+
+	public StatisticCalcMean getStatsChoLangs() {
+		return statsChoLangs;
+	}
+
+	public StatisticCalcMean getStatsChoTags() {
+		return statsChoTags;
+	}
+
+	public StatisticCalcMean getStatsContextLangs() {
+		return statsContextLangs;
+	}
+
+	public StatisticCalcMean getStatsContextTags() {
+		return statsContextTags;
+	}
+
+	public StatisticCalcMean getStatsLangs() {
+		return statsLangs;
+	}
+
+	public StatisticCalcMean getStatsTags() {
+		return statsTags;
+	}
+	
+	
 	
 	
 }

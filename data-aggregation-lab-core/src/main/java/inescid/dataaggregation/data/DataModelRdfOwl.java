@@ -16,6 +16,10 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
@@ -29,20 +33,31 @@ public class DataModelRdfOwl {
 	MapOfSets<String, String> rangeOfProperty=new MapOfSets<String, String>();
 	MapOfSets<String, String> domainOfProperty=new MapOfSets<String, String>();
 	Set<String> literalProperty=new HashSet<String>();
+	Set<String> uriProperty=new HashSet<String>();
 	MapOfSets<String, String> superClasses=new MapOfSets<String, String>();
+	MapOfSets<String, String> superProperties=new MapOfSets<String, String>();
 	Map<String, String> equivalences=new HashMap<>();
 	boolean acceptUnknown=false;
+	
+	public void addPropertyForLiteral(String propUri) {
+		literalProperty.add(propUri);
+	}
+	
+	public void addPropertyForUri(String propUri) {
+		uriProperty.add(propUri);
+	}
+	
 	
 	public DataModelRdfOwl(Model owl) {
 		super();
 		this.owl = owl;
 		
-		for(Resource r: owl.listResourcesWithProperty(RegRdf.type, RegOwl.Class).toList()) {
-			for(Statement scSt : r.listProperties(RegRdfs.subClassOf).toList()) {
+		for(Resource r: owl.listResourcesWithProperty(Rdf.type, Owl.Class).toList()) {
+			for(Statement scSt : r.listProperties(Rdfs.subClassOf).toList()) {
 				if (!scSt.getObject().isURIResource()) continue;
 				superClasses.put(r.getURI(), scSt.getObject().asResource().getURI());
 			}	
-			for(Statement st : r.listProperties(RegOwl.equivalentClass).toList()) {
+			for(Statement st : r.listProperties(Owl.equivalentClass).toList()) {
 				if (!st.getObject().isURIResource()) continue;
 				equivalences.put(st.getObject().asResource().getURI(), r.getURI());
 //				equivalences.put(r.getURI(), st.getObject().asResource().getURI());
@@ -61,14 +76,43 @@ public class DataModelRdfOwl {
 			}
 		}		
 
-		HashSet<Resource> resources=new HashSet<Resource>(owl.listResourcesWithProperty(RegRdf.type, owl.createProperty("http://www.w3.org/2002/07/owl#datatypeProperty")).toList());
+		HashSet<Resource> allPropertiesResources=new HashSet<Resource>(owl.listResourcesWithProperty(Rdf.type, Owl.DatatypeProperty).toList());
+		allPropertiesResources.addAll(owl.listResourcesWithProperty(Rdf.type, Owl.ObjectProperty).toList());
+		allPropertiesResources.addAll(owl.listResourcesWithProperty(Rdf.type, owl.createProperty("http://www.w3.org/2002/07/owl#datatypeProperty")).toList());
+		for(Resource r: allPropertiesResources) {
+			for(Statement scSt : r.listProperties(Rdfs.subPropertyOf).toList()) {
+				if (!scSt.getObject().isURIResource()) continue;
+				superProperties.put(r.getURI(), scSt.getObject().asResource().getURI());
+			}	
+			for(Statement st : r.listProperties(Owl.equivalentProperty).toList()) {
+				if (!st.getObject().isURIResource()) continue;
+				equivalences.put(st.getObject().asResource().getURI(), r.getURI());
+//				equivalences.put(r.getURI(), st.getObject().asResource().getURI());
+			}
+		}		
+		for(boolean added=true; added; ) {
+			added=false;
+			for(String cls:	superProperties.keySet()) {
+				int before=superProperties.get(cls).size();
+				for(String superCls : new ArrayList<String>(superProperties.get(cls))) {
+					Set<String> superSuperProps = superProperties.get(superCls);
+					if(superSuperProps!=null)
+						superProperties.putAll(cls, superSuperProps);
+				}
+				added=added || before!=superProperties.get(cls).size();
+			}
+		}
+		
+		HashSet<Resource> resources=new HashSet<Resource>(owl.listResourcesWithProperty(Rdf.type, owl.createProperty("http://www.w3.org/2002/07/owl#datatypeProperty")).toList());
 		for(Resource r: resources) {
 			allProperties.add(r.getURI());
-			Statement domainSt = r.getProperty(RegRdfs.domain);
+			Statement domainSt = r.getProperty(Rdfs.domain);
 			if(domainSt != null ) {
 				Resource domainClass = domainSt.getObject().asResource();
-				Statement unionSt = domainClass.getProperty(RegOwl.unionOf);
-				if(unionSt != null && domainClass.isAnon()) {
+				Statement unionSt = domainClass.getProperty(Owl.unionOf);
+				if(unionSt==null)
+					domainOfProperty.put(r.getURI(), domainClass.getURI());
+				else if(domainClass.isAnon()) {
 					for(RDFNode node : unionSt.getObject().asResource().as(RDFList.class).asJavaList()) {
 						domainOfProperty.put(r.getURI(), node.asResource().getURI());
 					}
@@ -80,13 +124,16 @@ public class DataModelRdfOwl {
 		}
 		resources.clear();
 		
-		resources.addAll(owl.listResourcesWithProperty(RegRdf.type, RegOwl.ObjectProperty).toList());
+		resources.addAll(owl.listResourcesWithProperty(Rdf.type, Owl.ObjectProperty).toList());
+		resources.addAll(owl.listResourcesWithProperty(Rdf.type, Rdf.Property).toList());
 		for(Resource r: resources) {
+			if(!r.isURIResource())
+				continue;
 			allProperties.add(r.getURI());
-			Statement domainSt = r.getProperty(RegRdfs.domain);
+			Statement domainSt = r.getProperty(Rdfs.domain);
 			if(domainSt != null ) {
 				Resource domainClass = domainSt.getObject().asResource();
-				Statement unionSt = domainClass.getProperty(RegOwl.unionOf);
+				Statement unionSt = domainClass.getProperty(Owl.unionOf);
 				if(unionSt==null)
 					domainOfProperty.put(r.getURI(), domainClass.getURI());
 				else if(domainClass.isAnon()) {
@@ -97,10 +144,10 @@ public class DataModelRdfOwl {
 					System.out.println("Not anom domain "+r.getURI());
 				}
 			}
-			Statement rangeSt = r.getProperty(RegRdfs.range);
+			Statement rangeSt = r.getProperty(Rdfs.range);
 			if(rangeSt != null ) {
 				Resource domainClass = rangeSt.getObject().asResource();
-				Statement unionSt = domainClass.getProperty(RegOwl.unionOf);
+				Statement unionSt = domainClass.getProperty(Owl.unionOf);
 				if(unionSt==null) {
 					rangeOfProperty.put(r.getURI(), domainClass.getURI());					
 				}else if(domainClass.isAnon()) {
@@ -113,7 +160,7 @@ public class DataModelRdfOwl {
 			} else {
 				literalProperty.add(r.getURI());				
 			}
-			for(Statement st : r.listProperties(RegOwl.equivalentProperty).toList()) {
+			for(Statement st : r.listProperties(Owl.equivalentProperty).toList()) {
 //				equivalences.put(r.getURI(), st.getObject().asResource().getURI());
 				equivalences.put(st.getObject().asResource().getURI(), r.getURI());
 			}
@@ -127,6 +174,20 @@ public class DataModelRdfOwl {
 					rangeOfProperty.putAll(prop, superClasses.get(rngCls));
 			}
 		}
+
+
+		for(String prop: allProperties) {
+			Set<String> superOfThisProp = superProperties.get(prop);
+			if(superOfThisProp!=null)
+				
+				for(String superProp: superOfThisProp) {
+					Set<String> domainOfSuper = domainOfProperty.get(superProp);
+					if(domainOfSuper!=null && !domainOfSuper.isEmpty()) {
+						domainOfProperty.putAll(prop, domainOfSuper);
+					}
+				}
+		}
+			
 		
 	}
 
@@ -135,7 +196,7 @@ public class DataModelRdfOwl {
 		for(Resource r: schemaorg.listSubjects().toList()) {
 			Set<String> allRdfTypes=getAllRdfTypesOfResource(r);
 			for(Statement scSt : r.listProperties().toList()) {
-				if(scSt.getPredicate().getURI().equals("http://schema.org/scopedObj") || scSt.getPredicate().equals(RegRdf.type)) continue;
+				if(scSt.getPredicate().getURI().equals("http://schema.org/scopedObj") || scSt.getPredicate().equals(Rdf.type)) continue;
 				if(!isValidDomain(allRdfTypes, scSt.getPredicate())) {
 					errors.add(r.getURI()+ " not in domain of "+scSt.getPredicate().getURI());
 				}else if(!isValidRange(scSt.getObject(), scSt.getPredicate())) {
@@ -152,10 +213,10 @@ public class DataModelRdfOwl {
 //		System.out.println(predicate+" "+range);
 		if(range==null) return true;
 		if(object.isLiteral()) {
-			return range.contains(RegSchemaorg.Text.getURI()) || range.contains(RegSchemaorg.URL.getURI()); 
+			return range.contains(Schemaorg.Text.getURI()) || range.contains(Schemaorg.URL.getURI()); 
 		} else if(object.isResource()) {
 			Set<String> allTypes = getAllRdfTypesOfResource(object.asResource());
-			if(object.isURIResource() && range.contains(RegSchemaorg.URL.getURI()))
+			if(object.isURIResource() && range.contains(Schemaorg.URL.getURI()))
 //				if(allTypes.isEmpty() && object.isURIResource() && range.contains(RegSchemaorg.URL.getURI()))
 				return true;
 			for(String type: allTypes) { 
@@ -189,7 +250,7 @@ public class DataModelRdfOwl {
 
 	private Set<String> getAllRdfTypesOfResource(Resource r) {
 		Set<String> typesSet = new HashSet<String>();
-		for(Statement scSt : r.listProperties(RegRdf.type).toList()) {
+		for(Statement scSt : r.listProperties(Rdf.type).toList()) {
 			Set<String> typeScs = superClasses.get(scSt.getObject().asResource().getURI());
 			if(typeScs!=null)
 				typesSet.addAll(typeScs);
@@ -214,6 +275,19 @@ public class DataModelRdfOwl {
 
 	public boolean isLiteral(Property predicate) {
 		return literalProperty.contains(predicate.getURI());
+	}
+	
+	public boolean isUri(Property predicate) {
+		return uriProperty.contains(predicate.getURI());
+	}
+
+	public List<String> getPropertiesForType(Resource type) {
+		ArrayList<String> props=new ArrayList<String>();
+		for(String propUri: domainOfProperty.keySet()) {
+			if(domainOfProperty.get(propUri).contains(type.getURI()))
+				props.add(propUri);
+		}
+		return props;
 	}
 	
 }

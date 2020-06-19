@@ -9,7 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.dataaggregation.dataset.LodDataset;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
@@ -54,15 +56,15 @@ public class LodForm extends DatasetForm {
 				message=validateUri();
 				if(message==null) {
 					Resource  dsResource = RdfUtil.readRdfResourceFromUri(dataset.getUri());
-					Statement stmTitle = dsResource.getProperty(RdfReg.SCHEMAORG_NAME);
+					Statement stmTitle = dsResource.getProperty(Schemaorg.name);
 					if (stmTitle!=null) {
 						dataset.setTitle(stmTitle.getObject().asLiteral().getString());
 					} else { 
-						stmTitle = dsResource.getProperty(RdfReg.DCTERMS_TITLE);
+						stmTitle = dsResource.getProperty(DcTerms.title);
 						if (stmTitle!=null) 
 							dataset.setTitle(stmTitle.getObject().asLiteral().getString());
 					}
-					Statement stmProvider = dsResource.getProperty(RdfReg.SCHEMAORG_PROVIDER);
+					Statement stmProvider = dsResource.getProperty(Schemaorg.provider);
 					if (stmProvider!=null) {
 						dataset.setOrganization(stmProvider.getObject().asLiteral().getString());
 					} 			

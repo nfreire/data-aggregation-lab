@@ -8,20 +8,21 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Skos;
 
 public class MultilingualSaturationResult {
 	public static final Set<String> CHO_TYPES=new HashSet<String>() {{
-		add(RdfReg.ORE_PROXY.getURI());
-		add(RegEdm.ProvidedCHO.getURI());
+		add(Ore.Proxy.getURI());
+		add(Edm.ProvidedCHO.getURI());
 	}};
 	public static final Set<String> CONTEXT_TYPES=new HashSet<String>() {{
-		add(RegEdm.Agent.getURI());
-		add(RegEdm.TimeSpan.getURI());
-		add(RegEdm.Place.getURI());
-		add(RegSkos.Concept.getURI());
+		add(Edm.Agent.getURI());
+		add(Edm.TimeSpan.getURI());
+		add(Edm.Place.getURI());
+		add(Skos.Concept.getURI());
 	}};
 	
 	

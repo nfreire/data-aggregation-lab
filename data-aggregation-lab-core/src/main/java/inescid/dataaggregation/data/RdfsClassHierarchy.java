@@ -15,6 +15,9 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
 import inescid.util.datastruct.MapOfSets;
 
 public class RdfsClassHierarchy {
@@ -27,8 +30,8 @@ public class RdfsClassHierarchy {
 	}
 	
 	public RdfsClassHierarchy(Model owl) {
-		for(Resource r: owl.listResourcesWithProperty(RegRdf.type, RegOwl.Class).toList()) {
-			for(Statement scSt : r.listProperties(RegRdfs.subClassOf).toList()) {
+		for(Resource r: owl.listResourcesWithProperty(Rdf.type, Owl.Class).toList()) {
+			for(Statement scSt : r.listProperties(Rdfs.subClassOf).toList()) {
 				setSuperClass(r.getURI(), scSt.getObject().asResource().getURI());
 			}			
 		}
@@ -75,16 +78,37 @@ public class RdfsClassHierarchy {
 		}		
 	}
 	
+	public Set<String> getSuperClassesOf(Resource cls) {
+		return getSuperClassesOf(cls.getURI());
+	}
 	public Set<String> getSuperClassesOf(String clsUri) {
 		Set<String> set = superClassesOf.get(clsUri);
 		return set==null ? Collections.EMPTY_SET : set;
+	}
+	public Set<String> getSubClassesOf(Resource cls) {
+		return getSubClassesOf(cls.getURI());
+	}
+	public Set<String> getSubClassesOf(String clsUri) {
+		Set<String> set = new HashSet<String>();
+		for(String subcls : superClassesOf.keySet()) {
+			if(superClassesOf.get(subcls).contains(clsUri))
+				set.add(subcls);
+		}
+		return set;
 	}
 	
 	public Set<String> getSuperPropertiesOf(String uri) {
 		Set<String> set = superPropertiesOf.get(uri);
 		return set==null ? Collections.EMPTY_SET : set;
 	}
-	
+	public Set<String> getSubPropertiesOf(String uri) {
+		Set<String> set = new HashSet<String>();
+		for(String subPrp : superPropertiesOf.keySet()) {
+			if(superPropertiesOf.get(subPrp).contains(uri))
+				set.add(subPrp);
+		}
+		return set;
+	}
 	public void setSuperClass(String uriSubClass, String uriSuperClass) {
 		superClassesOf.put(uriSubClass, uriSuperClass);
 	}

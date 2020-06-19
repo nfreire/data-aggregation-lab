@@ -1,7 +1,10 @@
 package inescid.dataaggregation.dataset.convert;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.jena.rdf.model.Resource;
@@ -32,5 +35,17 @@ public class ClassMappings {
 	}
 	public Map<String, String> GetClassMappping() {
 		return classMapping;
+	}
+	
+	public Map<String, String> getAllPropertiesMappedFor(String edmClsUri) {
+		return propertyMappingsByClass.get(edmClsUri);
+	}
+	public List<String> getClassesMappedTo(String edmClass) {
+		List<String> ret=new ArrayList<String>();
+		for(Entry<String, String> mapping: classMapping.entrySet()) {
+			if(mapping.getValue().equals(edmClass))
+				ret.add(mapping.getKey());
+		}
+		return ret;
 	}
 }

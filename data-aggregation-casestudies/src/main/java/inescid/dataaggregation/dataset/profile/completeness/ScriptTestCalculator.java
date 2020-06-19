@@ -16,7 +16,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
-import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.model.Edm;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 
@@ -105,7 +105,7 @@ public class ScriptTestCalculator {
 				System.out.println(uri);
 //				System.out.println("*** "+uri);
 //				System.out.println(RdfUtil.printStatements(rdf));
-				StmtIterator completenessStms = rdf.listStatements(null, RegEdm.completeness, (RDFNode)null);
+				StmtIterator completenessStms = rdf.listStatements(null, Edm.completeness, (RDFNode)null);
 				if(completenessStms.hasNext()) {
 					int completeness = completenessStms.next().getObject().asLiteral().getInt();
 					retOldCompleteness.add(completeness);

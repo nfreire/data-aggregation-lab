@@ -55,7 +55,7 @@ public class HttpUtil {
 		ldReq.setMethod(HttpMethod.HEAD);
 		return makeRequest(ldReq);
 	}
-	private static HttpRequest makeRequest(UrlRequest ldReq) throws AccessException, InterruptedException {
+	protected static HttpRequest makeRequest(UrlRequest ldReq) throws AccessException, InterruptedException {
 		HttpRequest resourceRequest = new HttpRequest(ldReq);
 		int tries = 0;
 		while (true) {

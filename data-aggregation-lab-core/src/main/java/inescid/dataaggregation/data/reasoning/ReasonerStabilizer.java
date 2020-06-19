@@ -6,8 +6,8 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.reasoner.Reasoner;
 
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
 import inescid.util.RdfUtil.Jena;
 
 public class ReasonerStabilizer {
@@ -59,16 +59,16 @@ public class ReasonerStabilizer {
 //			System.out.println("Ded: "+ deductionsModel.size());
 			deductionsModel.remove(unstableSatementsMdl);
 //			System.out.println("Ded after: "+ deductionsModel.size());
-			for (Statement stm: deductionsModel.listStatements(null, RegRdfs.subPropertyOf, (RDFNode)null).toList()){
+			for (Statement stm: deductionsModel.listStatements(null, Rdfs.subPropertyOf, (RDFNode)null).toList()){
 				if(stm.getObject().equals(stm.getSubject()))
 					deductionsModel.remove(stm);				
 			}
-			for (Statement stm: deductionsModel.listStatements(null, RegRdfs.subClassOf, (RDFNode)null).toList()){
-				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(RegRdfs.Resource))
+			for (Statement stm: deductionsModel.listStatements(null, Rdfs.subClassOf, (RDFNode)null).toList()){
+				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(Rdfs.Resource))
 					deductionsModel.remove(stm);				
 			}
-			for (Statement stm: deductionsModel.listStatements(null, RegRdf.type, RegRdfs.Resource).toList()){
-				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(RegRdfs.Resource))
+			for (Statement stm: deductionsModel.listStatements(null, Rdf.type, Rdfs.Resource).toList()){
+				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(Rdfs.Resource))
 					deductionsModel.remove(stm);				
 			}
 //			System.out.println("Ded after: "+ deductionsModel.size());
@@ -77,16 +77,16 @@ public class ReasonerStabilizer {
 		public static Model cleanDeductions(Model model) {
 			Model deductionsModel=Jena.createModel();
 			deductionsModel.add(model);
-			for (Statement stm: deductionsModel.listStatements(null, RegRdfs.subPropertyOf, (RDFNode)null).toList()){
+			for (Statement stm: deductionsModel.listStatements(null, Rdfs.subPropertyOf, (RDFNode)null).toList()){
 				if(stm.getObject().equals(stm.getSubject()))
 					deductionsModel.remove(stm);				
 			}
-			for (Statement stm: deductionsModel.listStatements(null, RegRdfs.subClassOf, (RDFNode)null).toList()){
-				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(RegRdfs.Resource))
+			for (Statement stm: deductionsModel.listStatements(null, Rdfs.subClassOf, (RDFNode)null).toList()){
+				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(Rdfs.Resource))
 					deductionsModel.remove(stm);				
 			}
-			for (Statement stm: deductionsModel.listStatements(null, RegRdf.type, RegRdfs.Resource).toList()){
-				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(RegRdfs.Resource))
+			for (Statement stm: deductionsModel.listStatements(null, Rdf.type, Rdfs.Resource).toList()){
+				if(stm.getObject().equals(stm.getSubject()) || stm.getObject().equals(Rdfs.Resource))
 					deductionsModel.remove(stm);				
 			}
 			return deductionsModel;

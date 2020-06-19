@@ -7,6 +7,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.RdfUtil;
 
@@ -20,33 +21,35 @@ public class ScriptCreateRdfRegOfNamespace {
 		try { 
 			Global.init_developement();
 			String nsLocation = null;
-//			String name="Rdfs";
-//			String ns = "http://www.w3.org/2000/01/rdf-schema#";
-//			String name="Rdf";
-//			String ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-//			String name="Edm";
-//			String ns = "http://www.europeana.eu/schemas/edm/";
-//			String name="Owl";
-//			String ns = "http://www.w3.org/2002/07/owl#";
-//			String name="Skos";
-//			String ns = "http://www.w3.org/2004/02/skos/core#";
+
+			String name="Ebucore";
+			String ns = "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#";
+
 			
-//			String makeRequestForContent = HttpUtil.makeRequestForContent(ns);
-			String name="Schemaorg";
-			String ns = "http://schema.org/";
-			nsLocation = "http://schema.org/version/latest/schema.rdf";
-			
+//			public static String NsDcmiType="http://purl.org/dc/dcmitype/";
+//			public static String NsCc="http://creativecommons.org/ns#";
+//			public static String NsSvcs="http://rdfs.org/sioc/services#";
+//			public static String NsDoap="http://usefulinc.com/ns/doap#";
+//			public static String NsOwl="http://www.w3.org/2002/07/owl#";
+//			public static String NsRdaGr2="http://rdvocab.info/ElementsGr2/"; 
+//			public static String NsFoaf="http://xmlns.com/foaf/0.1/";
+//			public static String NsVcard="http://www.w3.org/2006/vcard/ns#";
+//			public static String NsSchemaOrg="http://schema.org/";
+//			public static String NsVoid="http://rdfs.org/ns/void#";
+//			public static String NsDqv="http://www.w3.org/ns/dqv#";
+//			public static String NsOa="http://www.w3.org/ns/oa#";
+//			public static String NsDcat="http://www.w3.org/ns/dcat#";
+//			public static String NsProv="http://www.w3.org/ns/prov#";
 			
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			PrintStream o = new PrintStream(os);
-			o.printf("package inescid.dataaggregation.data;\r\n" + 
+			o.printf("package inescid.dataaggregation.data.model;\r\n" + 
 					"\r\n" + 
 					"import org.apache.jena.rdf.model.Property;\r\n" + 
-					"import org.apache.jena.rdf.model.RDFNode;\r\n" + 
 					"import org.apache.jena.rdf.model.Resource;\r\n" + 
 					"import org.apache.jena.rdf.model.ResourceFactory;\r\n" + 
 					"\r\n" + 
-					"public final class RdfReg%s {\r\n" + 
+					"public final class %s {\r\n" + 
 					"	public static String PREFIX=\"%s\";\r\n" +
 					"	public static String NS=\"%s\";\r\n\r\n", name, name.toLowerCase(), ns);
 			

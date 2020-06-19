@@ -1,0 +1,205 @@
+Schema.org to EDM mapping,,,,,
+"EDM data is divided amongst classes representing different resources (the original object, the digital representation etc.) in compliance with the one-to-one principle.   For the purpose of schema.org mark-up, the statements attached to the ProvidedCHO, corresponding proxies and aggregations are merged onto one single resource. See http://pro.europeana.eu/edm-documentation for the EDM specification.",,,,,
+,,,,,
+Definitive mappings,Mapping with Schema.org profile of DSC ,EDM element (according to the latest specs 2016),Value type,Obligation,Candidate mappings and notes
+ProvidedCHO & Proxy,,,,,
+schema:CreativeWork,use a subclass of CreativeWork-->schema:VisualArtwork or schema:Book,ProvidedCHO & Proxy,,,All proxies for a given ProvidedCHO contribute to a same schema.org resource
+rdf:type,,edm:hasType,,,rdf:type to be mapped to CHO when values= http://schema.org/Book and http://schema.org/CreativeWork and http://schema.org/VisualArtwork
+schema:contributor,schema:contributor (schema:Person),dc:contributor,literal or ref,,Should relate to a schema:Person or Schema:Organization
+schema:about,,dc:coverage,literal or ref,,"In theory if the coverage is a place (dcterms:spatial) schema:spatialCoverage would be applicable.  If a time period (dcterms:temporal), temporalCoverage would be the one. But in practice schema:about is probably the best we can hope for."
+schema:creator,schema:creator (schema:Organization) [always Motley (Organization) in this case] or schema:author (schema:Person),dc:creator,literal or ref,,Should relate to a schema:Person or Schema:Organization
+,schema:dateCreated,dcterms:created,literal or ref,,
+schema:description,schema:description (Text) and schema:artMedium (Text or URL),dc:description,literal or ref,,
+schema:artform,,dc:format,literal or ref,,Only when we know that the resource is of type VisualArtwork - see note about using VisualArtwork
+,Inventory number spc:standardNumber (Text or URL),dc:identifier,literal,,
+schema:inLanguage,,dc:language,literal,,wherever possible should be mapped to BCP 47
+schema:publisher,schema:publisher (schema:Organization),dc:publisher,literal or ref,,"Should relate to a schema:Person or Schema:Organization. so this means this is a property for which we won't be able to map to anything else than schema:Thing, unless it comes with a URI that has a schema.org type already. And we won't probably make a mapping process that would be so complex on pulling out external statements right now. So it is flagged as future work."
+,,dc:relation,literal or ref,,
+schema:license,"schema:copyrightHolder (schema:Organization) or schema:license and use URL.(The statement should be stored in somewhere, such as Project webpage.)",dc:rights,literal or ref,,"New - but see question in the Aggregation
+URI to license
+Mapping dc:rights to to schema:license won't always work as it is not a controlled field and allows literals. Only edm:rights will provide a URI (But edm:rights on the Aggregation or WebResource will often be different from the rights of the Provided CHO, see comment in Aggregation)"
+,,dc:source,literal or ref,,
+schema:about,schema:about (schema:Thing) ,dc:subject,literal or ref,,
+schema:name,schema:name (schema:VisualArtwork and schema:CreativeWork),dc:title,literal,,
+schema:about,schema:genre for object schema:artform for type ,dc:type,literal or ref,,Also helps towards decision as to entity type
+schema:alternateName,,dcterms:alternative,literal,,
+,,dcterms:conformsTo,literal or ref,,
+schema:dateCreated,schema:dateCreated (Date) (schema:CreativeWork-->performance),dcterms:created,literal or ref,,Wherever possible should be mapped to ISO 8601
+,schema:height & schema:width (schema:Distance or schema:QuantitativeValue),dcterms:extent,literal or ref,,
+,,dcterms:hasFormat,literal or ref,,artMedium/artform/artworkSurface -  see note about using VisualArtwork. dcterms:hasFormat is not a property to map directly to a Schema property. It is a signal to use when identifying which schema Type(s) to use (next to the default schema:CreativeWork)
+schema:hasPart,,dcterms:hasPart,literal or ref,,
+,,dcterms:hasVersion,literal or ref,,
+,schema:exampleOfWork ,edm:isRepresentationOf,literal or ref,,Initial mapping from Richard was dc:isFormatOf but I'm not sure I agree
+schema:isPartOf,schema:isPartOf (schema:Collection) or schema:isPartOf (schema:CreativeWorkSeries) [when true],dcterms:isPartOf,literal or ref,,
+,schema:additionalType (when schema:additionalType = schema:Collection),dcterms:isPartOf,dcterms:isPartOf,,
+,,dcterms:isReferencedBy,literal or ref,,
+,,dcterms:isReplacedBy,literal or ref,,
+,,dcterms:isRequiredBy,literal or ref,,
+schema:datePublished,schema:datePublished (Date) for schema:Book,dcterms:issued,literal or ref,,Wherever possible should be mapped to ISO 8601
+,,dcterms:isVersionOf,literal or ref,,
+schema:artMedium, schema:artworkSurface ,dcterms:medium,literal or ref,, Only when we know that the resource is of type VisualArtwork  - see note about using VisualArtwork
+,,dcterms:provenance,literal or ref,,
+schema:mentions,,dcterms:references,literal or ref,,
+,,dcterms:replaces,literal or ref,,
+,,dcterms:requires,literal or ref,,
+schema:spatialCoverage,schema:locationCreated (schema:Place) (for schema:CreativeWork -->performance) ,edm:currentLocation,literal or ref,,subproperty of schema:contentLocation added in v3.1
+,schema:description or schema:mainEntityOfPage (performance notes),dcterms:tableOfContents,literal or ref,,
+"schema:temporalCoverage, schema:about",,dcterms:temporal,literal or ref,,"subproperty of schema:about added in v3.1. temporalCoverage ideally should be in ISO8601 format, unless there is a URL for a more descriptive entity is available. There could be a situation where about and temporalCoverage are supplied, describing the same time period, but containing different representations of that period.  eg. schema:temporalCoverage: ""1939-09-01/1945-09-02"", schema:about: ""World War II"""
+Not to be mapped yet,schema:provider (schema:Organization),edm:currentLocation,reference,"[0,1]","Physical location would be mapped via schema:Offer + schema:availableAtOrFrom - see holdings example: https://www.w3.org/community/schemabibex/wiki/Holdings_via_Offer . But it is preferable to postpone further specification and implementation for the moment, this is property is less urgent, and may benefit from our having richer (organization) data."
+,,edm:hasMet,reference,,
+schema:additionalType schema:about,,edm:hasType,literal or ref,,"Catered for with multi-typing
+edm:hasType should be used to help decide the schema Type(s) to assign to a CHO"
+schema:hasPart,,edm:incorporates,reference,,
+schema:isBasedOn,,edm:isDerivativeOf,reference,,
+schema:previousItem,,edm:isNextInSequence,reference,"[0,1]",In combination with schema:ListItem for the parent object
+,,edm:isRelatedTo,literal or ref,,
+schema:about,,edm:isRepresentationOf,reference,"[0,1]",
+,,edm:isSimilarTo,reference,,
+schema:previousItem,,edm:isSuccessorOf,reference,,In combination with schema:ListItem
+schema:exampleOfWork,"schema:exampleOfWork (schema:Book, fabio:Play)",edm:realizes,reference,,
+N/A,,edm:type,literal,1,"Europeana purpose only, not really fit for general scenarios
+Can be used to help decide the schema Type(s) to assign to a CHO or a WebResource"
+N/A,,edm:europeanaProxy,,,Internal purpose
+schema:dateCreated,,edm:year,,,"No property generic enough in schema.org - usually years defaults to using dateCreated, but edm:year is too generic (and noisy, due to the process of automatically extracting it."
+N/A,,ore:proxyFor,,,Proxies are merged with ProvidedCHOs for schema.org.
+N/A,,ore:proxyIn,,,
+schema:sameAs,,owl:sameAs,reference,,
+,,rdf:type,reference,,
+Aggregation and EuropeanaAggregation,,,,,
+,,Aggregation and EuropeanaAggregation,,,Currently Aggregation data is merged with ProvidedCHO and Proxy data. This may be revisited if schema.org adopts a one-to-one approach.
+N/A,,ore:aggregates,reference,,See above
+N/A,,edm:aggregatedCHO,reference,1,
+schema:addressCountry,,edm:country,literal,1,
+schema:provider ,schema:copyrightHolder,edm:dataProvider,literal or ref,1,
+schema:url,,edm:hasView,reference,,If we can recognize the object of this property to be an instance of (a subclass of) schema:MediaObject then the mapping of hasView should be audio/image/video (as per the section 'audio/image/video' in the report) or contenturl (but if we fail to recognize a specific type of media object then we will probably fail to recognize that we have a media object in general).
+schema:url,schema:image (URL) (Use the value of the reference URL from CONTENTdm),edm:isShownAt,reference,"[0,1]",
+schema:contentUrl,schema:associatedMedia (schema:CreativeWork),edm:isShownBy,reference,"[0,1]",previously this mapping was activated only when there was no preview opt-out from the providers. But this opt-out has been deprecated since.
+schema:url,,edm:landingPage,,,The value is the Europeana portal page URL.
+,,edm:language,,,No mapping. Mapping to schema:inLanguage would conflict with the inLanguage built from ProvidedCHO/proxy's dc:language.
+schema:image,,edm:object,reference,"[0,1]",Previously this mapping was activated only when there was no preview opt-out from the providers. But this opt-out has been deprecated since.
+schema:thumbnailUrl,,edm:preview,reference,,The value is the URL of the thumbnail used for the portal. Previously this mapping was activated only when there was no preview opt-out from the providers. But this opt-out has been deprecated since.
+schema:provider,schema:provider (schema:Organization) or schema:copyrightHolder,edm:provider,literal or ref,"[0,1]",
+,,dc:rights,literal or ref,,Rights statements at the level of the Aggregation (and the WebResource) are often not the ones for the ProvidedCHO 
+,,edm:rights,reference,1,
+,,edm:ugc,literal,"[0,1]",There is nothing special in Schema.org that could capture this other than fully detailing the provider with whatever info is available
+schema:provider,,edm:intermediateProvider,literal or ref,,
+WebResource,,,,,
+schema:WebPage or schema:MediaObject,Subclasses of schema:MediaObject,edm:WebResource,,,"Webpage if the WebResource is refered from the Aggregation using edm:isShownAt, MediaObject otherwise"
+rdf:type,,dc:type,,,rdf:type to be mapped to WebResource when values= http://schema.org/ImageObject and http://schema.org/WebPage and http://schema.org/MediaObject 
+,schema:name (when rdf:type= ImageObject),dc:description,,,
+schema:url,,rdf:about,reference,,The value is the identifier (rdf:about) of the web resource
+schema:creator,,dc:creator,literal or ref,,
+schema:description,,dc:description,literal or ref,,
+,schema:fileFormat ,dc:format,literal or ref,,
+,,dc:rights,literal or ref,,Use edm:rights to populate schema:license. but see question in the Aggregation
+schema:encodesCreativeWork,,dc:source,,,
+,,dcterms:conformsTo,literal or ref,,
+schema:dateCreated,,dcterms:created,literal or ref,,Wherever possible should be mapped to ISO 8601 date format
+,,dcterms:extent,literal or ref,,
+schema:hasPart,,dcterms:hasPart,literal or ref,,
+,,dcterms:isFormatOf,literal or ref,,
+,,dcterms:isReferencedBy,literal or ref,,
+schema:isPartOf,,dcterms:isPartOf,reference,,
+schema:datePublished,,dcterms:issued,literal or ref,,Wherever possible should be mapped to ISO 8601 date format
+schema:previousItem,,edm:isNextInSequence,reference,"[0,1]",In combination with schema:ListItem for the parent object
+,,edm:preview,reference,"[0,1]",
+schema:license,,edm:rights,reference,"[0,1]",New - but see question in the Aggregation
+schema:sameAs,,owl:sameAs,reference,,
+,,edm:codecName,literal,"[0, 1]",
+schema:fileFormat,schema:fileFormat ,dc:format or ebucore:hasMimeType,literal,"[0, 1]",
+schema:contentSize,,ebucore:fileByteSize,literal,"[0, 1]",
+schema:duration,,ebucore:duration,literal,"[0, 1]",
+schema:height,schema:height,ebucore:width,literal,"[0, 1]",
+schema:width,schema:width,ebucore:height,literal,"[0, 1]",
+,,edm:spatialResolution,literal,"[0, 1]",
+,,ebucore:sampleSize,literal,"[0, 1]",
+,,ebucore:sampleRate,literal,"[0, 1]",
+schema:bitrate,,ebucore:bitRate,literal,"[0, 1]",
+,,ebucore:frameRate,literal,"[0, 1]",
+,,edm:hasColorSpace,literal,"[0, 1]",
+,,edm:componentColor,literal,"[0, 6]",
+,,ebucore:orientation,literal,"[0, 1]",
+,,ebucore:audiochannelNumber,literal,"[0, 1]",
+Agent,,,,,
+schema:Person or schema:Organization,"schema:Person + additional properties to describe spouse, children ... ",edm:Agent,,,"Now EDM does not distinguish persons and organisations at the class level. Many mappings can be used for both, assuming such ""noise"" is ok for schema.org. Alternatively, we could have rules based on the presence of person- or organization-specific elements like rdaGr2:gender.
+Always better to be as acurate as possible.
+
+Mapping rules such as default to Person; if related via creator map to Person; if related by provider map to Organization, should be established"
+schema:name,"schema:familyName and schema:givenName",skos:prefLabel,literal,"[0,1] per lang tag",
+schema:alternateName,,skos:altLabel,literal,,"schema:additionalName for person, schema:name for organization. TODO: are several schema:names allowed? Or can schema:additionalName be used for non-persons?
+additionalName is person specific and designed for  middle names etc.
+schema:alternateName can be used for all types."
+,,skos:hiddenLabel,literal,,"If it is sharable with the outside world, it could be mapped to schema:alternateName. "
+schema:description,,skos:note,literal,,
+,,dc:date,reference,,
+,,dc:identifier,reference,,
+schema:birthDate,schema:birthDate,edm:begin,literal,"[0,1]",schema:birthDate for person or schema:foundingDate for organization. Wherever possible should be mapped to ISO 8601 date format
+schema:deathDate,schema:deathDate,edm:end,literal,"[0,1]",schema:deathDate for person or schema:dissolutionDate for organization. Wherever possible should be mapped to ISO 8601 date format
+,,edm:hasMet,reference,,"schema:knows for person, only if the target is a Person."
+,,edm:isRelatedTo,reference,,edm:isRelatedTo is broader than the family relations specified for schema:relatedTo
+,,edm:wasPresentAt,reference,,"schema:event for organization. For persons, schema:performerIn is too specific."
+schema:name,,foaf:name,literal,,
+schema:description,,rdaGr2:biographicalInformation,literal,,
+schema:birthdate,schema:birthDate,rdaGr2:dateOfBirth,literal,"[0,1]",Wherever possible should be mapped to ISO 8601 date format
+schema:deathdate,schema:deathDate,rdaGr2:dateOfDeath,literal,"[0,1]",Wherever possible should be mapped to ISO 8601 date format
+schema:foundingDate,,rdaGr2:dateOfEstablishment,literal,"[0,1]",Wherever possible should be mapped to ISO 8601 date format
+schema:dissolutionDate,,rdaGr2:dateOfTermination,literal,"[0,1]",Wherever possible should be mapped to ISO 8601 date format
+schema:gender,schema:gender,rdaGr2:gender,literal,"[0,1]",
+schema:jobTitle,schema:jobTitle,rdaGr2:professionOrOccupation,literal or ref,,
+schema:birthPlace,,rdaGr2:placeOfBirth,literal or ref,"[0,1]",
+schema:deathPlace,,rdaGr2:placeOfDeath,literal or ref,"[0,1]",
+schema:sameAs,,owl:sameAs,ref to Agent,,
+Place,,,,,
+schema:Place,,edm:Place,,,"Can we lump properties of a schema:GeoCoordinates onto a schema:Place?
+Yes schema:geo takes a schema:GeoCoordinates type"
+schema:latitude,,wgs84_pos:lat,literal,"[0,1]",
+schema:longitude,,wgs84_pos:long,literal,"[0,1]",
+schema:elevation,,wgs84_pos:alt,literal,"[0,1]",
+,,wgs84_pos:lat_long,literal,"[0,1]",
+schema:name,,skos:prefLabel,literal,"[0,1] per lang tag",
+schema:alternateName,,skos:altLabel,literal,,"schema:name. TODO: ask if several names are allowed. Or can schema:additionalName be used for non-persons?
+Several names allowed - or schema:alternateName"
+,,skos:hiddenLabel,literal,,"If it is sharable with the outside world, it could be mapped to schema:alternateName. "
+schema:description,,skos:note,literal,,
+schema:containsPlace,,dcterms:hasPart,ref to Place,,
+schema:containedIn,,dcterms:isPartOf,ref to Place,,
+schema:previousItem,,edm:isNextInSequence,reference,,In combination with schema:ListItem for the parent parent
+schema:sameAs,,owl:sameAs,ref to Place,,
+TimeSpan,,,,,
+,,edm:TimeSpan,,,schema:Date is only a datatype for ISO8601 values
+,,skos:prefLabel,literal,"[0,1] per lang tag",
+schema:alternateName,,skos:altLabel,literal,,
+,,skos:hiddenLabel,literal,,"If it is sharable with the outside world, it could be mapped to schema:alternateName. "
+,,skos:note,literal,,
+,,dcterms:hasPart,ref to TimeSpan,,
+,,dcterms:isPartOf,ref to TimeSpan,,
+,,edm:begin,literal,"[0,1]",
+,,edm:end,literal,"[0,1]",
+,,edm:isNextInSequence,reference,,
+,,crm:P79F.beginning_is_qualified_by,literal,,
+,,crm:P80F.end_is_qualified_by,literal,,
+schema:sameAs,,owl:sameAs,ref to TimeSpan,,
+Concepts,,,,,
+Schema:Thing,,skos:Concept,,,"See proposals in the Schema Bib Ext community group.
+Define as Type schema:Thing 
+Also Schema.org extension proposal for External Enumerations: https://github.com/schemaorg/schemaorg/issues/894"
+schema:name,,skos:prefLabel,literal,"[0,1] per lang tag",
+schema:alternateName,,skos:altLabel,literal,,
+,,skos:hiddenLabel,literal,,
+,,"skos:broader, skos:narrower, skos:related",ref to Concept,,
+,,"skos:broadMatch, skos:narrowMatch, skos:relatedMatch",ref to Concept,,
+,,"skos:exactMatch, skos:closeMatch",ref to Concept,,
+,,skos:note,literal,,
+,,skos:notation,string (+ rdf:datatype),,
+,,skos:inScheme,ref to Concept Scheme,,
+Other (non-core) Classes: Future Work,,,,,
+N/A,,cc:License,,,
+schema:Organization,schema:Organization ,foaf:Organization,,,
+,,edm:FullTextResources,,,
+schema:Service,,svcs:Service,,,
+N/A for now,,skos:ConceptScheme,,,
+schema:Event,,edm:Event,,,
+"schema:Thing
+schema:Product",,edm:PhysicalThing,,,
+"schema:Comment
+schema:Review ...",,oa:Annotation,,,"See paragraph in report. There was some discussion on using children of schema:(Assess)Action as types here. But the data is possibly the result of performing an action, not the action itself."

@@ -8,6 +8,7 @@ import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.SparqlClient.Handler;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
 
 public class HarvesterWikidataUris {
 

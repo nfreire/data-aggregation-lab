@@ -11,11 +11,12 @@ import org.apache.jena.rdf.model.ResourceFactory;
 import inescid.dataaggregation.casestudies.coreference.Consts;
 import inescid.dataaggregation.casestudies.coreference.RepositoryOfSameAs;
 import inescid.dataaggregation.casestudies.coreference.SameAsSets;
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.RdfUtil.Jena;
 import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;
@@ -126,7 +127,7 @@ public class ScriptCoreferenceIngesterSparql {
 	private void runIngest(String datasetId, String sparqlEndpoint) throws Exception {
 		SameAsSets sameAsSets = store.getSameAsSet(datasetId);
 		SparqlClient endpoint=new SparqlClient(sparqlEndpoint, "");
-		endpoint.queryWithPaging("SELECT ?s ?o WHERE { {?s <" + RegOwl.sameAs + "> ?o} UNION {?s <" + RegSkos.exactMatch + "> ?o } UNION {?s <" + RegSkos.closeMatch + "> ?o } UNION {?s <" + RegSchemaorg.sameAs + "> ?o }   .}",
+		endpoint.queryWithPaging("SELECT ?s ?o WHERE { {?s <" + Owl.sameAs + "> ?o} UNION {?s <" + Skos.exactMatch + "> ?o } UNION {?s <" + Skos.closeMatch + "> ?o } UNION {?s <" + Schemaorg.sameAs + "> ?o }   .}",
 				50000, null, new Handler() {
 			int cnt=0;
 			@Override
@@ -215,8 +216,8 @@ public class ScriptCoreferenceIngesterSparql {
 		
 		private void runIngestWikidata(String datasetId) throws Exception {
 			SameAsSets sameAsSets = store.getSameAsSet(datasetId);
-			for(Property p: new Property[] { RegOwl.sameAs, RdfRegWikidata.EXACT_MATCH, RdfRegWikidata.EQUIVALENT_CLASS,
-					RegSkos.exactMatch, RegSkos.closeMatch, RegSchemaorg.sameAs}) {
+			for(Property p: new Property[] { Owl.sameAs, RdfRegWikidata.EXACT_MATCH, RdfRegWikidata.EQUIVALENT_CLASS,
+					Skos.exactMatch, Skos.closeMatch, Schemaorg.sameAs}) {
 				SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { {?s <" + p + "> ?o} .}",
 						50000, null, new Handler() {
 					int cnt=0;

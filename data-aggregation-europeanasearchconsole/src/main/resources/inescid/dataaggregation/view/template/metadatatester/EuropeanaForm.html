@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="${context}/static/lab.css" type="text/css">
+		<title>Europeana Metadata Testing Tool - R&D Prototype</title>
+	</head>
+<body>
+<#include "../banner.include.html">
+
+<div class="breadcrumbs">&gt; <a href="${context}">Home</a></div>
+
+<h2>Check Data Quality of a Record at Europeana</h2>
+
+<form action="${context}/check_europeana" method="get">
+
+<p>Europeana record ID or URI: 
+	<input type="text" name="europeanaID" value="${uri!}" style="width:650px"/> <input type="submit" name="operation" value="Check Record"/>
+<br />
+</p>
+<br />
+<table style="padding-bottom:10px">
+	<tr><td colspan="2" class="form_title">Results <#if uriChecked>for ${uri!}</#if></td></tr>
+	<#if message??>
+		<tr><td colspan="2" class="validation_message">${message}</td></tr>
+	</#if>
+	<tr><td width="800" class="field_value">
+	
+	<#if uriChecked && ! message??>
+		<b>Cultural Heritage Object</b> 
+
+			<table style="margin-top:0px">
+				<tr><td class="field_value" colspan="2">URI: ${cho.uri}</td></tr>
+
+			<tr><td class="field_value" colspan="2">&nbsp;&nbsp;</td></tr>
+			
+	    	<#if cho.tiers??>
+					<tr><td class="field_value" colspan="2">&nbsp;&nbsp;Metadata Tier Scores</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp; - Metadata tier: ${cho.tiers.metadata}</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Language component: ${cho.tiers.language}</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Contextual classes component: ${cho.tiers.contextualClass}</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Enabling elements component: ${cho.tiers.enablingElements}</td></tr>
+			<#else>
+ 					<tr><td class="field_value"> &nbsp;&nbsp; It was not possible to calculate the metadata tier scores</td><td class="field_value"></td></tr>
+			</#if>
+			
+			<tr><td class="field_value" colspan="2">&nbsp;&nbsp;</td></tr>
+	    	<#if cho.completeness??>
+					<tr><td class="field_value" colspan="2">&nbsp;&nbsp;Record completeness</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp; - Score (0-1): ${cho.completeness}</td></tr>
+			<#else>
+ 					<tr><td class="field_value"> &nbsp;&nbsp; It was not possible to calculate the record completeness score</td><td class="field_value"></td></tr>
+			</#if>
+			
+			<tr><td class="field_value" colspan="2">&nbsp;&nbsp;</td></tr>
+	    	<#if cho.multilingualSaturation??>
+					<tr><td class="field_value" colspan="2">&nbsp;&nbsp;Multilingual saturation</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp; - Language tags: ${cho.multilingualSaturation.langTagCount}</td></tr>
+					<tr><td class="field_value" colspan="2"> &nbsp;&nbsp; - Languages: ${cho.multilingualSaturation.languagesCount}</td></tr>
+			<#else>
+ 					<tr><td class="field_value"> &nbsp;&nbsp; It was not possible to calculate the record multilingual saturation score</td><td class="field_value"></td></tr>
+			</#if>
+			
+			</table>
+	<#else>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+	</#if>
+	</td></tr>
+</table>
+
+</form>
+
+
+<#include "../footer.include.html">
+</body>
+</html>

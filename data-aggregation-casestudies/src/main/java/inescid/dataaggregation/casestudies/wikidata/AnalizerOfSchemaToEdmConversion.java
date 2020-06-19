@@ -12,7 +12,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
-import inescid.dataaggregation.data.RegSchemaorg;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.dataaggregation.dataset.convert.rdfconverter.MappingReport;
 import inescid.util.MapOfInts;
 
@@ -29,14 +29,14 @@ public class AnalizerOfSchemaToEdmConversion {
 			CSVPrinter printer=new CSVPrinter(sb, CSVFormat.DEFAULT);
 			printer.printRecord("Resource","Property","Usage count","Mapped/converted to");
 			for(Entry<Resource, Resource[]> e: rpt.getRdfTypeMaps().entrySet()) {
-				if(!e.getKey().getURI().startsWith(RegSchemaorg.NS)) continue;
+				if(!e.getKey().getURI().startsWith(Schemaorg.NS)) continue;
 				if(e.getValue().length==0) {
 					unmappedTypes.put(e.getKey().getURI(), rpt.getUsageCounts().get(e.getKey()).get(e.getKey()));
 					continue;
 				}
 				Map<Property, Set<Property>> map = rpt.getPropertiesMaps().get(e.getKey());
 				for(Entry<Property, Set<Property>> e2: map.entrySet()) {
-					if(!e2.getKey().getURI().startsWith(RegSchemaorg.NS)) continue;
+					if(!e2.getKey().getURI().startsWith(Schemaorg.NS)) continue;
 					if(e2.getValue().size()==0) {
 						MapOfInts<String> prop = unmappedProperties.get(e.getKey());
 						if(prop==null) {

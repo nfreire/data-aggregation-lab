@@ -13,17 +13,23 @@ import java.util.TreeSet;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.model.Foaf;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 import inescid.util.SparqlClient.Handler;
 import inescid.util.datastruct.MapOfLists;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
 
 public class EquivalenceMapping  implements Serializable{
 	private static final long serialVersionUID=1;	
@@ -39,6 +45,7 @@ public class EquivalenceMapping  implements Serializable{
 
 	public EquivalenceMapping(boolean acceptNonSchemaOrg) {
 		this.acceptNonSchemaOrg= acceptNonSchemaOrg;
+		wdEntPropEquivalences.put(WikidataUtil.convertWdUriToCanonical(RdfRegWikidata.IIIF_MANIFEST.getURI()), Schemaorg.url.getURI());
 	}
 	
 	public void analyzeEntity(Resource wdResource, Resource leafResource) throws AccessException, InterruptedException, IOException {
@@ -56,36 +63,59 @@ public class EquivalenceMapping  implements Serializable{
 		alreadyChecked.add(wdResource.getURI());
 		
 		boolean foundEquivalent=false;
-		StmtIterator propStms = wdResource.listProperties(RdfRegWikidata.EQUIVALENT_CLASS);
-		for (Statement st : propStms.toList()) {
-//			System.out.println(st);
-			String objUri = st.getObject().asNode().getURI();
-			if(objUri.startsWith(RdfReg.NsSchemaOrg)) {
-				if(wdResource.getURI().equals(leafResource.getURI())) {
-					wdEntPropEquivalences.put(leafResource.getURI(), objUri);
-				} else {
-					wdEntPropEquivalences.put(wdResource.getURI(), objUri);
-					wdEntPropEquivalencesSuperclasses.put(leafResource.getURI(), objUri);
+		for(Property eqProp: new Property[] {RdfRegWikidata.EQUIVALENT_CLASS, RdfRegWikidata.EXACT_MATCH}) {
+			StmtIterator propStms = wdResource.listProperties(eqProp);
+			for (Statement st : propStms.toList()) {
+//				System.out.println(st);
+				String objUri = fixHttps(st.getObject().asNode().getURI());
+				if(objUri.startsWith(Schemaorg.NS)) {
+					if(wdResource.getURI().equals(leafResource.getURI())) {
+						wdEntPropEquivalences.put(leafResource.getURI(), objUri);
+					} else {
+						wdEntPropEquivalences.put(wdResource.getURI(), objUri);
+						wdEntPropEquivalencesSuperclasses.put(leafResource.getURI(), objUri);
+					}
+					foundEquivalent=true;
+					break;
+				}else if(acceptNonSchemaOrg && objUri.equals(Foaf.page.getURI())) {
+					//TODO: this is just to test, for now. Remove next line
+					objUri=Schemaorg.url.getURI();
+					
+					if(wdResource.getURI().equals(leafResource.getURI())) {
+						wdEntPropEquivalencesNonSchemaOrg.put(leafResource.getURI(), objUri);
+					} else {
+						wdEntPropEquivalencesNonSchemaOrg.put(wdResource.getURI(), objUri);
+						wdEntPropEquivalencesSuperclassesNonSchemaOrg.put(leafResource.getURI(), objUri);
+					}
 				}
-				foundEquivalent=true;
-			}else if(acceptNonSchemaOrg && objUri.equals(RdfReg.FOAF_PAGE.getURI())) {
-				//TODO: this is just to test, for now. Remove next line
-				objUri=RdfReg.SCHEMAORG_URL.getURI();
-				
-				if(wdResource.getURI().equals(leafResource.getURI())) {
-					wdEntPropEquivalencesNonSchemaOrg.put(leafResource.getURI(), objUri);
-				} else {
-					wdEntPropEquivalencesNonSchemaOrg.put(wdResource.getURI(), objUri);
-					wdEntPropEquivalencesSuperclassesNonSchemaOrg.put(leafResource.getURI(), objUri);
-				}
+				if(foundEquivalent) break;
 			}
 		}
 		if(!foundEquivalent) {
-			propStms = wdResource.listProperties(RdfRegWikidata.SUBCLASS_OF);
+			StmtIterator propStms = wdResource.listProperties(RdfRegWikidata.BROADER_CONCEPT);
+			for (Statement st : propStms.toList()) {
+//				System.out.println(st);
+				String objUri = fixHttps(st.getObject().asNode().getURI());
+				if(objUri.startsWith(Schemaorg.NS)) {
+						wdEntPropEquivalencesSuperclasses.put(leafResource.getURI(), objUri);
+					foundEquivalent=true;
+				}else if(acceptNonSchemaOrg && objUri.equals(Foaf.page.getURI())) {
+					//TODO: this is just to test, for now. Remove next line
+					objUri=Schemaorg.url.getURI();
+					
+						wdEntPropEquivalencesNonSchemaOrg.put(wdResource.getURI(), objUri);
+						wdEntPropEquivalencesSuperclassesNonSchemaOrg.put(leafResource.getURI(), objUri);
+				}
+			}
+			
+			
+		}			
+		if(!foundEquivalent) {
+			StmtIterator propStms = wdResource.listProperties(RdfRegWikidata.SUBCLASS_OF);
 			for (Statement st : propStms.toList()) {
 //				System.out.println(st);
 				String objUri = st.getObject().asNode().getURI();
-				Resource wdScResource = RdfUtil.readRdfResourceFromUri(objUri);
+				Resource wdScResource = WikidataUtil.fetchResource(objUri);
 					analyzeEntity(wdScResource, leafResource);
 				if(! wdResource.getURI().equals(leafResource.getURI())) {
 					ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
@@ -112,10 +142,21 @@ public class EquivalenceMapping  implements Serializable{
 		}
 	}
 
-	public void putEquivalence(String uriWd, String otherUri) {
-		wdEntPropEquivalences.put(uriWd, otherUri);
+	private static String incorrectSchemaorgNs="https://schema.org/";
+	private static String fixHttps(String uri) {
+		if(uri.startsWith(incorrectSchemaorgNs)) 
+			uri=Schemaorg.NS+uri.substring(Schemaorg.NS.length()+1);
+		return uri;
 	}
+
+//	public void putEquivalence(String uriWd, String otherUri) {
+//		wdEntPropEquivalences.put(uriWd, otherUri);
+//	}
 	
+	public void setEquivalenceOfSuperclass(String uriWd, String otherUri) {
+		wdEntPropEquivalencesSuperclasses.get(uriWd).clear();;
+		wdEntPropEquivalencesSuperclasses.put(uriWd, otherUri);
+	}
 	public void putEquivalenceOfSuperclass(String uriWd, String otherUri) {
 		wdEntPropEquivalencesSuperclasses.put(uriWd, otherUri);
 	}
@@ -138,7 +179,7 @@ public class EquivalenceMapping  implements Serializable{
 			});
 			propUriParam=wdEqUri[0];
 			if(propUriParam==null)
-				return wdPropResource;
+				return null;
 		}
 		String propUri=WikidataUtil.convertWdUriToCanonical(propUriParam);
 
@@ -168,13 +209,13 @@ public class EquivalenceMapping  implements Serializable{
 //		System.out.println("Analyzing "+propUri);
 		
 		try {
-			wdPropResource = RdfUtil.readRdfResourceFromUri(propUri);
+			wdPropResource = WikidataUtil.fetchResource(propUri);
 				boolean foundEquivalent=false;
 				StmtIterator typeProperties = wdPropResource.listProperties(RdfRegWikidata.EQUIVALENT_PROPERTY);
 				for (Statement st : typeProperties.toList()) {
 //				System.out.println(st);
-					String objUri = st.getObject().asNode().getURI();
-					if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RegRdf.NS)) {
+					String objUri = fixHttps(st.getObject().asNode().getURI());
+					if(objUri.startsWith(Schemaorg.NS) || objUri.startsWith(Rdf.NS)) {
 						if(propUriParam.equals(leafPropertyUri)) {
 							wdEntPropEquivalences.put(leafPropertyUri, objUri);
 						} else {
@@ -182,15 +223,35 @@ public class EquivalenceMapping  implements Serializable{
 							wdEntPropEquivalencesSuperclasses.put(leafPropertyUri, objUri);
 						}
 						foundEquivalent=true;
-					}else if(acceptNonSchemaOrg && objUri.equals(RdfReg.FOAF_PAGE.getURI())) {
+					}else if(acceptNonSchemaOrg && objUri.equals(Foaf.page.getURI())) {
 						//TODO: this is just to test, for now. Remove next line
-						objUri=RdfReg.SCHEMAORG_URL.getURI();
-						if(objUri.startsWith(RdfReg.NsSchemaOrg) || objUri.startsWith(RegRdf.NS)) {
+						objUri=Schemaorg.url.getURI();
+						
+						if(objUri.startsWith(Schemaorg.NS) || objUri.startsWith(Rdf.NS)) {
 							if(propUriParam.equals(leafPropertyUri)) {
 								wdEntPropEquivalences.put(leafPropertyUri, objUri);
 							} else {
 								wdEntPropEquivalences.put(propUriParam, objUri);
 								wdEntPropEquivalencesSuperclasses.put(leafPropertyUri, objUri);
+							}
+						}
+					}
+				}
+				if(!foundEquivalent) {			
+					typeProperties = wdPropResource.listProperties(RdfRegWikidata.EXTERNAL_SUPERPROPERTY);
+					for (Statement st : typeProperties.toList()) {
+//					System.out.println(st);
+						String objUri = fixHttps(st.getObject().asNode().getURI());
+						if(objUri.startsWith(Schemaorg.NS) || objUri.startsWith(Rdf.NS)) {
+							wdEntPropEquivalencesSuperclasses.put(leafPropertyUri, objUri);
+							foundEquivalent=true;
+						}else if(acceptNonSchemaOrg && objUri.equals(Foaf.page.getURI())) {
+							//TODO: this is just to test, for now. Remove next line
+							objUri=Schemaorg.url.getURI();
+							
+							if(objUri.startsWith(Schemaorg.NS) || objUri.startsWith(Rdf.NS)) {
+									wdEntPropEquivalences.put(propUriParam, objUri);
+									wdEntPropEquivalencesSuperclasses.put(leafPropertyUri, objUri);
 							}
 						}
 					}
@@ -211,20 +272,20 @@ public class EquivalenceMapping  implements Serializable{
 //						analyzeProperty(objUri, leafPropertyUri);
 //						foundEquivalent=true;
 						
-						Resource wdScResource = RdfUtil.readRdfResourceFromUri(objUri);
+						Resource wdScResource = WikidataUtil.fetchResource(objUri);
 						analyzeProperty(objUri, leafPropertyUri);
-					if(! propUriParam.equals(leafPropertyUri)) {
-						ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
-						if(eqs!=null) 
-							putEquivalenceOfSuperclass(propUriParam, eqs);
+						if(! propUriParam.equals(leafPropertyUri)) {
+							ArrayList<String> eqs=getEquivalence(wdScResource.getURI(), true);
+							if(eqs!=null) 
+								putEquivalenceOfSuperclass(propUriParam, eqs);
+						}
+	
+						if(propUriParam.equals(leafPropertyUri)) {
+							if (! wdEntPropEquivalencesSuperclasses.containsKey(leafPropertyUri) &&
+									! wdEntPropEquivalencesSuperclassesNonSchemaOrg.containsKey(leafPropertyUri))
+								equivalencesNotFound.add(leafPropertyUri);
+						}
 					}
-
-					if(propUriParam.equals(leafPropertyUri)) {
-						if (! wdEntPropEquivalencesSuperclasses.containsKey(leafPropertyUri) &&
-								! wdEntPropEquivalencesSuperclassesNonSchemaOrg.containsKey(leafPropertyUri))
-							equivalencesNotFound.add(leafPropertyUri);
-					}
-				}
 				
 				}
 				
@@ -286,15 +347,28 @@ public class EquivalenceMapping  implements Serializable{
 				boolean eqGenExists=!eqExists && wdEntPropEquivalencesSuperclasses.containsKey(uri);
 				
 				String wdLabel=metamodelLabels.get(uri);
-
+				if(StringUtils.isEmpty(wdLabel)) {
+					try {
+						wdLabel = WikidataUtil.getLabelFor(uri);
+					} catch (Exception e) {
+						throw new RuntimeException(e.getMessage(), e);
+					}
+					metamodelLabels.put(uri, wdLabel);
+				}
 				if(eqExists) {
 					eqCnt++;
 					for(String eqU: eqUris)
 						csv.printRecord(uri, wdLabel, eqU );
 				} else if(eqGenExists) {
 					eqGenCnt++;
-					for(String eqU: wdEntPropEquivalencesSuperclasses.get(uri))
-						csv.printRecord(uri, wdLabel, null, eqU );
+//					for(String eqU: wdEntPropEquivalencesSuperclasses.get(uri))
+//						csv.printRecord(uri, wdLabel, null, eqU );
+						csv.print(uri );
+						csv.print(wdLabel );
+						csv.print("");
+						for(String eqU: wdEntPropEquivalencesSuperclasses.get(uri))
+							csv.print(eqU);
+						csv.println();
 				}
 			}	
 			csv.printRecord("Total URIs", "Equivalences","Equivalences (generic)");

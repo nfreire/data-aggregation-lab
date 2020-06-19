@@ -14,7 +14,8 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.mortbay.log.Log;
 import org.w3c.dom.Document;
 
-import inescid.dataaggregation.data.RdfReg;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.dataaggregation.dataset.Dataset;
 import inescid.dataaggregation.dataset.Dataset.DatasetType;
 import inescid.dataaggregation.dataset.Global;
@@ -46,7 +47,7 @@ public class JobConvertSchemaOrgToEdm extends JobWorker implements Runnable {
 
 			if(dataset.getType()==DatasetType.LOD) {
 				Resource  dsResource = RdfUtil.readRdfResourceFromUri(dataset.getUri());
-				StmtIterator licenseProperties = dsResource.listProperties(RdfReg.SCHEMAORG_LICENSE);
+				StmtIterator licenseProperties = dsResource.listProperties(Schemaorg.license);
 				if (licenseProperties!=null && licenseProperties.hasNext()) {
 					while(licenseProperties.hasNext()) {
 						Statement st=licenseProperties.next();

@@ -11,6 +11,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -501,12 +502,19 @@ public class XmlUtil {
 
 
     public static Document transform(Document dom, Document xslt) {
+		return transform(dom, xslt, null);
+    }
+
+    public static Document transform(Document dom, Document xslt, Map<String, Object> parameters) {
     	try {
     		DOMSource xsltSource = new DOMSource(xslt);
     		Transformer transformer = transFactory.newTransformer(xsltSource);
     		DOMSource source = new DOMSource(dom);
     		Document out=newDocument();
     		DOMResult result = new DOMResult(out);
+    		if(parameters!=null)
+    			for(String key: parameters.keySet()) 
+    				transformer.setParameter(key, parameters.get(key));
     		transformer.transform(source, result);
     		return out;
     	} catch (Exception e) {

@@ -22,15 +22,15 @@ import org.apache.jena.shacl.ValidationReport;
 import org.apache.jena.shacl.lib.ShLib;
 
 import eu.europeana.ld.jena.JenaUtils;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.RdfUtil;
 
 public class MultilingualSaturation {
 	public static MultilingualSaturationResult calculate(Model edm) {
 		MultilingualSaturationResult result=new MultilingualSaturationResult();
-		for(Resource r: edm.listResourcesWithProperty(RegRdf.type).toList()) {
+		for(Resource r: edm.listResourcesWithProperty(Rdf.type).toList()) {
 			calculate(r, result);
 		}
 	    return result;
@@ -41,7 +41,7 @@ public class MultilingualSaturation {
 		return result;
 	}
 	private  static void calculate(Resource edm, MultilingualSaturationResult result) {
-		String cls=edm.getProperty(RegRdf.type).getObject().asResource().getURI();
+		String cls=edm.getProperty(Rdf.type).getObject().asResource().getURI();
 		for (Statement p: edm.listProperties().toList()) {
 			if(p.getObject().isLiteral()) {
 				String language = p.getObject().asLiteral().getLanguage();

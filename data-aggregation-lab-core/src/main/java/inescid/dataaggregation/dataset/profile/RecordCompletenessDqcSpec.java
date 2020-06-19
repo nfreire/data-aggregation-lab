@@ -3,8 +3,11 @@ package inescid.dataaggregation.dataset.profile;
 import java.util.HashMap;
 import java.util.Map;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Dc;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
 
 public class RecordCompletenessDqcSpec {
 	public enum Dimension {Descriptiveness,	Searchability,	Contextualisation,	Identification,	Browsing,	Viewing,	ReUsability,	Multilinguality};
@@ -19,30 +22,30 @@ public class RecordCompletenessDqcSpec {
 		maxScoreSpec=new CompletenessSpecResources();
 		minScoreSpec=new CompletenessSpecResources();
 		
-		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(RegEdm.ProvidedCHO);
-		CompletenessSpecProperties maxScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
-		maxScoreChoSpec.addProperty(RdfReg.DC_DESCRIPTION);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_TITLE, RdfReg.DCTERMS_ALTERNATIVE);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_CREATOR, RdfReg.DCTERMS_PUBLISHER, RdfReg.DC_CONTRIBUTOR);
-		maxScoreChoSpec.addProperty(RdfReg.DC_TYPE);
-		maxScoreChoSpec.addProperty(RdfReg.DC_IDENTIFIER);
-		maxScoreChoSpec.addProperty(RdfReg.DC_LANGUAGE);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_TEMPORAL, RdfReg.DC_COVERAGE);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_SPATIAL, RdfReg.DC_COVERAGE);
-		maxScoreChoSpec.addProperty(RdfReg.DC_SUBJECT);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_DATE, RdfReg.DCTERMS_CREATED, RdfReg.DCTERMS_ISSUED);
-		maxScoreChoSpec.addProperty(RdfReg.DCTERMS_EXTENT);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_FORMAT, RdfReg.DCTERMS_MEDIUM);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DC_SOURCE, RdfReg.DCTERMS_PROVENANCE);
-		maxScoreChoSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreChoSpec.addOneOfProperties(RdfReg.DCTERMS_RELATION, RdfReg.DCTERMS_IS_PART_OF, RdfReg.DCTERMS_HAS_PART, RegEdm.isNextInSequence);
-		maxScoreChoSpec.addProperty(RegEdm.rights);
+		CompletenessSpecProperties maxScoreChoSpec=maxScoreSpec.addResource(Edm.ProvidedCHO);
+		CompletenessSpecProperties maxScoreAggSpec=maxScoreSpec.addResource(Ore.Aggregation);
+		maxScoreChoSpec.addProperty(Dc.description);
+		maxScoreChoSpec.addOneOfProperties(Dc.title, DcTerms.alternative);
+		maxScoreChoSpec.addOneOfProperties(Dc.creator, DcTerms.publisher, Dc.contributor);
+		maxScoreChoSpec.addProperty(Dc.type);
+		maxScoreChoSpec.addProperty(Dc.identifier);
+		maxScoreChoSpec.addProperty(Dc.language);
+		maxScoreChoSpec.addOneOfProperties(DcTerms.temporal, Dc.coverage);
+		maxScoreChoSpec.addOneOfProperties(DcTerms.spatial, Dc.coverage);
+		maxScoreChoSpec.addProperty(Dc.subject);
+		maxScoreChoSpec.addOneOfProperties(Dc.date, DcTerms.created, DcTerms.issued);
+		maxScoreChoSpec.addProperty(DcTerms.extent);
+		maxScoreChoSpec.addOneOfProperties(Dc.format, DcTerms.medium);
+		maxScoreChoSpec.addOneOfProperties(Dc.source, DcTerms.provenance);
+		maxScoreChoSpec.addProperty(Dc.rights);
+		maxScoreChoSpec.addOneOfProperties(DcTerms.relation, DcTerms.isPartOf, DcTerms.hasPart, Edm.isNextInSequence);
+		maxScoreChoSpec.addProperty(Edm.rights);
 		
-//		maxScoreAggSpec.addProperty(RdfReg.DC_RIGHTS);
-		maxScoreAggSpec.addProperty(RegEdm.rights);
+//		maxScoreAggSpec.addProperty(Dc.RIGHTS);
+		maxScoreAggSpec.addProperty(Edm.rights);
 		
-		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(RegEdm.ProvidedCHO);
-		CompletenessSpecProperties minScoreAggSpec=maxScoreSpec.addResource(RdfReg.ORE_AGGREGATION);
+		CompletenessSpecProperties minScoreChoSpec=maxScoreSpec.addResource(Edm.ProvidedCHO);
+		CompletenessSpecProperties minScoreAggSpec=maxScoreSpec.addResource(Ore.Aggregation);
 		
 		
 	}

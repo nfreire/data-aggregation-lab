@@ -24,7 +24,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 
-import inescid.dataaggregation.data.RegOwl;
+import inescid.dataaggregation.data.model.Owl;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
@@ -301,7 +301,7 @@ public class ScriptCoreferenceReporter {
 		}
 		if(ent==null) 
 			return Collections.EMPTY_LIST;
-		return RdfUtil.listProperties(ent, RegOwl.sameAs);
+		return RdfUtil.listProperties(ent, Owl.sameAs);
 	}
 	
 }

@@ -2,8 +2,8 @@ package inescid.dataaggregation.casestudies.coreference.old;
 
 import org.apache.jena.query.QuerySolution;
 
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
 import inescid.util.SparqlClient.Handler;
 
 public class SparqlCoreferenceIngester {
@@ -12,7 +12,7 @@ public class SparqlCoreferenceIngester {
 		
 		final SameAsSets sameAsSets=new SameAsSets();
 		
-		SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <" + RegOwl.sameAs + "> ?o .}", 10000, "s", new Handler() {
+		SparqlClientWikidata.queryWithPaging("SELECT ?s ?o WHERE { ?s <" + Owl.sameAs + "> ?o .}", 10000, "s", new Handler() {
 			@Override
 			public boolean handleSolution(QuerySolution solution) throws Exception {
 				sameAsSets.addSameAs(solution.getResource("s").getURI(), solution.getResource("o").getURI());

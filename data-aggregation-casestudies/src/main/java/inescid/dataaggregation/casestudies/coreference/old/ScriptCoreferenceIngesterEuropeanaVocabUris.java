@@ -30,11 +30,12 @@ import inescid.dataaggregation.casestudies.coreference.Consts;
 import inescid.dataaggregation.casestudies.coreference.EuropeanaSameAsSets;
 import inescid.dataaggregation.casestudies.coreference.RepositoryOfSameAs;
 import inescid.dataaggregation.casestudies.coreference.SameAsSets;
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.dataaggregation.dataset.Global;
 import inescid.util.AccessException;
 import inescid.util.HttpUtil;
@@ -204,7 +205,7 @@ public class ScriptCoreferenceIngesterEuropeanaVocabUris {
 		}
 		if(ent==null) 
 			return Collections.EMPTY_LIST;
-		return RdfUtil.listProperties(ent, RegOwl.sameAs, RegSkos.exactMatch, RegSkos.closeMatch, RegSchemaorg.sameAs);
+		return RdfUtil.listProperties(ent, Owl.sameAs, Skos.exactMatch, Skos.closeMatch, Schemaorg.sameAs);
 	}
 
 }

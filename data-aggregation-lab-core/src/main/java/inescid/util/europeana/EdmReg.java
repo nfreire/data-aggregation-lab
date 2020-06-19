@@ -8,25 +8,33 @@ import java.util.Set;
 
 import org.apache.jena.rdf.model.Resource;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Dc;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Foaf;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
+import inescid.dataaggregation.data.model.Skos;
+import inescid.dataaggregation.data.model.Svcs;
+import inescid.dataaggregation.data.model.Wgs84;
 
 public class EdmReg {
 
 	public static final Set<Resource> edmClasses = Collections.unmodifiableSet(new HashSet<Resource>() {
 		private static final long serialVersionUID = 1L;
 		{
-			add(RegEdm.ProvidedCHO);
-			add(RegEdm.WebResource);
-			add(RegEdm.Agent);
-			add(RdfReg.FOAF_ORGANIZATION);
-			add(RegEdm.TimeSpan);
-			add(RegEdm.Place);
-			add(RegEdm.Event);
-			add(RegEdm.PhysicalThing);
-			add(RdfReg.ORE_AGGREGATION);
+			add(Edm.ProvidedCHO);
+			add(Edm.WebResource);
+			add(Edm.Agent);
+			add(Foaf.Organization);
+			add(Edm.TimeSpan);
+			add(Edm.Place);
+			add(Edm.Event);
+			add(Edm.PhysicalThing);
+			add(Ore.Aggregation);
 			add(RdfReg.SKOS_CONCEPT);
 			add(RdfReg.SKOS_CONCEPT_SCHEME);
 			add(RdfReg.CC_LICENSE);
@@ -42,19 +50,19 @@ public class EdmReg {
 		private static final long serialVersionUID = 1L;
 		{
 			put(RdfReg.NsCc, "cc");
-			put(RdfReg.NsDc, "dc");
-			put(RdfReg.NsDcterms, "dcterms");
-			put(RegEdm.NS, RegEdm.PREFIX);
-			put(RdfReg.NsOre, "ore");
-			put(RegRdf.NS, RegRdf.PREFIX);
-			put(RegRdfs.NS, RegRdfs.PREFIX);
-			put(RdfReg.NsSkos, "skos");
-			put(RdfReg.NsSvcs, "svcs");
+			put(Dc.NS, "dc");
+			put(DcTerms.NS, "dcterms");
+			put(Edm.NS, Edm.PREFIX);
+			put(Ore.NS, "ore");
+			put(Rdf.NS, Rdf.PREFIX);
+			put(Rdfs.NS, Rdfs.PREFIX);
+			put(Skos.NS, "skos");
+			put(Svcs.NS, "svcs");
 			put(RdfReg.NsDoap, "doap");
-			put(RdfReg.NsWgs84, "wgs84_pos");
-			put(RdfReg.NsOwl, "owl");
+			put(Wgs84.NS, "wgs84_pos");
+			put(Owl.NS, "owl");
 			put(RdfReg.NsRdaGr2, "rdaGr2");
-			put(RdfReg.NsFoaf, "foaf");
+			put(Foaf.NS, "foaf");
 //		put("cc", RdfReg.NsCc);
 //		put("dc", RdfReg.NsDc);
 //		put("dcterms", RdfReg.NsDcterms);

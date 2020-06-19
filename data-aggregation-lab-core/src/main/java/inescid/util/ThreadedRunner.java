@@ -14,13 +14,22 @@ public class ThreadedRunner {
 	
 	public ThreadedRunner(int numberOfThreads) {
 		threadPool = Executors.newFixedThreadPool(numberOfThreads);
-		submitionQueue=new Semaphore(numberOfThreads*10);
+		submitionQueue=new Semaphore(numberOfThreads*3);
+	}
+	public ThreadedRunner(int numberOfThreads, int submitionQueueSize) {
+		threadPool = Executors.newFixedThreadPool(numberOfThreads);
+		submitionQueue=new Semaphore(submitionQueueSize);
 	}
 	
 	public void run(Runnable task) throws InterruptedException, ExecutionException {
 		submitionQueue.acquire();
-		threadPool.submit(task).get();
-		submitionQueue.release();
+		threadPool.submit(new Runnable() {
+			@Override
+			public void run() {
+				task.run();
+				submitionQueue.release();
+			}
+		});
 	}
 	
 	public void awaitTermination(int minutesToWaitBeforeForcingTermination) throws InterruptedException{

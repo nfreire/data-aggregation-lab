@@ -21,10 +21,10 @@ import org.apache.jena.riot.system.StreamRDFWriter;
 import org.h2.mvstore.MVMap;
 
 import inescid.dataaggregation.casestudies.coreference.Consts;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.RdfUtil.Jena;
 import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;
@@ -133,8 +133,8 @@ public class ScriptStatementHarvestFromSparql {
 
 		try {
 			SparqlClient endpoint=new SparqlClient(sparqlEndpoint, "");
-			for(Property p: new Property[] { RegOwl.sameAs, RegSkos.exactMatch, RegSkos.closeMatch,
-					RegSchemaorg.sameAs}) {
+			for(Property p: new Property[] { Owl.sameAs, Skos.exactMatch, Skos.closeMatch,
+					Schemaorg.sameAs}) {
 				endpoint.queryWithPaging("SELECT ?s ?o WHERE { {?s <" + p + "> ?o} .}",
 						50000, null, new Handler() {
 					int cnt=0;

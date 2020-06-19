@@ -12,7 +12,8 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.riot.Lang;
 
 import inescid.dataaggregation.casestudies.wikidata.ScriptMetadataAnalyzerOfCulturalHeritage.Files;
-import inescid.dataaggregation.casestudies.wikidata.WikidataUtil;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
@@ -63,7 +64,6 @@ public class TestWikidataEdmConverter {
 			try {
 				Resource wdResource = WikidataUtil.fetchResource(wdResourceUri);
 //				System.out.println(wdResource);
-				conv.reset();
 				Resource edm = conv.convert(wdResource);
 				
 				if(SAMPLE_RECORDS>0) 

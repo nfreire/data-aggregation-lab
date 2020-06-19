@@ -20,8 +20,7 @@ import eu.europeana.corelib.solr.bean.impl.FullBeanImpl;
 import eu.europeana.corelib.solr.entity.AggregationImpl;
 import inescid.dataaggregation.casestudies.coreference.SameAsSets;
 import inescid.europeanarepository.EdmMongoServer;
-import inescid.europeanarepository.EdmMongoServer.AggregationHandler;
-import inescid.europeanarepository.EdmMongoServer.FullBeanHandler;
+import inescid.europeanarepository.EdmMongoServer.Handler;
 import inescid.util.RdfUtil;
 
 public class ProcessRepositoryGetShownAt {
@@ -52,14 +51,14 @@ public class ProcessRepositoryGetShownAt {
 		System.out.println("Starting at mongo offset "+offset);
 		
 		try {
-			edmMongo.forEachAggregation(new AggregationHandler() {
+			edmMongo.forEach(AggregationImpl.class, new Handler<AggregationImpl>() {
 				Date start = new Date();
 				int recCnt = offset;
 				int okRecs = 0;
 
 				StringBuilder recCsv = new StringBuilder();
 
-				public void handle(AggregationImpl fb) {
+				public boolean handle(AggregationImpl fb) {
 					try {
 						String uri = fb.getAbout();
 						String recId = fb.getAbout();
@@ -79,7 +78,7 @@ public class ProcessRepositoryGetShownAt {
 									(int) recsMinute, (int) minutesToEnd);
 						}
 						if (idToCsv.containsKey(recId))
-							return;
+							return true;
 						
 						try {
 							CSVPrinter csvOut = new CSVPrinter(recCsv, CSVFormat.DEFAULT);
@@ -105,6 +104,7 @@ public class ProcessRepositoryGetShownAt {
 							throw new RuntimeException(e.getMessage(), e);
 						}
 					}
+					return true;
 				}
 			}, offset);
 		} finally {

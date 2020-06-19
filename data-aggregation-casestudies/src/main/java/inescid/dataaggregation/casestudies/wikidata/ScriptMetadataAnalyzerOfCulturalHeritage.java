@@ -30,25 +30,30 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
-import org.apache.jena.riot.RiotException;
 
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.Dqc10PointRatingCalculatorNoRights;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.EdmValidation;
 import inescid.dataaggregation.casestudies.wikidata.evaluation.ValidatorForNonPartners;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
 import inescid.dataaggregation.crawl.http.HttpResponse;
 import inescid.dataaggregation.data.ContentTypes;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegRdf;
-import inescid.dataaggregation.data.RegRdfs;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Ore;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Rdfs;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.validation.EdmXmlValidator.Schema;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.dataset.convert.SchemaOrgToEdmDataConverter;
 import inescid.dataaggregation.dataset.convert.rdfconverter.ConversionSpecificationAnalyzer;
 import inescid.dataaggregation.dataset.profile.ClassUsageStats;
 import inescid.dataaggregation.dataset.profile.UsageProfiler;
 import inescid.dataaggregation.dataset.profile.completeness.Dqc10PointRatingCalculator;
-import inescid.dataaggregation.dataset.validate.Validator.Schema;
 import inescid.dataaggregation.store.Repository;
 import inescid.europeanaapi.EuropeanaApiClient;
 import inescid.opaf.data.EdmUtil;
@@ -170,7 +175,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		File outputFolder = Files.defaultOutputFolder;		
 		String httpCacheFolder = "c://users/nfrei/desktop/data/HttpRepositoryWikidataStudy";
 		final int SAMPLE_RECORDS;
-		boolean saveRecordsToRepository=false;
+		boolean saveRecordsToRepository=true;
 
 		if (args.length > 0)
 			outputFolder = new File(args[0]);
@@ -273,9 +278,14 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 //					removeOtherResources(resource.getModel(), uri);
 //					removeNonTruthyStatements(resource.getModel());
 //					addRdfTypesFromP31(resource.getModel());
-	
-					Resource resource = WikidataUtil.fetchResource(uri);
+
+//					Use this for the correct number of rdf:type
+//					Resource resource = WikidataUtil.fetchResource(uri, false);					
+					//Use this for running the experiment
+					Resource resource = WikidataUtil.fetchResource(uri);	
 					chEntitiesProfile.collect(resource);
+					
+					
 	//		System.out.println(fetched.getValue());
 	//		System.out.println(new String(fetched.getKey()));
 	//		System.out.println("Statements for " + uri);
@@ -295,6 +305,11 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 			in.writeObject(chEntitiesProfile);
 			in.close();
 			fileOutputStream.close();
+			
+			
+//			FileUtils.write(Files.wdChoProfile, chEntitiesProfile.getUsageStats().toCsv(),
+//					"UTF-8");
+//			System.exit(0);
 		}
 		
 //		System.out.println(chEntitiesProfile);
@@ -357,9 +372,9 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 	
 				try {
 					existingEntsSet.add(wdResourceUri);
-					Resource wdResource = WikidataUtil.fetchResource(wdResourceUri);
+					Resource wdResource = WikidataUtil.fetchResource(wdResourceUri, false);
 //					Resource wdResource = WikidataRdfUtil.fetchresource(wdResourceUri, rdfCache);
-					String wdLabel = getWdLabel(wdResource);
+					String wdLabel = WikidataUtil.getLabelFor(wdResource);
 					wdMetamodelLabels.put(wdResourceUri, wdLabel);
 					
 					
@@ -375,16 +390,23 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 	//					System.out.println(fetched.getValue());
 	//					System.out.println("Statements for " + wdResourceUri);
 	//					System.out.println(RdfUtil.printStatements(rdfWikidata));
+					
+					WikidataUtil.addRdfTypesFromP31(wdResource.getModel());
 					wdEntPropEquivalences.analyzeEntity(wdResource, wdResource);
 	
-					for (String propUri : entry.getValue().getPropertiesProfiles().keySet()) {
-						propUri=WikidataUtil.convertWdUriToCanonical(propUri);
+					for (String origPropUri : entry.getValue().getPropertiesProfiles().keySet()) {
+						String propUri=WikidataUtil.convertWdUriToCanonical(origPropUri);
 						if(existingPropsSet.contains(propUri))
 							continue;
 						Resource propRes = wdEntPropEquivalences.analyzeProperty(propUri, propUri);
 						existingPropsSet.add(propUri);
 						if(propRes!=null) {
-							wdMetamodelLabels.put(propUri, getWdLabel(propRes));
+							String labelFor = WikidataUtil.getLabelFor(propRes);
+							wdMetamodelLabels.put(propUri, labelFor);
+							wdMetamodelLabels.put(origPropUri, labelFor);
+//							wdMetamodelLabels.put(origPropUri, getWdLabel(propRes));
+							
+							propRes=WikidataUtil.fetchResource(propUri, false);
 							wdMetamodelProfile.collect(propRes);
 						}
 					}
@@ -404,18 +426,28 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 				
 //				Resource wdResource = WikidataRdfUtil.fetchresource(wdResourceUri, rdfCache);
 				Resource wdResource = WikidataUtil.fetchResource(wdResourceUri);
-				String wdLabel = getWdLabel(wdResource);
+				
+				String wdLabel = WikidataUtil.getLabelFor(wdResource);
 				wdMetamodelLabels.put(wdResourceUri, wdLabel);
 			
-				for (String propUri : entry.getValue().getPropertiesProfiles().keySet()) {
-					propUri=WikidataUtil.convertWdUriToCanonical(propUri);
+				for (String origPropUri : entry.getValue().getPropertiesProfiles().keySet()) {
+					try {
+						String propUri=WikidataUtil.convertWdUriToCanonical(origPropUri);
 //					Resource propRes = WikidataRdfUtil.fetchresource(EquivalenceMapping.convertWdPropertyUri(propUri), rdfCache);
-					Resource propRes = WikidataUtil.fetchResource(WikidataUtil.convertWdUriToCanonical(propUri));
-					if(propRes!=null)
-						wdMetamodelLabels.put(propUri, getWdLabel(propRes));
+						Resource propRes = WikidataUtil.fetchResource(WikidataUtil.convertWdUriToCanonical(propUri));
+						if(propRes!=null) {
+							String labelFor = WikidataUtil.getLabelFor(propRes);
+							wdMetamodelLabels.put(origPropUri, labelFor);
+							wdMetamodelLabels.put(propUri, labelFor);
+						}
+						} catch (Exception e) {
+						//ignore
+					}
 				}
 			}
 
+			wdEntPropEquivalences.setEquivalenceOfSuperclass(RdfRegWikidata.NsWd+"P180", Schemaorg.about.getURI());
+			
 			FileOutputStream fileOutputStream = new FileOutputStream(Files.wdMetamodelProfilePersist);
 			ObjectOutputStream in=new ObjectOutputStream(fileOutputStream);
 			in.writeObject(wdMetamodelProfile);
@@ -469,6 +501,37 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 		
 		HashSet<String> missingEqsEnts=new HashSet<String>();
 		HashSet<String> missingEqsProps=new HashSet<String>();
+		
+		
+		//for paper
+		int justSeries=0;
+		int justSeriesAndThing=0;
+		int justThing=0;
+		int superEqs=0;
+		for (String entUri : existingEntsSet) {
+			if (wdEntPropEquivalences.getEquivalence(entUri, false) == null &&
+					wdEntPropEquivalences.getEquivalence(entUri, true)!=null) {
+				ArrayList<String> eqs = wdEntPropEquivalences.getEquivalence(entUri, true);
+				superEqs++;
+				if(eqs.size()<=2) {
+					boolean hasThing=eqs.contains(Schemaorg.Thing.getURI());
+					boolean hasSeries=eqs.contains(Schemaorg.Series.getURI());
+					if(hasSeries && hasThing && eqs.size()==2) 
+						justSeriesAndThing++;
+					else if(hasSeries && eqs.size()==1) 
+						justSeries++;
+					else if(hasThing && eqs.size()==1) 
+						justThing++;
+				}
+			}
+		}
+		System.out.println("/// SUPER EQS CLASSES ");
+		System.out.println("Existing classes "+existingEntsSet.size());
+		System.out.println("Super eqs "+superEqs);
+		System.out.println("series eqs "+justSeries);
+		System.out.println("thing eqs "+justThing);
+		System.out.println("series+thing eqs "+justSeriesAndThing);
+		
 		
 		for (String entUri : existingEntsSet) {
 			if (wdEntPropEquivalences.getEquivalence(entUri, false) != null)
@@ -526,12 +589,13 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 			try {
 				Resource wdResource = WikidataUtil.fetchResource(uri);
 				Model rdfWikidata = wdResource.getModel();
+				WikidataUtil.addRdfTypesFromP31(rdfWikidata);
 
 				boolean hasWdCol=false;
 				for(Statement wdCol: wdResource.listProperties(RdfRegWikidata.COLLECTION).toList()) {
 					String colUri=RdfUtil.getUriOrLiteralValue(wdCol.getObject());
 					if(!wikidataCollectionsSampled.containsKey(colUri));
-						wdCollectionLabels.put(colUri, getWdLabel(colUri, dataRepository));
+						wdCollectionLabels.put(colUri, WikidataUtil.getLabelFor(colUri));
 					wikidataCollectionsSampled.incrementTo(colUri);
 					hasWdCol=true;
 				} 
@@ -553,6 +617,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 											st.getPredicate(), rdfWikidata.createResource(typeUri));
 									st = newSt;
 									rdfWikidata.add(st);
+									break;
 								}
 							}
 						}
@@ -605,6 +670,7 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 					if (saveRecordsToRepository) {
 						//					Resource wdResourceOrig = WikidataRdfUtil.fetchresource(uri, rdfCache);
 						Model rdfWikidataOrig = WikidataUtil.fetchResource(uri).getModel();
+						WikidataUtil.addRdfTypesFromP31(rdfWikidataOrig);
 	//					removeOtherResources(rdfWikidataOrig, uri);
 	//					removeNonTruthyStatements(rdfWikidataOrig);
 						dataRepository.save(DataDumps.WIKIDATA_ONTOLOGY.name(), uri, RdfUtil.writeRdf(rdfWikidataOrig, Lang.TURTLE), "Content-Type",
@@ -707,40 +773,22 @@ public class ScriptMetadataAnalyzerOfCulturalHeritage {
 	}
 
 	private static String getDataProvider(Model rdfEdmAtEuropeana) {
-		List<Resource> aggs = rdfEdmAtEuropeana.listResourcesWithProperty(RegRdf.type, RdfReg.ORE_AGGREGATION).toList();
+		List<Resource> aggs = rdfEdmAtEuropeana.listResourcesWithProperty(Rdf.type, Ore.Aggregation).toList();
 		if(aggs==null || aggs.isEmpty())
 			return "no data provider";
 		Resource aggRes = aggs.get(0);
-		Statement prov = aggRes.getProperty(RegEdm.dataProvider);
+		Statement prov = aggRes.getProperty(Edm.dataProvider);
 		if(prov==null)
 			return "no data provider";
 		String provAgg=prov.getObject().asLiteral().getValue().toString();
 		
-		prov = aggRes.getProperty(RegEdm.provider);
+		prov = aggRes.getProperty(Edm.provider);
 		if(prov!=null)
 			provAgg+=" -- "+prov.getObject().asLiteral().getValue().toString();
 		
 		return provAgg;
 	}
 
-	private static String getWdLabel(String wdResourceUri, Repository repo) throws AccessException, InterruptedException, IOException {
-		Resource fetchWdResource = WikidataUtil.fetchResource(wdResourceUri);
-		if(fetchWdResource==null)
-			return "";
-		return getWdLabel(fetchWdResource);
-	}
-	private static String getWdLabel(Resource wdResource) {
-		StmtIterator labelProps = wdResource.listProperties(RegRdfs.label);
-		String label=null;
-		for (Statement st : labelProps.toList()) {
-			String lang = st.getObject().asLiteral().getLanguage();
-			if(lang.equals("en"))
-				return st.getObject().asLiteral().getString();
-			if(label==null) 
-				label=st.getObject().asLiteral().getString();
-		}
-		return label;
-	}	
 //	private String getLabel(String uri) throws AccessException, InterruptedException, IOException {
 //		uri=convertWdPropertyUri(uri);
 //		Resource resource = ScriptMetadataAnalyzerOfCulturalHeritage.WikidataRdfUtil.fetchresource(uri, rdfCache);

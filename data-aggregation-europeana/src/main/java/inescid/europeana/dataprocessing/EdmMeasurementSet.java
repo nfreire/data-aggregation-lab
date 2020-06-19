@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 
+import inescid.dataaggregation.data.model.RdfReg;
 import inescid.dataaggregation.dataset.profile.completeness.TiersDqcCompletenessCalculator;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
-import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
+import inescid.dataaggregation.dataset.profile.tiers.TiersCalculation;
+import inescid.util.RdfUtil;
+import inescid.util.europeana.EdmRdfUtil;
 
 public class EdmMeasurementSet implements Iterable<EdmMeasurementSet.EdmMeasurement> {
 	public interface EdmMeasurement {
@@ -99,8 +105,25 @@ public class EdmMeasurementSet implements Iterable<EdmMeasurementSet.EdmMeasurem
 		return new EdmMeasurement() {
 			@Override
 			public String[] getCsvResult(Resource edmCho, String edmRdfXml) throws Exception {
+				//Monge does not output the WebResource meta info, so the content tier is obtained from the metadata
+				String contentTier="0";
+				Model recMdl = edmCho.getModel();
+				Resource agg = EdmRdfUtil.getEuropeanaAggregationResource(recMdl);
+				for (StmtIterator qAnnStms=agg.listProperties(RdfReg.DQV_HAS_QUALITY_ANNOTATION) ; qAnnStms.hasNext() ; ) {
+					Statement stm = qAnnStms.next();
+					Resource qAnnotRes = stm.getObject().asResource();
+					contentTier = RdfUtil.getUriOrLiteralValue(qAnnotRes.getProperty(RdfReg.OA_HAS_BODY).getObject());
+					if(contentTier.contains("contentTier")) {
+						contentTier=contentTier.substring("http://www.europeana.eu/schemas/epf/contentTier".length());
+						break;
+					}
+				}
+				
 				TiersCalculation calculate = EpfTiersCalculator.calculate(edmRdfXml);
-				return new String[] {String.valueOf(calculate.getContent().getLevel()), 
+				return new String[] {
+//						String.valueOf(calculate.getContent().getLevel()),
+						contentTier,
+						
 						String.valueOf(calculate.getMetadata().getLevel()),
 						String.valueOf(calculate.getContextualClass().getLevel()),
 						String.valueOf(calculate.getEnablingElements().getLevel()),

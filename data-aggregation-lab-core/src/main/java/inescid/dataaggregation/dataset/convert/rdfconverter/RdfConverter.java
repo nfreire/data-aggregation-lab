@@ -25,7 +25,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 
 import inescid.dataaggregation.data.DataModelRdfOwl;
 import inescid.dataaggregation.data.RdfsClassHierarchy;
-import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.util.RdfUtil;
 
 /**
@@ -66,7 +66,7 @@ public class RdfConverter {
 		Resource resType=null;
 
 //		StmtIterator propTypesStms = srcRoot.listProperties(RdfRegRdf.type);
-		StmtIterator propTypesStms = source.listStatements(srcRoot, RegRdf.type, (RDFNode) null);
+		StmtIterator propTypesStms = source.listStatements(srcRoot, Rdf.type, (RDFNode) null);
 		
 		Resource[] rootResourceTypeMapping = null;
 		while (propTypesStms.hasNext()) {
@@ -77,7 +77,7 @@ public class RdfConverter {
 				break;
 		}
 		if (rootResourceTypeMapping==null && classHierarcgy!=null) {
-			propTypesStms = source.listStatements(srcRoot, RegRdf.type, (RDFNode) null);
+			propTypesStms = source.listStatements(srcRoot, Rdf.type, (RDFNode) null);
 			TYPES: while (propTypesStms.hasNext()) {
 				Statement typeStm = propTypesStms.next();
 				resType=typeStm.getObject().asResource();
@@ -91,7 +91,7 @@ public class RdfConverter {
 		}
 		if (rootResourceTypeMapping==null) {
 			String msg="No mapping found for Entity(ies)";
-			propTypesStms = source.listStatements(srcRoot, RegRdf.type, (RDFNode) null);
+			propTypesStms = source.listStatements(srcRoot, Rdf.type, (RDFNode) null);
 			while (propTypesStms.hasNext()) {
 				Statement typeStm = propTypesStms.next();
 				msg+=" "+typeStm.getObject().asResource().getURI();
@@ -144,7 +144,7 @@ public class RdfConverter {
 		Set<Resource> rootTypes=spec.getRootResourceTypes();
 			
 			for(Resource resType: rootTypes) {
-				ResIterator roots = ldModelRdf.listSubjectsWithProperty(RegRdf.type, resType);
+				ResIterator roots = ldModelRdf.listSubjectsWithProperty(Rdf.type, resType);
 				while(roots.hasNext()) {
 					Resource srcRoot = roots.next();
 					boolean firstType=true;
@@ -203,7 +203,7 @@ public class RdfConverter {
 		else {
 			if(trgResourceMap.getPropertiesMappingToUri().isEmpty()) {
 				trgResource=targetModelRdf.createResource();
-				trgResource.addProperty(RegRdf.type, trgResourceMap.getType());
+				trgResource.addProperty(Rdf.type, trgResourceMap.getType());
 			} else {
 				for(Property p: trgResourceMap.getPropertiesMappingToUri()) {
 					StmtIterator cwStms = ldModelRdf.listStatements(srcResource, p, (RDFNode) null);
@@ -217,7 +217,7 @@ public class RdfConverter {
 				}
 				if(trgResource==null) {
 					trgResource=targetModelRdf.createResource();
-					trgResource.addProperty(RegRdf.type, trgResourceMap.getType());
+					trgResource.addProperty(Rdf.type, trgResourceMap.getType());
 				}
 			}
 		}
@@ -254,7 +254,7 @@ public class RdfConverter {
 						trgResource.addProperty(propMap.getProperty(), st.getObject());	
 				} else {
 					boolean hasSubMap=false;
-					StmtIterator propTypesStms = ldModelRdf.listStatements(st.getObject().asResource(), RegRdf.type, (RDFNode) null);
+					StmtIterator propTypesStms = ldModelRdf.listStatements(st.getObject().asResource(), Rdf.type, (RDFNode) null);
 					boolean hasStatements=propTypesStms.hasNext();
 					while (propTypesStms.hasNext()) {
 						Statement typeStm = propTypesStms.next();
@@ -277,10 +277,10 @@ public class RdfConverter {
 								isTargetAnon=false;
 							}
 							if (hasStatements) {
-								propTypesStms = ldModelRdf.listStatements(st.getObject().asResource(), RegRdf.type, (RDFNode) null);
+								propTypesStms = ldModelRdf.listStatements(st.getObject().asResource(), Rdf.type, (RDFNode) null);
 								while (propTypesStms.hasNext()) {
 									Statement typeStm = propTypesStms.next();
-									if(typeStm.getObject().equals(RegRdf.type))
+									if(typeStm.getObject().equals(Rdf.type))
 										continue;
 									Resource convertedType=spec.getTypeMapping((Resource) typeStm.getObject());
 									if(convertedType==null) {
@@ -355,7 +355,7 @@ public class RdfConverter {
 				if(st.getObject().isLiteral()) {
 					trgResource.addProperty(propMap.getProperty(), st.getObject());								
 				} else {
-					StmtIterator propTypesStms = srcModel.listStatements(st.getObject().asResource(), RegRdf.type, (RDFNode) null);
+					StmtIterator propTypesStms = srcModel.listStatements(st.getObject().asResource(), Rdf.type, (RDFNode) null);
 					while (propTypesStms.hasNext()) {
 						Statement typeStm = propTypesStms.next();
 						ResourceTypeConversionSpecification propertyMappingFromReferencedResource = mapping.getPropertyMappingFromReferencedResource(st.getPredicate(), typeStm.getObject().asResource());

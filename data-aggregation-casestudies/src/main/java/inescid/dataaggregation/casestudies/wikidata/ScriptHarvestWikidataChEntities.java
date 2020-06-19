@@ -15,10 +15,13 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.riot.Lang;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
 
 import inescid.dataaggregation.casestudies.wikidata.ScriptExportSamples.DataDumps;
 import inescid.dataaggregation.crawl.http.CachedHttpRequestService;
-import inescid.dataaggregation.data.RegRdf;
+import inescid.dataaggregation.data.model.Rdf;
 import inescid.dataaggregation.dataset.Global;
 import inescid.dataaggregation.store.Repository;
 import inescid.util.AccessException;
@@ -140,7 +143,7 @@ public class ScriptHarvestWikidataChEntities {
 		for (StmtIterator stmts = rdfWikidata.listStatements(null, RdfRegWikidata.INSTANCE_OF, (RDFNode) null); stmts
 				.hasNext();) {
 			Statement stm = stmts.next();
-			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), RegRdf.type, stm.getObject()));
+			rdfWikidata.add(rdfWikidata.createStatement(stm.getSubject(), Rdf.type, stm.getObject()));
 		}
 	}
 

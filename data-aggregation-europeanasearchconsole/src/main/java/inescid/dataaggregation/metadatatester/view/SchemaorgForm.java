@@ -28,9 +28,10 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.util.SplitIRI;
 
 import inescid.dataaggregation.crawl.http.HttpRequest;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegSchemaorg;
+import inescid.dataaggregation.data.model.Rdf;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.dataaggregation.dataset.LodDataset;
+import inescid.dataaggregation.metadatatester.view.ResourceView.DataModel;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 import inescid.util.RdfUtil.Jena;
@@ -91,7 +92,7 @@ public class SchemaorgForm extends UriForm {
 				checkForLinkedResources(model);
 				
 				for(Resource res: model.listSubjects().toList()) {
-					ResourceView resView=new ResourceView(res, false);
+					ResourceView resView=new ResourceView(res, DataModel.Schemaorg);
 					if(!resView.hasProperties()) continue;
 					if(resView.isCreativeWork())
 						creativeWorks.add(resView);
@@ -113,7 +114,7 @@ public class SchemaorgForm extends UriForm {
 
 	private void checkForLinkedResources(Model model) {
 //		for (Resource res : model.listResourcesWithProperty(RegRdf.type, RegSchemaorg.WebPage).toList()) {
-			for (Statement stAbout : model.listStatements(null, RegSchemaorg.about, (RDFNode)null).toList()) {
+			for (Statement stAbout : model.listStatements(null, Schemaorg.about, (RDFNode)null).toList()) {
 //				for (Statement stAbout : res.listProperties(RegSchemaorg.about).toList()) {
 				if (stAbout.getObject().isURIResource()) {
 //					if(!stAbout.getObject().asResource().listProperties().hasNext()) {
@@ -126,7 +127,7 @@ public class SchemaorgForm extends UriForm {
 //					}
 				}
 			}
-			for (Statement stAbout : model.listStatements(null, RegSchemaorg.sameAs, (RDFNode)null).toList()) {
+			for (Statement stAbout : model.listStatements(null, Schemaorg.sameAs, (RDFNode)null).toList()) {
 //			for (Statement stAbout : res.listProperties(RegSchemaorg.sameAs).toList()) {
 				if (stAbout.getObject().isURIResource()) {
 //					if(!stAbout.getObject().asResource().listProperties().hasNext()) {

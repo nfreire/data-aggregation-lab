@@ -9,8 +9,10 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegSchemaorg;
+import inescid.dataaggregation.data.model.DcTerms;
+import inescid.dataaggregation.data.model.Dcat;
+import inescid.dataaggregation.data.model.RdfReg;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.util.AccessException;
 import inescid.util.RdfUtil;
 
@@ -27,7 +29,7 @@ public class DatasetDescription {
 		ArrayList<String> uris= new ArrayList<String>();
 		Resource  dsResource=model.createResource(datasetUri);
 		if (dsResource==null ) return uris;
-		StmtIterator voidRootResources = dsResource.listProperties(RdfReg.VOID_ROOT_RESOURCE);
+		StmtIterator voidRootResources = dsResource.listProperties(inescid.dataaggregation.data.model.Void.rootResource);
 		voidRootResources.forEachRemaining(st -> uris.add(st.getObject().asResource().getURI()));
 		return uris;
 	}
@@ -36,11 +38,11 @@ public class DatasetDescription {
 	public String getSparqlEndpoint() {
 		Resource  dsResource=model.createResource(datasetUri);
 		if (dsResource==null ) return null;
-		Resource dataService=RdfUtil.findResource(dsResource, RdfReg.DCAT_DISTRIBUTION, RdfReg.DCAT_ACCESS_SERVICE);
+		Resource dataService=RdfUtil.findResource(dsResource, Dcat.distribution, Dcat.accessService);
 		if (dataService==null ) return null;
 		
 		boolean isSparqlConformant=false;
-		StmtIterator conforms = dataService.listProperties(RdfReg.DCTERMS_CONFORMS_TO);
+		StmtIterator conforms = dataService.listProperties(DcTerms.conformsTo);
 		for(Statement s: conforms.toList()) {
 			String standard = RdfUtil.getUriOrLiteralValue(s.getObject());
 			if(standard!=null && (standard.equals("http://www.w3.org/2005/09/sparql-protocol-types/#") 
@@ -52,7 +54,7 @@ public class DatasetDescription {
 		}
 		if (!isSparqlConformant) return null;
 		
-		Statement endPoint = dataService.getProperty(RdfReg.DCAT_ENDPOINT_URL);
+		Statement endPoint = dataService.getProperty(Dcat.endpointURL);
 		if (endPoint==null ) return null;
 		return RdfUtil.getUriOrLiteralValue(endPoint.getObject());		
 	}
@@ -60,9 +62,9 @@ public class DatasetDescription {
 	public String getSparqlEndpointQuery() {
 		Resource  dsResource=model.createResource(datasetUri);
 		if (dsResource==null ) return null;
-		Resource searchAction=RdfUtil.findResource(dsResource, RdfReg.DCAT_DISTRIBUTION, RdfReg.PROV_WAS_GENERATED_BY);
+		Resource searchAction=RdfUtil.findResource(dsResource, Dcat.distribution, RdfReg.PROV_WAS_GENERATED_BY);
 		if (searchAction==null ) return null;
-		Statement query = searchAction.getProperty(RdfReg.SCHEMAORG_QUERY);
+		Statement query = searchAction.getProperty(Schemaorg.query);
 		if (query==null ) return null;
 		return query.getObject().asLiteral().getString() ;		
 	}
@@ -71,15 +73,15 @@ public class DatasetDescription {
 		ArrayList<Distribution> uris= new ArrayList<>();
 		Resource  dsResource=model.createResource(datasetUri);
 		if (dsResource==null ) return uris;
-		StmtIterator voidRootResources = dsResource.listProperties(RdfReg.VOID_DATA_DUMP);
+		StmtIterator voidRootResources = dsResource.listProperties(inescid.dataaggregation.data.model.Void.dataDump);
 		voidRootResources.forEachRemaining(st -> uris.add(new Distribution(st.getObject().asResource().getURI(), null)));
 
-		StmtIterator distributions = dsResource.listProperties(RdfReg.DCAT_DISTRIBUTION);
+		StmtIterator distributions = dsResource.listProperties(Dcat.distribution);
 		distributions.forEachRemaining(st -> {
 			if (st.getObject().isResource()) {
-				Statement downloadUrl = st.getResource().getProperty(RdfReg.DCAT_DOWNLOAD_URL);
+				Statement downloadUrl = st.getResource().getProperty(Dcat.downloadURL);
 				if(downloadUrl!=null) {
-					Statement mediaType = st.getResource().getProperty(RdfReg.DCAT_MEDIA_TYPE);
+					Statement mediaType = st.getResource().getProperty(Dcat.mediaType);
 					Distribution dist=new Distribution(RdfUtil.getUriOrLiteralValue(downloadUrl.getObject()), 
 							mediaType==null ? null : RdfUtil.getUriOrLiteralValue(mediaType.getObject()));
 					uris.add(dist);
@@ -87,12 +89,12 @@ public class DatasetDescription {
 			}
 			});
 
-		distributions = dsResource.listProperties(RegSchemaorg.distribution);
+		distributions = dsResource.listProperties(Schemaorg.distribution);
 		distributions.forEachRemaining(st -> {
 			if (st.getObject().isResource()) {
-				Statement downloadUrl = st.getResource().getProperty(RegSchemaorg.contentUrl);
+				Statement downloadUrl = st.getResource().getProperty(Schemaorg.contentUrl);
 				if(downloadUrl!=null) {
-					Statement mediaType = st.getResource().getProperty(RegSchemaorg.encodingFormat);
+					Statement mediaType = st.getResource().getProperty(Schemaorg.encodingFormat);
 					Distribution dist=new Distribution(RdfUtil.getUriOrLiteralValue(downloadUrl.getObject()), 
 							mediaType==null ? null : RdfUtil.getUriOrLiteralValue(mediaType.getObject()));
 					uris.add(dist);

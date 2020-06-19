@@ -15,10 +15,11 @@ import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFWriter;
 
 import inescid.dataaggregation.casestudies.coreference.Consts;
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
+import inescid.dataaggregation.wikidata.RdfRegWikidata;
+import inescid.dataaggregation.wikidata.WikidataUtil;
+import inescid.dataaggregation.data.model.Owl;
+import inescid.dataaggregation.data.model.Schemaorg;
+import inescid.dataaggregation.data.model.Skos;
 import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;
 
@@ -99,12 +100,12 @@ class WikidataIngest {
 	public final static Property[] idsAndAlignsProperties;
 	static {
 		ArrayList<Property> list=new ArrayList<Property>();
-		list.add(RegOwl.sameAs);
+		list.add(Owl.sameAs);
 		list.add(RdfRegWikidata.EXACT_MATCH);
 //		list.add(RdfRegWikidata.EQUIVALENT_CLASS);
-		list.add(RegSkos.exactMatch);
-		list.add(RegSkos.closeMatch); 
-		list.add(RegSchemaorg.sameAs);
+		list.add(Skos.exactMatch);
+		list.add(Skos.closeMatch); 
+		list.add(Schemaorg.sameAs);
 		for(String p:idsToUrisAtEuropeanaResolvable.keySet())
 			list.add(ResourceFactory.createProperty(RdfRegWikidata.NsWd+p));
 		idsAndAlignsProperties=(Property[]) list.toArray();
@@ -117,8 +118,8 @@ class WikidataIngest {
 		ArrayList<Triple> toAddTripleAux=new ArrayList<Triple>(1) {{ add(null); }};
 		try {
 			SparqlClient endpoint=new SparqlClient(Consts.wikidata_sparql, "");
-			for(Property p: new Property[] { RegOwl.sameAs, RdfRegWikidata.EXACT_MATCH, RdfRegWikidata.EQUIVALENT_CLASS,
-					RegSkos.exactMatch, RegSkos.closeMatch, RegSchemaorg.sameAs}) {
+			for(Property p: new Property[] { Owl.sameAs, RdfRegWikidata.EXACT_MATCH, RdfRegWikidata.EQUIVALENT_CLASS,
+					Skos.exactMatch, Skos.closeMatch, Schemaorg.sameAs}) {
 				endpoint.queryWithPaging("SELECT ?s ?o WHERE { {?s <" + p + "> ?o} .}",
 						50000, null, new Handler() {
 					int cnt=0;

@@ -27,6 +27,8 @@ public class MetadataTesterServlet extends HttpServlet {
 		DISPLAY_START_PAGE, 
 		DISPLAY_IIIF_FORM, ANALYSE_IIIF,
 		DISPLAY_SCHEMAORG_FORM, ANALYSE_SCHEMAORG, VALIDATE_SCHEMAORG,
+		DISPLAY_WIKIDATA_FORM, ANALYSE_WIKIDATA, VALIDATE_WIKIDATA,
+		DISPLAY_EUROPEANA_FORM, ANALYSE_EUROPEANA,
 		DISPLAY_SITEMAP_FORM, ANALYSE_SITEMAP;
 
 		public static RequestOperation fromHttpRequest(HttpServletRequest req) {
@@ -41,12 +43,22 @@ public class MetadataTesterServlet extends HttpServlet {
 					if(!StringUtils.isEmpty(req.getParameter("webpageURL")))
 						return RequestOperation.ANALYSE_SCHEMAORG;
 					return RequestOperation.DISPLAY_SCHEMAORG_FORM;
+				} else if (req.getPathInfo().endsWith("/check_wikidata")) {
+					if(!StringUtils.isEmpty(req.getParameter("wikidataID")))
+						return RequestOperation.ANALYSE_WIKIDATA;
+					return RequestOperation.DISPLAY_WIKIDATA_FORM;
+				} else if (req.getPathInfo().endsWith("/check_europeana")) {
+					if(!StringUtils.isEmpty(req.getParameter("europeanaID")))
+						return RequestOperation.ANALYSE_EUROPEANA;
+					return RequestOperation.DISPLAY_EUROPEANA_FORM;
 				} else if (req.getPathInfo().endsWith("/check_sitemap")) {
 					if(!StringUtils.isEmpty(req.getParameter("sitemapURL")))
 						return RequestOperation.ANALYSE_SITEMAP;
 					return RequestOperation.DISPLAY_SITEMAP_FORM;
 				} else if (req.getPathInfo().endsWith("/validate_schemaorg")) {
 					return RequestOperation.VALIDATE_SCHEMAORG;
+				} else if (req.getPathInfo().endsWith("/validate_wikidata")) {
+					return RequestOperation.VALIDATE_WIKIDATA;
 				}
 			}
 			return RequestOperation.DISPLAY_START_PAGE;
@@ -64,7 +76,12 @@ public class MetadataTesterServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 		super.destroy();
-		GlobalMetadataTester.shutdown();
+		try {
+			GlobalMetadataTester.shutdown();
+			System.out.println("Destroying servlet");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 
 	private Properties getInitParameters(ServletContext servletContext) {
@@ -74,7 +91,6 @@ public class MetadataTesterServlet extends HttpServlet {
 			Object pName = initParameterNames.nextElement();
 			String initParameter = servletContext.getInitParameter(pName.toString());
 			props.setProperty(pName.toString(), initParameter);
-			
 		}
 		props.setProperty("dataaggregation.webapp.root-folder", servletContext.getRealPath(""));
 		return props;
@@ -94,6 +110,16 @@ public class MetadataTesterServlet extends HttpServlet {
 				form.checkUri();
 				sendResponse(resp, 200, form.output());
 				break;
+			}case ANALYSE_WIKIDATA:{
+				WikidataForm form = new WikidataForm(req);
+				form.checkUri();
+				sendResponse(resp, 200, form.output());
+				break;
+			}case ANALYSE_EUROPEANA:{
+				EuropeanaForm form = new EuropeanaForm(req);
+				form.checkUri();
+				sendResponse(resp, 200, form.output());
+				break;
 			}case ANALYSE_SITEMAP:{
 				SitemapForm form = new SitemapForm(req);
 				form.check();
@@ -107,6 +133,14 @@ public class MetadataTesterServlet extends HttpServlet {
 				SchemaorgForm form = new SchemaorgForm();
 				sendResponse(resp, 200, form.output());
 				break;
+			} case DISPLAY_WIKIDATA_FORM: {
+				WikidataForm form = new WikidataForm();
+				sendResponse(resp, 200, form.output());
+				break;
+			} case DISPLAY_EUROPEANA_FORM: {
+				EuropeanaForm form = new EuropeanaForm();
+				sendResponse(resp, 200, form.output());
+				break;
 			} case DISPLAY_SITEMAP_FORM: {
 				SitemapForm form = new SitemapForm();
 				sendResponse(resp, 200, form.output());
@@ -114,6 +148,11 @@ public class MetadataTesterServlet extends HttpServlet {
 			} case VALIDATE_SCHEMAORG: {
 				SchemaorgForm form = new SchemaorgForm(req);
 				form.validateSchemaorgUri();
+				sendResponse(resp, 200, form.output());
+				break;
+			} case VALIDATE_WIKIDATA: {
+				WikidataForm form = new WikidataForm(req);
+				form.validateEdmUri();
 				sendResponse(resp, 200, form.output());
 				break;
 			} case DISPLAY_START_PAGE:

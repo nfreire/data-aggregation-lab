@@ -23,7 +23,7 @@ import inescid.dataaggregation.dataset.profile.completeness.TiersDqcCompleteness
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturation;
 import inescid.dataaggregation.dataset.profile.multilinguality.MultilingualSaturationResult;
 import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator;
-import inescid.dataaggregation.dataset.profile.tiers.EpfTiersCalculator.TiersCalculation;
+import inescid.dataaggregation.dataset.profile.tiers.TiersCalculation;
 import inescid.dataaggregation.store.Repository;
 import inescid.dataaggregation.store.RepositoryResource;
 import inescid.util.RdfUtil;

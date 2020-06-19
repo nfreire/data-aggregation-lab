@@ -3,27 +3,18 @@ package inescid.dataaggregation.casestudies.wikidata.edm;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
 import org.apache.jena.query.QuerySolution;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.system.StreamOps;
 import org.apache.jena.riot.system.StreamRDF;
 import org.apache.jena.riot.system.StreamRDFWriter;
 
-import inescid.dataaggregation.casestudies.wikidata.RdfRegWikidata;
-import inescid.dataaggregation.casestudies.wikidata.SparqlClientWikidata;
-import inescid.dataaggregation.data.RdfReg;
-import inescid.dataaggregation.data.RegEdm;
-import inescid.dataaggregation.data.RegOwl;
-import inescid.dataaggregation.data.RegSchemaorg;
-import inescid.dataaggregation.data.RegSkos;
-import inescid.util.RdfUtil.Jena;
+import inescid.dataaggregation.wikidata.SparqlClientWikidata;
+import inescid.dataaggregation.data.model.Dcat;
+import inescid.dataaggregation.data.model.Edm;
+import inescid.dataaggregation.data.model.Schemaorg;
 import inescid.util.SparqlClient;
 import inescid.util.SparqlClient.Handler;
 
@@ -40,19 +31,19 @@ class ScriptGetWikidataSubsetViaSparql {
 				return false;
 			String uri=t.getObject().getURI();
 //			System.out.println(uri);
-			for(String ns: RegEdm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.values()) {
+			for(String ns: Edm.NS_EXTERNAL_PREFERRED_BY_PREFIXES.values()) {
 				if(uri.startsWith(ns)) {
 					System.out.println("accepting: "+uri);
 					return true;
 				}
 			}
-			if(uri.startsWith(RegSchemaorg.NS)) {
+			if(uri.startsWith(Schemaorg.NS)) {
 				System.out.println("accepting: "+uri);
 				return true;			
 			}
-			if(uri.startsWith(RdfReg.NsDcat))
+			if(uri.startsWith(Dcat.NS))
 				return true;			
-			if(uri.startsWith(RdfReg.NsVoid))
+			if(uri.startsWith(inescid.dataaggregation.data.model.Void.NS))
 				return true;			
 			return false;			
 		}

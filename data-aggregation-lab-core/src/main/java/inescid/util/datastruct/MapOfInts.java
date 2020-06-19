@@ -141,7 +141,7 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 				incrementTo(k);
 		}
 		
-		public static void writeCsv(MapOfInts<?> sets, Writer csvWrite) throws IOException {
+		public static void writeCsv(MapOfInts<?> sets, Appendable csvWrite) throws IOException {
 			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
 			for(Entry<?, Integer>  r: sets.entrySet()) {
 				printer.printRecord(r.getKey().toString(), r.getValue().toString());
@@ -149,7 +149,7 @@ public class MapOfInts<K> extends Hashtable<K, Integer> implements Serializable{
 			printer.close();
 		}
 		
-		public static void writeCsv(MapOfInts<?> sets, Map<?, ?> labels, Writer csvWrite) throws IOException {
+		public static void writeCsv(MapOfInts<?> sets, Map<?, ?> labels, Appendable csvWrite) throws IOException {
 			CSVPrinter printer=new CSVPrinter(csvWrite, CSVFormat.DEFAULT);
 			for(Entry<?, Integer>  r: sets.entrySet()) {
 				Object label = labels.get(r.getKey());
